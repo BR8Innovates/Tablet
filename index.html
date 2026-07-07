@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<title>Vitals — Health &amp; Activity Tracker</title>
+<meta name="description" content="An offline-first health and activity tracker: steps, water, sleep, weight and workouts." />
+<meta name="theme-color" content="#0f172a" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Vitals" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app" class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">💠</span>
+      <span class="brand-name">Vitals</span>
+    </div>
+    <div class="date-pill" id="todayLabel">—</div>
+    <button id="themeToggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+  </header>
+
+  <nav class="tabbar" id="tabbar" role="tablist" aria-label="Sections">
+    <button class="tab active" data-view="dashboard" role="tab" aria-selected="true">
+      <span class="tab-icon">🏠</span><span>Dashboard</span>
+    </button>
+    <button class="tab" data-view="activity" role="tab" aria-selected="false">
+      <span class="tab-icon">🏃</span><span>Activity</span>
+    </button>
+    <button class="tab" data-view="water" role="tab" aria-selected="false">
+      <span class="tab-icon">💧</span><span>Water</span>
+    </button>
+    <button class="tab" data-view="sleep" role="tab" aria-selected="false">
+      <span class="tab-icon">🌙</span><span>Sleep</span>
+    </button>
+    <button class="tab" data-view="body" role="tab" aria-selected="false">
+      <span class="tab-icon">⚖️</span><span>Body</span>
+    </button>
+    <button class="tab" data-view="settings" role="tab" aria-selected="false">
+      <span class="tab-icon">⚙️</span><span>Settings</span>
+    </button>
+  </nav>
+
+  <main class="content" id="content">
+
+    <!-- DASHBOARD -->
+    <section class="view active" id="view-dashboard">
+      <div class="grid grid-4 rings-row">
+        <div class="card ring-card">
+          <canvas class="ring" id="ringSteps" width="160" height="160"></canvas>
+          <div class="ring-label">
+            <div class="ring-value" id="ringStepsValue">0</div>
+            <div class="ring-goal">of <span id="ringStepsGoal">8000</span> steps</div>
+          </div>
+        </div>
+        <div class="card ring-card">
+          <canvas class="ring" id="ringWater" width="160" height="160"></canvas>
+          <div class="ring-label">
+            <div class="ring-value" id="ringWaterValue">0</div>
+            <div class="ring-goal">of <span id="ringWaterGoal">2000</span> ml</div>
+          </div>
+        </div>
+        <div class="card ring-card">
+          <canvas class="ring" id="ringActive" width="160" height="160"></canvas>
+          <div class="ring-label">
+            <div class="ring-value" id="ringActiveValue">0</div>
+            <div class="ring-goal">of <span id="ringActiveGoal">30</span> active min</div>
+          </div>
+        </div>
+        <div class="card ring-card">
+          <canvas class="ring" id="ringSleep" width="160" height="160"></canvas>
+          <div class="ring-label">
+            <div class="ring-value" id="ringSleepValue">0</div>
+            <div class="ring-goal">of <span id="ringSleepGoal">8</span>h sleep</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head">
+            <h2>This week</h2>
+            <span class="muted">Steps</span>
+          </div>
+          <canvas id="chartStepsWeek" class="chart" height="180"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <h2>Weight trend</h2>
+            <span class="muted" id="weightUnitLabel">kg</span>
+          </div>
+          <canvas id="chartWeightTrend" class="chart" height="180"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>Quick add</h2>
+        </div>
+        <div class="quick-actions">
+          <button class="qa-btn" data-qa="steps" data-amount="500">👣 +500 steps</button>
+          <button class="qa-btn" data-qa="steps" data-amount="1000">👣 +1000 steps</button>
+          <button class="qa-btn" data-qa="water" data-amount="250">💧 +250 ml</button>
+          <button class="qa-btn" data-qa="water" data-amount="500">💧 +500 ml</button>
+          <button class="qa-btn" data-qa="active" data-amount="10">⏱️ +10 active min</button>
+          <button class="qa-btn" data-qa="workout">🏋️ Log workout</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>Streaks</h2>
+        </div>
+        <div class="streaks" id="streaksRow"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>Insights</h2>
+          <button class="qa-btn" id="btnInsights">🔎 Generate insights</button>
+        </div>
+        <div id="insightsBody" class="insights">
+          <p class="muted">Tap "Generate insights" to analyze your logged data — trends, streaks, and patterns, computed on this device.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY -->
+    <section class="view" id="view-activity">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head"><h2>Log activity</h2></div>
+          <form id="formActivity" class="form">
+            <label>Type
+              <select name="type" required>
+                <option value="Walk">🚶 Walk</option>
+                <option value="Run">🏃 Run</option>
+                <option value="Cycle">🚴 Cycle</option>
+                <option value="Strength">🏋️ Strength</option>
+                <option value="Yoga">🧘 Yoga</option>
+                <option value="Sport">⚽ Sport</option>
+                <option value="Other">✨ Other</option>
+              </select>
+            </label>
+            <label>Duration (min)
+              <input type="number" name="duration" min="1" max="600" required placeholder="30" />
+            </label>
+            <label>Steps (optional)
+              <input type="number" name="steps" min="0" max="100000" placeholder="0" />
+            </label>
+            <label>Calories (optional)
+              <input type="number" name="calories" min="0" max="5000" placeholder="auto-estimate" />
+            </label>
+            <label>Notes
+              <input type="text" name="notes" maxlength="140" placeholder="How did it feel?" />
+            </label>
+            <button type="submit" class="primary-btn">Add activity</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Steps this week</h2></div>
+          <canvas id="chartActivityWeek" class="chart" height="200"></canvas>
+          <div class="card-head" style="margin-top:16px;"><h2>By type (30 days)</h2></div>
+          <canvas id="chartActivityType" class="chart" height="160"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Recent activity</h2></div>
+        <div class="list" id="listActivity"></div>
+      </div>
+    </section>
+
+    <!-- WATER -->
+    <section class="view" id="view-water">
+      <div class="grid grid-2">
+        <div class="card center-card">
+          <canvas class="ring big" id="ringWaterBig" width="220" height="220"></canvas>
+          <div class="ring-label">
+            <div class="ring-value" id="ringWaterBigValue">0</div>
+            <div class="ring-goal">of <span id="ringWaterBigGoal">2000</span> ml</div>
+          </div>
+          <div class="quick-actions" style="margin-top:20px;">
+            <button class="qa-btn" data-qa="water" data-amount="150">+150 ml</button>
+            <button class="qa-btn" data-qa="water" data-amount="250">+250 ml</button>
+            <button class="qa-btn" data-qa="water" data-amount="500">+500 ml</button>
+            <button class="qa-btn danger" data-qa="water-undo">Undo last</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Last 7 days</h2></div>
+          <canvas id="chartWaterWeek" class="chart" height="220"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLEEP -->
+    <section class="view" id="view-sleep">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head"><h2>Log sleep</h2></div>
+          <form id="formSleep" class="form">
+            <label>Bedtime
+              <input type="time" name="bedtime" required />
+            </label>
+            <label>Wake time
+              <input type="time" name="waketime" required />
+            </label>
+            <label>Quality
+              <select name="quality" required>
+                <option value="5">😴 Great</option>
+                <option value="4">🙂 Good</option>
+                <option value="3" selected>😐 Okay</option>
+                <option value="2">😕 Poor</option>
+                <option value="1">😩 Bad</option>
+              </select>
+            </label>
+            <label>Notes
+              <input type="text" name="notes" maxlength="140" placeholder="Dreams, disturbances..." />
+            </label>
+            <button type="submit" class="primary-btn">Add sleep entry</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Last 7 nights</h2></div>
+          <canvas id="chartSleepWeek" class="chart" height="200"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Recent sleep</h2></div>
+        <div class="list" id="listSleep"></div>
+      </div>
+    </section>
+
+    <!-- BODY -->
+    <section class="view" id="view-body">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head"><h2>Log measurement</h2></div>
+          <form id="formBody" class="form">
+            <label>Weight (<span class="unitLabelInline">kg</span>)
+              <input type="number" name="weight" min="1" max="500" step="0.1" placeholder="70.0" />
+            </label>
+            <label>Body fat % (optional)
+              <input type="number" name="bodyfat" min="1" max="70" step="0.1" placeholder="—" />
+            </label>
+            <label>Resting HR (bpm, optional)
+              <input type="number" name="hr" min="30" max="220" placeholder="—" />
+            </label>
+            <label>Notes
+              <input type="text" name="notes" maxlength="140" placeholder="Optional note" />
+            </label>
+            <button type="submit" class="primary-btn">Add entry</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Weight trend (30 days)</h2></div>
+          <canvas id="chartBodyWeight" class="chart" height="220"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Recent entries</h2></div>
+        <div class="list" id="listBody"></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="view" id="view-settings">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head"><h2>Daily goals</h2></div>
+          <form id="formGoals" class="form">
+            <label>Step goal
+              <input type="number" name="stepsGoal" min="1000" max="50000" step="500" />
+            </label>
+            <label>Water goal (ml)
+              <input type="number" name="waterGoal" min="500" max="6000" step="50" />
+            </label>
+            <label>Active minutes goal
+              <input type="number" name="activeGoal" min="5" max="240" step="5" />
+            </label>
+            <label>Sleep goal (hours)
+              <input type="number" name="sleepGoal" min="4" max="12" step="0.5" />
+            </label>
+            <label>Weight unit
+              <select name="weightUnit">
+                <option value="kg">Kilograms (kg)</option>
+                <option value="lb">Pounds (lb)</option>
+              </select>
+            </label>
+            <button type="submit" class="primary-btn">Save goals</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Profile</h2></div>
+          <form id="formProfile" class="form">
+            <label>Name
+              <input type="text" name="name" maxlength="40" placeholder="Your name" />
+            </label>
+            <label>Height (cm)
+              <input type="number" name="height" min="50" max="260" placeholder="170" />
+            </label>
+            <button type="submit" class="primary-btn">Save profile</button>
+          </form>
+
+          <div class="card-head" style="margin-top:20px;"><h2>Data</h2></div>
+          <div class="quick-actions">
+            <button class="qa-btn" id="btnExport">⬇️ Export data (JSON)</button>
+            <button class="qa-btn" id="btnImportTrigger">⬆️ Import data</button>
+            <input type="file" id="fileImport" accept="application/json" hidden />
+            <button class="qa-btn danger" id="btnReset">🗑️ Reset all data</button>
+          </div>
+          <p class="muted small">All data stays on this device (localStorage). Nothing is sent to a server.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>About</h2></div>
+        <p class="muted">Vitals is an installable, offline-first health &amp; activity tracker. Install it to your home screen for a native app feel — it works fully without an internet connection.</p>
+        <p class="muted small" id="installHint"></p>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
