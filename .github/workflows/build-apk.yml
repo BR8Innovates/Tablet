@@ -39,6 +39,9 @@ jobs:
       - name: Sync Capacitor Android project
         run: npx cap sync android
 
+      - name: Install ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+
       - name: Generate Android launcher icons
         run: ./scripts/generate-android-icons.sh
 
