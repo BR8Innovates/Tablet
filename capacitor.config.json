@@ -1,0 +1,8 @@
+{
+  "appId": "com.vitals.healthtracker",
+  "appName": "Vitals",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  }
+}

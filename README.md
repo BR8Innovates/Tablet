@@ -35,6 +35,23 @@ Once installed, the app works fully **offline** — a service worker caches the 
 
 This repo includes a GitHub Actions workflow (`.github/workflows/deploy-pages.yml`) that publishes the static site to **GitHub Pages** on every push. Enable Pages once under repo **Settings → Pages → Source: GitHub Actions**, then the deployed URL will be shown in the workflow run summary (and under Settings → Pages).
 
+## Installing as a native Android APK (sideload)
+
+For a real, installable APK instead of a browser-based PWA install, this repo wraps the same app in a [Capacitor](https://capacitorjs.com/) Android shell (see `android/`). The APK bundles the web assets directly, so it works fully offline with no server or browser involved. It's a debug-signed build meant for installing on your own device only — it is not published to the Play Store.
+
+**Get the APK:**
+- Go to the repo's **Releases** page and download `app-debug.apk` from the `android-latest` release (updated automatically on every push), **or**
+- Go to **Actions → Build Android APK → (latest run)** and download the `vitals-debug-apk` artifact.
+
+**Install on your Android device:**
+1. Transfer `app-debug.apk` to your device (download link, USB, etc.).
+2. Open the file. Android will prompt to allow installs from that source — tap **Settings** and enable **Install unknown apps** for the app you used to open it (browser or file manager).
+3. Tap **Install**, then launch **Vitals** from your app drawer.
+
+Note: the native app's data storage is separate from any browser-based PWA install of the same site. If you already have data in the browser version, use **Settings → Export data** there and **Settings → Import data** in the app to bring it across.
+
+**Building it yourself:** with Node.js and a JDK installed, run `npm install`, then `./scripts/prepare-www.sh && npx cap sync android && cd android && ./gradlew assembleDebug`. The APK lands at `android/app/build/outputs/apk/debug/app-debug.apk`.
+
 ## Local development
 
 No build step required — it's plain HTML/CSS/JS. To preview locally:
