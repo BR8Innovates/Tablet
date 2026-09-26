@@ -22,3 +22,12 @@ for d in .adal .agents .augment .bob .codebuddy .commandcode .continue .cortex \
     rm -rf "$d"
   fi
 done
+
+# Make every insureMO skill manual-only: Claude won't pick one on its own, it
+# runs only when the user invokes it (e.g. /insuremo-deep-search).
+for name in $(node -e 'console.log(Object.keys(require("./skills-lock.json").skills).join("\n"))'); do
+  f=".claude/skills/$name/SKILL.md"
+  if [ -f "$f" ] && ! grep -q '^disable-model-invocation:' "$f"; then
+    sed -i '1s/^---$/---\ndisable-model-invocation: true/' "$f"
+  fi
+done
