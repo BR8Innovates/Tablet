@@ -22,3 +22,11 @@ for d in .adal .agents .augment .bob .codebuddy .commandcode .continue .cortex \
     rm -rf "$d"
   fi
 done
+
+# Some insureMO skills ship as manual-only; let Claude pick every one on its own.
+for name in $(node -e 'console.log(Object.keys(require("./skills-lock.json").skills).join("\n"))'); do
+  f=".claude/skills/$name/SKILL.md"
+  if [ -f "$f" ]; then
+    sed -i '/^disable-model-invocation:[[:space:]]*true[[:space:]]*$/d' "$f"
+  fi
+done
