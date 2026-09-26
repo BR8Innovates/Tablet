@@ -1,0 +1,13 @@
+# insureMO skills: symlinks into ~/.insuremo/skills-store (machine-local); reinstall from skills-lock.json
+/.claude/skills/icomposer-batch
+/.claude/skills/icomposer-code-manager
+/.claude/skills/icomposer-data-model
+/.claude/skills/icomposer-dev
+/.claude/skills/insuremo-auth-cli
+/.claude/skills/insuremo-deep-search
+/.claude/skills/insuremo-design-with-eric
+/.claude/skills/insuremo-design-with-tony
+/.claude/skills/insuremo-log
+/.claude/skills/insuremo-playbook-manager
+/.claude/skills/insuremo-uic
+/.claude/skills/using-insuremo-skills
