@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "skills": {
+    "icomposer-batch": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "c6666cbddb958e7f56666f4e26c9eb9d6b6031d32a0f7c63851215c2a0acf861",
+      "npmPackage": "@insuremo/skills"
+    },
+    "icomposer-code-manager": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "aa47c4ad51073cd6fd5bb1dd647420f7ec4f35a4d97c0abadc167d1eabd4a2e4",
+      "npmPackage": "@insuremo/skills"
+    },
+    "icomposer-data-model": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "5e9140d30757e9b00b05c699f8574efce1740764d6aaab2a5f9d6f84abebeb93",
+      "npmPackage": "@insuremo/skills"
+    },
+    "icomposer-dev": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "5497a8172bbbb19417f6a0e972d80506b954e3e66e452701871df7c01d5bef0e",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-auth-cli": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "f69901c1a1f5bd238c936252f98f65d1ac50e9d9d15bb48808d8ef0fe69bda4e",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-dataio": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "b83f2e3f62cd54f7368f3b3df31e3fbd2611dac8ef942cbc0afa0cd4f6877d6d",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-dd-config": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "942f9418430793f49e20fd0008b419c257fb38705a48add299efebc4d0649ac5",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-deep-search": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "1f8be7abc9b7129a712c280ec0a5d5965af7b35b7f3084300594bf65fcee6076",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-design-with-eric": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "7bb9935bd288a744bcc26dcfab53ce81ec0d4188bcb2392104528ef505ceb356",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-design-with-tony": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "8a72905344e930f17f26afa844623468f8ea3a62ca210d3baa717bb87ee57b4d",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-gi-product-config": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "1d331c723b3644f68d7283355e969e13a21f1641eb27f06c5abb87d4c87e2248",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-gi-product-config-design-with-merlin": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "a28dc9a2ae0272d9212853793e523a66edb8abb0d62358c5c855cb17a317c5c2",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-gi-rating-config": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "e9fc226d1032c4e11080a547523d40473d46e44df756341fe1f4444ce362ffb5",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-ics-base": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "5a613f1ab3075e2f99add345038e13541f51f027c01862e535176317bb753589",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-ics-config-history": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "ebe3a7121d3ff065bcb74033b42ff0772161ae1edba7017995eb05cdc851517a",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-itables": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "c946bdf666208ab16a243b040b8c0edc4692421ed18f587cfb27ba608006c9ff",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-log": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "a9a6c19975d4282585e373e388811ce163d8d7323025ab8937cdc27ccb5d4ce4",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-playbook-manager": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "83c3ff477fc209a89e701a5aec232aadeabc273335d338f30885db20b1bdecb8",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-rule-config": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "1f815b547e353d4de3b0c609a1f1fb2b449e3155de41dc0ee30b3a6736ba04df",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-rule-dsl-generate": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "f3801d42e2c49371db8572258ec1580dbbd1d58a275970157c0d9158cdce7d84",
+      "npmPackage": "@insuremo/skills"
+    },
+    "insuremo-uic": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "83faf1f8e59d0294209db4d61044afcc6fc3f46f18b7d6c3043ebfe1cee59084",
+      "npmPackage": "@insuremo/skills"
+    },
+    "using-insuremo-skills": {
+      "source": "insuremo-public/insuremo-skills",
+      "sourceType": "git",
+      "computedHash": "d19b987a9ec012dd89b35746e90055d0ff6f623d87b1c87ce3de67c3f1a99deb",
+      "npmPackage": "@insuremo/skills"
+    }
+  }
+}
