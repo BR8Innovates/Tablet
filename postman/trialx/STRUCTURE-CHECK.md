@@ -158,6 +158,17 @@ With every one of those fixed, the request is well-formed and passes every valid
 
 **Not attempted:** creating data table/rate table records (API-10/API-11) - that's tenant configuration owned by the Config team, not something a portal API creates, and guessing at undocumented config-management endpoints felt like the wrong kind of "create" here. SMS/Email sends stayed excluded - those dispatch real messages with real-world cost/delivery, which is a different risk category from creating a test record, and wasn't part of what was asked.
 
+## 8. SMS/Email: cannot be sent from trialx today (confirmed real attempt, real account)
+
+The collection keeps SMS/Email requests as **structure only** - correct field names and shapes, no saved examples, never run automatically - because sending cannot be made to work on trialx right now, for two separate, confirmed reasons found while trying:
+
+1. **No SMS account configured, at first.** A real send attempt (with explicit consent, against a real number) failed before dispatch: `account_name` is genuinely required (the spec marks it optional) - omitting it returns `e_sms_account_type_missing "account type is required"`. A guessed name (`default`, `test`) returned `e_sms_account_not_exists`.
+2. **With the tenant admin's real account supplied** (`account_name: "account"`, `sign_name: "tyung"`, `template_code: "ebao_sms_test_template"` or `"ebao sms test template 2"`) - confirmed on `/mo-fo/1.0/sns/mfa/sms/send`, `/mo-fo/1.0/sns/sms/send`, and both templates - **every validation passes**, but the send itself fails: `e_sms_send_error`, `"operation error SNS: Publish ... dial tcp: lookup sns.sns.ap-northeast-1.amazonaws.com.amazonaws.com: no such host"`. **trialx's own AWS SNS endpoint hostname is malformed** (`sns.` and `.amazonaws.com` each appear twice). No SMS has ever actually been sent from this tenant.
+
+This is a broken SNS integration on the platform/infrastructure side - not a request-shape problem, not a doc problem, and not fixable from any client. It needs the platform/tenant admin to fix the SNS endpoint configuration. The confirmed real account/signature/template are saved as the environment's `smsAccount`/`signName`/`otpTemplateCode` defaults, so retesting once that's fixed needs no further lookup - just rerun.
+
+Email (API-15) was never attempted with real credentials (no SNS email account was supplied), so it stays as spec-only structure with no live finding either way. Notifications Hub (the `/comm/v1/notifications/send` path in API-15/16/34-A) remains 404 regardless - see §1.
+
 ## Re-running
 
 ```bash

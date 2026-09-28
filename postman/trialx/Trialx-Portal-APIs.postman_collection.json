@@ -28203,7 +28203,7 @@
                 "send"
               ]
             },
-            "description": "**API-03 SMS OTP Dispatch for MFA API**  \n`POST /mo-fo/1.0/sns/mfa/sms/send` · Owner: EasyPA Apps Team  \nVariant: **Mandatory**\n\ncode_strategy: 0 numbers only, 1 numbers + uppercase, 2 numbers + letters. The OTP itself is never returned.\n\n**Confirmed live on trialx, 28 Sep 2026, tried with explicit consent against a real number, twice:**\n1. First pass: no `account_name` - `e_sms_account_type_missing \"account type is required\"` (contradicts the spec's \"O\" (optional)). A guessed name (`default`, `test`) - `e_sms_account_not_exists`.\n2. Second pass, with the real account/signature/template supplied by the tenant admin (`account_name: \"account\"`, `sign_name: \"tyung\"`, `template_code: \"ebao_sms_test_template\"` or `\"ebao sms test template 2\"`): **every validation now passes**, but the send itself fails with `e_sms_send_error` - `operation error SNS: Publish ... dial tcp: lookup sns.sns.ap-northeast-1.amazonaws.com.amazonaws.com: no such host`. trialx's own AWS SNS endpoint hostname is malformed (`sns.` and `.amazonaws.com` both appear twice) - confirmed identical on this endpoint, the plain SNS SMS endpoint, with both templates. **No message has ever been sent; this is a broken SNS integration on the tenant infrastructure, not a request-shape or code-table problem, and not fixable from any client.** Report to the platform/tenant admin as an infrastructure bug, not a doc fix.\n",
+            "description": "**API-03 SMS OTP Dispatch for MFA API**  \n`POST /mo-fo/1.0/sns/mfa/sms/send` · Owner: EasyPA Apps Team  \nVariant: **Mandatory**\n\nStructure only - not run automatically. `account_name` is required in practice (the spec marks it optional). code_strategy: 0 numbers only, 1 numbers + uppercase, 2 numbers + letters. The OTP itself is never returned. SMS cannot be sent from trialx today (a confirmed platform-side SNS issue, not a request problem) - see `STRUCTURE-CHECK.md` §8.\n",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"to\": \"+10000000000\"\n}",
@@ -28261,7 +28261,7 @@
                 "send"
               ]
             },
-            "description": "**API-03 SMS OTP Dispatch for MFA API**  \n`POST /mo-fo/1.0/sns/mfa/sms/send` · Owner: EasyPA Apps Team  \nVariant: **Full (+ Optional)**\n\ncode_strategy: 0 numbers only, 1 numbers + uppercase, 2 numbers + letters. The OTP itself is never returned.\n\n**Confirmed live on trialx, 28 Sep 2026, tried with explicit consent against a real number, twice:**\n1. First pass: no `account_name` - `e_sms_account_type_missing \"account type is required\"` (contradicts the spec's \"O\" (optional)). A guessed name (`default`, `test`) - `e_sms_account_not_exists`.\n2. Second pass, with the real account/signature/template supplied by the tenant admin (`account_name: \"account\"`, `sign_name: \"tyung\"`, `template_code: \"ebao_sms_test_template\"` or `\"ebao sms test template 2\"`): **every validation now passes**, but the send itself fails with `e_sms_send_error` - `operation error SNS: Publish ... dial tcp: lookup sns.sns.ap-northeast-1.amazonaws.com.amazonaws.com: no such host`. trialx's own AWS SNS endpoint hostname is malformed (`sns.` and `.amazonaws.com` both appear twice) - confirmed identical on this endpoint, the plain SNS SMS endpoint, with both templates. **No message has ever been sent; this is a broken SNS integration on the tenant infrastructure, not a request-shape or code-table problem, and not fixable from any client.** Report to the platform/tenant admin as an infrastructure bug, not a doc fix.\n",
+            "description": "**API-03 SMS OTP Dispatch for MFA API**  \n`POST /mo-fo/1.0/sns/mfa/sms/send` · Owner: EasyPA Apps Team  \nVariant: **Full (+ Optional)**\n\nStructure only - not run automatically. `account_name` is required in practice (the spec marks it optional). code_strategy: 0 numbers only, 1 numbers + uppercase, 2 numbers + letters. The OTP itself is never returned. SMS cannot be sent from trialx today (a confirmed platform-side SNS issue, not a request problem) - see `STRUCTURE-CHECK.md` §8.\n",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"to\": \"+10000000000\",\n  \"business_code\": \"LOGIN\",\n  \"code_length\": 6,\n  \"code_strategy\": 0,\n  \"expires_in_minutes\": 15,\n  \"block_resend_in_seconds\": 30,\n  \"account_name\": \"account\",\n  \"sign_name\": \"tyung\",\n  \"auto_add_sign\": true,\n  \"template_code\": \"ebao_sms_test_template\",\n  \"template_params\": {\n    \"template_var\": \"123\"\n  },\n  \"sender_params\": {},\n  \"use_zh_bracket\": false\n}",
@@ -30635,7 +30635,7 @@
                 "send"
               ]
             },
-            "description": "**API-16 SMS Quote API**  \n`POST /mo-fo/1.0/sns/sms/send` · Owner: Notifications Hub Team  \nVariant: **Mandatory**\n\nSame endpoint as API-03's Send MFA SMS (`/mo-fo/1.0/sns/sms/send`) - **confirmed live on trialx**, using this endpoint directly: with the real account/signature/template, every validation passes but the send itself fails because trialx's own AWS SNS endpoint is broken. See API-03 for the full evidence; not a request-shape problem here either.\n",
+            "description": "**API-16 SMS Quote API**  \n`POST /mo-fo/1.0/sns/sms/send` · Owner: Notifications Hub Team  \nVariant: **Mandatory**\n\nStructure only - not run automatically. Same endpoint as API-03's Send MFA SMS; SMS cannot be sent from trialx today (confirmed platform-side SNS issue) - see `STRUCTURE-CHECK.md` §8.\n",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"to\": \"+10000000000\",\n  \"account_name\": \"account\",\n  \"sign_name\": \"tyung\",\n  \"template_code\": \"QUOTE_SMS\"\n}",
@@ -30691,7 +30691,7 @@
                 "send"
               ]
             },
-            "description": "**API-16 SMS Quote API**  \n`POST /mo-fo/1.0/sns/sms/send` · Owner: Notifications Hub Team  \nVariant: **Full (+ Optional)**\n\nSame endpoint as API-03's Send MFA SMS (`/mo-fo/1.0/sns/sms/send`) - **confirmed live on trialx**, using this endpoint directly: with the real account/signature/template, every validation passes but the send itself fails because trialx's own AWS SNS endpoint is broken. See API-03 for the full evidence; not a request-shape problem here either.\n",
+            "description": "**API-16 SMS Quote API**  \n`POST /mo-fo/1.0/sns/sms/send` · Owner: Notifications Hub Team  \nVariant: **Full (+ Optional)**\n\nStructure only - not run automatically. Same endpoint as API-03's Send MFA SMS; SMS cannot be sent from trialx today (confirmed platform-side SNS issue) - see `STRUCTURE-CHECK.md` §8.\n",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"to\": \"+10000000000\",\n  \"account_name\": \"account\",\n  \"sign_name\": \"tyung\",\n  \"template_code\": \"QUOTE_SMS\",\n  \"template_params\": {\n    \"customerName\": \"John Smith\",\n    \"quotationNo\": \"{{quotationNo}}\",\n    \"premium\": \"1260.00\"\n  }\n}",
@@ -32107,7 +32107,7 @@
                 "send"
               ]
             },
-            "description": "**API-34 SMS OTP Dispatch via Notifications Hub API**  \n`POST /mo-fo/1.0/sns/mfa/sms/send` · Owner: Notifications Hub Team / EasyPA Apps Team  \nVariant: **Mandatory**\n\nSame endpoint as API-03's Send MFA SMS - **confirmed live on trialx: the real account/signature/template pass every validation, but trialx's own AWS SNS endpoint is broken**, so no message actually sends. See API-03 for the full evidence.\n",
+            "description": "**API-34 SMS OTP Dispatch via Notifications Hub API**  \n`POST /mo-fo/1.0/sns/mfa/sms/send` · Owner: Notifications Hub Team / EasyPA Apps Team  \nVariant: **Mandatory**\n\nStructure only - not run automatically. Same endpoint as API-03's Send MFA SMS; SMS cannot be sent from trialx today (confirmed platform-side SNS issue) - see `STRUCTURE-CHECK.md` §8.\n",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"to\": \"+10000000000\"\n}",
@@ -32164,7 +32164,7 @@
                 "send"
               ]
             },
-            "description": "**API-34 SMS OTP Dispatch via Notifications Hub API**  \n`POST /mo-fo/1.0/sns/mfa/sms/send` · Owner: Notifications Hub Team / EasyPA Apps Team  \nVariant: **Full (+ Optional)**\n\nSame endpoint as API-03's Send MFA SMS - **confirmed live on trialx: the real account/signature/template pass every validation, but trialx's own AWS SNS endpoint is broken**, so no message actually sends. See API-03 for the full evidence.\n",
+            "description": "**API-34 SMS OTP Dispatch via Notifications Hub API**  \n`POST /mo-fo/1.0/sns/mfa/sms/send` · Owner: Notifications Hub Team / EasyPA Apps Team  \nVariant: **Full (+ Optional)**\n\nStructure only - not run automatically. Same endpoint as API-03's Send MFA SMS; SMS cannot be sent from trialx today (confirmed platform-side SNS issue) - see `STRUCTURE-CHECK.md` §8.\n",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"to\": \"+10000000000\",\n  \"business_code\": \"LOGIN\",\n  \"block_resend_in_seconds\": 30,\n  \"code_length\": 6,\n  \"code_strategy\": 0,\n  \"expires_in_minutes\": 15,\n  \"account_name\": \"account\",\n  \"sign_name\": \"tyung\",\n  \"template_code\": \"ebao_sms_test_template\",\n  \"template_params\": {}\n}",

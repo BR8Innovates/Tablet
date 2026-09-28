@@ -389,11 +389,9 @@ APIS.append(dict(
                              "sign_name": "{{signName}}", "auto_add_sign": True, "template_code": "{{otpTemplateCode}}",
                              "template_params": {"template_var": "123"}, "sender_params": {}, "use_zh_bracket": False}),
              checks=ENVELOPE_SNS + [("data.message_id present", "b.data && 'message_id' in b.data")],
-             notes=("code_strategy: 0 numbers only, 1 numbers + uppercase, 2 numbers + letters. The OTP itself is never returned.\n\n"
-                    "**Confirmed live on trialx, 28 Sep 2026, tried with explicit consent against a real number, twice:**\n"
-                    "1. First pass: no `account_name` - `e_sms_account_type_missing \"account type is required\"` (contradicts the spec's \"O\" (optional)). A guessed name (`default`, `test`) - `e_sms_account_not_exists`.\n"
-                    "2. Second pass, with the real account/signature/template supplied by the tenant admin (`account_name: \"account\"`, `sign_name: \"tyung\"`, `template_code: \"ebao_sms_test_template\"` or `\"ebao sms test template 2\"`): **every validation now passes**, but the send itself fails with `e_sms_send_error` - `operation error SNS: Publish ... dial tcp: lookup sns.sns.ap-northeast-1.amazonaws.com.amazonaws.com: no such host`. "
-                    "trialx's own AWS SNS endpoint hostname is malformed (`sns.` and `.amazonaws.com` both appear twice) - confirmed identical on this endpoint, the plain SNS SMS endpoint, with both templates. **No message has ever been sent; this is a broken SNS integration on the tenant infrastructure, not a request-shape or code-table problem, and not fixable from any client.** Report to the platform/tenant admin as an infrastructure bug, not a doc fix.")),
+             notes=("Structure only - not run automatically. `account_name` is required in practice (the spec marks it optional). "
+                    "code_strategy: 0 numbers only, 1 numbers + uppercase, 2 numbers + letters. The OTP itself is never returned. "
+                    "SMS cannot be sent from trialx today (a confirmed platform-side SNS issue, not a request problem) - see `STRUCTURE-CHECK.md` §8.")),
         dict(name="Verify MFA SMS code", method="POST", path="/mo-fo/1.0/sns/mfa/sms/verify",
              mand=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}"}),
              full=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}", "business_code": "LOGIN", "case_sensitive": False, "keep": False, "output_result": True}),
@@ -637,7 +635,7 @@ APIS.append(dict(
              mand=dict(body={"to": "{{mobileNo}}", "account_name": "{{smsAccount}}", "sign_name": "{{signName}}", "template_code": "QUOTE_SMS"}),
              full=dict(body={"to": "{{mobileNo}}", "account_name": "{{smsAccount}}", "sign_name": "{{signName}}", "template_code": "QUOTE_SMS", "template_params": {"customerName": "John Smith", "quotationNo": "{{quotationNo}}", "premium": "1260.00"}}),
              checks=ENVELOPE_SNS,
-             notes="Same endpoint as API-03's Send MFA SMS (`/mo-fo/1.0/sns/sms/send`) - **confirmed live on trialx**, using this endpoint directly: with the real account/signature/template, every validation passes but the send itself fails because trialx's own AWS SNS endpoint is broken. See API-03 for the full evidence; not a request-shape problem here either."),
+             notes="Structure only - not run automatically. Same endpoint as API-03's Send MFA SMS; SMS cannot be sent from trialx today (confirmed platform-side SNS issue) - see `STRUCTURE-CHECK.md` §8."),
     ],
 ))
 
@@ -945,7 +943,7 @@ APIS.append(dict(
              mand=dict(body={"to": "{{mobileNo}}"}),
              full=dict(body={"to": "{{mobileNo}}", "business_code": "LOGIN", "block_resend_in_seconds": 30, "code_length": 6, "code_strategy": 0, "expires_in_minutes": 15, "account_name": "{{smsAccount}}", "sign_name": "{{signName}}", "template_code": "{{otpTemplateCode}}", "template_params": {}}),
              checks=ENVELOPE_SNS,
-             notes="Same endpoint as API-03's Send MFA SMS - **confirmed live on trialx: the real account/signature/template pass every validation, but trialx's own AWS SNS endpoint is broken**, so no message actually sends. See API-03 for the full evidence."),
+             notes="Structure only - not run automatically. Same endpoint as API-03's Send MFA SMS; SMS cannot be sent from trialx today (confirmed platform-side SNS issue) - see `STRUCTURE-CHECK.md` §8."),
         dict(name="Option B - Verify MFA SMS (SNS)", method="POST", path="/mo-fo/1.0/sns/mfa/sms/verify",
              mand=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}"}),
              full=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}", "business_code": "LOGIN", "case_sensitive": False, "keep": False, "output_result": True}),
