@@ -390,10 +390,10 @@ APIS.append(dict(
                              "template_params": {"template_var": "123"}, "sender_params": {}, "use_zh_bracket": False}),
              checks=ENVELOPE_SNS + [("data.message_id present", "b.data && 'message_id' in b.data")],
              notes=("code_strategy: 0 numbers only, 1 numbers + uppercase, 2 numbers + letters. The OTP itself is never returned.\n\n"
-                    "**Confirmed live on trialx, 28 Sep 2026, tried with explicit consent against a real number:** no message was ever dispatched. "
-                    "`account_name` is genuinely required, contradicting the spec's \"O\" (optional) - omitting it fails with `e_sms_account_type_missing \"account type is required\"` before InsureMO even attempts to send anything. "
-                    "Supplying a plausible account name (`default`, `test`) fails with `e_sms_account_not_exists \"account not exists\"` on **both** this MFA endpoint and the plain SNS SMS endpoint (`/mo-fo/1.0/sns/sms/send`). "
-                    "**trialx has no SNS SMS account configured at all** - no request shape can make this send until the platform/tenant admin sets one up (SNS SMS account + template + signature, all three required per the spec's own Notes).")),
+                    "**Confirmed live on trialx, 28 Sep 2026, tried with explicit consent against a real number, twice:**\n"
+                    "1. First pass: no `account_name` - `e_sms_account_type_missing \"account type is required\"` (contradicts the spec's \"O\" (optional)). A guessed name (`default`, `test`) - `e_sms_account_not_exists`.\n"
+                    "2. Second pass, with the real account/signature/template supplied by the tenant admin (`account_name: \"account\"`, `sign_name: \"tyung\"`, `template_code: \"ebao_sms_test_template\"` or `\"ebao sms test template 2\"`): **every validation now passes**, but the send itself fails with `e_sms_send_error` - `operation error SNS: Publish ... dial tcp: lookup sns.sns.ap-northeast-1.amazonaws.com.amazonaws.com: no such host`. "
+                    "trialx's own AWS SNS endpoint hostname is malformed (`sns.` and `.amazonaws.com` both appear twice) - confirmed identical on this endpoint, the plain SNS SMS endpoint, with both templates. **No message has ever been sent; this is a broken SNS integration on the tenant infrastructure, not a request-shape or code-table problem, and not fixable from any client.** Report to the platform/tenant admin as an infrastructure bug, not a doc fix.")),
         dict(name="Verify MFA SMS code", method="POST", path="/mo-fo/1.0/sns/mfa/sms/verify",
              mand=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}"}),
              full=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}", "business_code": "LOGIN", "case_sensitive": False, "keep": False, "output_result": True}),
@@ -637,7 +637,7 @@ APIS.append(dict(
              mand=dict(body={"to": "{{mobileNo}}", "account_name": "{{smsAccount}}", "sign_name": "{{signName}}", "template_code": "QUOTE_SMS"}),
              full=dict(body={"to": "{{mobileNo}}", "account_name": "{{smsAccount}}", "sign_name": "{{signName}}", "template_code": "QUOTE_SMS", "template_params": {"customerName": "John Smith", "quotationNo": "{{quotationNo}}", "premium": "1260.00"}}),
              checks=ENVELOPE_SNS,
-             notes="**Confirmed live on trialx, 28 Sep 2026** (see API-03's Send MFA SMS request for the full evidence): trialx has no SNS SMS account configured at all - a guessed `account_name` fails `e_sms_account_not_exists` on this exact endpoint. No message can be sent until one is set up on the tenant."),
+             notes="Same endpoint as API-03's Send MFA SMS (`/mo-fo/1.0/sns/sms/send`) - **confirmed live on trialx**, using this endpoint directly: with the real account/signature/template, every validation passes but the send itself fails because trialx's own AWS SNS endpoint is broken. See API-03 for the full evidence; not a request-shape problem here either."),
     ],
 ))
 
@@ -945,7 +945,7 @@ APIS.append(dict(
              mand=dict(body={"to": "{{mobileNo}}"}),
              full=dict(body={"to": "{{mobileNo}}", "business_code": "LOGIN", "block_resend_in_seconds": 30, "code_length": 6, "code_strategy": 0, "expires_in_minutes": 15, "account_name": "{{smsAccount}}", "sign_name": "{{signName}}", "template_code": "{{otpTemplateCode}}", "template_params": {}}),
              checks=ENVELOPE_SNS,
-             notes="Same endpoint as API-03's Send MFA SMS - **confirmed live on trialx, no SNS SMS account is configured at all**, so this cannot send until the tenant has one set up. See API-03 for the full evidence."),
+             notes="Same endpoint as API-03's Send MFA SMS - **confirmed live on trialx: the real account/signature/template pass every validation, but trialx's own AWS SNS endpoint is broken**, so no message actually sends. See API-03 for the full evidence."),
         dict(name="Option B - Verify MFA SMS (SNS)", method="POST", path="/mo-fo/1.0/sns/mfa/sms/verify",
              mand=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}"}),
              full=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}", "business_code": "LOGIN", "case_sensitive": False, "keep": False, "output_result": True}),
@@ -1136,9 +1136,13 @@ ENV_DEFAULTS = [
     ("mobileNo", "+10000000000", "default", ""),
     ("otpCode", "123456", "default", "Code the user typed"),
     ("portalOtp", "123456", "default", "OTP generated by the portal (Option A)"),
-    ("smsAccount", "", "default", "SNS SMS account"),
-    ("signName", "", "default", "SNS SMS signature"),
-    ("otpTemplateCode", "", "default", "SNS OTP template code"),
+    # Confirmed real values on trialx (28 Sep 2026, supplied by the tenant admin): these pass
+    # every SNS validation, but sending still fails - trialx's own AWS SNS endpoint is broken
+    # (see API-03's Send MFA SMS notes). Kept as the real defaults so a retest, once the SNS
+    # integration is fixed, needs no further lookup.
+    ("smsAccount", "account", "default", "Confirmed real SNS SMS account name on trialx"),
+    ("signName", "tyung", "default", "Confirmed real SNS SMS signature on trialx"),
+    ("otpTemplateCode", "ebao_sms_test_template", "default", "Confirmed real SNS SMS template code on trialx (alternative: \"ebao sms test template 2\")"),
     ("emailAccount", "", "default", "SNS email account"),
     ("customerEmail", "customer@example.com", "default", ""),
     ("payerCode", "", "default", ""),
