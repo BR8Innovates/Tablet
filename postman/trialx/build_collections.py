@@ -666,22 +666,43 @@ APIS.append(dict(
 
 # ---- API-18 / API-19 -----------------------------------------------------
 CUST_ADDR = {"AddressId": 300000001, "AddressType": "1", "IsPrimaryAddress": "Y", "AddressLine1": "10 Main Street", "City": "Springfield", "CountryCode": "USA", "PostCode": "12345"}
+CUST_SETS = ("const docs = b.Results[0].EsDocs;\n"
+             "const indi = docs.find(d => d.CustomerType === 'IndiCustomer');\n"
+             "const org = docs.find(d => d.CustomerType === 'OrgCustomer');\n"
+             "if (indi) pm.collectionVariables.set('indiCustomerId', String(indi.CustomerId));\n"
+             "if (org) pm.collectionVariables.set('orgCustomerId', String(org.CustomerId));")
 APIS.append(dict(
     id="API-18", title="Load Individual Customer API", owner="EasyPA Apps Team",
     endpoint="GET /platform/custv2/core/customer/indi/byCustomerId",
     requests=[dict(name="Load Individual Customer", method="GET", path="/platform/custv2/core/customer/indi/byCustomerId",
                    mand=dict(query=[q("customerId", "{{indiCustomerId}}")]), full=dict(query=[q("customerId", "{{indiCustomerId}}")]),
-                   examples=[("200 OK (spec sample)", 200, "OK", {"CustomerId": 200000123, "CustomerNumber": "C000000123", "CustomerType": "1", "CustomerStatus": "1", "FirstName": "John", "LastName": "Smith", "FullName": "John Smith", "Gender": "M", "DateOfBirth": "1985-04-12", "IdType": "1", "IdNumber": "A1234567", "NationalityCode": "USA", "MaritalStatus": "2", "OccupationCode": "0001", "IsPep": "N", "PartyAddressList": [CUST_ADDR], "PartyContactList": [{"ContactId": 400000001, "IsPrimaryContact": "Y", "Email": "john.smith@example.com", "HomeTel": "+10000000000"}], "PartyAccountList": [{"AccountId": 500000001, "IsPrimaryAccount": "Y", "BankCode": "B001", "AccountNo": "0000123456", "AccountHolderName": "John Smith"}]})],
                    checks=[("CustomerId present", "'CustomerId' in b")],
-                   notes="customerId is typed Long in the spec; there is no customer search API in the list to obtain it, and it may be a signed field at the gateway (to confirm).")],
+                   notes=("**Confirmed live on trialx, 28 Sep 2026:** `customerId` is a real CustomerId from the custv2 "
+                          "service (not a policy-scoped id - a policy's `PolicyCustomerList` entries carry no `CustomerId` "
+                          "field of their own). None of the 34 documented APIs can look one up; the one that does is an "
+                          "undocumented endpoint discovered this run - see 'Customer Search (undocumented)' below, which "
+                          "chains a real value into `indiCustomerId` automatically. Default here (`1169365186`) is a "
+                          "confirmed real individual customer (Priya Devi Ramesh, CI00000385).")),
+              dict(name="Customer Search (undocumented, discovered)", method="POST", path="/platform/custv2/v1/query",
+                   mand=dict(body={"Module": "Customer", "PageSize": 50}), full=dict(body={"Module": "Customer", "PageSize": 400}),
+                   checks=QUERY_RESULT, sets=CUST_SETS,
+                   notes=("**Not one of the 34 documented APIs - found by pattern-matching API-20's `/v1/query` + `Module` "
+                          "shape onto the custv2 service, since none of the documented APIs can search for a CustomerId "
+                          "at all.** `Module: \"Customer\"` is confirmed live and returns both `IndiCustomer` and "
+                          "`OrgCustomer` records (`CustomerId`, `CustomerNumber`, `CustomerType`, ...). Included here "
+                          "purely as a data-sourcing helper so API-18/API-19 have a real id to chain from; report to the "
+                          "API owner as a possible doc gap, not a bug. Sets `indiCustomerId` and `orgCustomerId`."))],
 ))
 APIS.append(dict(
     id="API-19", title="Load Organisation Customer API", owner="EasyPA Apps Team",
     endpoint="GET /platform/custv2/core/customer/org/byCustomerId",
     requests=[dict(name="Load Organisation Customer", method="GET", path="/platform/custv2/core/customer/org/byCustomerId",
                    mand=dict(query=[q("customerId", "{{orgCustomerId}}")]), full=dict(query=[q("customerId", "{{orgCustomerId}}")]),
-                   examples=[("200 OK (spec sample)", 200, "OK", {"CustomerId": 200000456, "CustomerNumber": "C000000456", "CustomerType": "2", "CustomerStatus": "1", "RegistrationName": "Example Trading Ltd", "DateOfRegistration": "2010-06-01", "IdType": "9", "IdNumber": "REG-0012345", "OrgType": "1", "LegalStatus": "1", "IndustryCategory": "RETAIL", "IsPep": "N", "PartyAddressList": [{**CUST_ADDR, "AddressId": 300000002, "AddressType": "2", "AddressLine1": "1 Commerce Park"}], "PartyContactList": [{"ContactId": 400000002, "ContactName": "Jane Doe", "IsPrimaryContact": "Y", "Email": "jane.doe@example.com", "BusinessTel": "+10000000001"}], "PartyAccountList": [{"AccountId": 500000002, "IsPrimaryAccount": "Y", "BankCode": "B001", "AccountNo": "0000987654", "AccountHolderName": "Example Trading Ltd"}]})],
-                   checks=[("CustomerId present", "'CustomerId' in b")])],
+                   checks=[("CustomerId present", "'CustomerId' in b")],
+                   notes=("**Confirmed live on trialx, 28 Sep 2026.** See API-18's notes on how `orgCustomerId` is sourced "
+                          "(no documented API returns one; 'Customer Search (undocumented)' in the API-18 folder does). "
+                          "Default here (`1004588141`) is a confirmed real organisation customer (Uber, CO00000015) - "
+                          "only 15 of the 400 customers on trialx are `OrgCustomer`, the rest are `IndiCustomer`."))],
 ))
 
 # ---- API-20 --------------------------------------------------------------
@@ -1146,8 +1167,8 @@ ENV_DEFAULTS = [
     ("payerCode", "", "default", ""),
     ("agentCode", "", "default", ""),
     ("customerNo", "", "default", ""),
-    ("indiCustomerId", "", "default", "Individual customer ID"),
-    ("orgCustomerId", "", "default", "Organisation customer ID"),
+    ("indiCustomerId", "1169365186", "default", "Confirmed real individual CustomerId on trialx (Priya Devi Ramesh, CI00000385)"),
+    ("orgCustomerId", "1004588141", "default", "Confirmed real organisation CustomerId on trialx (Uber, CO00000015)"),
     # productCode: confirmed live 28 Sep 2026 - "TBTI" (the spec's own sample product) does
     # not exist on trialx; "FCMOTOR" does and returns a real product schema. Other real
     # product codes seen on trialx: MIE, TRAVEL, RPO01_RK, CI0001.

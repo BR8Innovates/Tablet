@@ -22,12 +22,11 @@ Nothing in this document or in the collection is invented — every claim below 
 |---|---|
 | **Not working on trialx: route missing (HTTP 404)** | API-05 (spec path), API-15, API-16, API-34 Option A, API-20 (documented core path — see correction above) |
 | **Works differently from the spec, confirmed live** | API-02, API-09, API-17, API-20, API-22, API-24, API-25, API-27, API-30 |
-| **Confirmed working as documented, real trialx data returned** | API-05 (SDK core path), API-14, API-20 (portal list path), API-23, API-26, API-29 (once a non-empty body is sent), API-30, API-31 |
+| **Confirmed working as documented, real trialx data returned** | API-05 (SDK core path), API-14, API-18, API-19, API-20 (portal list path), API-23, API-26, API-29 (once a non-empty body is sent), API-30, API-31 |
 | **Confirmed blocked by a real tenant permission error, not a request-shape problem** | API-28 (`MO-CLM-Validation-E0064 The user has no permission`) |
 | **Spec structure contradicts itself (still needs live confirmation)** | API-06, API-11 |
-| **Cannot be tested from this collection: no source for a real `customerId` exists in the documented 34 APIs** | API-18, API-19 |
 | **Spec structure incomplete ("to be confirmed")** | API-32, API-33 |
-| Blocked in this run only by missing test data (empty customerId/attachFileId/businessType/table names, not a spec problem) | API-10, API-11, API-12, API-13, API-14, API-18, API-19, API-23, API-24, API-25, API-26, API-27, API-31 |
+| Blocked in this run only by missing test data (empty attachFileId/table names, not a spec problem) | API-10, API-11, API-12, API-13, API-24, API-25, API-27, API-31 |
 
 ## 1. Not working on trialx: route missing
 
@@ -66,7 +65,7 @@ The Notifications Hub endpoint is either hosted outside the InsureMO gateway or 
 | API-26 Document Checklist | Item field names and status values. |
 | API-27 Load All Document Versions | Field names of the version entries. |
 | API-24 / API-27 | Whether `attachFileId` is a signed field. |
-| API-18 / API-19 Load Customer | Names of the address, contact and account lists. Whether `customerId` is signed. No customer search API in the list returns a `customerId`. |
+| API-18 / API-19 Load Customer | Names of the address, contact and account lists (see §9 for real confirmed field names — narrower than the spec's sample). Whether `customerId` is signed (confirmed: it is not — plain numeric). |
 | API-28 FNOL | Values for `OperationType` and `ReportChannel`, and which ClaimCase fields each tenant makes mandatory. |
 | API-29 / API-33 Claim Search | Paging wrapper inside `Model`. Which field carries `ClmPolicyId`, which API-31 needs. |
 | API-30 Load Claim Case Detail | Names of the object and party lists. |
@@ -92,7 +91,9 @@ These are not guesses — each row is what trialx actually returned. Full bodies
 
 ## Things that failed only because this run had no real business data (not spec problems)
 
-`customerId` (API-18/19), `attachFileId` (API-24/27), and the data/rate table names (API-10/11 - `ProductListTable`, `PlanListTable`, `PackageTable`) were empty in this run, and stayed empty even after the fixes in §6, because nothing in the documented 34 APIs can produce them: there is no customer search API in the list, no file was ever uploaded on trialx under the one configured business type (confirmed - see §6), and the Config team hasn't named these tables yet. Each call correctly rejected the empty value it was given. These need real values from outside this collection, not a further request fix.
+`attachFileId` (API-24/27) and the data/rate table names (API-10/11 - `ProductListTable`, `PlanListTable`, `PackageTable`) were empty in this run, and stayed empty even after the fixes in §6, because nothing in the documented 34 APIs can produce them: no file was ever uploaded on trialx under the one configured business type (confirmed - see §6), and the Config team hasn't named these tables yet. Each call correctly rejected the empty value it was given. These need real values from outside this collection, not a further request fix.
+
+`customerId` (API-18/19) was the same story until §9 below - resolved by pattern-matching API-20's search shape onto the custv2 service.
 
 ## 6. Request-parameter fixes applied and confirmed live (28 Sep 2026, second pass)
 
@@ -154,7 +155,7 @@ With every one of those fixed, the request is well-formed and passes every valid
 
 **The manual-policy FNOL variant separately found:** giving `IsManualPolicy: true` a `PolicyNo` that already exists as a normal InsureMO policy returns `MO-Claim-Info-E0002 "The policy does not exist!"` - manual-policy mode looks for that policy among manually-entered ones specifically. Not resolved further, since the base API is permission-blocked regardless.
 
-**Tried and could not create: a test customer, for API-18/API-19.** Three plausible undocumented endpoint names (`/custv2/core/customer/indi/search`, `/query`, `/save`, `/create`) all returned 404. There is no customer-search or customer-create API anywhere in the documented 34, so `Load Individual Customer` and `Load Organisation Customer` remain untestable from this collection - a real `customerId` can only come from outside it (the portal UI, or an undocumented API this project doesn't have visibility into).
+**Tried and could not create: a test customer, for API-18/API-19, at this point in the run.** Three plausible undocumented endpoint names (`/custv2/core/customer/indi/search`, `/query`, `/save`, `/create`) all returned 404. No customer-create API was found anywhere in the documented 34 or by further guessing - but a customer-**search** endpoint was found afterwards by a different route; see §9, which unblocks both APIs without needing to create anything.
 
 **Not attempted:** creating data table/rate table records (API-10/API-11) - that's tenant configuration owned by the Config team, not something a portal API creates, and guessing at undocumented config-management endpoints felt like the wrong kind of "create" here. SMS/Email sends stayed excluded - those dispatch real messages with real-world cost/delivery, which is a different risk category from creating a test record, and wasn't part of what was asked.
 
@@ -168,6 +169,20 @@ The collection keeps SMS/Email requests as **structure only** - correct field na
 This is a broken SNS integration on the platform/infrastructure side - not a request-shape problem, not a doc problem, and not fixable from any client. It needs the platform/tenant admin to fix the SNS endpoint configuration. The confirmed real account/signature/template are saved as the environment's `smsAccount`/`signName`/`otpTemplateCode` defaults, so retesting once that's fixed needs no further lookup - just rerun.
 
 Email (API-15) was never attempted with real credentials (no SNS email account was supplied), so it stays as spec-only structure with no live finding either way. Notifications Hub (the `/comm/v1/notifications/send` path in API-15/16/34-A) remains 404 regardless - see §1.
+
+## 9. API-18 / API-19 Load Customer: confirmed working, real CustomerId sourced live (28 Sep 2026)
+
+`GIExpert Designer` (a separate internal admin/config tool, not part of this collection) shows real customer records, which is why the tenant admin could see data that the 34 documented portal APIs had no way to look up - none of them ever returns a `CustomerId`. Rather than pull an id out of that separate tool by hand, the same pattern already confirmed for API-20 (`POST /platform/proposal/v1/query` with a `Module` field, routed to the `searchIndex` service) was tried against the customer service, and it works:
+
+- **`POST /platform/custv2/v1/query`** with body **`{"Module": "Customer"}`** is not one of the documented 34 APIs, but is real and live on trialx. It returns the same `{PageNo, PageSize, Results:[{EsDocs:[...]}], Total}` search-index envelope as API-20, with each `EsDoc` carrying `CustomerId`, `CustomerNumber`, `CustomerType` (`IndiCustomer` or `OrgCustomer`), and a display name. Of 400 customers on trialx, 385 are `IndiCustomer` and 15 are `OrgCustomer`.
+- With a real id from that search, **both Load APIs return HTTP 200 with real data**, confirmed live:
+  - `GET /platform/custv2/core/customer/indi/byCustomerId?customerId=1169365186` → `{"CustomerId":1169365186,"CustomerNumber":"CI00000385","CustomerType":"IndiCustomer","FullName":"Priya Devi Ramesh", ...}`
+  - `GET /platform/custv2/core/customer/org/byCustomerId?customerId=1004588141` → `{"CustomerId":1004588141,"CustomerNumber":"CO00000015","CustomerType":"OrgCustomer","RegistrationName":"Uber","ContactInfoList":[...], ...}`
+- **Confirmed: `customerId` is a plain, unsigned numeric id** (unlike `policyId`, which is a signed, comma-joined pair) - no URL-encoding or extra field needed.
+- **Real field names, both narrower and differently-named than the spec's sample:** individual customers came back with `BusinessObjectId`, `CustomerId`, `CustomerNumber`, `CustomerType`, `FullName`, `Gender`, `IdNumber`, `IdType`, `InsertBy`/`InsertTime`, `UpdateBy`/`UpdateTime`, `VersionSeq`, plus a `TempData` masking block - no `PartyAddressList`/`PartyContactList`/`PartyAccountList`, `DateOfBirth`, `NationalityCode`, `MaritalStatus`, `OccupationCode` or `IsPep` were present on this real record (the spec's sample invents a fuller shape than trialx actually returns for a customer with no address/contact/account data entered). Organisation customers do carry a real `ContactInfoList[]` (`AddressLine1/2`, `City`, `Email`, `Mobile`, `PostalCode`, `StateOrProvince`, each with its own masking pair), plus `RegistrationName`, `DateOfRegistration`, `BrokerCode` - closer to the spec's shape than the individual side, but still without the spec's assumed `PartyAccountList`.
+- **Doc fix:** the spec should document the real search path used to obtain a `customerId` in the first place (currently the field is described as an input with no source anywhere in the 34 APIs), and correct the Load Individual/Organisation Customer response samples to the narrower real shape above rather than the invented full one.
+
+The collection's `indiCustomerId`/`orgCustomerId` environment defaults are now set to these confirmed real ids, and a `Customer Search (undocumented, discovered)` request was added to the API-18 folder that chains fresh ones automatically - both Load APIs are `OK` in every run from here on, no manual lookup needed.
 
 ## Re-running
 
