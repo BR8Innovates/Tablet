@@ -388,9 +388,12 @@ APIS.append(dict(
                              "expires_in_minutes": 15, "block_resend_in_seconds": 30, "account_name": "{{smsAccount}}",
                              "sign_name": "{{signName}}", "auto_add_sign": True, "template_code": "{{otpTemplateCode}}",
                              "template_params": {"template_var": "123"}, "sender_params": {}, "use_zh_bracket": False}),
-             examples=[("200 OK (spec structure)", 200, "OK", {"code": "string", "message": "string", "trace_id": "traceid0000000000000000000000000", "data": {"message_id": "string", "content_length": 0}})],
              checks=ENVELOPE_SNS + [("data.message_id present", "b.data && 'message_id' in b.data")],
-             notes="code_strategy: 0 numbers only, 1 numbers + uppercase, 2 numbers + letters. The OTP itself is never returned."),
+             notes=("code_strategy: 0 numbers only, 1 numbers + uppercase, 2 numbers + letters. The OTP itself is never returned.\n\n"
+                    "**Confirmed live on trialx, 28 Sep 2026, tried with explicit consent against a real number:** no message was ever dispatched. "
+                    "`account_name` is genuinely required, contradicting the spec's \"O\" (optional) - omitting it fails with `e_sms_account_type_missing \"account type is required\"` before InsureMO even attempts to send anything. "
+                    "Supplying a plausible account name (`default`, `test`) fails with `e_sms_account_not_exists \"account not exists\"` on **both** this MFA endpoint and the plain SNS SMS endpoint (`/mo-fo/1.0/sns/sms/send`). "
+                    "**trialx has no SNS SMS account configured at all** - no request shape can make this send until the platform/tenant admin sets one up (SNS SMS account + template + signature, all three required per the spec's own Notes).")),
         dict(name="Verify MFA SMS code", method="POST", path="/mo-fo/1.0/sns/mfa/sms/verify",
              mand=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}"}),
              full=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}", "business_code": "LOGIN", "case_sensitive": False, "keep": False, "output_result": True}),
@@ -633,8 +636,8 @@ APIS.append(dict(
         dict(name="SMS Quote via SNS SMS Service (documented alternative)", method="POST", path="/mo-fo/1.0/sns/sms/send",
              mand=dict(body={"to": "{{mobileNo}}", "account_name": "{{smsAccount}}", "sign_name": "{{signName}}", "template_code": "QUOTE_SMS"}),
              full=dict(body={"to": "{{mobileNo}}", "account_name": "{{smsAccount}}", "sign_name": "{{signName}}", "template_code": "QUOTE_SMS", "template_params": {"customerName": "John Smith", "quotationNo": "{{quotationNo}}", "premium": "1260.00"}}),
-             examples=[("200 OK (spec structure)", 200, "OK", {"code": "string", "message": "string", "trace_id": "string", "data": {"message_id": "string", "content_length": 0}})],
-             checks=ENVELOPE_SNS),
+             checks=ENVELOPE_SNS,
+             notes="**Confirmed live on trialx, 28 Sep 2026** (see API-03's Send MFA SMS request for the full evidence): trialx has no SNS SMS account configured at all - a guessed `account_name` fails `e_sms_account_not_exists` on this exact endpoint. No message can be sent until one is set up on the tenant."),
     ],
 ))
 
@@ -941,8 +944,8 @@ APIS.append(dict(
         dict(name="Option B - Send MFA SMS (SNS)", method="POST", path="/mo-fo/1.0/sns/mfa/sms/send",
              mand=dict(body={"to": "{{mobileNo}}"}),
              full=dict(body={"to": "{{mobileNo}}", "business_code": "LOGIN", "block_resend_in_seconds": 30, "code_length": 6, "code_strategy": 0, "expires_in_minutes": 15, "account_name": "{{smsAccount}}", "sign_name": "{{signName}}", "template_code": "{{otpTemplateCode}}", "template_params": {}}),
-             examples=[("200 OK (spec structure)", 200, "OK", {"code": "string", "message": "string", "trace_id": "string", "data": {"message_id": "string", "content_length": 0}})],
-             checks=ENVELOPE_SNS),
+             checks=ENVELOPE_SNS,
+             notes="Same endpoint as API-03's Send MFA SMS - **confirmed live on trialx, no SNS SMS account is configured at all**, so this cannot send until the tenant has one set up. See API-03 for the full evidence."),
         dict(name="Option B - Verify MFA SMS (SNS)", method="POST", path="/mo-fo/1.0/sns/mfa/sms/verify",
              mand=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}"}),
              full=dict(body={"to": "{{mobileNo}}", "code": "{{otpCode}}", "business_code": "LOGIN", "case_sensitive": False, "keep": False, "output_result": True}),
