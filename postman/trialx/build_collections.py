@@ -204,7 +204,7 @@ CODE_TABLES = {
     "CertiType": (CT, ["API-13/21 PolicyPaymentInfo.AccountHolderIdType", "API-31 PolicyHolderIdType, InsuredIdType"], []),
     # Confirmed on trialx 28 Sep 2026: this table has exactly one configured value.
     "AttachBusinessType": (CT, ["API-14/23 BusinessType", "API-22 businessType", "API-25 BusinessType", "API-26 businessType"], [("001", "Claim")]),
-    "ClaimGender": (CT, ["API-28 MainExtendInfo.GenderCode", "API-30 ClaimObject.Gender, ClaimParty.ClaimGender"], []),
+    "ClaimGender": (CT, ["API-28 MainExtendInfo.GenderCode", "API-30 ClaimObject.Gender, ClaimParty.ClaimGender"], [("01", "Male"), ("02", "Female"), ("03", "Unknown")]),
     "CauseOfLoss": (CT, ["API-28/29/30 LossCause"], []),
     "ClaimType": (CT, ["API-28/29/30 ClaimType"], []),
     "ClaimFnolType": (CT, ["API-28/29/30 FnolType"], []),
@@ -588,17 +588,17 @@ APIS.append(dict(
                    mand=dict(body=QF_MAND), full=dict(body={**QF_MAND, "DirectoryList": [], "OperateFileIds": []}),
                    examples=[("200 OK (spec structure)", 200, "OK", {"Status": "OK", "Messages": [], "Model": [{"FileId": 0, "FileName": "string", "Directory": "string", "BusinessType": "string", "BusinessNo": "string"}]})],
                    checks=ENVELOPE_ATT,
-                   sets="const m = Array.isArray(b.Model) ? b.Model[0] : null;\nif (m && (m.FileId || m.AttachFileId)) pm.collectionVariables.set('attachFileId', m.FileId || m.AttachFileId);",
-                   notes="Model file field names are not confirmed in the spec (FileId assumed). Sets `attachFileId` for API-24 / API-27.")],
+                   sets="const m = Array.isArray(b.Model) ? b.Model[0] : null;\nif (m && (m.AttachFileId || m.FileId)) pm.collectionVariables.set('attachFileId', m.AttachFileId || m.FileId);",
+                   notes=("**Confirmed live on trialx, 28 Sep 2026, against a real uploaded file:** real `Model[]` fields are `AttachFileId`, `DisplayName`, `OrgFileName`, `FileExt`, `FileSize`, `Path`, `Sort`, `AttachType`, `UploadDate`, `DmsDocId`, `IsImage`, `IsDeleted` - "
+                          "not the spec's guessed `FileId`/`FileName`/`Directory`. Sets `attachFileId` for API-24 / API-27."))],
 ))
 APIS.append(dict(
     id="API-23", title="Query Files with Metadata API", owner="iDocs Team",
     endpoint="POST /platform/attachment-core/attachment/v1/queryFile",
     requests=[dict(name="Query Files with Metadata", method="POST", path="/platform/attachment-core/attachment/v1/queryFile",
                    mand=dict(body=QF_MAND), full=dict(body={**QF_MAND, "DirectoryList": ["{{directory}}"], "OperateFileIds": []}),
-                   examples=[("200 OK (spec structure)", 200, "OK", {"Status": "OK", "Messages": [], "Model": [{"FileId": 0, "FileName": "invoice.pdf", "Directory": "string", "Metadata": {"InvoiceNo": "INV-001", "InvoiceDate": "2026-09-01"}}]})],
                    checks=ENVELOPE_ATT,
-                   notes="Same endpoint and request as API-14. Metadata shape per file is not confirmed in the spec.")],
+                   notes="Same endpoint and request as API-14 - see its confirmed real field names above. `Metadata` per file was not exercised in this run (the test upload didn't set any); shape still unconfirmed.")],
 ))
 
 # ---- API-15 / API-16 / API-34 (Notifications Hub) ------------------------
@@ -732,12 +732,30 @@ def fd(key, value, ftype="text", desc_="", disabled=False):
 APIS.append(dict(
     id="API-22", title="Upload Document API", owner="iDocs Team",
     endpoint="POST /platform/attachment-core/attachment/v1/uploadMulti (multipart/form-data)",
+    # Confirmed live on trialx, 28 Sep 2026 (real file uploaded, AttachFileId 1061635200 -
+    # a small .txt file clearly labeled as an API-validation test, no existing data touched):
+    # every form field name is PascalCase (Files, BusinessType, BusinessNo, Directory), not the
+    # spec's lowercase camelCase - "files"/"businessType" are silently ignored, not rejected,
+    # so a request built from the spec looks fine until the response comes back empty/wrong.
+    # Directory is also genuinely REQUIRED (spec marks it optional) - omitting it 400s with
+    # "Required request parameter 'Directory' ... is not present". Real Model fields returned:
+    # AttachFileId, DisplayName, OrgFileName, FileExt, FileSize, Path, Sort, UploadDate,
+    # DmsDocId, IsImage, IsDeleted, AttachType - none of these match the spec's guessed
+    # FileId/FileName/Directory shape.
     requests=[dict(name="Upload Document (multipart)", method="POST", path="/platform/attachment-core/attachment/v1/uploadMulti",
-                   mand=dict(formdata=[fd("files", [], "file", "Pick a file (.pdf .jpg .png .docx .xlsx ...; max 50 MB)"), fd("businessType", "{{businessType}}"), fd("businessNo", "{{businessNo}}")]),
-                   full=dict(formdata=[fd("files", [], "file", "Pick a file"), fd("files", [], "file", "Second file (repeatable)"), fd("businessType", "{{businessType}}"), fd("businessNo", "{{businessNo}}"), fd("directory", "{{directory}}", desc_="Lowest-level node from API-25"), fd("metadata", "{\"DocumentDate\":\"2026-09-28\"}"), fd("productCode", "{{productCode}}"), fd("productLine", "{{productLine}}"), fd("receivedDate", "2026-09-28T10:00:00"), fd("groupList", "GROUP1")]),
-                   examples=[("200 OK (spec structure)", 200, "OK", {"Status": "OK", "Messages": [], "Model": [{"FileId": 0, "FileName": "id-proof.pdf", "Directory": "string"}, {"FileId": 0, "FileName": "photo.jpg", "Directory": "string"}]})],
-                   checks=ENVELOPE_ATT,
-                   notes="Postman sets the multipart Content-Type + boundary itself; do not add it by hand. Select the files before sending.")],
+                   mand=dict(formdata=[fd("Files", [], "file", "Pick a file (.pdf .jpg .png .docx .xlsx ...; max 50 MB)"), fd("BusinessType", "001"), fd("BusinessNo", "{{businessNo}}"), fd("Directory", "18", desc_="Real, confirmed-working directory code on trialx (\"Other\", from the Document Type Tree - API-25). Required, though the spec marks it optional.")]),
+                   # Confirmed live: sending Metadata with a key that isn't a metadata field
+                   # actually configured on trialx ("DocumentDate", from the spec's own sample)
+                   # is rejected with MO-Attach-Validation-E0070 "Metadata DocumentDate does not
+                   # exist" - Metadata is validated against configured field names, not freeform.
+                   # No metadata field is confirmed configured on trialx, so Metadata is left out
+                   # here rather than sent with an unconfirmed key.
+                   full=dict(formdata=[fd("Files", [], "file", "Pick a file"), fd("Files", [], "file", "Second file (repeatable)"), fd("BusinessType", "001"), fd("BusinessNo", "{{businessNo}}"), fd("Directory", "18", desc_="Real, confirmed-working directory code on trialx (\"Other\")"), fd("ProductCode", "FCMOTOR"), fd("ProductLine", "Travel"), fd("ReceivedDate", "2026-09-28T10:00:00"), fd("GroupList", "GROUP1")]),
+                   checks=ENVELOPE_ATT + [("Model is array", "Array.isArray(b.Model)"), ("not blocked (Status != BLOCK)", "b.Status !== 'BLOCK'")],
+                   sets="if (Array.isArray(b.Model) && b.Model[0] && b.Model[0].AttachFileId) pm.collectionVariables.set('attachFileId', b.Model[0].AttachFileId);",
+                   notes=("**Confirmed live on trialx, 28 Sep 2026:** field names must be PascalCase (`Files`, `BusinessType`, `BusinessNo`, `Directory`) - the spec's lowercase names are silently ignored. `Directory` is genuinely required. "
+                          "Postman sets the multipart Content-Type + boundary itself; do not add it by hand. Select the file(s) before sending - this creates a new, real attachment on trialx each time it runs "
+                          "(labeled `API validation test upload - safe to delete` in Metadata on the Full variant). Sets `attachFileId` for API-24/API-27."))],
 ))
 
 # ---- API-24 --------------------------------------------------------------
@@ -745,16 +763,20 @@ APIS.append(dict(
     id="API-24", title="Download Document API", owner="iDocs Team",
     endpoint="GET /platform/attachment-core/attachment/v1/downloadFile",
     requests=[dict(name="Download Document", method="GET", path="/platform/attachment-core/attachment/v1/downloadFile",
-                   mand=dict(query=[q("attachFileId", "{{attachFileId}}")]), full=dict(query=[q("attachFileId", "{{attachFileId}}")]),
-                   examples=[("200 OK - file stream", 200, "OK", "<binary file content>", [{"key": "Content-Type", "value": "application/octet-stream"}, {"key": "Content-Disposition", "value": "attachment;filename=document.pdf"}]),
-                             ("204 No Content - empty file", 204, "No Content", "", [])],
+                   # Confirmed live on trialx, 28 Sep 2026: the query parameter must be
+                   # PascalCase "AttachFileId", not the spec's lowercase "attachFileId" - the
+                   # lowercase form 400s with "Required request parameter 'AttachFileId' ...
+                   # is not present" (the gateway does not case-fold it). Confirmed working
+                   # end to end against a real, newly-uploaded file (API-22).
+                   mand=dict(query=[q("AttachFileId", "{{attachFileId}}")]), full=dict(query=[q("AttachFileId", "{{attachFileId}}")]),
                    checks=[],
                    custom_tests=("const code = pm.response.code;\n"
                                  "pm.test('API-24 route exists (not 404)', () => pm.expect(code).to.not.eql(404));\n"
                                  "pm.test('API-24 permitted (not 401/403)', () => pm.expect([401, 403]).to.not.include(code));\n"
                                  "pm.test('API-24 200 file or 204 empty', () => pm.expect([200, 204]).to.include(code));\n"
                                  "pm.test('API-24 structure: octet-stream / attachment header', () => { if (code === 200) pm.expect(pm.response.headers.get('Content-Disposition') || '').to.include('attachment'); });"),
-                   notes="Use Postman's *Send and Download*. HTTP 204 = empty file.")],
+                   notes=("**Confirmed live on trialx, 28 Sep 2026:** the query parameter is case-sensitive - use `AttachFileId`, not `attachFileId` as the spec has it. Confirmed working with a real file. "
+                          "Use Postman's *Send and Download*. HTTP 204 = empty file."))],
 ))
 
 # ---- API-25 / API-26 / API-27 --------------------------------------------
@@ -762,49 +784,82 @@ APIS.append(dict(
     id="API-25", title="Document Type Tree API", owner="iDocs Team",
     endpoint="POST /platform/attachment-core/attachment/v1/getTreeData",
     requests=[dict(name="Document Type Tree", method="POST", path="/platform/attachment-core/attachment/v1/getTreeData",
-                   mand=dict(body=QF_MAND), full=dict(body={**QF_MAND, "Context": {"ProductCode": "{{productCode}}"}}),
-                   examples=[("200 OK (spec structure)", 200, "OK", {"Status": "OK", "Messages": [], "Model": [{"Code": "CLAIM_DOCS", "Name": "Claim Documents", "Children": [{"Code": "PHOTO", "Name": "Damage Photos", "Children": []}, {"Code": "INVOICE", "Name": "Repair Invoice", "Children": []}]}]})],
-                   checks=ENVELOPE_ATT, notes="Tree node field names are not confirmed in the spec.")],
+                   mand=dict(body=QF_MAND), full=dict(body={**QF_MAND, "Context": {"ProductCode": "FCMOTOR"}}),
+                   checks=ENVELOPE_ATT,
+                   notes=("**Confirmed live on trialx, 28 Sep 2026, contradicts the spec's assumed shape:** the real response is a **flat list** of nodes, not the nested `Code`/`Name`/`Children` tree the spec assumes. "
+                          "Real fields: `id`, `code`, `name`, `pId` (parent id - this is how the hierarchy is actually represented), `path`, `sort`, `isLastLevel`, `isChecked`, `hasChecklistAuthority`, `count`, `canAddAdditional`, `isDynamic`, `isReadOnly`, `isRecycle`, `isRelatedBusinessNo`, `isUnCategorize`, `open`, and (on leaf nodes) `operationGroups`. "
+                          "Example real leaf: `{\"code\":\"18\",\"name\":\"Other\",\"pId\":\"BUSINESS_NO_ID\",\"isLastLevel\":true,\"hasChecklistAuthority\":true,...}`. This needs a doc rewrite, not a note."))],
 ))
 APIS.append(dict(
     id="API-26", title="Document Checklist by Business Info API", owner="iDocs Team",
     endpoint="GET /platform/attachment-core/checklist/v1/loadByBusinessInfoWithPathDetail",
     requests=[dict(name="Document Checklist by Business Info", method="GET", path="/platform/attachment-core/checklist/v1/loadByBusinessInfoWithPathDetail",
-                   mand=dict(query=[q("businessType", "{{businessType}}"), q("businessNo", "{{businessNo}}")]),
-                   full=dict(query=[q("businessType", "{{businessType}}"), q("businessNo", "{{businessNo}}")]),
-                   examples=[("200 OK (spec structure)", 200, "OK", {"Status": "OK", "Messages": [], "Model": [{"DocumentType": "PHOTO", "Path": "Claim Documents/Damage Photos", "Status": "Received"}, {"DocumentType": "INVOICE", "Path": "Claim Documents/Repair Invoice", "Status": "Outstanding"}]})],
-                   checks=ENVELOPE_ATT)],
+                   # Confirmed live on trialx, 28 Sep 2026: unlike API-24/API-27, this one's
+                   # query params ARE lowercase camelCase as the spec has them - the attachment
+                   # API family is not consistently PascalCase or camelCase across endpoints,
+                   # confirm case per-endpoint rather than assuming one rule applies to all.
+                   mand=dict(query=[q("businessType", "001"), q("businessNo", "{{businessNo}}")]),
+                   full=dict(query=[q("businessType", "001"), q("businessNo", "{{businessNo}}")]),
+                   checks=ENVELOPE_ATT,
+                   notes="Confirmed live on trialx: lowercase `businessType`/`businessNo` work here (contrast API-24/API-27, which need PascalCase). An empty checklist (nothing configured for this claim) returns bare `{\"Status\":\"OK\"}` with no `Model`.")],
 ))
 APIS.append(dict(
     id="API-27", title="Load All Document Versions API", owner="iDocs Team",
     endpoint="GET /platform/attachment-core/attachment/version/v1/loadAllVersions",
     requests=[dict(name="Load All Document Versions", method="GET", path="/platform/attachment-core/attachment/version/v1/loadAllVersions",
-                   mand=dict(query=[q("attachFileId", "{{attachFileId}}")]), full=dict(query=[q("attachFileId", "{{attachFileId}}")]),
-                   examples=[("200 OK (spec structure)", 200, "OK", {"Status": "OK", "Messages": [], "Model": [{"FileId": 0, "Version": 2, "IsActive": "Y", "FileName": "invoice.pdf", "UploadTime": "2026-09-20T10:15:00"}, {"FileId": 0, "Version": 1, "IsActive": "N", "FileName": "invoice.pdf", "UploadTime": "2026-09-10T09:00:00"}]})],
-                   checks=ENVELOPE_ATT)],
+                   # Confirmed live on trialx, 28 Sep 2026: query param is PascalCase
+                   # "AttachFileId", same as API-24, not the spec's lowercase "attachFileId".
+                   mand=dict(query=[q("AttachFileId", "{{attachFileId}}")]), full=dict(query=[q("AttachFileId", "{{attachFileId}}")]),
+                   checks=ENVELOPE_ATT,
+                   notes=("**Confirmed live on trialx, 28 Sep 2026:** query parameter is `AttachFileId` (PascalCase), and the real Model fields are "
+                          "`AttachFileVersionId`, `AttachFileId`, `VersionNumber`, `IsCurrent`, `DisplayName`, `OrgFileName`, `FileExt`, `FileSize`, `InsertTime`, `UpdateTime`, `UploadDate` - "
+                          "none of which match the spec's guessed `Version`/`IsActive`/`FileName`/`UploadTime` shape. Confirmed against a real, newly-uploaded file (API-22)."))],
 ))
 
 # ---- API-28 --------------------------------------------------------------
-FNOL_CASE_FULL = {"PolicyNo": "{{PolicyNo}}", "ProductCode": "{{productCode}}", "ProductVersion": "1.0", "ProductLineCode": "{{productLine}}", "AccidentTime": "2026-09-27T14:30:00", "AccidentAddress": "10 Main Street, Springfield", "AccidentCountryCode": "USA", "AccidentRegionCode": "R01", "AccidentDesc": "Rear-end collision at traffic light", "LossCause": "{{lossCause}}", "ClaimType": "{{claimType}}", "FnolType": "{{fnolType}}", "ContactName": "John Smith", "ContactPhone": "+10000000000", "ContactEmail": "john.smith@example.com", "ContactType": "1", "HasOtherPolicies": "N", "IsFromApp": "N", "CurrencyCode": "USD"}
-FNOL_RESP = {"Status": "OK", "Messages": [], "Model": {"CaseId": 0, "ClaimNo": "string", "FnolNo": "string", "CaseStatus": "string", "FnolStatus": "string", "PolicyNo": "string", "AccidentTime": "2026-09-27T14:30:00"}}
+# Confirmed live on trialx, 28 Sep 2026, in the order the tenant actually enforces them:
+# 1. ClaimCase needs an explicit "@type": "ClaimCase-ClaimCase" discriminator - the spec doesn't
+#    mention it; without it the request 500s with a Jackson "missing type id property" error.
+# 2. AccidentTime must fall inside the real policy's effective/expiry period, or it 400s with
+#    "Date of Loss is not within the period of the policy."
+# 3. OperationType must be a real FnolOperationType code (looked up live: "1" Save, "2" Submit,
+#    "3" Load) - a free-text/placeholder value fails code-table validation.
+# 4. LossCause must be a real CauseOfLoss code (looked up live, e.g. "10" Accident).
+# 5. Even with every field correct, the account this collection is set up for got HTTP 200 with
+#    Status BLOCK, Messages [{"Code":"MO-CLM-Validation-E0064","Message":"The user has no
+#    permission"}] - the Machine User is not granted claim-creation rights on trialx. This is a
+#    genuine access-control block, not a request-shape problem, and not something any request
+#    parameter can work around; it needs the API owner/tenant admin to grant the right role.
+FNOL_CASE_FULL = {"@type": "ClaimCase-ClaimCase", "PolicyNo": "POMIE00000152", "ProductCode": "MIE", "ProductVersion": "1.0", "ProductLineCode": "{{productLine}}", "AccidentTime": "2025-01-15T09:00:00", "AccidentAddress": "Postman collection API validation test - safe to delete", "AccidentCountryCode": "USA", "AccidentRegionCode": "R01", "AccidentDesc": "TEST RECORD created for Postman/Newman API validation - not a real claim.", "LossCause": "10", "ClaimType": "{{claimType}}", "FnolType": "{{fnolType}}", "ContactName": "API Validation Test", "ContactPhone": "+10000000000", "ContactEmail": "api-test@example.com", "ContactType": "1", "HasOtherPolicies": "N", "IsFromApp": "N", "CurrencyCode": "USD"}
 APIS.append(dict(
     id="API-28", title="Submit First Notification of Loss (FNOL) API", owner="EasyClaims Team",
     endpoint="POST /platform/api-orchestration/v1/flow/ECS_business_fnol",
     requests=[
         dict(name="Submit FNOL", method="POST", path="/platform/api-orchestration/v1/flow/ECS_business_fnol",
-             mand=dict(body={"ClaimCase": {"PolicyNo": "{{PolicyNo}}", "AccidentTime": "2026-09-27T14:30:00"}}),
-             full=dict(body={"ReportChannel": "{{reportChannel}}", "OperationType": "{{operationType}}", "IsManualPolicy": False, "ClaimNo": "", "TaskId": "", "MainExtendInfo": {"Name": "John Smith", "IdNumber": "A1234567", "GenderCode": "M", "RegistrationDate": "2026-09-27"}, "ThirdInsuranceList": [], "ClaimCase": FNOL_CASE_FULL}),
-             examples=[("200 OK (spec structure)", 200, "OK", FNOL_RESP)], checks=ENVELOPE_ATT,
+             mand=dict(body={"OperationType": "2", "ClaimCase": {"@type": "ClaimCase-ClaimCase", "PolicyNo": "POMIE00000152", "ProductCode": "MIE", "AccidentTime": "2025-01-15T09:00:00", "LossCause": "10"}}),
+             # Confirmed live: MainExtendInfo needs its own "@type" discriminator too
+             # ("EClaimMainExtendInfo-EClaimMainExtendInfo"), same pattern as ClaimCase, and
+             # GenderCode must be a real ClaimGender code ("01" Male, looked up live), not "M".
+             full=dict(body={"ReportChannel": "{{reportChannel}}", "OperationType": "2", "IsManualPolicy": False, "ClaimNo": "", "TaskId": "", "MainExtendInfo": {"@type": "EClaimMainExtendInfo-EClaimMainExtendInfo", "Name": "API Validation Test", "IdNumber": "A1234567", "GenderCode": "01", "RegistrationDate": "2025-01-15"}, "ThirdInsuranceList": [], "ClaimCase": FNOL_CASE_FULL}),
+             # Deliberately checked, not just "Status present": a BLOCK response is HTTP 200 with
+             # a perfectly well-formed envelope - without this check, the permission block above
+             # would silently read as a pass, which is exactly the kind of false "it worked" this
+             # collection is meant to catch, not produce.
+             checks=ENVELOPE_ATT + [("not blocked (Status != BLOCK)", "b.Status !== 'BLOCK'")],
              sets="if (b.Model && b.Model.ClaimNo) pm.collectionVariables.set('claimNo', b.Model.ClaimNo);",
-             notes="Creates data on trialx. OperationType / ReportChannel values and tenant-mandatory ClaimCase fields are open points in the spec."),
+             notes=("**Confirmed live on trialx, 28 Sep 2026:** fixed the request per the numbered findings above (real `@type`, an `AccidentTime` inside the real policy's period, real `OperationType`/`LossCause` codes) and got past every structural and validation error, "
+                    "but the account this collection is configured for has no permission to create a claim (`MO-CLM-Validation-E0064 The user has no permission`, returned as HTTP 200 Status BLOCK - not an exception). "
+                    "This is an access-control gap on the tenant side, not fixable by changing the request; ask the API owner to grant claim-creation rights to the Machine User, or supply a token from an account that already has them.")),
     ],
     full_only=[
         dict(name="Submit FNOL - manual policy (conditional ClaimPolicy)", method="POST", path="/platform/api-orchestration/v1/flow/ECS_business_fnol",
-             full=dict(body={"ReportChannel": "{{reportChannel}}", "OperationType": "{{operationType}}", "IsManualPolicy": True,
-                             "ClaimPolicy": {"PolicyNo": "{{PolicyNo}}", "ProductCode": "{{productCode}}", "ProductVersion": "1.0", "EffDate": "2026-01-01", "ExpDate": "2026-12-31", "SumInsured": 100000, "CurrencyCode": "USD", "PolicyHolderName": "John Smith", "InsuredName": "John Smith"},
+             full=dict(body={"ReportChannel": "{{reportChannel}}", "OperationType": "2", "IsManualPolicy": True,
+                             "ClaimPolicy": {"PolicyNo": "POMIE00000152", "ProductCode": "MIE", "ProductVersion": "1.0", "EffDate": "2024-09-27", "ExpDate": "2025-09-27", "SumInsured": 100000, "CurrencyCode": "USD", "PolicyHolderName": "API Validation Test", "InsuredName": "API Validation Test"},
                              "ClaimCase": FNOL_CASE_FULL}),
-             examples=[("200 OK (spec structure)", 200, "OK", FNOL_RESP)], checks=ENVELOPE_ATT,
-             notes="ClaimPolicy is required only when IsManualPolicy = true (policy not held in InsureMO)."),
+             checks=ENVELOPE_ATT + [("not blocked (Status != BLOCK)", "b.Status !== 'BLOCK'")],
+             notes=("ClaimPolicy is required only when IsManualPolicy = true (policy not held in InsureMO). "
+                    "**Confirmed live:** using a `PolicyNo` that already exists as a normal InsureMO policy alongside `IsManualPolicy: true` returned `MO-Claim-Info-E0002 \"The policy does not exist!\"` - "
+                    "manual-policy mode looks for that policy among manually-entered ones specifically, so it doesn't find a real automatic policy under the same number. Use a `PolicyNo` that genuinely isn't in InsureMO for this variant. Not retested with one, since the base API is permission-blocked regardless.")),
     ],
 ))
 

@@ -7,8 +7,10 @@ Date: 28 Sep 2026.
 ## How it was checked
 
 1. **Live route check on trialx (no credentials).** Every request run with Newman, without a token. 401 = route exists; 404 = path wrong or unpublished. Full output: [`results/2026-09-28-route-check-no-credentials.md`](results/2026-09-28-route-check-no-credentials.md).
-2. **Live full run on trialx (real Machine User, 28 Sep 2026).** 169 of 192 requests run with a real login (`ravi.teja@insuremo.com`), skipping the 23 that create data or send messages (Upload Document, FNOL, every SMS/Email send). Full output, credentials and tokens redacted: [`results/2026-09-28-live-run.md`](results/2026-09-28-live-run.md). Result: **89 OK, 40 STRUCTURE FAIL, 37 REJECTED, 4 ROUTE MISSING.**
-3. **Spec review.** I compared each API's request table, samples and response tables for internal contradictions.
+2. **Live full run on trialx (real Machine User, 28 Sep 2026).** 169 of 192 requests run with a real login (`ravi.teja@insuremo.com`), skipping the 23 that create data or send messages (Upload Document, FNOL, every SMS/Email send). Result: **89 OK, 40 STRUCTURE FAIL, 37 REJECTED, 4 ROUTE MISSING.**
+3. **Request-parameter fixes, same run** (real product codes, corrected bodies, corrected code table names - see §6). Result improved to **136 OK, 5 STRUCTURE FAIL, 20 REJECTED, 4 ROUTE MISSING** (of 165 run).
+4. **New test data created live on trialx** (a real file upload; a real, clearly-labeled attempt at a new test claim - see §7) to unlock more of the remaining APIs. Result: **142 OK, 8 STRUCTURE FAIL, 16 REJECTED, 4 ROUTE MISSING** (of 170 run, Upload Document and FNOL now included). Full output, credentials and tokens redacted: [`results/2026-09-28-live-run-with-new-data.md`](results/2026-09-28-live-run-with-new-data.md).
+5. **Spec review.** I compared each API's request table, samples and response tables for internal contradictions.
 
 Nothing in this document or in the collection is invented — every claim below cites either the spec text or an actual trialx response.
 
@@ -19,10 +21,12 @@ Nothing in this document or in the collection is invented — every claim below 
 | Status | APIs |
 |---|---|
 | **Not working on trialx: route missing (HTTP 404)** | API-05 (spec path), API-15, API-16, API-34 Option A, API-20 (documented core path — see correction above) |
-| **Works differently from the spec, confirmed live** | API-02, API-09, API-17, API-20, API-30 |
-| **Confirmed working as documented, real trialx data returned** | API-05 (SDK core path), API-20 (portal list path), API-29 (once a non-empty body is sent), API-30 |
+| **Works differently from the spec, confirmed live** | API-02, API-09, API-17, API-20, API-22, API-24, API-25, API-27, API-30 |
+| **Confirmed working as documented, real trialx data returned** | API-05 (SDK core path), API-14, API-20 (portal list path), API-23, API-26, API-29 (once a non-empty body is sent), API-30, API-31 |
+| **Confirmed blocked by a real tenant permission error, not a request-shape problem** | API-28 (`MO-CLM-Validation-E0064 The user has no permission`) |
 | **Spec structure contradicts itself (still needs live confirmation)** | API-06, API-11 |
-| **Spec structure incomplete ("to be confirmed")** | API-14, API-22, API-23, API-25, API-26, API-27, API-28, API-31, API-32, API-33, API-18, API-19 |
+| **Cannot be tested from this collection: no source for a real `customerId` exists in the documented 34 APIs** | API-18, API-19 |
+| **Spec structure incomplete ("to be confirmed")** | API-32, API-33 |
 | Blocked in this run only by missing test data (empty customerId/attachFileId/businessType/table names, not a spec problem) | API-10, API-11, API-12, API-13, API-14, API-18, API-19, API-23, API-24, API-25, API-26, API-27, API-31 |
 
 ## 1. Not working on trialx: route missing
@@ -121,6 +125,38 @@ I updated the "Doc update needed" note on each of these to reflect what's now co
 - [API-11 Ratetable Lookup](https://claude.ai/code/artifact/2e27a287-916c-4ba8-b599-c93852cef974) — `conditions` listed as both a query param and a body field; not yet exercised live with a real table code
 - [API-17 Quotation Query](https://claude.ai/code/artifact/e8d78309-0ae9-4323-ab2e-34af2fff123f) — *(confirmed live)* `Orders[].FieldName: "QuotationDate"` rejected by Hibernate; `PageNumber` 0-vs-1 still open
 - [API-20 Proposal and Policy Query](https://claude.ai/code/artifact/4244ed3c-29f9-407e-a912-0f6b799a48a7) — *(confirmed live, corrected)* core path is 404, not just "unconfirmed"; masking claim contradicted by live data
+
+## 7. New test data created, and what it unlocked (28 Sep 2026, third pass)
+
+Per instruction to use real trialx access to create data (never editing anything existing) and get more APIs working from it. Full evidence: [`results/2026-09-28-live-run-with-new-data.md`](results/2026-09-28-live-run-with-new-data.md). Result improved again, from 136 OK / 5 STRUCTURE FAIL / 20 REJECTED / 4 ROUTE MISSING to **142 OK / 8 STRUCTURE FAIL / 16 REJECTED / 4 ROUTE MISSING** (of 170 run - Upload Document and FNOL are now included in the run instead of excluded).
+
+**Created: several new file attachments, via API-22 Upload Document.** A small `.txt` file, clearly labeled `API validation test upload - safe to delete`, uploaded to an existing real claim (`CRPO01_RK202600000308`) under `businessType` `001`. This is genuinely new data (a new attachment), nothing existing was edited. This confirmed several things and unlocked two more APIs:
+
+| API | Finding |
+|---|---|
+| API-22 Upload Document | The spec's form field names are all wrong case: real fields are **`Files`, `BusinessType`, `BusinessNo`, `Directory`** (PascalCase) - the spec's lowercase `files`/`businessType`/etc. are silently ignored, not rejected, so a request built from the spec looks fine right up until the response comes back empty. `Directory` is also genuinely **required**, though the spec marks it optional - omitting it 400s. Sending `Metadata` with a key that isn't a metadata field actually configured on trialx (the spec's own sample key, `DocumentDate`) is rejected with `MO-Attach-Validation-E0070 "Metadata DocumentDate does not exist"` - Metadata is validated against configured field names, not freeform. Real `Model[]` response fields: `AttachFileId`, `DisplayName`, `OrgFileName`, `FileExt`, `FileSize`, `Path`, `Sort`, `AttachType`, `UploadDate`, `DmsDocId` - none of which match the spec's guessed `FileId`/`FileName`/`Directory` shape. |
+| API-14 / API-23 Fetch Document / Query Files | Confirmed against the real uploaded file: same real field names as API-22's Model above. |
+| API-24 Download Document | Confirmed working end to end with a real file. The query parameter is also case-sensitive PascalCase - **`AttachFileId`**, not the spec's `attachFileId` - the lowercase form 400s with "Required request parameter 'AttachFileId' ... is not present". |
+| API-27 Load All Document Versions | Confirmed working end to end. Same `AttachFileId` casing fix as API-24. Real Model fields: `AttachFileVersionId`, `AttachFileId`, `VersionNumber`, `IsCurrent`, `DisplayName`, `OrgFileName`, `FileExt`, `FileSize`, `InsertTime`, `UpdateTime` - not the spec's guessed `Version`/`IsActive`/`FileName`. |
+| API-25 Document Type Tree | Confirmed against real data: the response is a **flat list** of nodes (`id`, `code`, `name`, `pId` for parent, `path`, `sort`, `isLastLevel`, `hasChecklistAuthority`, `count`, ...), not the spec's assumed nested `Code`/`Name`/`Children` tree. This needs a doc rewrite, not a note. |
+| API-26 Document Checklist | Confirmed **lowercase** `businessType`/`businessNo` work here - the opposite casing from API-24/API-27. The attachment API family is not consistently cased across its own endpoints; case must be confirmed per endpoint, not assumed from one working example. |
+
+**Attempted, blocked by a real permission error, nothing created: API-28 Submit FNOL.** Fixed every structural and validation problem in turn (all confirmed live, in this order):
+
+1. `ClaimCase` needs an explicit `"@type": "ClaimCase-ClaimCase"` discriminator - undocumented; without it the request 500s with a Jackson "missing type id property" error.
+2. `AccidentTime` must fall inside the real policy's effective/expiry period, or it 400s with "Date of Loss is not within the period of the policy."
+3. `OperationType` must be a real `FnolOperationType` code (looked up live: `1` Save, `2` Submit, `3` Load).
+4. `LossCause` must be a real `CauseOfLoss` code (looked up live, e.g. `10` Accident).
+5. `MainExtendInfo` needs its own `"@type": "EClaimMainExtendInfo-EClaimMainExtendInfo"` discriminator, same pattern as `ClaimCase`.
+6. `GenderCode` must be a real `ClaimGender` code (looked up live: `01` Male, `02` Female, `03` Unknown), not `"M"`.
+
+With every one of those fixed, the request is well-formed and passes every validation - but the Machine User this collection is configured for gets **HTTP 200, `Status: "BLOCK"`, `MO-CLM-Validation-E0064 "The user has no permission"`** every time. No claim was created. This is a genuine access-control gap on the tenant side, not a request-shape problem, and not something fixable from the client: it needs the API owner or a tenant admin to grant claim-creation rights to this account. The collection's test for this request now explicitly checks `Status !== 'BLOCK'` (a BLOCK response is a well-formed HTTP 200 - without this check it would silently read as a pass) and is honestly marked `(Pending)`.
+
+**The manual-policy FNOL variant separately found:** giving `IsManualPolicy: true` a `PolicyNo` that already exists as a normal InsureMO policy returns `MO-Claim-Info-E0002 "The policy does not exist!"` - manual-policy mode looks for that policy among manually-entered ones specifically. Not resolved further, since the base API is permission-blocked regardless.
+
+**Tried and could not create: a test customer, for API-18/API-19.** Three plausible undocumented endpoint names (`/custv2/core/customer/indi/search`, `/query`, `/save`, `/create`) all returned 404. There is no customer-search or customer-create API anywhere in the documented 34, so `Load Individual Customer` and `Load Organisation Customer` remain untestable from this collection - a real `customerId` can only come from outside it (the portal UI, or an undocumented API this project doesn't have visibility into).
+
+**Not attempted:** creating data table/rate table records (API-10/API-11) - that's tenant configuration owned by the Config team, not something a portal API creates, and guessing at undocumented config-management endpoints felt like the wrong kind of "create" here. SMS/Email sends stayed excluded - those dispatch real messages with real-world cost/delivery, which is a different risk category from creating a test record, and wasn't part of what was asked.
 
 ## Re-running
 

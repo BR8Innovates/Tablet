@@ -18,15 +18,17 @@ A plain request name (e.g. `Search Sales Channel Pool — Mandatory`) means it r
 
 **Working requests are sorted first in every folder, and folders with a lower fraction of pending requests sort before folders with more** — so the whole collection reads working-first, top to bottom, and a folder that's 96% working (e.g. Datatable and LoadTables, 4 pending of 101) sorts ahead of a 2-item folder that's 100% broken, not after it just because 4 > 2.
 
-| State | Count (28 Sep, after fixes) | Meaning |
+| State | Count (28 Sep, after fixes + new test data) | Meaning |
 |---|---|---|
-| Plain name (no suffix) | 136 | 2xx and the response shape matched the spec — the only state that means "works as documented" |
-| `(Pending)`, REJECTED | 20 | trialx returned a 4xx/5xx other than 401/403/404 — every one of these needs data this collection cannot obtain on its own (a real `customerId`, a data/rate table name only the Config team has, or a `Get Token` call with no password supplied) |
-| `(Pending)`, STRUCTURE FAIL | 5 | 2xx, but the response shape differs from the spec (documented, known nuances — e.g. an array field omitted on an empty result set) |
+| Plain name (no suffix) | 142 | 2xx, `Status` not `BLOCK`, and the response shape matched the spec — the only state that means "works as documented" |
+| `(Pending)`, REJECTED | 16 | trialx returned a 4xx/5xx other than 401/403/404 — every one of these needs data this collection cannot obtain on its own (a real `customerId` — no customer-search/create API exists in the documented 34 — a data/rate table name only the Config team has, or a `Get Token` call with no password supplied) |
+| `(Pending)`, STRUCTURE FAIL | 8 | 2xx, but the response shape differs from the spec (documented, known nuances — e.g. an array field omitted on an empty result set), **or** a well-formed `Status: "BLOCK"` (API-28 FNOL: blocked by a real, confirmed tenant permission error - see `STRUCTURE-CHECK.md` §7) |
 | `(Pending)`, ROUTE MISSING | 4 | trialx returned 404 — the spec's own path is wrong; the working alternative is included as a separate, plain-named request |
-| `(Pending)`, not run | 23 | deliberately excluded (Upload Document, FNOL, SMS/Email sends) — no example, none invented |
+| `(Pending)`, not run | 18 | deliberately excluded (every SMS/Email send - real message dispatch is a different risk category from creating a test record) — no example, none invented |
 
-Every `(Pending)` request except the 23 not-run ones still carries a real saved example — the exact response trialx sent — but that example is evidence of what happened, not proof of success; open its Examples tab to see why it's pending. Nothing here is invented: no spec sample JSON, no placeholder data, and any `access_token` inside a body is redacted before it's saved. `results/2026-09-28-live-run-reordered.md` and `STRUCTURE-CHECK.md` §5-6 have the same findings written out.
+Every `(Pending)` request except the 18 not-run ones still carries a real saved example — the exact response trialx sent — but that example is evidence of what happened, not proof of success; open its Examples tab to see why it's pending. Nothing here is invented: no spec sample JSON, no placeholder data, and any `access_token` inside a body is redacted before it's saved. `results/2026-09-28-live-run-with-new-data.md` and `STRUCTURE-CHECK.md` §5-7 have the same findings written out.
+
+**Upload Document (API-22) now runs by default and creates a new, clearly-labeled test attachment on trialx every time.** That's intentional — it's what unlocked Download Document and Load All Document Versions — but it means running the full collection repeatedly keeps adding small test files under claim `CRPO01_RK202600000308`. Exclude it from a run if that's not wanted. **Submit FNOL (API-28) is included too but never creates anything**: the Machine User this collection is configured for has no permission to create a claim, confirmed on every attempt, so it always comes back `(Pending)` with a real, well-formed `BLOCK` response - safe to leave in a run.
 
 **Query and body parameters are real, literal values, not `{{placeholders}}`** — e.g. `productCode=FCMOTOR`, `"BusinessType": "001"` — everywhere a confirmed real value exists, so a request is ready to run as soon as you add a token, with no environment variables to fill in first. The only things still templated are auth/connection plumbing (`{{baseUrl}}`, `{{access_token}}`, `{{username}}`, `{{password}}`) and the IDs a prior request's test script sets live from its own real response (`{{channelId}}`, `{{policyId}}`, `{{claimNo}}`, ...) — those have to stay templated, or the automatic chaining described below stops working. A parameter with no confirmed real value (a data/rate table name the Config team hasn't provided) is left as `{{placeholder}}` on purpose, rather than silently blanked to an empty string.
 
@@ -67,8 +69,4 @@ python3 summarize_run.py run.json > results/run-$(date +%F).md
 
 `summarize_run.py` gives one row per request: HTTP code, verdict (`OK`, `STRUCTURE FAIL`, `ROUTE MISSING`, `NO TOKEN`, `NO PERMISSION`, `REJECTED`), the exact next action, which checks failed, and the response body trialx sent back. Send me that file (or the raw `run.json`) and I will tell you, per request, whether it's a real problem on trialx or something the spec document needs to be corrected for.
 
-The following requests create data or send messages on trialx, so leave them out of runs where that is not wanted:
-
-- API-22 Upload Document
-- API-28 FNOL (both requests)
-- SMS and email sends (API-03, API-15, API-16, API-34)
+**API-22 Upload Document creates a new, clearly-labeled test file attachment on trialx every time it runs** (see the note above) - leave it out of a run if that's not wanted. **API-28 FNOL never creates anything** (permission-blocked, confirmed - see `STRUCTURE-CHECK.md` §7), so it's safe to leave in. **SMS and email sends (API-03, API-15, API-16, API-34) are excluded by default** and not in this collection's default run at all - those dispatch real messages, a different risk category from a test record.
