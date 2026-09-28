@@ -8,17 +8,17 @@
 | `Trialx.postman_environment.json` | Trialx environment: `baseUrl` is `https://portal-gw.insuremo.com`, `tenantCode` is `trialx`. Fill in `username` and `password`. |
 | `STRUCTURE-CHECK.md` | Spec issues found by reading the docs, and which routes 404 on trialx before you even add a token |
 | `results/` | Newman run results against trialx |
-| `build_collections.py` | Generator that produces the collection and environment. Edit it and re-run `python3 build_collections.py`. |
+| `build_collections.py` | Generator that produces the collection and environment from scratch (no examples). Edit it and re-run `python3 build_collections.py`. |
+| `attach_live_examples.py` | Attaches real captured trialx responses (from a Newman JSON report) onto the collection `build_collections.py` just wrote, as saved Postman examples. Run it after `build_collections.py`, pointed at a run report: `python3 attach_live_examples.py run.json`. |
 | `summarize_run.py` | Turns a Newman JSON report into a per-request PASS / error / doc-update table |
 
-## No example responses anywhere in this collection
+## Every example in this collection is a real, captured trialx response
 
-**Nothing in this collection is invented.** No request carries a saved "example" response — not the spec's sample JSON, not anything I generated. Every request has only:
+**169 of the 192 requests carry a saved example** — the exact response trialx returned on 28 Sep 2026, when this was run with a real Machine User (`ravi.teja@insuremo.com`). Nothing is invented: no spec sample JSON, no placeholder data. Each example's name starts with `Captured from trialx, 28 Sep 2026`; any `access_token` inside a body is redacted before it's saved. `results/2026-09-28-live-run.md` is the same evidence in table form.
 
-- the request itself (built from the spec's field tables), and
-- structure tests that run against whatever trialx actually returns.
+The 23 requests **without** an example are either the write/side-effect requests deliberately left out of that run (Upload Document, FNOL, every SMS/Email send), or requests that need real business data this run didn't have (a real `customerId`, `attachFileId`, `businessType`, or data/rate table name).
 
-A request only shows **PASS** in Postman when trialx itself returns a 2xx response whose shape matches the spec. Anything else — 401, 403, 404, a 2xx with a different shape, a rejected field — shows as a failing test that names exactly what came back, so you can see the real trialx behaviour and tell a genuine error apart from a place where the specification document itself needs correcting.
+`build_collections.py` on its own still writes a clean collection with **no** examples, only structure tests — that's the base you get from the spec alone. Run `attach_live_examples.py` against a fresh Newman report any time you want the saved examples to reflect a newer trialx run (a fresh call overwrites the old example for that request). A request only shows **PASS** on a fresh run when trialx itself returns a 2xx response whose shape matches the spec; anything else fails with the exact response trialx sent.
 
 ## Data used at runtime is real trialx data, not invented data
 
