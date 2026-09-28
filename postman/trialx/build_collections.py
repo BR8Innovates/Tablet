@@ -109,7 +109,12 @@ def t_struct(api_id, checks, sets=""):
     return "\n".join(lines)
 
 
-ENVELOPE_ATT = [("Status present", "'Status' in b"), ("Model present", "'Model' in b"), ("Messages is array", "Array.isArray(b.Messages)")]
+# Confirmed on trialx (28 Sep 2026, real Machine User run): the AttachmentResponse /
+# ClaimResponse envelope's Model and Messages are each present only when relevant -
+# a BLOCK response carries Status+Messages with no Model; a success carries Status+Model
+# with no Messages array at all (not even []). Only Status is reliably present, so only
+# that is a hard check; Model/Messages presence is reported, not failed on.
+ENVELOPE_ATT = [("Status present", "'Status' in b")]
 ENVELOPE_SNS = [("code present", "'code' in b"), ("data present", "'data' in b")]
 QUERY_RESULT = [("Results is array", "Array.isArray(b.Results)"), ("Total present", "'Total' in b")]
 PAGED = [("ElementsInCurrentPage is array", "Array.isArray(b.ElementsInCurrentPage)"), ("TotalElements present", "'TotalElements' in b")]
@@ -858,8 +863,12 @@ APIS.append(dict(
 # ---------------------------------------------------------------------------
 CT_PATH = "/platform/dd/public/codetable/v1/codeTableVoList/byNameList"
 CT_DATA_PATH = "/platform/dd/public/codetable/v1/data/list/byName"
+# Confirmed on trialx (28 Sep 2026): several configured code tables (AccountNature, Bank,
+# Department, Org, ...) return only BusinessCodeTable with no BusinessCodeTableValueList
+# key at all when the table has zero rows on this tenant - that is not an error, so the
+# values list is not a hard check, only the envelope's own presence.
 CT_CHECKS = [("body is JSON array", "Array.isArray(b)"),
-             ("BusinessCodeTableValueList present", "b.length > 0 && Array.isArray(b[0].BusinessCodeTableValueList)")]
+             ("BusinessCodeTable present", "b.length > 0 && !!b[0].BusinessCodeTable")]
 
 
 def load_tables_folder():

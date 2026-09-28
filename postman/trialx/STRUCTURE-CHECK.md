@@ -6,19 +6,24 @@ Date: 28 Sep 2026.
 
 ## How it was checked
 
-1. **Live route check on trialx.** I ran every request in `Trialx-Portal-APIs.postman_collection.json` with Newman, without credentials. The gateway returns **401** when a route exists but needs a token, and **404** when the path is wrong or the API is not published. This checks routing only, not request bodies or response shapes. Full output: [`results/2026-09-28-route-check-no-credentials.md`](results/2026-09-28-route-check-no-credentials.md). No response shown anywhere in this repo is invented — everything logged came back from an actual call to `https://portal-gw.insuremo.com`.
-2. **Spec review.** I compared each API's request table, samples and response tables for contradictions.
-3. **Not done yet: body and response structure on trialx.** This needs a trialx Machine User. See [Pending](#pending-live-body--response-check).
+1. **Live route check on trialx (no credentials).** Every request run with Newman, without a token. 401 = route exists; 404 = path wrong or unpublished. Full output: [`results/2026-09-28-route-check-no-credentials.md`](results/2026-09-28-route-check-no-credentials.md).
+2. **Live full run on trialx (real Machine User, 28 Sep 2026).** 169 of 192 requests run with a real login (`ravi.teja@insuremo.com`), skipping the 23 that create data or send messages (Upload Document, FNOL, every SMS/Email send). Full output, credentials and tokens redacted: [`results/2026-09-28-live-run.md`](results/2026-09-28-live-run.md). Result: **89 OK, 40 STRUCTURE FAIL, 37 REJECTED, 4 ROUTE MISSING.**
+3. **Spec review.** I compared each API's request table, samples and response tables for internal contradictions.
+
+Nothing in this document or in the collection is invented — every claim below cites either the spec text or an actual trialx response.
+
+**Important correction from the credentialed run:** the no-credentials check assumes 401 = "route exists." That assumption turned out to be wrong for API-20's documented core path: it answers 401 without a token (gateway auth filter intercepts first) but **404 "No static resource core/proposal/v1/query"** once authenticated (the route genuinely does not exist once the request reaches the backend). See §5.
 
 ## Summary
 
 | Status | APIs |
 |---|---|
-| **Not working on trialx: route missing (HTTP 404)** | API-05 (spec path), API-15, API-16, API-34 Option A |
-| **Works differently from the spec** | API-02 |
-| **Spec structure contradicts itself (needs confirmation)** | API-06, API-09, API-11, API-17, API-20 |
-| **Spec structure incomplete ("to be confirmed")** | API-14, API-22, API-23, API-25, API-26, API-27, API-28, API-29, API-30, API-31, API-32, API-33, API-18, API-19 |
-| Route exists on trialx (401 without token); structure consistent in spec | API-01, API-03, API-04, API-07, API-08, API-10, API-12, API-13, API-21, API-24 |
+| **Not working on trialx: route missing (HTTP 404)** | API-05 (spec path), API-15, API-16, API-34 Option A, API-20 (documented core path — see correction above) |
+| **Works differently from the spec, confirmed live** | API-02, API-09, API-17, API-20, API-30 |
+| **Confirmed working as documented, real trialx data returned** | API-05 (SDK core path), API-20 (portal list path), API-29 (once a non-empty body is sent), API-30 |
+| **Spec structure contradicts itself (still needs live confirmation)** | API-06, API-11 |
+| **Spec structure incomplete ("to be confirmed")** | API-14, API-22, API-23, API-25, API-26, API-27, API-28, API-31, API-32, API-33, API-18, API-19 |
+| Blocked in this run only by missing test data (empty customerId/attachFileId/businessType/table names, not a spec problem) | API-10, API-11, API-12, API-13, API-14, API-18, API-19, API-23, API-24, API-25, API-26, API-27, API-31 |
 
 ## 1. Not working on trialx: route missing
 
@@ -45,8 +50,7 @@ The Notifications Hub endpoint is either hosted outside the InsureMO gateway or 
 | API-06 Float Statement: Search Collections | The request table documents a flat SearchCondition (`FuzzyConditions`, `OrConditionsList`, `FromRangeConditions`, `ToRangeConditions`). The sample request instead wraps the filters in `QueryCondition` with camelCase keys (`fuzzyConditions`, `orSearchConditionsList`, `gteRangeConditions`, `lteRangeConditions`). | Both forms are included as separate requests. |
 | API-09 Query Commission | The request uses SearchCondition paging (`PageNo`/`PageSize`), but the response is a PagedResult (`ElementsInCurrentPage`, `PageQuery.PageNumber`). The other search APIs return a QueryResult (`Results[].EsDocs`). | Tests expect the documented PagedResult. |
 | API-11 Ratetable Lookup | `conditions` is listed both as a query-string Map and as the JSON body. | Conditions are sent in the body. |
-| API-17 Quotation Query | The sample request sends `PageNumber: 0`, but the sample response echoes `PageNumber: 1`, so it is unclear whether paging starts at 0 or 1. | The Full variant uses `PageNumber: 1`. |
-| API-20 Proposal and Policy Query | Three different paths: the portal list uses `/platform/proposal/v1/query`, the guide uses `/proposal/core/proposal/v1/query`, and the SDK uses `/proposal/v1/queryPolicy`. | Both routed paths are included. |
+| API-17 Quotation Query | The sample request sends `PageNumber: 0`, but the sample response echoes `PageNumber: 1` — confirmed still unresolved (see §5, the live call failed for a different, unrelated reason before paging even mattered). | Full variant uses `PageNumber: 1`. |
 
 ## 4. Spec structure incomplete (marked "to be confirmed" in the spec)
 
@@ -66,9 +70,37 @@ The Notifications Hub endpoint is either hosted outside the InsureMO gateway or 
 | API-32 Endorsement History | Whether the response is a bare list or wrapped. |
 | API-10 / API-11 | Data table and rate table names (`ProductListTable`, `PlanListTable`, `PackageTable`) are not created yet. |
 
-## Pending: live body and response check
+## 5. Confirmed live findings (real Machine User, 28 Sep 2026)
 
-Every route that answered 401 still needs its request body and response checked against the spec, with a real trialx Machine User. This is not something I can do without credentials, and I have not fabricated a result for it. To run that check:
+These are not guesses — each row is what trialx actually returned. Full bodies (redacted of credentials) are in [`results/2026-09-28-live-run.md`](results/2026-09-28-live-run.md).
+
+| API | Finding | Evidence |
+|---|---|---|
+| API-02 Get Token | Confirmed as previously noted: extra undocumented fields (`err_code`, `authResult`, `auth_result`, `trace_id`), a failed login still returns HTTP 200. A correct login returned `expire_in: 86412`–`86418` (~24h), not the ~2h in the spec's sample (`7216`) — token lifetime is tenant/account configurable, spec's number is just one example. |
+| API-05 Load Sales Agreements | **Confirmed working** on the SDK core path (`GET /platform/saleschannel/core/agreement/load/byChannelId`) with real data: fields matched the spec (`AgreementCode`, `AgreementStatus`, `ChannelId`, `SalesAgreementAuthorityList[].AuthorityType`, `SalesCommissionRateList[]`). The spec's own path (`/api/platform/...`) is still 404. **Doc fix:** replace the spec path with the core path as the primary documented endpoint. |
+| API-09 Query Commission | Confirmed: `ElementsInCurrentPage` is **omitted entirely** (not `[]`) when there are zero matching records — `{"NumberOfElementsInCurrentPage":0,"PageQuery":{...},"TotalElements":0}` with no `ElementsInCurrentPage` key. **Doc fix:** note this omission so client code doesn't assume the array key is always present. |
+| API-17 Quotation Query | Two different real failures, neither a paging-format issue: **Mandatory** (empty body `{}`) → HTTP 500 `NumberFormatException: For input string: "Destination"` — looks like a data problem inside trialx's own quotation records (some field holds the literal text "Destination" where a number is expected), not a spec/request problem. **Full** (with `Orders: [{"FieldName": "QuotationDate", ...}]`) → HTTP 500 `Hibernate SemanticException: Could not interpret path expression 'QuotationDate'` — sorting by `QuotationDate` is rejected by the backend even though that is the field's documented name. **Doc fix:** the `Orders[].FieldName` value doesn't work for `QuotationDate` as written; the correct sortable field name needs to come from the API owner. The `PageNumber` 0-vs-1 question is still open — this run never got that far. |
+| API-20 Proposal and Policy Query | **Correction to the earlier note:** the documented core path (`/proposal/core/proposal/v1/query`) returns **404 `No static resource core/proposal/v1/query`** once authenticated — it does not exist on trialx, despite answering 401 (not 404) without a token. **The portal list path (`/platform/proposal/v1/query`) works and returned real policy data** matching the spec's field names (`PolicyId`, `PolicyNo`, `ProductCode`, `ProposalStatus`, `PolicyStatus`, `DuePremium`, `SumInsured`...). **Security-relevant doc issue:** the spec says the index "masks sensitive values in results" (e.g. `IdNo`), but the live `IdNo`/`InsuredIdNo` fields came back **unmasked** in plain text; a separate `TempData.Mask-IdNo` / `TempData.MaskAfter-IdNo` pair was present instead. If the portal relies on the spec's claim that `IdNo` itself is masked, it will display unmasked IDs. **Doc fix:** drop the core path from the Request table, and correct or remove the masking claim — masking is not applied to the top-level field on trialx. |
+| API-29 / API-33 Claim Search | Confirmed: an **empty JSON body `{}` is rejected** with HTTP 500 `Missing the required parameter 'claimQueryRequestCondition'`, even though every field in the spec's Request table is marked optional. Once fields were sent (Full variant), the call succeeded (HTTP 200) with the documented `ClaimResponse` envelope (`Status: "BLOCK"`, `Messages[]` with real code-table validation errors on `ProductLineCode`/`CaseStatus`). **Doc fix:** state that the body cannot be completely empty, or name the one field that must always be present. |
+| API-30 Load Claim Case Detail | **Confirmed working**, returned a real claim (`CaseId`, `ClaimCase`, `ClaimObjectList`, `ClaimPartyList` all present and matching the spec's field names). On success the envelope was `{"Status":"OK","Model":{...}}` with **`Messages` omitted entirely** (not `[]`) — same omission pattern as API-09's array. **Doc fix:** note that `Messages` is only present when there is something to say, matching the BLOCK case already documented. |
+| Datatable and LoadTables — code tables | Confirmed **not configured / don't exist on trialx**, by name, from a live `CodeTable is not exist` error (`MO-PLATFORM-DD-B2006`): `AuthorityType`, `Country` (`CountryCode` does exist and works — these are two different table names in the spec), `Party`, `FnolStatus`, `ClaimClosedType` (`ClaimCloseType`, the differently-named table, does exist), `RelatedType`. **Doc fix:** either these six code tables need to be confirmed with the Config team as real table names, or the spec is using the wrong name for each. Separately: several tables that do exist (`AccountNature`, `Bank`, `Department`, `Org`, ...) returned no `BusinessCodeTableValueList` at all — those tables simply have zero rows configured on trialx, not a bug. |
+| API-10 / API-11 | Confirmed the placeholder table names (`{{ProductListTable}}`, `{{PlanListTable}}`, `{{PackageTable}}`) are not real trialx tables (`this argument is required; it must not be null` / HTTP 400) — as already flagged, these need the Config team to say what the real names are. Not retested with a real name. |
+
+## Things that failed only because this run had no real business data (not spec problems)
+
+`customerId` (API-18/19), `attachFileId` (API-24/27), `businessType`/`businessNo` (API-14/22/23/25/26), and the data/rate table names (API-10/11) were all empty in this run — nobody has run the earlier steps in the chain that would produce real values for them (a real customer search, a real document upload, a real table name from the Config team). Each of those calls correctly rejected the empty value it was given (e.g. API-14/23/25 returned `{"Status":"BLOCK","Messages":[{"Message":"BusinessType is not in code table value"}]}`), confirming the validation the spec describes, not a mismatch. These need to be re-run with real values once they exist, not doc-fixed.
+
+## Doc updates made in the live spec docs
+
+I updated the "Doc update needed" note on each of these to reflect what's now confirmed (marked *(confirmed live)*) versus what's still just a spec-reading observation:
+
+- [API-06 Search Collections](https://claude.ai/code/artifact/d7e0c71b-dd35-4e7e-b9dc-4854d9e004e5) — `SearchCondition` vs `QueryCondition` mismatch; not yet exercised live in this run
+- [API-09 Query Commission](https://claude.ai/code/artifact/a2ef411d-2e14-4642-8eb4-06b7bb0e8d70) — *(confirmed live)* `ElementsInCurrentPage` omitted on empty results
+- [API-11 Ratetable Lookup](https://claude.ai/code/artifact/2e27a287-916c-4ba8-b599-c93852cef974) — `conditions` listed as both a query param and a body field; not yet exercised live with a real table code
+- [API-17 Quotation Query](https://claude.ai/code/artifact/e8d78309-0ae9-4323-ab2e-34af2fff123f) — *(confirmed live)* `Orders[].FieldName: "QuotationDate"` rejected by Hibernate; `PageNumber` 0-vs-1 still open
+- [API-20 Proposal and Policy Query](https://claude.ai/code/artifact/4244ed3c-29f9-407e-a912-0f6b799a48a7) — *(confirmed live, corrected)* core path is 404, not just "unconfirmed"; masking claim contradicted by live data
+
+## Re-running
 
 ```bash
 newman run Trialx-Portal-APIs.postman_collection.json \
@@ -77,28 +109,3 @@ newman run Trialx-Portal-APIs.postman_collection.json \
   --reporters cli,json --reporter-json-export run.json
 python3 summarize_run.py run.json > results/run-$(date +%F).md
 ```
-
-Each request (Mandatory and Full, both in the one collection) gets one of these verdicts, with a suggested next action:
-
-| Verdict | Meaning | Next action |
-|---|---|---|
-| `OK` | 2xx and the response shape matches the spec | None |
-| `STRUCTURE FAIL` | 2xx but the response shape differs from the spec | Likely a doc fix - tell me the failing check and I will update the spec doc |
-| `ROUTE MISSING` | Gateway 404 | Confirm the path with the platform team; if correct, the spec's endpoint is wrong |
-| `REJECTED` | Other 4xx/5xx (trialx rejected the request) | Read the response body; may be a doc fix if the spec calls a rejected field valid |
-| `NO TOKEN` | 401 | Check `username`/`password` in the environment - not a doc issue |
-| `NO PERMISSION` | 403 | Ask the API owner to grant the API to trialx - not a doc issue |
-
-Send me the resulting `run.json` or the Markdown table and I will go through every `STRUCTURE FAIL`, `ROUTE MISSING` and `REJECTED` row, compare it against the spec doc, and update whichever individual API doc is wrong.
-
-## Doc updates already made from the spec-reading pass (not yet confirmed against live data)
-
-I added a "Doc update needed" note to the affected section of each of these docs on 28 Sep 2026, based on reading the spec text (not a live trialx call — see the "Confirmed on trialx" vs "flagged" wording in each note for which):
-
-- [API-06 Search Collections](https://claude.ai/code/artifact/d7e0c71b-dd35-4e7e-b9dc-4854d9e004e5) — `SearchCondition` vs `QueryCondition` mismatch between the Request table and the sample
-- [API-09 Query Commission](https://claude.ai/code/artifact/a2ef411d-2e14-4642-8eb4-06b7bb0e8d70) — request uses SearchCondition paging, response is PagedResult
-- [API-11 Ratetable Lookup](https://claude.ai/code/artifact/2e27a287-916c-4ba8-b599-c93852cef974) — `conditions` listed as both a query param and a body field
-- [API-17 Quotation Query](https://claude.ai/code/artifact/e8d78309-0ae9-4323-ab2e-34af2fff123f) — sample request `PageNumber: 0` vs sample response `PageNumber: 1`
-- [API-20 Proposal and Policy Query](https://claude.ai/code/artifact/4244ed3c-29f9-407e-a912-0f6b799a48a7) — three different paths given for one API
-
-These notes flag the issue; they do not resolve it. Once you run the collection against trialx, I will replace each note with the confirmed answer (or correct it, if the live behaviour differs from what the note assumed).
