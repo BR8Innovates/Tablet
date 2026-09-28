@@ -73,20 +73,10 @@ def request(name, method, path, *, query=None, body=None, raw_body=None, formdat
         req["body"] = {"mode": "formdata", "formdata": formdata}
     if no_auth:
         req["auth"] = {"type": "noauth"}
+    # No saved example responses are attached, by design: this collection is meant to be
+    # run against the real trialx tenant, and every response shown in Postman must come
+    # from an actual trialx call, never from spec text or anything invented here.
     item = {"id": uid(key or name, method, path), "name": name, "request": req, "response": []}
-    for ex in examples or []:
-        ex_name, code, status, ex_body = ex[:4]
-        ex_headers = ex[4] if len(ex) > 4 else [{"key": "Content-Type", "value": "application/json"}]
-        item["response"].append({
-            "id": uid(key or name, ex_name),
-            "name": ex_name,
-            "originalRequest": {k: v for k, v in req.items() if k != "description"},
-            "status": status,
-            "code": code,
-            "_postman_previewlanguage": "json" if not isinstance(ex_body, str) else "text",
-            "header": ex_headers,
-            "body": ex_body if isinstance(ex_body, str) else js(ex_body),
-        })
     if tests:
         item["event"] = [{"listen": "test", "script": {"type": "text/javascript", "exec": tests.strip("\n").split("\n")}}]
     return item
@@ -872,16 +862,6 @@ CT_CHECKS = [("body is JSON array", "Array.isArray(b)"),
              ("BusinessCodeTableValueList present", "b.length > 0 && Array.isArray(b[0].BusinessCodeTableValueList)")]
 
 
-def ct_example(names):
-    out = []
-    for n in names:
-        vals = CODE_TABLES[n][2]
-        out.append({"BusinessCodeTable": {"Name": n},
-                    "BusinessCodeTableValueList": [{"Id": i + 1, "Code": c, "Description": d} for i, (c, d) in enumerate(vals)]
-                    or [{"Id": 1, "Code": "<code>", "Description": "<tenant value - not published in spec>"}]})
-    return out
-
-
 def load_tables_folder():
     names = sorted(CODE_TABLES)
     svc = [n for n in names if CODE_TABLES[n][0] == SVC]
@@ -900,22 +880,19 @@ def load_tables_folder():
     ct_items = [request("Load ALL portal code tables (one call)", "POST", CT_PATH,
                         body=[{"CodeTableName": n} for n in names],
                         desc="Loads every code table referenced by the 34 portal APIs in one call. Missing names (not configured on trialx) are the ones to raise with the Config team.",
-                        examples=[("200 OK (structure; values from spec where published)", 200, "OK", ct_example(names))],
                         tests=t_struct("CODETABLES", CT_CHECKS) + "\nif (Array.isArray(b)) { const got = b.map(x => (x.BusinessCodeTable || {}).Name); console.log('Code tables returned: ' + got.length + ' / " + str(len(names)) + "'); pm.collectionVariables.set('codeTablesMissing', JSON.stringify(" + json.dumps(names) + ".filter(n => !got.includes(n)))); }",
                         key="ct-all")]
     ct_items.append(request("Load code table values filtered (data/list/byName)", "POST", CT_DATA_PATH,
                             query=[q("codeTableName", "SChannelStatus")], body={"CodeTableName": "SChannelStatus", "ConditionMap": {}, "Keyword": ""},
                             headers=[h("x-mo-lang-id", "en_US", "Optional language", disabled=True)],
                             desc="Runtime variant with ConditionMap / Keyword filtering (InsureMO iTables runtime API). Swap the code table name as needed.",
-                            examples=[("200 OK (structure)", 200, "OK", [{"Id": 1, "Code": "1", "Description": "Active"}])],
                             tests=t_struct("CODETABLE-DATA", [("body present", "true")]), key="ct-data"))
     per_ct = []
     for n in names:
         src, uses, vals = CODE_TABLES[n]
         d = (f"**Code table `{n}`** ({src})\n\nUsed by:\n" + "\n".join(f"* {u}" for u in uses) +
-             ("\n\nKnown values in spec: " + ", ".join(f"`{c}` {dd}" for c, dd in vals) if vals else "\n\nValues not published in the spec - load from trialx."))
+             ("\n\nValues named in the spec text (confirm against trialx - not saved as an example here): " + ", ".join(f"`{c}` {dd}" for c, dd in vals) if vals else "\n\nValues not published in the spec - load from trialx."))
         per_ct.append(request(f"{n}", "POST", CT_PATH, body=[{"CodeTableName": n}], desc=d,
-                              examples=[("200 OK" + (" (values from spec)" if vals else " (structure)"), 200, "OK", ct_example([n]))],
                               tests=t_struct(f"CT {n}", CT_CHECKS), key=f"ct-{n}"))
     svc_items = [it for it in per_ct if it["name"] in svc]
     ct_only = [it for it in per_ct if it["name"] not in svc]
@@ -924,22 +901,19 @@ def load_tables_folder():
         request("Data table - Load Product list ({{ProductListTable}})", "POST", "/platform/dd/public/datatable/v1/dataTableVoList/byNameList",
                 body=[{"DataTableName": "{{ProductListTable}}", "ConditionMap": {"ProductCode": "1001"}}],
                 desc="Data table behind API-10 (products under a product code 1001 / 1005). Table name TBC by the Config/Apps team.",
-                examples=[("200 OK (spec sample)", 200, "OK", DT_SAMPLE)], tests=t_struct("DT ProductList", IS_ARRAY), key="dt-product"),
+                tests=t_struct("DT ProductList", IS_ARRAY), key="dt-product"),
         request("Data table - Load Plan list ({{PlanListTable}})", "POST", "/platform/dd/public/datatable/v1/dataTableVoList/byNameList",
                 body=[{"DataTableName": "{{PlanListTable}}"}],
                 desc="Data table for Load Plan (API-10 use case). Table name TBC by the Config/Apps team.",
-                examples=[("200 OK (structure)", 200, "OK", [{"BusinessDataTable": {"Name": "{{PlanListTable}}", "Fields": {}}, "Records": []}])],
                 tests=t_struct("DT PlanList", IS_ARRAY), key="dt-plan"),
         request("Data table - runtime data by name", "POST", "/platform/dd/public/datatable/v1/data/list/byName",
                 body={"dataTableName": "{{ProductListTable}}", "conditionMap": {"ProductCode": "1001"}},
                 desc="Cached runtime read of one data table (iTables runtime API). Note the camelCase body keys used by this endpoint.",
-                examples=[("200 OK (structure)", 200, "OK", [{"ProductCode": "1001", "SubProductCode": "1001-A", "SubProductName": "Plan A"}])],
                 tests=t_struct("DT runtime", [("body present", "true")]), key="dt-runtime"),
     ]
     rt_items = [request("Rate/config table - Packages ({{PackageTable}})", "POST", "/platform/ratetable/rate/v1/lookup",
                         query=[q("code", "{{PackageTable}}"), q("version", "1")], body={"ProductCode": "1001"},
                         desc="Package table behind API-11 (TP / Silver / Gold / Platinum). Table code TBC.",
-                        examples=[("200 OK (spec sample)", 200, "OK", [{"ProductCode": "1001", "PackageCode": "TP", "PackageName": "Third Party"}, {"ProductCode": "1001", "PackageCode": "SILVER", "PackageName": "Silver"}, {"ProductCode": "1001", "PackageCode": "GOLD", "PackageName": "Gold"}, {"ProductCode": "1001", "PackageCode": "PLATINUM", "PackageName": "Platinum"}])],
                         tests=t_struct("RT Packages", IS_ARRAY), key="rt-package")]
     return folder("Datatable and LoadTables", [
         folder("Code Tables (LoadTables)", ct_items + ct_only, "One request per code table bound to an API field, plus a one-call loader."),
@@ -981,40 +955,59 @@ CHAIN_VARS = ["access_token", "token_expires_at", "channelId", "collectionId", "
               "policyId", "PolicyNo", "attachFileId", "claimNo", "clmPolicyId", "codeTablesMissing"]
 
 
-def build(variant):
-    is_full = variant == "full"
-    label = "Full (Mandatory + Optional fields)" if is_full else "Mandatory fields only"
+def build():
+    """One collection, both field variants per request, zero saved example responses.
+
+    Every request carries a Mandatory item and, where the API has optional fields, a
+    Full (Mandatory + Optional) item, inside the same API folder. Nothing in the
+    generated JSON is a canned/spec response — pass/fail and every response shown in
+    Postman only ever come from an actual call to trialx.
+    """
     api_folders = []
     for api in APIS:
         items = []
-        specs = list(api["requests"]) + (api.get("full_only", []) if is_full else [])
-        for r in specs:
-            v = r["full"] if is_full else r.get("mand")
-            if v is None:
-                continue
+        for r in api["requests"]:
+            for variant, label in (("mand", "Mandatory"), ("full", "Full (+ Optional)")):
+                v = r.get(variant)
+                if v is None:
+                    continue
+                tests = r.get("custom_tests") or t_struct(api["id"], r["checks"], r.get("sets", ""))
+                items.append(request(
+                    f"{r['name']} — {label}", r["method"], r["path"], query=v.get("query"), body=v.get("body"),
+                    formdata=v.get("formdata"), headers=v.get("headers"), no_auth=r.get("no_auth", False),
+                    desc=desc(api["id"], api["title"], f"{r['method']} {r['path']}", api["owner"], label, r.get("notes", "")),
+                    tests=tests, key=f"{variant}-{api['id']}-{r['name']}"))
+        for r in api.get("full_only", []):
             tests = r.get("custom_tests") or t_struct(api["id"], r["checks"], r.get("sets", ""))
             items.append(request(
-                r["name"], r["method"], r["path"], query=v.get("query"), body=v.get("body"), formdata=v.get("formdata"),
-                headers=v.get("headers"), no_auth=r.get("no_auth", False),
-                desc=desc(api["id"], api["title"], f"{r['method']} {r['path']}", api["owner"], label, r.get("notes", "")),
-                examples=r["examples"], tests=tests, key=f"{variant}-{api['id']}-{r['name']}"))
+                f"{r['name']} — Full (+ Optional)", r["method"], r["path"], query=r["full"].get("query"),
+                body=r["full"].get("body"), formdata=r["full"].get("formdata"), headers=r["full"].get("headers"),
+                no_auth=r.get("no_auth", False),
+                desc=desc(api["id"], api["title"], f"{r['method']} {r['path']}", api["owner"], "Full (+ Optional), conditional", r.get("notes", "")),
+                tests=tests, key=f"full-only-{api['id']}-{r['name']}"))
         api_folders.append(folder(f"{api['id']} {api['title']}", items,
                                   f"{api['endpoint']}  \nOwner: {api['owner']}" + code_table_md([api["id"]])))
     api_folders.sort(key=lambda f: f["name"])
-    name = f"Trialx - Portal Integration APIs - {'Full + Optional' if is_full else 'Mandatory'}"
     return {
         "info": {
-            "_postman_id": uid("collection", variant),
-            "name": name,
+            "_postman_id": uid("collection", "trialx-single"),
+            "name": "Trialx - Portal Integration APIs (all 34)",
             "description": (
-                f"Portal Integration API Specification v0.2 - all 34 APIs on InsureMO tenant **trialx**.\n\n"
-                f"Variant: **{label}**.\n\n"
+                "Portal Integration API Specification v0.2 - all 34 APIs on InsureMO tenant **trialx**, "
+                "one collection, Mandatory and Full (+ Optional) requests together in each API folder.\n\n"
+                "**No example responses are saved anywhere in this collection.** Every request has only "
+                "structure tests; a request only shows PASS if trialx itself returns a 2xx response whose "
+                "shape matches the spec. A failing test names exactly what trialx returned instead, so you "
+                "can tell a real error apart from a place the spec documentation needs correcting.\n\n"
                 "1. Import `Trialx.postman_environment.json`, select it, fill `username` / `password` (Machine User).\n"
                 "2. Any request auto-fetches a token (collection pre-request script). Or run *API-02 > Get Token*.\n"
-                "3. Run in order (Collection Runner / Newman): search APIs store the signed IDs used by the load APIs.\n"
-                "4. Each request has structure tests; a failing test names the broken part. Saved examples hold the spec samples "
-                "and the responses observed on trialx.\n\n"
-                "See `STRUCTURE-CHECK.md` for which API structures are not working."),
+                "3. Run the whole collection in order (Collection Runner / Newman): search requests store the "
+                "signed IDs and other real trialx data (channelId, policyId, customerNo, ...) that the load "
+                "requests need, so later requests use data that is actually present in trialx.\n"
+                "4. Export the run report and read it with `summarize_run.py` for a plain PASS / error / "
+                "doc-update table.\n\n"
+                "See `STRUCTURE-CHECK.md` for the discrepancies already found by reading the spec, and for "
+                "which routes 404 on trialx before you even add a token."),
             "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         },
         "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{access_token}}", "type": "string"}]},
@@ -1064,10 +1057,15 @@ def environment():
             "_postman_variable_scope": "environment"}
 
 
+OLD_FILES = [
+    "Trialx-Portal-APIs-Mandatory.postman_collection.json",
+    "Trialx-Portal-APIs-Full-Optional.postman_collection.json",
+]
+
+
 def main():
     out = {
-        "Trialx-Portal-APIs-Mandatory.postman_collection.json": build("mandatory"),
-        "Trialx-Portal-APIs-Full-Optional.postman_collection.json": build("full"),
+        "Trialx-Portal-APIs.postman_collection.json": build(),
         "Trialx.postman_environment.json": environment(),
     }
     for fn, data in out.items():
@@ -1075,6 +1073,11 @@ def main():
             json.dump(data, f, indent=2, ensure_ascii=False)
             f.write("\n")
         print("wrote", fn)
+    for fn in OLD_FILES:
+        p = os.path.join(HERE, fn)
+        if os.path.exists(p):
+            os.remove(p)
+            print("removed superseded file", fn)
 
 
 if __name__ == "__main__":

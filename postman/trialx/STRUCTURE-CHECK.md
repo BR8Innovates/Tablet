@@ -6,7 +6,7 @@ Date: 28 Sep 2026.
 
 ## How it was checked
 
-1. **Live route check on trialx.** I ran every request in the Mandatory collection with Newman, without credentials. The gateway returns **401** when a route exists but needs a token, and **404** when the path is wrong or the API is not published. Full output: [`results/2026-09-28-route-check-no-credentials.md`](results/2026-09-28-route-check-no-credentials.md).
+1. **Live route check on trialx.** I ran every request in `Trialx-Portal-APIs.postman_collection.json` with Newman, without credentials. The gateway returns **401** when a route exists but needs a token, and **404** when the path is wrong or the API is not published. This checks routing only, not request bodies or response shapes. Full output: [`results/2026-09-28-route-check-no-credentials.md`](results/2026-09-28-route-check-no-credentials.md). No response shown anywhere in this repo is invented — everything logged came back from an actual call to `https://portal-gw.insuremo.com`.
 2. **Spec review.** I compared each API's request table, samples and response tables for contradictions.
 3. **Not done yet: body and response structure on trialx.** This needs a trialx Machine User. See [Pending](#pending-live-body--response-check).
 
@@ -68,14 +68,37 @@ The Notifications Hub endpoint is either hosted outside the InsureMO gateway or 
 
 ## Pending: live body and response check
 
-Every route that answered 401 still needs its request body and response checked against the spec. To run that check:
+Every route that answered 401 still needs its request body and response checked against the spec, with a real trialx Machine User. This is not something I can do without credentials, and I have not fabricated a result for it. To run that check:
 
 ```bash
-newman run Trialx-Portal-APIs-Mandatory.postman_collection.json \
+newman run Trialx-Portal-APIs.postman_collection.json \
   -e Trialx.postman_environment.json \
   --env-var username=<machine user> --env-var password=<password> \
   --reporters cli,json --reporter-json-export run.json
-python3 summarize_run.py run.json > results/run-mandatory.md
+python3 summarize_run.py run.json > results/run-$(date +%F).md
 ```
 
-Each request gets one of these verdicts: `ROUTE MISSING`, `NO TOKEN`, `NO PERMISSION` (API not granted to the tenant), `REJECTED` (trialx rejected the request structure or data), `STRUCTURE FAIL` (the response differs from the spec) or `OK`. Repeat the run with the Full collection to check the optional fields.
+Each request (Mandatory and Full, both in the one collection) gets one of these verdicts, with a suggested next action:
+
+| Verdict | Meaning | Next action |
+|---|---|---|
+| `OK` | 2xx and the response shape matches the spec | None |
+| `STRUCTURE FAIL` | 2xx but the response shape differs from the spec | Likely a doc fix - tell me the failing check and I will update the spec doc |
+| `ROUTE MISSING` | Gateway 404 | Confirm the path with the platform team; if correct, the spec's endpoint is wrong |
+| `REJECTED` | Other 4xx/5xx (trialx rejected the request) | Read the response body; may be a doc fix if the spec calls a rejected field valid |
+| `NO TOKEN` | 401 | Check `username`/`password` in the environment - not a doc issue |
+| `NO PERMISSION` | 403 | Ask the API owner to grant the API to trialx - not a doc issue |
+
+Send me the resulting `run.json` or the Markdown table and I will go through every `STRUCTURE FAIL`, `ROUTE MISSING` and `REJECTED` row, compare it against the spec doc, and update whichever individual API doc is wrong.
+
+## Doc updates already made from the spec-reading pass (not yet confirmed against live data)
+
+I added a "Doc update needed" note to the affected section of each of these docs on 28 Sep 2026, based on reading the spec text (not a live trialx call — see the "Confirmed on trialx" vs "flagged" wording in each note for which):
+
+- [API-06 Search Collections](https://claude.ai/code/artifact/d7e0c71b-dd35-4e7e-b9dc-4854d9e004e5) — `SearchCondition` vs `QueryCondition` mismatch between the Request table and the sample
+- [API-09 Query Commission](https://claude.ai/code/artifact/a2ef411d-2e14-4642-8eb4-06b7bb0e8d70) — request uses SearchCondition paging, response is PagedResult
+- [API-11 Ratetable Lookup](https://claude.ai/code/artifact/2e27a287-916c-4ba8-b599-c93852cef974) — `conditions` listed as both a query param and a body field
+- [API-17 Quotation Query](https://claude.ai/code/artifact/e8d78309-0ae9-4323-ab2e-34af2fff123f) — sample request `PageNumber: 0` vs sample response `PageNumber: 1`
+- [API-20 Proposal and Policy Query](https://claude.ai/code/artifact/4244ed3c-29f9-407e-a912-0f6b799a48a7) — three different paths given for one API
+
+These notes flag the issue; they do not resolve it. Once you run the collection against trialx, I will replace each note with the confirmed answer (or correct it, if the live behaviour differs from what the note assumed).
