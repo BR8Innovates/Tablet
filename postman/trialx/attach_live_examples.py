@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 """Attach real, captured trialx responses as saved Postman examples - clearly
-labeled with what actually happened, not just that something was captured.
+labeled with what actually happened, not just that something was captured -
+and reorder the collection so working requests come first everywhere.
 
 A saved example existing does NOT mean the call succeeded: this script tags
-every item's own name and its example's name with the real verdict (OK,
-STRUCTURE FAIL, REJECTED, ROUTE MISSING, ...) computed the same way
-summarize_run.py computes it, so pass vs fail is visible in the Postman
-sidebar without opening the request. Nothing is invented: every example is a
-response trialx itself returned during the live run recorded in run-live.json
-(28 Sep 2026, Machine User ravi.teja@insuremo.com, tenant trialx). Any
+every item's own name with " (Pending)" whenever the real verdict (computed
+the same way summarize_run.py computes it) is anything other than OK, and
+leaves a working request's name plain. It then reorders every folder's items,
+and the top-level folders themselves, so requests/folders with fewer pending
+results sort first - working APIs first, pending ones at the end, in every
+folder. Nothing is invented: every example is a response trialx itself
+returned during the live run recorded in the given Newman report. Any
 access_token seen in a body is redacted before it is written anywhere.
 
 Requests that were deliberately excluded from that run (Upload Document,
 FNOL, SMS/Email sends - see README.md) get no example and are tagged
-[NOT RUN] instead: there is no real response to attach, and none is
+"(Pending)" too: there is no real response to attach, and none is
 fabricated to fill the gap.
 
 Run after build_collections.py, pointing at the Newman JSON report:
@@ -30,16 +32,8 @@ from summarize_run import verdict
 HERE = os.path.dirname(os.path.abspath(__file__))
 NS = uuid.UUID("5b1f3c0e-7a51-4d0c-9d44-7f1e0c2b9a10")
 RUN_DATE = "28 Sep 2026"
-
-TAG = {
-    "OK": "[OK]",
-    "STRUCTURE FAIL": "[STRUCTURE FAIL]",
-    "REJECTED": "[REJECTED]",
-    "ROUTE MISSING": "[ROUTE MISSING]",
-    "NO TOKEN": "[NO TOKEN]",
-    "NO PERMISSION": "[NO PERMISSION]",
-    "NO RESPONSE": "[NO RESPONSE]",
-}
+PENDING_SUFFIX = " (Pending)"
+_PENDING_RE = re.compile(re.escape(PENDING_SUFFIX) + r"\s*$")
 
 
 def uid(*parts):
@@ -75,7 +69,7 @@ def build_example(item, ex, v, code):
     req = item["request"]
     return {
         "id": uid(item["id"], "live-example"),
-        "name": f"{TAG.get(v, '['+v+']')} {code} {status} — real trialx response, {RUN_DATE}".strip(),
+        "name": f"{v} {code} {status} — real trialx response, {RUN_DATE}".strip(),
         "originalRequest": {"method": req.get("method"), "header": req.get("header", []),
                              "url": req.get("url"), "body": req.get("body")},
         "status": status,
@@ -87,21 +81,36 @@ def build_example(item, ex, v, code):
 
 
 def attach(items, examples_by_id, stats):
+    """Tags names, attaches examples, then sorts this level so working items come
+    first. Sorted by the fraction pending, not the raw count - otherwise a folder
+    that is 96% working (e.g. 4 pending of 101) would sort after a 2-item folder
+    that is 100% broken, just because 4 > 2. Ties keep their original relative
+    order (Python's sort is stable). Returns (reordered items, pending count,
+    total count at this level) so a parent folder can compute its own fraction."""
+    entries = []
     for it in items:
         if "item" in it:
-            attach(it["item"], examples_by_id, stats)
+            new_children, pending_count, total_count = attach(it["item"], examples_by_id, stats)
+            it["item"] = new_children
+            entries.append((it, pending_count, total_count))
         else:
-            base_name = re.sub(r"^\[[^\]]+\]\s*", "", it["name"])
+            base_name = _PENDING_RE.sub("", it["name"])
             ex = examples_by_id.get(it["id"])
             if ex is not None:
                 v, code = real_verdict(ex)
                 it["response"] = [build_example(it, ex, v, code)]
-                it["name"] = f"{TAG.get(v, '['+v+']')} {base_name}"
+                pending = 0 if v == "OK" else 1
                 stats[v] = stats.get(v, 0) + 1
             else:
                 it["response"] = []
-                it["name"] = f"[NOT RUN] {base_name}"
+                pending = 1
                 stats["NOT RUN"] = stats.get("NOT RUN", 0) + 1
+            it["name"] = base_name + (PENDING_SUFFIX if pending else "")
+            entries.append((it, pending, 1))
+    entries.sort(key=lambda e: e[1] / e[2] if e[2] else 0)  # fraction pending, working (0.0) first
+    total_pending = sum(p for _, p, _ in entries)
+    total = sum(t for _, _, t in entries)
+    return [it for it, _, _ in entries], total_pending, total
 
 
 def main(run_path):
@@ -112,18 +121,20 @@ def main(run_path):
     examples_by_id = {ex["item"]["id"]: ex for ex in run["executions"]}  # last one wins if re-run
 
     stats = {}
-    attach(coll["item"], examples_by_id, stats)
+    coll["item"], _, _ = attach(coll["item"], examples_by_id, stats)
     total = sum(stats.values())
     ok = stats.get("OK", 0)
 
     coll["info"]["description"] += (
-        f"\n\n**A saved example does not mean the request succeeded.** Every request's name is tagged with "
-        f"what trialx actually returned on {RUN_DATE} (real Machine User run): "
+        f"\n\n**A saved example does not mean the request succeeded, and a plain name does not mean it is untested.** "
+        f"Every non-OK request's name ends in \"{PENDING_SUFFIX.strip()}\"; a plain name means it returned a real 2xx response "
+        f"matching the spec on {RUN_DATE} (real Machine User run). Working requests are sorted first in every folder, and "
+        f"folders with fewer pending requests sort before folders with more, so the collection reads working-first top to bottom. "
         + ", ".join(f"**{v}** {n}" for v, n in sorted(stats.items(), key=lambda kv: -kv[1]))
-        + f". Only **[OK]** ({ok} of {total}) means a 2xx response whose shape matched the spec. "
-        "[NOT RUN] requests are the write/side-effect ones deliberately excluded from that run "
-        "(Upload Document, FNOL, SMS/Email sends) - no example is invented for them. Every other tag is the "
-        "real response trialx sent back, credentials/tokens redacted; open the request's Examples tab to read it.")
+        + f". Only the {ok} plain-named requests (of {total}) passed. "
+        "\"(Pending)\" requests without an example are the write/side-effect ones deliberately excluded from that run "
+        "(Upload Document, FNOL, SMS/Email sends) - no example is invented for them. Every other \"(Pending)\" request carries the "
+        "real response trialx sent back, credentials/tokens redacted; open its Examples tab to read it.")
 
     json.dump(coll, open(coll_path, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
     open(coll_path, "a", encoding="utf-8").write("\n")

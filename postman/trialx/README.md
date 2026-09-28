@@ -12,21 +12,25 @@
 | `attach_live_examples.py` | Attaches real captured trialx responses (from a Newman JSON report) onto the collection `build_collections.py` just wrote, as saved Postman examples. Run it after `build_collections.py`, pointed at a run report: `python3 attach_live_examples.py run.json`. |
 | `summarize_run.py` | Turns a Newman JSON report into a per-request PASS / error / doc-update table |
 
-## A saved example does not mean the request succeeded
+## Naming: working requests first, "(Pending)" at the end of the name for anything not confirmed working
 
-Every request's **name in the Postman sidebar is tagged with what trialx actually returned**, so you never have to open a request to find out if it worked. Current tags are from the 28 Sep 2026 run made after fixing the request parameters that could be fixed (real product/business-type/claim values, corrected bodies, corrected code table names — see `STRUCTURE-CHECK.md` §6 for exactly what changed and why):
+A plain request name (e.g. `Search Sales Channel Pool — Mandatory`) means it returned a real 2xx response matching the spec on the 28 Sep 2026 run. Anything else has its name suffixed **`(Pending)`** — `Ratetable Lookup — Mandatory (Pending)` — so you never have to open a request to know whether it works.
 
-| Tag | Count (28 Sep, after fixes) | Meaning |
+**Working requests are sorted first in every folder, and folders with a lower fraction of pending requests sort before folders with more** — so the whole collection reads working-first, top to bottom, and a folder that's 96% working (e.g. Datatable and LoadTables, 4 pending of 101) sorts ahead of a 2-item folder that's 100% broken, not after it just because 4 > 2.
+
+| State | Count (28 Sep, after fixes) | Meaning |
 |---|---|---|
-| `[OK]` | 136 | 2xx and the response shape matched the spec — the only tag that means "works as documented" |
-| `[REJECTED]` | 20 | trialx returned a 4xx/5xx other than 401/403/404 — every one of these needs data this collection cannot obtain on its own (a real `customerId`, a data/rate table name only the Config team has, or a `Get Token` call with no password supplied) |
-| `[STRUCTURE FAIL]` | 5 | 2xx, but the response shape differs from the spec (documented, known nuances — e.g. an array field omitted on an empty result set) |
-| `[ROUTE MISSING]` | 4 | trialx returned 404 — the spec's own path is wrong; the working alternative is included as a separate request |
-| `[NOT RUN]` | 23 | deliberately excluded (Upload Document, FNOL, SMS/Email sends) — no example, none invented |
+| Plain name (no suffix) | 136 | 2xx and the response shape matched the spec — the only state that means "works as documented" |
+| `(Pending)`, REJECTED | 20 | trialx returned a 4xx/5xx other than 401/403/404 — every one of these needs data this collection cannot obtain on its own (a real `customerId`, a data/rate table name only the Config team has, or a `Get Token` call with no password supplied) |
+| `(Pending)`, STRUCTURE FAIL | 5 | 2xx, but the response shape differs from the spec (documented, known nuances — e.g. an array field omitted on an empty result set) |
+| `(Pending)`, ROUTE MISSING | 4 | trialx returned 404 — the spec's own path is wrong; the working alternative is included as a separate, plain-named request |
+| `(Pending)`, not run | 23 | deliberately excluded (Upload Document, FNOL, SMS/Email sends) — no example, none invented |
 
-Only `[OK]` requests passed. The other 165 non-`[NOT RUN]` requests all carry a real saved example too — the exact response trialx sent — but that example is evidence of what happened, not proof of success; open its Examples tab to see why it's tagged that way. Nothing here is invented: no spec sample JSON, no placeholder data, and any `access_token` inside a body is redacted before it's saved. `results/2026-09-28-live-run-fixed.md` and `STRUCTURE-CHECK.md` §5-6 have the same findings written out.
+Every `(Pending)` request except the 23 not-run ones still carries a real saved example — the exact response trialx sent — but that example is evidence of what happened, not proof of success; open its Examples tab to see why it's pending. Nothing here is invented: no spec sample JSON, no placeholder data, and any `access_token` inside a body is redacted before it's saved. `results/2026-09-28-live-run-reordered.md` and `STRUCTURE-CHECK.md` §5-6 have the same findings written out.
 
-`build_collections.py` on its own still writes a clean collection with **no** examples and **no tags**, only structure tests — that's the base you get from the spec alone. Run `attach_live_examples.py <run.json>` any time you want the tags and saved examples to reflect a newer trialx run (it overwrites the previous tag and example for every request in the new run).
+**Query and body parameters are real, literal values, not `{{placeholders}}`** — e.g. `productCode=FCMOTOR`, `"BusinessType": "001"` — everywhere a confirmed real value exists, so a request is ready to run as soon as you add a token, with no environment variables to fill in first. The only things still templated are auth/connection plumbing (`{{baseUrl}}`, `{{access_token}}`, `{{username}}`, `{{password}}`) and the IDs a prior request's test script sets live from its own real response (`{{channelId}}`, `{{policyId}}`, `{{claimNo}}`, ...) — those have to stay templated, or the automatic chaining described below stops working. A parameter with no confirmed real value (a data/rate table name the Config team hasn't provided) is left as `{{placeholder}}` on purpose, rather than silently blanked to an empty string.
+
+`build_collections.py` on its own still writes a clean, unordered collection with **no** examples and **no `(Pending)` tags**, only structure tests and inlined values — that's the base you get from the spec alone. Run `attach_live_examples.py <run.json>` any time you want the tags, ordering, and saved examples to reflect a newer trialx run (it overwrites the previous tag, position, and example for every request in the new run).
 
 ## Data used at runtime is real trialx data, not invented data
 
