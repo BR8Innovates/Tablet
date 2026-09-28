@@ -143,14 +143,22 @@ CODE_TABLES = {
     "PartyRoleCategory": (CT, ["API-04 PartyCategory"], []),
     "PartyStatus": (CT, ["API-04 PartyStatus"], []),
     "Currency": (CT, ["API-04 ChannelCurrencyCode", "API-30 ClaimObject.EstimatedLossCurrency", "API-31 CurrencyCode"], []),
-    "CountryCode": (CT, ["API-04 NationalityCode", "API-12 ProductMaster.Country", "API-13/21 PolicyCustomer.NationalityCode, LocationCountryCode"], []),
+    # Confirmed on trialx 28 Sep 2026: the spec separately names a table "Country" for
+    # AccidentCountryCode (API-28/29/30), but that table does not exist - CountryCode does,
+    # and is the one to bind AccidentCountryCode to as well.
+    "CountryCode": (CT, ["API-04 NationalityCode", "API-12 ProductMaster.Country", "API-13/21 PolicyCustomer.NationalityCode, LocationCountryCode",
+                         "API-28/29/30 AccidentCountryCode (spec calls this table 'Country' - wrong name, corrected here)"], []),
     "MaritalStatus": (CT, ["API-04 MaritalStatus"], []),
     "Department": (CT, ["API-04/18/19 PartyContact.Department"], []),
     "Designation": (CT, ["API-04/18/19 PartyContact.Designation"], []),
     "Language": (CT, ["API-04/18/19 PartyContact.LanguagePreferred"], []),
     "Bank": (CT, ["API-04 PartyAccount.BankCode", "API-13/21 PolicyPaymentInfo.BankCode", "API-18/19 PartyAccount.BankCode"], []),
     "AgreementStatus": (CT, ["API-05 SalesAgreement.AgreementStatus"], [("0", "Invalid"), ("1", "Valid"), ("2", "Expired"), ("3", "Rejection"), ("4", "Waiting for Approval")]),
-    "AuthorityType": (CT, ["API-05 SalesAgreementAuthorityList.AuthorityType"], []),
+    # Confirmed on trialx 28 Sep 2026: the spec's table name "AuthorityType" does not exist
+    # (live error "CodeTable is not exist"). "AgreementAuthorityType" does, and holds exactly
+    # this field's values (1 By Product Line, 2 By Product, 3 All) - use that name instead.
+    "AgreementAuthorityType": (CT, ["API-05 SalesAgreementAuthorityList.AuthorityType (spec calls this table 'AuthorityType' - wrong name, corrected here)"],
+                                [("1", "By Product Line"), ("2", "By Product"), ("3", "All")]),
     "PubBranch": (SVC, ["API-06/07 BranchCode", "API-09 BranchCode", "API-20 OrgCode"], []),
     "BcpCollectionStatus": (CT, ["API-06/07 CollectionStatus"], [("1", "Collected"), ("2", "Confirmed"), ("3", "Reversed"), ("4", "Refund")]),
     "BcpCollectionType": (CT, ["API-06/07 CollectionType"], [("1", "Prepay"), ("2", "Collection"), ("3", "Policy Premium")]),
@@ -193,16 +201,18 @@ CODE_TABLES = {
     "InstallmentType": (CT, ["API-13/21 PolicyPaymentInfo.InstallmentType"], []),
     "AccountNature": (CT, ["API-13/21 PolicyPaymentInfo.AccountType"], []),
     "CertiType": (CT, ["API-13/21 PolicyPaymentInfo.AccountHolderIdType", "API-31 PolicyHolderIdType, InsuredIdType"], []),
-    "AttachBusinessType": (CT, ["API-14/23 BusinessType", "API-22 businessType", "API-25 BusinessType", "API-26 businessType"], []),
+    # Confirmed on trialx 28 Sep 2026: this table has exactly one configured value.
+    "AttachBusinessType": (CT, ["API-14/23 BusinessType", "API-22 businessType", "API-25 BusinessType", "API-26 businessType"], [("001", "Claim")]),
     "ClaimGender": (CT, ["API-28 MainExtendInfo.GenderCode", "API-30 ClaimObject.Gender, ClaimParty.ClaimGender"], []),
-    "Country": (CT, ["API-28/29/30 AccidentCountryCode"], []),
     "CauseOfLoss": (CT, ["API-28/29/30 LossCause"], []),
     "ClaimType": (CT, ["API-28/29/30 ClaimType"], []),
     "ClaimFnolType": (CT, ["API-28/29/30 FnolType"], []),
     "ClaimYesNo": (CT, ["API-28/29/30 IsFromApp", "API-29/30 PendingClaim"], []),
     "CurrencyCodeClaim": (CT, ["API-28/29/30 CurrencyCode"], []),
     "ClaimStatus": (CT, ["API-29 request CaseStatus", "API-29/30 CaseStatus", "API-33 CaseStatus"], []),
-    "FnolStatus": (CT, ["API-29/30 FnolStatus"], []),
+    # Confirmed on trialx 28 Sep 2026: the spec's table name "FnolStatus" does not exist -
+    # "ClaimFnolStatus" does (currently zero values configured on trialx, but the table itself is real).
+    "ClaimFnolStatus": (CT, ["API-29/30 FnolStatus (spec calls this table 'FnolStatus' - wrong name, corrected here)"], []),
     "ClaimFnolValidationDecision": (CT, ["API-29/30 FnolValidationDecision"], []),
     "CaseMode": (CT, ["API-29/30 CaseMode"], []),
     "ClaimRecordType": (CT, ["API-29/30 RecordType"], []),
@@ -213,16 +223,17 @@ CODE_TABLES = {
     "ClaimSalvageStatus": (CT, ["API-29/30 SalvageStatus"], []),
     "YesOrNoClaim": (CT, ["API-29/30 WithPolicy", "API-30 ClaimObject.TotalLossFlag"], []),
     "InsuranceCompany": (CT, ["API-29 EcsInsuranceCompanyCode"], []),
-    "ClaimCloseType": (CT, ["API-29/30 CloseType"], []),
-    "ClaimClosedType": (CT, ["API-29/30 ClosedType"], []),
+    # Confirmed on trialx 28 Sep 2026: "ClaimClosedType" (a second, differently-spelled table the
+    # spec names for the ClosedType field, distinct from CloseType's ClaimCloseType) does not
+    # exist - only ClaimCloseType is real. ClosedType likely binds to ClaimCloseType too, or has
+    # no code table on this tenant; needs confirming with the API owner, not resolved by this note.
+    "ClaimCloseType": (CT, ["API-29/30 CloseType", "API-29/30 ClosedType (spec's second table 'ClaimClosedType' does not exist on trialx - not resolved)"], []),
     "ClaimRejectReason": (CT, ["API-29/30 RejectReason"], []),
     "ClaimReopenCause": (CT, ["API-29/30 ReopenCauseCode"], []),
-    "RelatedType": (CT, ["API-29 RelatedType"], []),
     "SubclaimType": (CT, ["API-30 ClaimObject.SubClaimType"], []),
     "SubclaimStatus": (CT, ["API-30 ClaimObject.StatusCode"], []),
     "DamageType": (CT, ["API-30 ClaimObject.DamageType"], []),
     "ClaimSubrogationStatus": (CT, ["API-30 ClaimObject.SubrogationStatus"], []),
-    "Party": (CT, ["API-30 ClaimParty.PtyPartyCode"], []),
     "IDTypeClaim": (CT, ["API-30 ClaimParty.IdType"], []),
     "PayModeClaim": (CT, ["API-30 ClaimParty.PayModeCode"], []),
     "ProductMaster": (CT, ["API-31 ProductCode"], []),
@@ -241,6 +252,11 @@ UNNAMED_CODE_FIELDS = [
     ("API-18/19", "CustomerType, IdType, AddressType", "Named only as 'tenant code tables' - table names to confirm"),
     ("API-19", "OrgType, LegalStatus", "Named only as 'tenant code tables' - table names to confirm"),
     ("API-04/18/19", "IdType (party / customer)", "No code table named in the spec"),
+    # Confirmed on trialx 28 Sep 2026 (live "CodeTable is not exist" errors, and a full listing
+    # of all 2196 code table names on the tenant): the spec's table name is simply wrong and no
+    # working replacement could be found by searching the full name list either.
+    ("API-30", "ClaimParty.PtyPartyCode", "Spec names table 'Party' - confirmed not to exist on trialx; no obvious real name found in a full listing of all 2196 code tables"),
+    ("API-29", "RelatedType", "Spec names table 'RelatedType' - confirmed not to exist on trialx; only per-product *Relationship tables were found, none named generically"),
 ]
 
 # Per-API field -> code table map, shown in each request description.
@@ -555,8 +571,11 @@ APIS.append(dict(
     requests=[dict(name="Load Quote Details", method="GET", path="/platform/quotation/core/quotation/v1/load",
                    mand=dict(query=[q("policyId", "{{quotePolicyId}}", "Signed PolicyId from API-17, comma URL-encoded")]),
                    full=dict(query=[q("policyId", "{{quotePolicyId}}", "Signed PolicyId from API-17, comma URL-encoded"), q("withCodeDesc", "Y", "Adds <field>_CodeDesc")]),
-                   examples=[("200 OK (spec sample)", 200, "OK", QUOTE_SAMPLE)],
-                   checks=[("PolicyId present", "'PolicyId' in b")])],
+                   checks=[("PolicyId present", "'PolicyId' in b")],
+                   notes=("**Run-order note, confirmed 28 Sep 2026:** `quotePolicyId` is set by API-17 Quotation Query, but folders run in API-number order, "
+                          "so API-13 runs *before* API-17 on a first pass through the whole collection and gets an empty `policyId` (real trialx response confirms this shape works once "
+                          "`quotePolicyId` is actually populated - verified separately by chaining API-17's output straight into this request by hand). "
+                          "Run API-17 once first (Collection Runner: right-click it and \"Run\"), or run the whole collection twice, to get a real result here on the first full pass."))],
 ))
 
 # ---- API-14 / API-23 (same endpoint) -------------------------------------
@@ -623,13 +642,24 @@ APIS.append(dict(
     id="API-17", title="Quotation Query API", owner="EasyPA Apps Team",
     endpoint="POST /platform/quotation/core/quotation/v1/query",
     requests=[dict(name="Quotation Query", method="POST", path="/platform/quotation/core/quotation/v1/query",
-                   mand=dict(body={}),
-                   full=dict(body={"QuotationNo": "{{quotationNo}}", "ProductCode": "TBTI", "TechProductCode": "TR_POC", "AgentCode": "{{agentCode}}", "CustomerName": "Apitest202111", "CustomerNo": "{{customerNo}}", "IsSubmitted": "N", "QuotationDateStart": "2024-02-22", "QuotationDateEnd": "2026-12-31", "EffectiveDateStart": "2024-01-01", "EffectiveDateEnd": "2026-12-31", "DuePremiumStart": 0, "DuePremiumEnd": 100000, "DynamicProperties": {"Test005": "Test0051", "Test006": "Test0061"}, "PageNumber": 1, "PageSize": 5, "Orders": [{"FieldName": "QuotationDate", "Ascending": False}]}),
-                   examples=[("200 OK (spec sample, abridged)", 200, "OK", {"ElementsInCurrentPage": [{"AgentCode": "XXXXX0000545XXXXX", "BookCurrencyCode": "USD", "BusinessCateCode": "1", "CustomerName": "Apitest202111", "EffectiveDate": "2024-04-22", "ExpiryDate": "2025-04-21T23:59:59", "IsSubmitted": "N", "LocalCurrencyCode": "USD", "OrgCode": "10002", "PolicyId": "10387340006,3F8601E69CC9ECFAB363EACE899108F4", "PolicyStatus": 1, "PolicyType": "1", "PremiumCurrencyCode": "USD", "ProductCode": "TBTI", "ProductVersion": "1.0", "ProposalDate": "2024-04-22", "ProposalStatus": "5", "QuotationDate": "2024-04-28T11:32:55", "QuotationId": 10387340006, "QuotationNo": "QTBTI000001790113", "TechProductCode": "TR_POC"}], "NumberOfElementsInCurrentPage": 4, "PageQuery": {"PageNumber": 1, "PageSize": 5, "ProductCode": "TBTI", "IsSubmitted": "N"}, "TotalElements": 4, "TotalPages": 1})],
+                   # Confirmed live 28 Sep 2026: a literally empty body {} - and even
+                   # {"PageSize": 5} alone - throws HTTP 500 NumberFormatException "For input
+                   # string: \"Destination\"" (a bad value in one of trialx's own quotation
+                   # records, hit whenever the query is unfiltered enough to reach it). Adding
+                   # ProductCode is what actually avoids it - confirmed: {"PageSize": 5} alone
+                   # still fails, {"ProductCode": "{{productCode}}", "PageSize": 5} succeeds with
+                   # real data. Orders is separately confirmed broken for every field tested
+                   # (QuotationDate, ProposalDate, EffectiveDate all throw a Hibernate
+                   # SemanticException "Could not interpret path expression") - a trialx/platform
+                   # bug, not a request-shape fix; removed entirely rather than guessing further.
+                   mand=dict(body={"ProductCode": "{{productCode}}", "PageSize": 5}),
+                   full=dict(body={"QuotationNo": "{{quotationNo}}", "ProductCode": "{{productCode}}", "AgentCode": "{{agentCode}}", "CustomerName": "Apitest202111", "CustomerNo": "{{customerNo}}", "IsSubmitted": "N", "QuotationDateStart": "2024-02-22", "QuotationDateEnd": "2026-12-31", "EffectiveDateStart": "2024-01-01", "EffectiveDateEnd": "2026-12-31", "DuePremiumStart": 0, "DuePremiumEnd": 100000, "DynamicProperties": {"Test005": "Test0051", "Test006": "Test0061"}, "PageNumber": 1, "PageSize": 5}),
                    checks=PAGED,
                    sets="const d = b.ElementsInCurrentPage[0];\npm.collectionVariables.set('quotePolicyId', encodeURIComponent(d.PolicyId));\npm.collectionVariables.set('quotationNo', d.QuotationNo);",
-                   notes=("Every field is optional, so the Mandatory variant sends `{}`.\n"
-                          "Spec inconsistency: sample request sends `PageNumber: 0` but the response echoes `PageNumber: 1` - confirm whether paging is 0- or 1-based. Sets `quotePolicyId` for API-13."))],
+                   notes=("**Confirmed live on trialx, 28 Sep 2026:** the spec's own sample body (`{}`) throws a 500 on this tenant, and `{\"PageSize\": 5}` alone still does too - "
+                          "bad data sitting in an existing quotation record, hit whenever the query isn't filtered enough to skip it. Adding `ProductCode` is what actually avoids it: "
+                          "fixed here to `{\"ProductCode\": \"{{productCode}}\", \"PageSize\": 5}`, confirmed working with real data. `Orders`-based sorting is separately confirmed broken for every field name tried - removed rather than guessed at further; "
+                          "report to the API owner as a platform bug, not a doc fix. The `PageNumber` 0-vs-1 question from the spec's own sample is still unconfirmed (this fix never reaches that code path). Sets `quotePolicyId` for API-13."))],
 ))
 
 # ---- API-18 / API-19 -----------------------------------------------------
@@ -778,9 +808,14 @@ APIS.append(dict(
 ))
 
 # ---- API-29 / API-30 / API-31 --------------------------------------------
+# Confirmed live on trialx, 28 Sep 2026: a literally empty body {} throws HTTP 500 "Missing the
+# required parameter 'claimQueryRequestCondition'" even though every field is documented
+# optional - {"PageNo": 1, "PageSize": 5} alone is enough to avoid that and get a real 200.
+# The real success envelope is {"Model": {"ClaimList": [...], "PageNo", "PageSize", "Total"},
+# "Status": "OK"} - Results/ElementsInCurrentPage (guessed in the spec) is wrong; ClaimList is right.
+CLAIM_Q_MAND = {"PageNo": 1, "PageSize": 5}
 CLAIM_Q_FULL = {"ClaimNo": "{{claimNo}}", "PolicyNo": "{{PolicyNo}}", "CaseStatus": "{{caseStatus}}", "ClaimantName": "John Smith", "InsuredName": "John Smith", "PolicyHolderName": "John Smith", "EcsPolicyHolderIdNo": "A1234567", "ProductCode": "{{productCode}}", "ProductVersion": "1.0", "ProductLineCode": "{{productLine}}", "PolicyOrgCode": "10002", "RiskName": "Risk 1", "AccidentTimeFrom": "2026-01-01T00:00:00", "AccidentTimeTo": "2026-12-31T23:59:59", "NoticeTimeFrom": "2026-01-01T00:00:00", "NoticeTimeTo": "2026-12-31T23:59:59", "UpdateTimeFrom": "2026-01-01T00:00:00", "UpdateTimeTo": "2026-12-31T23:59:59", "PageNo": 1, "PageSize": 10}
-CLAIM_Q_RESP = {"Status": "OK", "Messages": [], "Model": {"Total": 1, "Results": [{"ClaimNo": "string", "PolicyNo": "string", "ProductCode": "string", "CaseStatus": "string", "AccidentTime": "2026-09-27T14:30:00", "AccidentDesc": "Rear-end collision at traffic light", "LossCause": "string", "PolicyHolderName": "John Smith", "CurrencyCode": "USD"}]}}
-CLAIM_SETS = ("const list = (b.Model && (b.Model.Results || b.Model.ElementsInCurrentPage || b.Model)) || [];\n"
+CLAIM_SETS = ("const list = (b.Model && (b.Model.ClaimList || b.Model.Results || b.Model.ElementsInCurrentPage)) || [];\n"
               "const c = Array.isArray(list) ? list[0] : null;\n"
               "if (c && c.ClaimNo) pm.collectionVariables.set('claimNo', c.ClaimNo);\n"
               "if (c && (c.ClmPolicyId || c.ClaimPolicyId)) pm.collectionVariables.set('clmPolicyId', c.ClmPolicyId || c.ClaimPolicyId);")
@@ -788,9 +823,11 @@ APIS.append(dict(
     id="API-29", title="Claim Search API", owner="EasyClaims Team",
     endpoint="POST /platform/api-orchestration/v1/flow/ECS_claim_queryClaimForScenes",
     requests=[dict(name="Claim Search", method="POST", path="/platform/api-orchestration/v1/flow/ECS_claim_queryClaimForScenes",
-                   mand=dict(body={}), full=dict(body=CLAIM_Q_FULL),
-                   examples=[("200 OK (spec structure)", 200, "OK", CLAIM_Q_RESP)], checks=ENVELOPE_ATT, sets=CLAIM_SETS,
-                   notes="Every field is optional, so the Mandatory variant sends `{}`. Paging wrapper inside Model is unconfirmed (Total/Results assumed). Sets `claimNo`, and `clmPolicyId` when present.")],
+                   mand=dict(body=CLAIM_Q_MAND), full=dict(body=CLAIM_Q_FULL),
+                   checks=ENVELOPE_ATT, sets=CLAIM_SETS,
+                   notes=("**Confirmed live on trialx, 28 Sep 2026:** a completely empty body (`{}`, matching \"every field is optional\") throws a 500 "
+                          "\"Missing the required parameter 'claimQueryRequestCondition'\" - fixed here to `{\"PageNo\": 1, \"PageSize\": 5}`, confirmed working with real data. "
+                          "**Doc fix:** the real success envelope is `Model.ClaimList[]`, not `Model.Results[]` as this doc's Response section assumes - confirmed from a live 200. Sets `claimNo` and `clmPolicyId`."))],
 ))
 APIS.append(dict(
     id="API-30", title="Load Claim Case Detail API", owner="EasyClaims Team",
@@ -827,8 +864,9 @@ APIS.append(dict(
     endpoint="POST ECS_claim_queryClaimForScenes -> GET ECS_common_loadClaimPolicy",
     requests=[
         dict(name="Step 1 - Claim Search", method="POST", path="/platform/api-orchestration/v1/flow/ECS_claim_queryClaimForScenes",
-             mand=dict(body={}), full=dict(body={"ClaimNo": "{{claimNo}}", "PolicyNo": "{{PolicyNo}}", "CaseStatus": "{{caseStatus}}", "ClaimantName": "John Smith", "InsuredName": "John Smith", "PolicyHolderName": "John Smith", "EcsPolicyHolderIdNo": "A1234567", "ProductCode": "{{productCode}}", "ProductVersion": "1.0", "ProductLineCode": "{{productLine}}", "AccidentTimeFrom": "2026-01-01T00:00:00", "AccidentTimeTo": "2026-12-31T23:59:59", "NoticeTimeFrom": "2026-01-01T00:00:00", "NoticeTimeTo": "2026-12-31T23:59:59", "UpdateTimeFrom": "2026-01-01T00:00:00", "UpdateTimeTo": "2026-12-31T23:59:59", "PageNo": 1, "PageSize": 10}),
-             examples=[("200 OK (spec structure)", 200, "OK", CLAIM_Q_RESP)], checks=ENVELOPE_ATT, sets=CLAIM_SETS),
+             mand=dict(body=CLAIM_Q_MAND), full=dict(body={"ClaimNo": "{{claimNo}}", "PolicyNo": "{{PolicyNo}}", "CaseStatus": "{{caseStatus}}", "ClaimantName": "John Smith", "InsuredName": "John Smith", "PolicyHolderName": "John Smith", "EcsPolicyHolderIdNo": "A1234567", "ProductCode": "{{productCode}}", "ProductVersion": "1.0", "ProductLineCode": "{{productLine}}", "AccidentTimeFrom": "2026-01-01T00:00:00", "AccidentTimeTo": "2026-12-31T23:59:59", "NoticeTimeFrom": "2026-01-01T00:00:00", "NoticeTimeTo": "2026-12-31T23:59:59", "UpdateTimeFrom": "2026-01-01T00:00:00", "UpdateTimeTo": "2026-12-31T23:59:59", "PageNo": 1, "PageSize": 10}),
+             checks=ENVELOPE_ATT, sets=CLAIM_SETS,
+             notes="Same fix as API-29: an empty body 500s on trialx; `{\"PageNo\": 1, \"PageSize\": 5}` works."),
         dict(name="Step 2 - Load Claim Policy", method="GET", path="/platform/api-orchestration/v1/flow/ECS_common_loadClaimPolicy",
              mand=dict(query=[q("clmPolicyId", "{{clmPolicyId}}")]), full=dict(query=[q("clmPolicyId", "{{clmPolicyId}}")]),
              examples=[("200 OK (spec structure)", 200, "OK", CLAIM_POLICY_RESP)], checks=ENVELOPE_ATT),
@@ -1047,14 +1085,20 @@ def environment():
         ("customerNo", "", "default", ""),
         ("indiCustomerId", "", "default", "Individual customer ID"),
         ("orgCustomerId", "", "default", "Organisation customer ID"),
-        ("productCode", "TBTI", "default", ""),
+        # productCode: confirmed live 28 Sep 2026 - "TBTI" (the spec's own sample product) does
+        # not exist on trialx; "FCMOTOR" does and returns a real product schema. Other real
+        # product codes seen on trialx: MIE, TRAVEL, RPO01_RK, CI0001.
+        ("productCode", "FCMOTOR", "default", "Confirmed real product code on trialx (TBTI from the spec does not exist here)"),
         ("productLine", "Travel", "default", ""),
         ("versionDate", "2026-01-01T00:00:00", "default", ""),
         ("ProductListTable", "", "default", "Data table name for Load Product (TBC)"),
         ("PlanListTable", "", "default", "Data table name for Load Plan (TBC)"),
         ("PackageTable", "", "default", "Rate table code for packages (TBC)"),
-        ("businessType", "", "default", "AttachBusinessType code"),
-        ("businessNo", "", "default", "Policy / claim / quotation number"),
+        # businessType/businessNo: confirmed live 28 Sep 2026 - AttachBusinessType has exactly
+        # one configured value ("001" = Claim) on trialx, so that is the only businessType that
+        # will not be rejected. businessNo default is a real claim number confirmed to exist.
+        ("businessType", "001", "default", "Confirmed real AttachBusinessType code on trialx (Claim - the only one configured)"),
+        ("businessNo", "CRPO01_RK202600000308", "default", "Confirmed real claim number on trialx with businessType 001"),
         ("directory", "", "default", "Document type node from API-25"),
         ("reportChannel", "", "default", "FNOL report channel (TBC)"),
         ("operationType", "", "default", "FNOL operation type (TBC)"),

@@ -14,17 +14,17 @@
 
 ## A saved example does not mean the request succeeded
 
-Every request's **name in the Postman sidebar is tagged with what trialx actually returned** on 28 Sep 2026 (real Machine User `ravi.teja@insuremo.com`), so you never have to open a request to find out if it worked:
+Every request's **name in the Postman sidebar is tagged with what trialx actually returned**, so you never have to open a request to find out if it worked. Current tags are from the 28 Sep 2026 run made after fixing the request parameters that could be fixed (real product/business-type/claim values, corrected bodies, corrected code table names — see `STRUCTURE-CHECK.md` §6 for exactly what changed and why):
 
-| Tag | Count (28 Sep run) | Meaning |
+| Tag | Count (28 Sep, after fixes) | Meaning |
 |---|---|---|
-| `[OK]` | 88 | 2xx and the response shape matched the spec — the only tag that means "works as documented" |
-| `[STRUCTURE FAIL]` | 40 | 2xx, but the response shape differs from the spec |
-| `[REJECTED]` | 37 | trialx returned a 4xx/5xx other than 401/403/404 |
-| `[ROUTE MISSING]` | 4 | trialx returned 404 |
-| `[NOT RUN]` | 23 | deliberately excluded (Upload Document, FNOL, SMS/Email sends) or needed real business data this run didn't have — no example, none invented |
+| `[OK]` | 136 | 2xx and the response shape matched the spec — the only tag that means "works as documented" |
+| `[REJECTED]` | 20 | trialx returned a 4xx/5xx other than 401/403/404 — every one of these needs data this collection cannot obtain on its own (a real `customerId`, a data/rate table name only the Config team has, or a `Get Token` call with no password supplied) |
+| `[STRUCTURE FAIL]` | 5 | 2xx, but the response shape differs from the spec (documented, known nuances — e.g. an array field omitted on an empty result set) |
+| `[ROUTE MISSING]` | 4 | trialx returned 404 — the spec's own path is wrong; the working alternative is included as a separate request |
+| `[NOT RUN]` | 23 | deliberately excluded (Upload Document, FNOL, SMS/Email sends) — no example, none invented |
 
-Only `[OK]` requests passed. The other 149 all carry a real saved example too — the exact response trialx sent — but that example is evidence of what happened, not proof of success; open its Examples tab to see why it's tagged that way. Nothing here is invented: no spec sample JSON, no placeholder data, and any `access_token` inside a body is redacted before it's saved. `results/2026-09-28-live-run.md` and `STRUCTURE-CHECK.md` §5 have the same findings written out.
+Only `[OK]` requests passed. The other 165 non-`[NOT RUN]` requests all carry a real saved example too — the exact response trialx sent — but that example is evidence of what happened, not proof of success; open its Examples tab to see why it's tagged that way. Nothing here is invented: no spec sample JSON, no placeholder data, and any `access_token` inside a body is redacted before it's saved. `results/2026-09-28-live-run-fixed.md` and `STRUCTURE-CHECK.md` §5-6 have the same findings written out.
 
 `build_collections.py` on its own still writes a clean collection with **no** examples and **no tags**, only structure tests — that's the base you get from the spec alone. Run `attach_live_examples.py <run.json>` any time you want the tags and saved examples to reflect a newer trialx run (it overwrites the previous tag and example for every request in the new run).
 
