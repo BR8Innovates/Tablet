@@ -12,13 +12,21 @@
 | `attach_live_examples.py` | Attaches real captured trialx responses (from a Newman JSON report) onto the collection `build_collections.py` just wrote, as saved Postman examples. Run it after `build_collections.py`, pointed at a run report: `python3 attach_live_examples.py run.json`. |
 | `summarize_run.py` | Turns a Newman JSON report into a per-request PASS / error / doc-update table |
 
-## Every example in this collection is a real, captured trialx response
+## A saved example does not mean the request succeeded
 
-**169 of the 192 requests carry a saved example** — the exact response trialx returned on 28 Sep 2026, when this was run with a real Machine User (`ravi.teja@insuremo.com`). Nothing is invented: no spec sample JSON, no placeholder data. Each example's name starts with `Captured from trialx, 28 Sep 2026`; any `access_token` inside a body is redacted before it's saved. `results/2026-09-28-live-run.md` is the same evidence in table form.
+Every request's **name in the Postman sidebar is tagged with what trialx actually returned** on 28 Sep 2026 (real Machine User `ravi.teja@insuremo.com`), so you never have to open a request to find out if it worked:
 
-The 23 requests **without** an example are either the write/side-effect requests deliberately left out of that run (Upload Document, FNOL, every SMS/Email send), or requests that need real business data this run didn't have (a real `customerId`, `attachFileId`, `businessType`, or data/rate table name).
+| Tag | Count (28 Sep run) | Meaning |
+|---|---|---|
+| `[OK]` | 88 | 2xx and the response shape matched the spec — the only tag that means "works as documented" |
+| `[STRUCTURE FAIL]` | 40 | 2xx, but the response shape differs from the spec |
+| `[REJECTED]` | 37 | trialx returned a 4xx/5xx other than 401/403/404 |
+| `[ROUTE MISSING]` | 4 | trialx returned 404 |
+| `[NOT RUN]` | 23 | deliberately excluded (Upload Document, FNOL, SMS/Email sends) or needed real business data this run didn't have — no example, none invented |
 
-`build_collections.py` on its own still writes a clean collection with **no** examples, only structure tests — that's the base you get from the spec alone. Run `attach_live_examples.py` against a fresh Newman report any time you want the saved examples to reflect a newer trialx run (a fresh call overwrites the old example for that request). A request only shows **PASS** on a fresh run when trialx itself returns a 2xx response whose shape matches the spec; anything else fails with the exact response trialx sent.
+Only `[OK]` requests passed. The other 149 all carry a real saved example too — the exact response trialx sent — but that example is evidence of what happened, not proof of success; open its Examples tab to see why it's tagged that way. Nothing here is invented: no spec sample JSON, no placeholder data, and any `access_token` inside a body is redacted before it's saved. `results/2026-09-28-live-run.md` and `STRUCTURE-CHECK.md` §5 have the same findings written out.
+
+`build_collections.py` on its own still writes a clean collection with **no** examples and **no tags**, only structure tests — that's the base you get from the spec alone. Run `attach_live_examples.py <run.json>` any time you want the tags and saved examples to reflect a newer trialx run (it overwrites the previous tag and example for every request in the new run).
 
 ## Data used at runtime is real trialx data, not invented data
 

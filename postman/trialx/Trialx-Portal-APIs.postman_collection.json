@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "a1b3220e-d3a1-5583-95e6-87a456c89037",
     "name": "Trialx - Portal Integration APIs (all 34)",
-    "description": "Portal Integration API Specification v0.2 - all 34 APIs on InsureMO tenant **trialx**, one collection, Mandatory and Full (+ Optional) requests together in each API folder.\n\n**No example responses are saved anywhere in this collection.** Every request has only structure tests; a request only shows PASS if trialx itself returns a 2xx response whose shape matches the spec. A failing test names exactly what trialx returned instead, so you can tell a real error apart from a place the spec documentation needs correcting.\n\n1. Import `Trialx.postman_environment.json`, select it, fill `username` / `password` (Machine User).\n2. Any request auto-fetches a token (collection pre-request script). Or run *API-02 > Get Token*.\n3. Run the whole collection in order (Collection Runner / Newman): search requests store the signed IDs and other real trialx data (channelId, policyId, customerNo, ...) that the load requests need, so later requests use data that is actually present in trialx.\n4. Export the run report and read it with `summarize_run.py` for a plain PASS / error / doc-update table.\n\nSee `STRUCTURE-CHECK.md` for the discrepancies already found by reading the spec, and for which routes 404 on trialx before you even add a token.\n\n**169 of 192 requests carry a saved example captured from a real trialx call on 28 Sep 2026** (credentials/tokens redacted). The 23 without one are either write/side-effect requests deliberately excluded from that run (Upload Document, FNOL, SMS/Email sends), or the folder/table requests where real business data (a real customerId, attachFileId, businessType, table name...) was not available in this run. No example anywhere in this collection was invented.",
+    "description": "Portal Integration API Specification v0.2 - all 34 APIs on InsureMO tenant **trialx**, one collection, Mandatory and Full (+ Optional) requests together in each API folder.\n\n**No example responses are saved anywhere in this collection.** Every request has only structure tests; a request only shows PASS if trialx itself returns a 2xx response whose shape matches the spec. A failing test names exactly what trialx returned instead, so you can tell a real error apart from a place the spec documentation needs correcting.\n\n1. Import `Trialx.postman_environment.json`, select it, fill `username` / `password` (Machine User).\n2. Any request auto-fetches a token (collection pre-request script). Or run *API-02 > Get Token*.\n3. Run the whole collection in order (Collection Runner / Newman): search requests store the signed IDs and other real trialx data (channelId, policyId, customerNo, ...) that the load requests need, so later requests use data that is actually present in trialx.\n4. Export the run report and read it with `summarize_run.py` for a plain PASS / error / doc-update table.\n\nSee `STRUCTURE-CHECK.md` for the discrepancies already found by reading the spec, and for which routes 404 on trialx before you even add a token.\n\n**A saved example does not mean the request succeeded.** Every request's name is tagged with what trialx actually returned on 28 Sep 2026 (real Machine User run): **OK** 88, **STRUCTURE FAIL** 40, **REJECTED** 37, **NOT RUN** 23, **ROUTE MISSING** 4. Only **[OK]** (88 of 192) means a 2xx response whose shape matched the spec. [NOT RUN] requests are the write/side-effect ones deliberately excluded from that run (Upload Document, FNOL, SMS/Email sends) - no example is invented for them. Every other tag is the real response trialx sent back, credentials/tokens redacted; open the request's Examples tab to read it.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -22,7 +22,9 @@
         "type": "text/javascript",
         "exec": [
           "// Auto-fetch a trialx token (API-02) when none is cached or it is about to expire.",
-          "const skip = pm.info.requestName === 'Get Token';",
+          "// item names are \"Get Token — Mandatory\" / \"Get Token — Full (+ Optional)\" - startsWith,",
+          "// not ===, or this never matches and Get Token ends up calling itself recursively.",
+          "const skip = pm.info.requestName.startsWith('Get Token');",
           "const token = pm.collectionVariables.get('access_token');",
           "const exp = Number(pm.collectionVariables.get('token_expires_at') || 0);",
           "if (!skip && (!token || Date.now() > exp) && pm.environment.get('username')) {",
@@ -105,7 +107,7 @@
       "item": [
         {
           "id": "010e9814-3f14-5380-856d-d518637737de",
-          "name": "Search Sales Channel Pool — Mandatory",
+          "name": "[OK] Search Sales Channel Pool — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -142,7 +144,7 @@
           "response": [
             {
               "id": "76e835f7-de2b-59d6-a03c-376938b22e53",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -292,7 +294,7 @@
         },
         {
           "id": "b4d1637d-fbd7-5c24-af01-8b9ce05fe397",
-          "name": "Search Sales Channel Pool — Full (+ Optional)",
+          "name": "[OK] Search Sales Channel Pool — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -329,7 +331,7 @@
           "response": [
             {
               "id": "ab79cc3c-30ee-5806-9c55-bde3bc96d449",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -482,7 +484,7 @@
       "item": [
         {
           "id": "672e0906-1886-5328-8f87-71af4e26369d",
-          "name": "Get Token — Mandatory",
+          "name": "[OK] Get Token — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -519,7 +521,7 @@
           "response": [
             {
               "id": "0752136d-8607-5e4d-abd7-b0549ece8d60",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -630,7 +632,7 @@
         },
         {
           "id": "c9580448-b650-54b3-bc61-c15d8926f3e4",
-          "name": "Get Token — Full (+ Optional)",
+          "name": "[OK] Get Token — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -674,7 +676,7 @@
           "response": [
             {
               "id": "e88e5c15-7486-5104-a95c-d3b63ec3e21e",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -799,7 +801,7 @@
       "item": [
         {
           "id": "72779573-b4f8-5cb1-9e4b-3dc2c723e348",
-          "name": "Send MFA SMS code — Mandatory",
+          "name": "[NOT RUN] Send MFA SMS code — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -857,7 +859,7 @@
         },
         {
           "id": "2173e8bf-822e-5e1a-b4a9-d6d4fcdd5042",
-          "name": "Send MFA SMS code — Full (+ Optional)",
+          "name": "[NOT RUN] Send MFA SMS code — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -915,7 +917,7 @@
         },
         {
           "id": "fb031828-9865-5506-a06d-c75dae34d912",
-          "name": "Verify MFA SMS code — Mandatory",
+          "name": "[NOT RUN] Verify MFA SMS code — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -973,7 +975,7 @@
         },
         {
           "id": "11ffeb25-5548-561a-b1f8-d5d2ff3eeebd",
-          "name": "Verify MFA SMS code — Full (+ Optional)",
+          "name": "[NOT RUN] Verify MFA SMS code — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -1038,7 +1040,7 @@
       "item": [
         {
           "id": "464d2960-8e3e-52b0-88fb-fe38ad30d93c",
-          "name": "Load Sales Channel by Channel ID — Mandatory",
+          "name": "[OK] Load Sales Channel by Channel ID — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -1068,7 +1070,7 @@
           "response": [
             {
               "id": "af4ce45a-372e-5e01-b7d3-83bb2c8b004d",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -1207,7 +1209,7 @@
         },
         {
           "id": "0df4274b-5c6e-583b-b8a8-3c9719a6227d",
-          "name": "Load Sales Channel by Channel ID — Full (+ Optional)",
+          "name": "[OK] Load Sales Channel by Channel ID — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -1237,7 +1239,7 @@
           "response": [
             {
               "id": "fb75dec6-190f-5ca9-98a0-e7dfbbd5bfe6",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -1383,7 +1385,7 @@
       "item": [
         {
           "id": "34facab9-4f1b-504e-bae4-bc5d6063b3af",
-          "name": "Load Sales Agreements by Channel ID (spec path - 404 on trialx) — Mandatory",
+          "name": "[ROUTE MISSING] Load Sales Agreements by Channel ID (spec path - 404 on trialx) — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -1413,7 +1415,7 @@
           "response": [
             {
               "id": "4168e5d1-d4d4-50cc-bec8-642ae5c167f4",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 404 Not Found",
+              "name": "[ROUTE MISSING] 404 Not Found — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -1516,7 +1518,7 @@
         },
         {
           "id": "08c8a2a7-afb3-5357-a451-1acd50458f48",
-          "name": "Load Sales Agreements by Channel ID (spec path - 404 on trialx) — Full (+ Optional)",
+          "name": "[ROUTE MISSING] Load Sales Agreements by Channel ID (spec path - 404 on trialx) — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -1546,7 +1548,7 @@
           "response": [
             {
               "id": "7db58a7b-853f-5162-a23b-100f15023baf",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 404 Not Found",
+              "name": "[ROUTE MISSING] 404 Not Found — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -1649,7 +1651,7 @@
         },
         {
           "id": "86ac531e-9917-5b75-a804-e9914a19c74e",
-          "name": "Load Sales Agreements by Channel ID (SDK core path - use this) — Mandatory",
+          "name": "[OK] Load Sales Agreements by Channel ID (SDK core path - use this) — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -1679,7 +1681,7 @@
           "response": [
             {
               "id": "1adbf4ca-b104-5eca-a3c1-1838f796e247",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -1814,7 +1816,7 @@
         },
         {
           "id": "c77d8af0-eb25-505e-8e54-bee191198291",
-          "name": "Load Sales Agreements by Channel ID (SDK core path - use this) — Full (+ Optional)",
+          "name": "[OK] Load Sales Agreements by Channel ID (SDK core path - use this) — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -1844,7 +1846,7 @@
           "response": [
             {
               "id": "c6a75549-2b3d-5b31-ad1b-49366a5aed55",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -1986,7 +1988,7 @@
       "item": [
         {
           "id": "c8739d3b-786a-5076-a88e-e915f726a0b1",
-          "name": "Search Collections (SearchCondition per request table) — Mandatory",
+          "name": "[OK] Search Collections (SearchCondition per request table) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -2023,7 +2025,7 @@
           "response": [
             {
               "id": "3ed76d49-c238-5fee-bcf7-8995a491bd89",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -2173,7 +2175,7 @@
         },
         {
           "id": "9ffe1e58-8857-5d94-b924-a15817070acf",
-          "name": "Search Collections (SearchCondition per request table) — Full (+ Optional)",
+          "name": "[OK] Search Collections (SearchCondition per request table) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -2210,7 +2212,7 @@
           "response": [
             {
               "id": "ba00a92f-ea5f-54e7-9819-d117d7cd1d83",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -2356,7 +2358,7 @@
         },
         {
           "id": "50eebdae-062f-52c3-b3e4-2058d3b5f20e",
-          "name": "Search Collections (advanced QueryCondition form from spec sample) — Mandatory",
+          "name": "[OK] Search Collections (advanced QueryCondition form from spec sample) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -2393,7 +2395,7 @@
           "response": [
             {
               "id": "bb9a5a8f-1de4-5d24-a6d7-277f2cd99541",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -2539,7 +2541,7 @@
         },
         {
           "id": "e1646fd8-b8c4-51c6-aa8c-8895c635d846",
-          "name": "Search Collections (advanced QueryCondition form from spec sample) — Full (+ Optional)",
+          "name": "[OK] Search Collections (advanced QueryCondition form from spec sample) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -2576,7 +2578,7 @@
           "response": [
             {
               "id": "c206e83f-a873-5ab2-a2ae-c2e18794de93",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -2729,7 +2731,7 @@
       "item": [
         {
           "id": "f4323d81-a4c7-5bb1-b440-ffc8a529ea91",
-          "name": "Load Collection (current balance) — Mandatory",
+          "name": "[STRUCTURE FAIL] Load Collection (current balance) — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -2758,7 +2760,7 @@
           "response": [
             {
               "id": "f0da10e3-1bfd-5bfb-b2ac-bbb3b97ccc1d",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -2901,7 +2903,7 @@
         },
         {
           "id": "d001d3b8-05ce-5b33-ae7f-58a11aef2079",
-          "name": "Load Collection (current balance) — Full (+ Optional)",
+          "name": "[STRUCTURE FAIL] Load Collection (current balance) — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -2930,7 +2932,7 @@
           "response": [
             {
               "id": "19014df9-6136-54e4-9bd2-e88cb20e88fd",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -3080,7 +3082,7 @@
       "item": [
         {
           "id": "2ee3c4e9-7f8d-59f5-92ac-f3883f0388cc",
-          "name": "Collection Transaction History — Mandatory",
+          "name": "[OK] Collection Transaction History — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -3109,7 +3111,7 @@
           "response": [
             {
               "id": "7dee91f7-d0d9-56b0-a185-05ea0f9e916c",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -3247,7 +3249,7 @@
         },
         {
           "id": "d8b2f470-eec4-5734-b027-730a84e173cf",
-          "name": "Collection Transaction History — Full (+ Optional)",
+          "name": "[OK] Collection Transaction History — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -3276,7 +3278,7 @@
           "response": [
             {
               "id": "d5f33b5b-fc7a-5c7e-98d8-d0f65304738f",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -3421,7 +3423,7 @@
       "item": [
         {
           "id": "87eac2dc-bdee-5c3a-bfae-e0d31cb0235a",
-          "name": "Query Commission — Mandatory",
+          "name": "[STRUCTURE FAIL] Query Commission — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -3457,7 +3459,7 @@
           "response": [
             {
               "id": "e6a8fc79-9847-52e7-9e56-80819cbd2417",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -3598,7 +3600,7 @@
         },
         {
           "id": "53bf6191-6d55-5826-9924-6b2e235258e4",
-          "name": "Query Commission — Full (+ Optional)",
+          "name": "[STRUCTURE FAIL] Query Commission — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -3634,7 +3636,7 @@
           "response": [
             {
               "id": "1985acec-8d3e-52ad-b679-d933e79eea5f",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -3782,7 +3784,7 @@
       "item": [
         {
           "id": "0a4907fb-962b-50a8-97e5-aa41bbce2f93",
-          "name": "Datatable Lookup by Name List — Mandatory",
+          "name": "[REJECTED] Datatable Lookup by Name List — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -3821,7 +3823,7 @@
           "response": [
             {
               "id": "88527873-3493-5770-abd9-01194f8d6dc4",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -3970,7 +3972,7 @@
         },
         {
           "id": "46859694-44dd-5a10-8ce8-d7e0f541984b",
-          "name": "Datatable Lookup by Name List — Full (+ Optional)",
+          "name": "[REJECTED] Datatable Lookup by Name List — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -4009,7 +4011,7 @@
           "response": [
             {
               "id": "3164e316-6283-5c18-bd8b-f436ec0f2b7e",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -4165,7 +4167,7 @@
       "item": [
         {
           "id": "c1f24422-4414-55d9-ae9e-500324f2bba9",
-          "name": "Ratetable Lookup — Mandatory",
+          "name": "[REJECTED] Ratetable Lookup — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -4209,7 +4211,7 @@
           "response": [
             {
               "id": "341f2648-c8e7-5028-bf03-f260cdaa464c",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -4329,7 +4331,7 @@
         },
         {
           "id": "609e4d3a-1c8a-52d3-a4ff-e27bffb8d81c",
-          "name": "Ratetable Lookup — Full (+ Optional)",
+          "name": "[REJECTED] Ratetable Lookup — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -4378,7 +4380,7 @@
           "response": [
             {
               "id": "1415e951-237f-5fdd-be0d-7eff936fcb4d",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -4510,7 +4512,7 @@
       "item": [
         {
           "id": "ab301bf4-a40c-58f4-bff9-5c367d866101",
-          "name": "Product Schema — Mandatory",
+          "name": "[REJECTED] Product Schema — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -4543,7 +4545,7 @@
           "response": [
             {
               "id": "b3044161-fa4e-5fda-af69-1db09adb15bd",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -4686,7 +4688,7 @@
         },
         {
           "id": "8c253672-0780-534d-b4cf-a5358a1806cf",
-          "name": "Product Schema — Full (+ Optional)",
+          "name": "[REJECTED] Product Schema — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -4727,7 +4729,7 @@
           "response": [
             {
               "id": "07dd5677-26e3-515e-9bf1-0924c99e46ea",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -4885,7 +4887,7 @@
       "item": [
         {
           "id": "bd3aee79-0493-53b2-922c-cc693ef39c7d",
-          "name": "Load Quote Details — Mandatory",
+          "name": "[REJECTED] Load Quote Details — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -4915,7 +4917,7 @@
           "response": [
             {
               "id": "9d9d581a-59b5-5324-81d7-5ad69dddf312",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -5054,7 +5056,7 @@
         },
         {
           "id": "1983e51e-343e-5a5e-9bd3-e519c18b7b54",
-          "name": "Load Quote Details — Full (+ Optional)",
+          "name": "[REJECTED] Load Quote Details — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -5089,7 +5091,7 @@
           "response": [
             {
               "id": "f1b8be5c-7523-5b5a-b701-fc2ed13a16f4",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -5240,7 +5242,7 @@
       "item": [
         {
           "id": "9cc3132b-ceb5-5f6c-bf47-a9f3dea7d33a",
-          "name": "Fetch Document — Mandatory",
+          "name": "[STRUCTURE FAIL] Fetch Document — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -5277,7 +5279,7 @@
           "response": [
             {
               "id": "06ce9b78-c40b-58df-8f0e-33ec20287280",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -5422,7 +5424,7 @@
         },
         {
           "id": "ecae3c61-b811-5bd5-af58-0f39307b66dc",
-          "name": "Fetch Document — Full (+ Optional)",
+          "name": "[STRUCTURE FAIL] Fetch Document — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -5459,7 +5461,7 @@
           "response": [
             {
               "id": "5a997836-1dba-549c-bcf0-14c48cb208c1",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -5611,7 +5613,7 @@
       "item": [
         {
           "id": "89b404e0-969c-51d5-8008-1d19161b0446",
-          "name": "Email Quote via Notifications Hub (contract TBC - 404 on trialx) — Mandatory",
+          "name": "[NOT RUN] Email Quote via Notifications Hub (contract TBC - 404 on trialx) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -5665,7 +5667,7 @@
         },
         {
           "id": "750945e9-7c13-578d-ab5d-f61aaeebf6c3",
-          "name": "Email Quote via Notifications Hub (contract TBC - 404 on trialx) — Full (+ Optional)",
+          "name": "[NOT RUN] Email Quote via Notifications Hub (contract TBC - 404 on trialx) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -5719,7 +5721,7 @@
         },
         {
           "id": "9719d5ec-661e-5279-9744-9e46f7b0fe3c",
-          "name": "Email Quote via SNS Email Service (documented alternative) — Mandatory",
+          "name": "[NOT RUN] Email Quote via SNS Email Service (documented alternative) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -5775,7 +5777,7 @@
         },
         {
           "id": "c2721f6b-eb49-5678-a311-5ad012cb1bf6",
-          "name": "Email Quote via SNS Email Service (documented alternative) — Full (+ Optional)",
+          "name": "[NOT RUN] Email Quote via SNS Email Service (documented alternative) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -5838,7 +5840,7 @@
       "item": [
         {
           "id": "7cb120bd-b258-5fe6-aa01-c32c0d378d68",
-          "name": "SMS Quote via Notifications Hub (contract TBC - 404 on trialx) — Mandatory",
+          "name": "[NOT RUN] SMS Quote via Notifications Hub (contract TBC - 404 on trialx) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -5892,7 +5894,7 @@
         },
         {
           "id": "d190785c-0aab-5f34-b83c-1a8b04d7a1aa",
-          "name": "SMS Quote via Notifications Hub (contract TBC - 404 on trialx) — Full (+ Optional)",
+          "name": "[NOT RUN] SMS Quote via Notifications Hub (contract TBC - 404 on trialx) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -5946,7 +5948,7 @@
         },
         {
           "id": "541c2432-b6fe-5c4f-871b-cff4533fed10",
-          "name": "SMS Quote via SNS SMS Service (documented alternative) — Mandatory",
+          "name": "[NOT RUN] SMS Quote via SNS SMS Service (documented alternative) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -6002,7 +6004,7 @@
         },
         {
           "id": "55341ae8-0a9b-5eda-9a09-c891b8465f89",
-          "name": "SMS Quote via SNS SMS Service (documented alternative) — Full (+ Optional)",
+          "name": "[NOT RUN] SMS Quote via SNS SMS Service (documented alternative) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -6065,7 +6067,7 @@
       "item": [
         {
           "id": "5684fb35-5172-5b4d-be47-5897ac3089bc",
-          "name": "Quotation Query — Mandatory",
+          "name": "[REJECTED] Quotation Query — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -6103,7 +6105,7 @@
           "response": [
             {
               "id": "d4fae3b1-43e9-54d0-8a9c-ff78eddbeacb",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -6255,7 +6257,7 @@
         },
         {
           "id": "38891355-cc66-5141-b6f4-ff97dd9e4d05",
-          "name": "Quotation Query — Full (+ Optional)",
+          "name": "[REJECTED] Quotation Query — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -6293,7 +6295,7 @@
           "response": [
             {
               "id": "90c26d24-2f24-5c20-affc-15a6ba7f64c3",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -6452,7 +6454,7 @@
       "item": [
         {
           "id": "d3d9601f-2fd3-5176-9f79-df6be6268465",
-          "name": "Load Individual Customer — Mandatory",
+          "name": "[REJECTED] Load Individual Customer — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -6481,7 +6483,7 @@
           "response": [
             {
               "id": "f911ce11-570c-5a5c-bf46-31a8a988b389",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -6587,7 +6589,7 @@
         },
         {
           "id": "08dc55ea-4a11-58d3-b468-67dc188d7e0b",
-          "name": "Load Individual Customer — Full (+ Optional)",
+          "name": "[REJECTED] Load Individual Customer — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -6616,7 +6618,7 @@
           "response": [
             {
               "id": "8622c60e-ee18-5f1c-bdcd-93ad7a6303a8",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -6729,7 +6731,7 @@
       "item": [
         {
           "id": "394a37b3-5683-5118-b140-e832daf04974",
-          "name": "Load Organisation Customer — Mandatory",
+          "name": "[REJECTED] Load Organisation Customer — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -6758,7 +6760,7 @@
           "response": [
             {
               "id": "8db534ea-ff0c-57cf-b82d-5b5061509552",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -6864,7 +6866,7 @@
         },
         {
           "id": "f1bc0487-5fc2-582e-8cef-a3959f76a30b",
-          "name": "Load Organisation Customer — Full (+ Optional)",
+          "name": "[REJECTED] Load Organisation Customer — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -6893,7 +6895,7 @@
           "response": [
             {
               "id": "8c56da74-c33d-5b41-a584-531a7e00f2e7",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -7006,7 +7008,7 @@
       "item": [
         {
           "id": "32ba68b5-7d12-5474-be8a-e774a206f1bb",
-          "name": "Proposal and Policy Query (portal list path) — Mandatory",
+          "name": "[OK] Proposal and Policy Query (portal list path) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -7042,7 +7044,7 @@
           "response": [
             {
               "id": "0fcd6bed-b497-5f4a-8ecf-878b5f8c3e3b",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -7192,7 +7194,7 @@
         },
         {
           "id": "3c225784-025b-51ff-9d50-9e5205714fb6",
-          "name": "Proposal and Policy Query (portal list path) — Full (+ Optional)",
+          "name": "[OK] Proposal and Policy Query (portal list path) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -7228,7 +7230,7 @@
           "response": [
             {
               "id": "e93d1075-d48a-5daf-a94d-5c2d10158e21",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -7374,7 +7376,7 @@
         },
         {
           "id": "25d06f3a-8be3-590b-8208-a40097d1b7c2",
-          "name": "Proposal and Policy Query (documented core path) — Mandatory",
+          "name": "[ROUTE MISSING] Proposal and Policy Query (documented core path) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -7412,7 +7414,7 @@
           "response": [
             {
               "id": "7cf97705-028b-54ea-981a-79ad9eafb9e2",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 404 Not Found",
+              "name": "[ROUTE MISSING] 404 Not Found — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -7576,7 +7578,7 @@
         },
         {
           "id": "15d1e42c-9773-51eb-982a-1cfed3ec650e",
-          "name": "Proposal and Policy Query (documented core path) — Full (+ Optional)",
+          "name": "[ROUTE MISSING] Proposal and Policy Query (documented core path) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -7614,7 +7616,7 @@
           "response": [
             {
               "id": "d27c6572-b840-501f-813d-bc6dda8c3ffd",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 404 Not Found",
+              "name": "[ROUTE MISSING] 404 Not Found — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -7785,7 +7787,7 @@
       "item": [
         {
           "id": "bd86a77a-7ff9-58e5-832f-94ba79b0ba86",
-          "name": "Load Proposal or Policy — Mandatory",
+          "name": "[OK] Load Proposal or Policy — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -7815,7 +7817,7 @@
           "response": [
             {
               "id": "d7e1aa3e-9a95-5e0e-b09b-83924bd22da2",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -7959,7 +7961,7 @@
         },
         {
           "id": "e46da900-8360-56fd-822d-61b89a189580",
-          "name": "Load Proposal or Policy — Full (+ Optional)",
+          "name": "[OK] Load Proposal or Policy — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -7994,7 +7996,7 @@
           "response": [
             {
               "id": "cc51da56-8d02-5666-b32d-53957087f13b",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -8150,7 +8152,7 @@
       "item": [
         {
           "id": "41ac349b-fb1b-5895-842c-485e472f9268",
-          "name": "Upload Document (multipart) — Mandatory",
+          "name": "[NOT RUN] Upload Document (multipart) — Mandatory",
           "request": {
             "method": "POST",
             "header": [],
@@ -8211,7 +8213,7 @@
         },
         {
           "id": "8fd0cc95-f385-5918-a3e6-f783547ed041",
-          "name": "Upload Document (multipart) — Full (+ Optional)",
+          "name": "[NOT RUN] Upload Document (multipart) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [],
@@ -8316,7 +8318,7 @@
       "item": [
         {
           "id": "15b56cb5-9382-5b1d-bf95-505927127ffa",
-          "name": "Query Files with Metadata — Mandatory",
+          "name": "[STRUCTURE FAIL] Query Files with Metadata — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -8353,7 +8355,7 @@
           "response": [
             {
               "id": "cad01ac2-9910-5d47-9845-5a3793c34ee9",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -8494,7 +8496,7 @@
         },
         {
           "id": "0944483c-3422-556d-805c-ed135ab69d29",
-          "name": "Query Files with Metadata — Full (+ Optional)",
+          "name": "[STRUCTURE FAIL] Query Files with Metadata — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -8531,7 +8533,7 @@
           "response": [
             {
               "id": "bf51a1c9-af09-546d-8cec-22d69f7a2995",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -8679,7 +8681,7 @@
       "item": [
         {
           "id": "a4c545f8-7ad9-58ae-9fe4-5525200c2711",
-          "name": "Download Document — Mandatory",
+          "name": "[REJECTED] Download Document — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -8707,7 +8709,7 @@
           "response": [
             {
               "id": "088d679f-8b27-5e2d-9335-b2266bf8566a",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -8842,7 +8844,7 @@
         },
         {
           "id": "2fce286f-2d1b-5c83-81cb-6f5abee44bf5",
-          "name": "Download Document — Full (+ Optional)",
+          "name": "[REJECTED] Download Document — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -8870,7 +8872,7 @@
           "response": [
             {
               "id": "b807667d-62b5-5c69-a3e1-14648719c47e",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -9012,7 +9014,7 @@
       "item": [
         {
           "id": "baebf84d-2754-5a55-807c-ff03fdbdbf0d",
-          "name": "Document Type Tree — Mandatory",
+          "name": "[STRUCTURE FAIL] Document Type Tree — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -9049,7 +9051,7 @@
           "response": [
             {
               "id": "6887c980-60f5-5236-b116-28bc7b0a645a",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -9190,7 +9192,7 @@
         },
         {
           "id": "10ccf509-a4e8-5473-bd1a-70e6b7aea36e",
-          "name": "Document Type Tree — Full (+ Optional)",
+          "name": "[STRUCTURE FAIL] Document Type Tree — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -9227,7 +9229,7 @@
           "response": [
             {
               "id": "2699ca3f-8821-5f4c-9e67-d745975b99a3",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -9375,7 +9377,7 @@
       "item": [
         {
           "id": "5c2b51d9-70d2-50ee-98bc-a10a0ec78199",
-          "name": "Document Checklist by Business Info — Mandatory",
+          "name": "[REJECTED] Document Checklist by Business Info — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -9407,7 +9409,7 @@
           "response": [
             {
               "id": "2228cddc-7872-5914-94a2-5d4ccfdd9ead",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -9516,7 +9518,7 @@
         },
         {
           "id": "3f299e61-3dff-58a9-b89b-9d5104cf07b6",
-          "name": "Document Checklist by Business Info — Full (+ Optional)",
+          "name": "[REJECTED] Document Checklist by Business Info — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -9548,7 +9550,7 @@
           "response": [
             {
               "id": "27756f8c-f470-5aad-870a-5c7e1df2e8bc",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -9664,7 +9666,7 @@
       "item": [
         {
           "id": "542b64e0-e4cf-54f9-b8cd-b22ff83722d0",
-          "name": "Load All Document Versions — Mandatory",
+          "name": "[REJECTED] Load All Document Versions — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -9693,7 +9695,7 @@
           "response": [
             {
               "id": "7603e4f0-4c7a-5f44-8d1f-82205f0a029f",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -9831,7 +9833,7 @@
         },
         {
           "id": "0f8e212c-f211-5adb-89ee-e2bbf575134e",
-          "name": "Load All Document Versions — Full (+ Optional)",
+          "name": "[REJECTED] Load All Document Versions — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -9860,7 +9862,7 @@
           "response": [
             {
               "id": "892a1ef2-eecb-5051-896e-2b03ac734d80",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+              "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -10005,7 +10007,7 @@
       "item": [
         {
           "id": "76e3a13d-5bf8-5d6c-b16c-751540f76849",
-          "name": "Submit FNOL — Mandatory",
+          "name": "[NOT RUN] Submit FNOL — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -10063,7 +10065,7 @@
         },
         {
           "id": "e61ce2c7-1c24-579b-8fc2-10b748050968",
-          "name": "Submit FNOL — Full (+ Optional)",
+          "name": "[NOT RUN] Submit FNOL — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -10121,7 +10123,7 @@
         },
         {
           "id": "2c75f5bd-200b-5475-8b74-9aa30f7b1350",
-          "name": "Submit FNOL - manual policy (conditional ClaimPolicy) — Full (+ Optional)",
+          "name": "[NOT RUN] Submit FNOL - manual policy (conditional ClaimPolicy) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -10183,7 +10185,7 @@
       "item": [
         {
           "id": "687298a9-920a-589d-bc55-760dca2cf0b1",
-          "name": "Claim Search — Mandatory",
+          "name": "[REJECTED] Claim Search — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -10220,7 +10222,7 @@
           "response": [
             {
               "id": "b429ec62-cd74-5a0b-99ea-068aec482b02",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -10375,7 +10377,7 @@
         },
         {
           "id": "1913dccd-c2d8-55a5-9092-d326f37c4054",
-          "name": "Claim Search — Full (+ Optional)",
+          "name": "[STRUCTURE FAIL] Claim Search — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -10412,7 +10414,7 @@
           "response": [
             {
               "id": "9e6763c0-0d93-5c1a-a26c-5d5545532c3e",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -10570,7 +10572,7 @@
       "item": [
         {
           "id": "f520a5be-1dfa-56b9-81aa-cac88ba97849",
-          "name": "Load Claim Case Detail — Mandatory",
+          "name": "[STRUCTURE FAIL] Load Claim Case Detail — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -10598,7 +10600,7 @@
           "response": [
             {
               "id": "225e3a24-8e8d-52cd-a9d8-7c16ea58d56c",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -10743,7 +10745,7 @@
         },
         {
           "id": "13dcc404-a470-5e23-9f28-1339b440f67b",
-          "name": "Load Claim Case Detail — Full (+ Optional)",
+          "name": "[STRUCTURE FAIL] Load Claim Case Detail — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -10771,7 +10773,7 @@
           "response": [
             {
               "id": "44352c0d-257f-54b3-9468-50acd9086588",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -10923,7 +10925,7 @@
       "item": [
         {
           "id": "fd0488d9-7569-5ba9-9753-d4ccbbd7a15f",
-          "name": "Load Claim Policy — Mandatory",
+          "name": "[REJECTED] Load Claim Policy — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -10951,7 +10953,7 @@
           "response": [
             {
               "id": "86ffe942-686d-598a-8031-eb2cda57497f",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -11092,7 +11094,7 @@
         },
         {
           "id": "7676d462-b050-5bd9-b010-8ab0ab81c127",
-          "name": "Load Claim Policy — Full (+ Optional)",
+          "name": "[REJECTED] Load Claim Policy — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -11120,7 +11122,7 @@
           "response": [
             {
               "id": "359deade-caff-51cc-8b39-180f89ac72f9",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -11268,7 +11270,7 @@
       "item": [
         {
           "id": "93d256c1-caba-5d92-90b6-1b6b20296f82",
-          "name": "Query Endorsement History — Mandatory",
+          "name": "[OK] Query Endorsement History — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -11298,7 +11300,7 @@
           "response": [
             {
               "id": "cca32784-8ffe-5f72-871a-c9e39bc3d562",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -11433,7 +11435,7 @@
         },
         {
           "id": "232f1ae6-fe27-520c-ae45-5cd40b387c79",
-          "name": "Query Endorsement History — Full (+ Optional)",
+          "name": "[OK] Query Endorsement History — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -11463,7 +11465,7 @@
           "response": [
             {
               "id": "53f0675b-026d-50b2-bc63-15416b329ee4",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -11605,7 +11607,7 @@
       "item": [
         {
           "id": "ea858caa-3986-568c-ae94-d7c7332db4e0",
-          "name": "Step 1 - Claim Search — Mandatory",
+          "name": "[REJECTED] Step 1 - Claim Search — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -11642,7 +11644,7 @@
           "response": [
             {
               "id": "39f43f27-0d9b-5220-9616-32189ee304a9",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -11797,7 +11799,7 @@
         },
         {
           "id": "cabdb8e6-0320-5304-a4a6-eead033d113d",
-          "name": "Step 1 - Claim Search — Full (+ Optional)",
+          "name": "[STRUCTURE FAIL] Step 1 - Claim Search — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -11834,7 +11836,7 @@
           "response": [
             {
               "id": "baa9832f-623e-5025-a859-a1e4d32284bb",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+              "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "POST",
                 "header": [
@@ -11985,7 +11987,7 @@
         },
         {
           "id": "9e7b133e-eea7-5e79-ac0b-eaa4cea8f190",
-          "name": "Step 2 - Load Claim Policy — Mandatory",
+          "name": "[REJECTED] Step 2 - Load Claim Policy — Mandatory",
           "request": {
             "method": "GET",
             "header": [],
@@ -12013,7 +12015,7 @@
           "response": [
             {
               "id": "831234e3-298d-5360-901f-00b8c202dd07",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -12154,7 +12156,7 @@
         },
         {
           "id": "4257878b-fd6f-5513-83e3-efc7e160f7c7",
-          "name": "Step 2 - Load Claim Policy — Full (+ Optional)",
+          "name": "[REJECTED] Step 2 - Load Claim Policy — Full (+ Optional)",
           "request": {
             "method": "GET",
             "header": [],
@@ -12182,7 +12184,7 @@
           "response": [
             {
               "id": "f42d25de-028b-5b46-b014-54de0f2d296f",
-              "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+              "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
@@ -12330,7 +12332,7 @@
       "item": [
         {
           "id": "bf88252b-d1c5-58c7-b119-372ba583b83b",
-          "name": "Option A - OTP via Notifications Hub (contract TBC - 404 on trialx) — Mandatory",
+          "name": "[NOT RUN] Option A - OTP via Notifications Hub (contract TBC - 404 on trialx) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -12384,7 +12386,7 @@
         },
         {
           "id": "75c52794-8d8d-5922-b439-d48e85d9089b",
-          "name": "Option A - OTP via Notifications Hub (contract TBC - 404 on trialx) — Full (+ Optional)",
+          "name": "[NOT RUN] Option A - OTP via Notifications Hub (contract TBC - 404 on trialx) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -12438,7 +12440,7 @@
         },
         {
           "id": "cb8ac465-d07c-5a7e-9f09-ab94af039ca5",
-          "name": "Option B - Send MFA SMS (SNS) — Mandatory",
+          "name": "[NOT RUN] Option B - Send MFA SMS (SNS) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -12495,7 +12497,7 @@
         },
         {
           "id": "d253bca0-b3f8-5f6f-b85f-c5fae94ec849",
-          "name": "Option B - Send MFA SMS (SNS) — Full (+ Optional)",
+          "name": "[NOT RUN] Option B - Send MFA SMS (SNS) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -12552,7 +12554,7 @@
         },
         {
           "id": "88206ff8-1a8f-5067-b867-5e2ea2f63fb0",
-          "name": "Option B - Verify MFA SMS (SNS) — Mandatory",
+          "name": "[NOT RUN] Option B - Verify MFA SMS (SNS) — Mandatory",
           "request": {
             "method": "POST",
             "header": [
@@ -12609,7 +12611,7 @@
         },
         {
           "id": "bbd07eaf-6bdd-5338-9ad4-243c16a59461",
-          "name": "Option B - Verify MFA SMS (SNS) — Full (+ Optional)",
+          "name": "[NOT RUN] Option B - Verify MFA SMS (SNS) — Full (+ Optional)",
           "request": {
             "method": "POST",
             "header": [
@@ -12678,7 +12680,7 @@
           "item": [
             {
               "id": "5b4a2925-5116-58f5-89f0-12b7f135a1b7",
-              "name": "Load ALL portal code tables (one call)",
+              "name": "[REJECTED] Load ALL portal code tables (one call)",
               "request": {
                 "method": "POST",
                 "header": [
@@ -12717,7 +12719,7 @@
               "response": [
                 {
                   "id": "c8f1c6a5-24af-54e1-b46a-b7bb06735b99",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+                  "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -12866,7 +12868,7 @@
             },
             {
               "id": "a67a8123-1f64-5351-8226-524cd0babfad",
-              "name": "Load code table values filtered (data/list/byName)",
+              "name": "[OK] Load code table values filtered (data/list/byName)",
               "request": {
                 "method": "POST",
                 "header": [
@@ -12919,7 +12921,7 @@
               "response": [
                 {
                   "id": "07a4cb4d-2d09-59c4-90b8-214a604d88d6",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -13076,7 +13078,7 @@
             },
             {
               "id": "d2e37298-f927-5ac5-9e0a-8b0be9cf800c",
-              "name": "AccountNature",
+              "name": "[STRUCTURE FAIL] AccountNature",
               "request": {
                 "method": "POST",
                 "header": [
@@ -13115,7 +13117,7 @@
               "response": [
                 {
                   "id": "63d02aaf-5c01-5269-ac27-b8adfd286dda",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -13259,7 +13261,7 @@
             },
             {
               "id": "20c1997f-d4d1-5659-bba5-202545aac55d",
-              "name": "AgreementStatus",
+              "name": "[OK] AgreementStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -13298,7 +13300,7 @@
               "response": [
                 {
                   "id": "ff7b652a-36f0-55c9-a905-4ff389e40bc1",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -13442,7 +13444,7 @@
             },
             {
               "id": "db97c72c-504a-5bca-ab62-db8c75c44b92",
-              "name": "AttachBusinessType",
+              "name": "[OK] AttachBusinessType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -13481,7 +13483,7 @@
               "response": [
                 {
                   "id": "d025f70c-1cfc-5d5e-8352-68f8faf7aaf0",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -13625,7 +13627,7 @@
             },
             {
               "id": "489dd144-b675-5927-8f38-b00e97b23915",
-              "name": "AuthorityType",
+              "name": "[REJECTED] AuthorityType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -13664,7 +13666,7 @@
               "response": [
                 {
                   "id": "b0d62c11-f3af-5175-bd25-d52d61a51473",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+                  "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -13812,7 +13814,7 @@
             },
             {
               "id": "d3784f0c-0b62-52a8-b7b9-3261253c2ac6",
-              "name": "AutoUnderwritingResult",
+              "name": "[OK] AutoUnderwritingResult",
               "request": {
                 "method": "POST",
                 "header": [
@@ -13851,7 +13853,7 @@
               "response": [
                 {
                   "id": "80be272d-e832-5188-8eeb-dd92d5038e4e",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -13995,7 +13997,7 @@
             },
             {
               "id": "f4070c58-7d00-5901-aaae-aa23be122e78",
-              "name": "Bank",
+              "name": "[STRUCTURE FAIL] Bank",
               "request": {
                 "method": "POST",
                 "header": [
@@ -14034,7 +14036,7 @@
               "response": [
                 {
                   "id": "cd5b81a9-698e-57a1-b7de-f00d5cfdeaf2",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -14178,7 +14180,7 @@
             },
             {
               "id": "240ba541-1807-571d-9d66-f35abbd34bc2",
-              "name": "BcpArapCate",
+              "name": "[OK] BcpArapCate",
               "request": {
                 "method": "POST",
                 "header": [
@@ -14217,7 +14219,7 @@
               "response": [
                 {
                   "id": "2fa2d281-8389-534b-9434-73707ba6d6b8",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -14361,7 +14363,7 @@
             },
             {
               "id": "fd23a880-941d-5b27-b99f-fcb5eb5f54f2",
-              "name": "BcpArapStatus",
+              "name": "[OK] BcpArapStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -14400,7 +14402,7 @@
               "response": [
                 {
                   "id": "91a6cad6-e391-59de-bf2f-6e4b4f021743",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -14544,7 +14546,7 @@
             },
             {
               "id": "0030b184-84c8-5d96-a9f7-a38cdab459c1",
-              "name": "BcpArapType",
+              "name": "[OK] BcpArapType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -14583,7 +14585,7 @@
               "response": [
                 {
                   "id": "a4fe65c6-c8d2-59f9-9f8a-ccc5470a6f71",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -14731,7 +14733,7 @@
             },
             {
               "id": "3760e7ec-aacb-5566-818d-3d993793ca92",
-              "name": "BcpBranchAccount",
+              "name": "[STRUCTURE FAIL] BcpBranchAccount",
               "request": {
                 "method": "POST",
                 "header": [
@@ -14770,7 +14772,7 @@
               "response": [
                 {
                   "id": "9430f049-ba03-5784-8bb5-f2be2adcca3d",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -14914,7 +14916,7 @@
             },
             {
               "id": "d897c14a-9e05-5ec1-b4f1-5735023cf0a9",
-              "name": "BcpCollectionStatus",
+              "name": "[OK] BcpCollectionStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -14953,7 +14955,7 @@
               "response": [
                 {
                   "id": "556ef22e-1727-5666-a196-d62247800a62",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -15097,7 +15099,7 @@
             },
             {
               "id": "39c99209-8823-5eab-8904-d7833e43d516",
-              "name": "BcpCollectionType",
+              "name": "[OK] BcpCollectionType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -15136,7 +15138,7 @@
               "response": [
                 {
                   "id": "c893f714-b2a3-53f0-9fc8-1c628447f313",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -15280,7 +15282,7 @@
             },
             {
               "id": "f6619bc2-3be2-5cf6-a943-4358f523666f",
-              "name": "BcpFeeType",
+              "name": "[OK] BcpFeeType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -15319,7 +15321,7 @@
               "response": [
                 {
                   "id": "3b9ff55c-ec68-5f55-b636-df3b4eec81a7",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -15467,7 +15469,7 @@
             },
             {
               "id": "7a3d77ae-96cd-5dfe-ba5b-e3b200518bc9",
-              "name": "BcpPayerPayeeType",
+              "name": "[OK] BcpPayerPayeeType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -15506,7 +15508,7 @@
               "response": [
                 {
                   "id": "21f23eba-7ede-5e28-8690-9111a6ef25b0",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -15650,7 +15652,7 @@
             },
             {
               "id": "3576189c-8b0b-5f7e-88d0-ee30c829c373",
-              "name": "BcpPaymentMethod",
+              "name": "[OK] BcpPaymentMethod",
               "request": {
                 "method": "POST",
                 "header": [
@@ -15689,7 +15691,7 @@
               "response": [
                 {
                   "id": "7d3c689d-d6d7-59b1-afb1-f0a357ce770d",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -15837,7 +15839,7 @@
             },
             {
               "id": "3222fbd1-579e-5e3e-8df6-3ad442e89b78",
-              "name": "BearStatus",
+              "name": "[STRUCTURE FAIL] BearStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -15876,7 +15878,7 @@
               "response": [
                 {
                   "id": "824c3714-d9f5-58fe-9e4c-bd367a4ca91f",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -16020,7 +16022,7 @@
             },
             {
               "id": "754c1192-2c5a-5153-a6e2-fa153bc0fc56",
-              "name": "BusinessCategory",
+              "name": "[OK] BusinessCategory",
               "request": {
                 "method": "POST",
                 "header": [
@@ -16059,7 +16061,7 @@
               "response": [
                 {
                   "id": "0fde75e0-f95e-5bbe-9f40-0afcec89ef60",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -16203,7 +16205,7 @@
             },
             {
               "id": "8757ca17-9672-5211-a19a-77dc1c535d66",
-              "name": "BusinessLine",
+              "name": "[OK] BusinessLine",
               "request": {
                 "method": "POST",
                 "header": [
@@ -16242,7 +16244,7 @@
               "response": [
                 {
                   "id": "9d882204-0f9f-5983-9d09-85b981cdd262",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -16386,7 +16388,7 @@
             },
             {
               "id": "e8c0c50a-f6e5-57e2-b5f4-ba3162bdfea0",
-              "name": "CaseMode",
+              "name": "[OK] CaseMode",
               "request": {
                 "method": "POST",
                 "header": [
@@ -16425,7 +16427,7 @@
               "response": [
                 {
                   "id": "9927cc3e-076a-55c2-93a6-1b0a5a8a83ad",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -16569,7 +16571,7 @@
             },
             {
               "id": "10a9dc18-d092-575e-86e3-ee1834af981d",
-              "name": "CauseOfLoss",
+              "name": "[OK] CauseOfLoss",
               "request": {
                 "method": "POST",
                 "header": [
@@ -16608,7 +16610,7 @@
               "response": [
                 {
                   "id": "d12adcdd-c1d5-5bf7-9319-f3d6334765b0",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -16756,7 +16758,7 @@
             },
             {
               "id": "e5cfc767-8341-5781-989e-477fafe81c33",
-              "name": "CertiType",
+              "name": "[OK] CertiType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -16795,7 +16797,7 @@
               "response": [
                 {
                   "id": "4cf75600-c7a9-5a61-a6ac-8bd08db7302c",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -16939,7 +16941,7 @@
             },
             {
               "id": "7d70e273-e567-5097-81ac-ae7fd63fc0ac",
-              "name": "ClaimCloseType",
+              "name": "[STRUCTURE FAIL] ClaimCloseType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -16978,7 +16980,7 @@
               "response": [
                 {
                   "id": "d24372fe-5ced-5562-bd80-b2a1b7f79271",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -17122,7 +17124,7 @@
             },
             {
               "id": "9714beca-e419-5bfb-ab97-ec47aa4cf96d",
-              "name": "ClaimClosedType",
+              "name": "[REJECTED] ClaimClosedType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -17161,7 +17163,7 @@
               "response": [
                 {
                   "id": "72f18c62-b4d1-597f-a8a6-e90794d0fdc8",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+                  "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -17309,7 +17311,7 @@
             },
             {
               "id": "e061c6e5-befe-5ba6-9b46-ef59202f2d5a",
-              "name": "ClaimFnolType",
+              "name": "[STRUCTURE FAIL] ClaimFnolType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -17348,7 +17350,7 @@
               "response": [
                 {
                   "id": "d63cb881-8b9b-5fd3-b64d-d273200173a6",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -17492,7 +17494,7 @@
             },
             {
               "id": "a907d533-0b5c-524a-9aa7-395dbb3dafba",
-              "name": "ClaimFnolValidationDecision",
+              "name": "[STRUCTURE FAIL] ClaimFnolValidationDecision",
               "request": {
                 "method": "POST",
                 "header": [
@@ -17531,7 +17533,7 @@
               "response": [
                 {
                   "id": "ba4470ec-57e3-506c-b6ad-5b6199a956e2",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -17675,7 +17677,7 @@
             },
             {
               "id": "53d81c07-e134-5d24-a6bd-4035bbeca2cc",
-              "name": "ClaimGender",
+              "name": "[OK] ClaimGender",
               "request": {
                 "method": "POST",
                 "header": [
@@ -17714,7 +17716,7 @@
               "response": [
                 {
                   "id": "7b325484-437f-527c-af92-fc516b798a6f",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -17858,7 +17860,7 @@
             },
             {
               "id": "1dfc0f4b-6ace-58d3-a3f4-95b88919213b",
-              "name": "ClaimLossStatus",
+              "name": "[STRUCTURE FAIL] ClaimLossStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -17897,7 +17899,7 @@
               "response": [
                 {
                   "id": "135bc163-dd34-579e-8ff0-e234cc762ec2",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -18041,7 +18043,7 @@
             },
             {
               "id": "db03d827-340a-55ef-94ab-c0fb8c10d534",
-              "name": "ClaimRecordType",
+              "name": "[OK] ClaimRecordType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -18080,7 +18082,7 @@
               "response": [
                 {
                   "id": "9c134eb5-a5b4-5507-98e2-2426dcffc5f1",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -18224,7 +18226,7 @@
             },
             {
               "id": "d3b974e8-d1c8-5170-a4e4-a14b02c5a557",
-              "name": "ClaimRejectReason",
+              "name": "[STRUCTURE FAIL] ClaimRejectReason",
               "request": {
                 "method": "POST",
                 "header": [
@@ -18263,7 +18265,7 @@
               "response": [
                 {
                   "id": "cad15ac4-fb9c-5318-a439-631849db1bb2",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -18407,7 +18409,7 @@
             },
             {
               "id": "8817a5a7-a97b-5b14-823f-2771f010bf36",
-              "name": "ClaimReopenCause",
+              "name": "[STRUCTURE FAIL] ClaimReopenCause",
               "request": {
                 "method": "POST",
                 "header": [
@@ -18446,7 +18448,7 @@
               "response": [
                 {
                   "id": "03e8d21c-e13a-5028-b5ee-9d699197211b",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -18590,7 +18592,7 @@
             },
             {
               "id": "81ca44cc-5630-536e-8464-2acc80947e1c",
-              "name": "ClaimSalvageStatus",
+              "name": "[STRUCTURE FAIL] ClaimSalvageStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -18629,7 +18631,7 @@
               "response": [
                 {
                   "id": "bff11cf1-fe02-53be-9e3b-3fcdb3aedec6",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -18773,7 +18775,7 @@
             },
             {
               "id": "3d2fc211-fe76-512b-ba4f-23b78a8be0b2",
-              "name": "ClaimStatus",
+              "name": "[OK] ClaimStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -18812,7 +18814,7 @@
               "response": [
                 {
                   "id": "0b9c5769-e355-534b-9902-f26a8ba0e744",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -18960,7 +18962,7 @@
             },
             {
               "id": "4a76aa67-5c0f-5c81-9a66-ea58df7979b4",
-              "name": "ClaimSubrogationStatus",
+              "name": "[STRUCTURE FAIL] ClaimSubrogationStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -18999,7 +19001,7 @@
               "response": [
                 {
                   "id": "b41aab42-9001-5762-8ae2-4971b3fb7562",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -19143,7 +19145,7 @@
             },
             {
               "id": "733f3700-f565-512b-97e7-b9d334362509",
-              "name": "ClaimType",
+              "name": "[OK] ClaimType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -19182,7 +19184,7 @@
               "response": [
                 {
                   "id": "8e0c9b02-1a19-5bca-bf27-21ba21569371",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -19326,7 +19328,7 @@
             },
             {
               "id": "35fc7b70-583e-5fee-b6ed-4e46bdb7e7d1",
-              "name": "ClaimYesNo",
+              "name": "[OK] ClaimYesNo",
               "request": {
                 "method": "POST",
                 "header": [
@@ -19365,7 +19367,7 @@
               "response": [
                 {
                   "id": "d6ea4ba6-4c0e-5957-afd7-b4c4a812a864",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -19509,7 +19511,7 @@
             },
             {
               "id": "277f9e03-5885-5b72-896a-5f507f843dd0",
-              "name": "CompanyIndulstry",
+              "name": "[STRUCTURE FAIL] CompanyIndulstry",
               "request": {
                 "method": "POST",
                 "header": [
@@ -19548,7 +19550,7 @@
               "response": [
                 {
                   "id": "08c95d61-3c30-509a-9bf9-cb653acb10e5",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -19692,7 +19694,7 @@
             },
             {
               "id": "0b08f18b-c5e0-5ffa-8f79-8f8769db2559",
-              "name": "ContainerCategory",
+              "name": "[OK] ContainerCategory",
               "request": {
                 "method": "POST",
                 "header": [
@@ -19731,7 +19733,7 @@
               "response": [
                 {
                   "id": "1b35424b-e92d-54ae-b2dc-9b26a1220120",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -19879,7 +19881,7 @@
             },
             {
               "id": "11584d33-397c-547a-92cf-3eda12b663a3",
-              "name": "Country",
+              "name": "[REJECTED] Country",
               "request": {
                 "method": "POST",
                 "header": [
@@ -19918,7 +19920,7 @@
               "response": [
                 {
                   "id": "6cf02f3d-1124-561e-a3eb-b077a60b0d7a",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+                  "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -20066,7 +20068,7 @@
             },
             {
               "id": "2b20169b-c805-51ab-8351-654d78c7cf81",
-              "name": "CountryCode",
+              "name": "[OK] CountryCode",
               "request": {
                 "method": "POST",
                 "header": [
@@ -20105,7 +20107,7 @@
               "response": [
                 {
                   "id": "fc950c2e-d88d-5fb0-9f6b-a5018ab632e5",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -20253,7 +20255,7 @@
             },
             {
               "id": "877590ea-cea5-5378-ab04-e66f927bcb14",
-              "name": "CoverageTerminateCode",
+              "name": "[OK] CoverageTerminateCode",
               "request": {
                 "method": "POST",
                 "header": [
@@ -20292,7 +20294,7 @@
               "response": [
                 {
                   "id": "1ce8308a-3a42-5409-b292-b3ca89d4e7fb",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -20436,7 +20438,7 @@
             },
             {
               "id": "0820df65-7bf5-56cd-8a4b-bd53eac764a8",
-              "name": "Currency",
+              "name": "[OK] Currency",
               "request": {
                 "method": "POST",
                 "header": [
@@ -20475,7 +20477,7 @@
               "response": [
                 {
                   "id": "3a0d2802-9429-515e-8057-2e520284484e",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -20623,7 +20625,7 @@
             },
             {
               "id": "3e1fb500-947b-5473-8e75-b91541d881a8",
-              "name": "CurrencyCodeClaim",
+              "name": "[OK] CurrencyCodeClaim",
               "request": {
                 "method": "POST",
                 "header": [
@@ -20662,7 +20664,7 @@
               "response": [
                 {
                   "id": "45d9b629-7de9-5a50-97f6-3124f6ffcea8",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -20810,7 +20812,7 @@
             },
             {
               "id": "db95f193-d674-5556-87e7-697aadd94e9f",
-              "name": "CustomerIDType",
+              "name": "[OK] CustomerIDType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -20849,7 +20851,7 @@
               "response": [
                 {
                   "id": "6d188d59-33c9-5248-9ba2-0ffaa8c684f7",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -20993,7 +20995,7 @@
             },
             {
               "id": "cb5cfe87-ac61-54ca-9d1a-8016fc0a3af8",
-              "name": "DamageType",
+              "name": "[OK] DamageType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -21032,7 +21034,7 @@
               "response": [
                 {
                   "id": "10c8d318-83ec-590a-b21d-99180be45aa6",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -21176,7 +21178,7 @@
             },
             {
               "id": "4aece45f-85b7-5591-96df-cc3ee0eb0bdd",
-              "name": "Department",
+              "name": "[STRUCTURE FAIL] Department",
               "request": {
                 "method": "POST",
                 "header": [
@@ -21215,7 +21217,7 @@
               "response": [
                 {
                   "id": "576569e7-8bc7-58da-8e96-e2dc407a4666",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -21359,7 +21361,7 @@
             },
             {
               "id": "b893b1a6-e132-5b8a-8283-259dcf547e87",
-              "name": "Designation",
+              "name": "[STRUCTURE FAIL] Designation",
               "request": {
                 "method": "POST",
                 "header": [
@@ -21398,7 +21400,7 @@
               "response": [
                 {
                   "id": "8b1eaffa-bfe3-52fe-ad3b-b6bcbf8fcde1",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -21542,7 +21544,7 @@
             },
             {
               "id": "ee09cbf4-1b02-5513-9913-0a3657bba146",
-              "name": "EndorsementReason",
+              "name": "[STRUCTURE FAIL] EndorsementReason",
               "request": {
                 "method": "POST",
                 "header": [
@@ -21581,7 +21583,7 @@
               "response": [
                 {
                   "id": "9fa0db2c-1b96-57b8-9c6c-45fa62444cfb",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -21725,7 +21727,7 @@
             },
             {
               "id": "de5c2742-a513-5ae9-9f08-ff237ecb84cc",
-              "name": "EndorsementStatus",
+              "name": "[OK] EndorsementStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -21764,7 +21766,7 @@
               "response": [
                 {
                   "id": "a1368ce1-3336-50c0-97d8-ea3c67afe776",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -21912,7 +21914,7 @@
             },
             {
               "id": "59ee04e4-a509-5d0b-b60e-3d84deb0559e",
-              "name": "EndorsementType",
+              "name": "[OK] EndorsementType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -21951,7 +21953,7 @@
               "response": [
                 {
                   "id": "ef1b9e4e-8daa-5139-89bd-06afe5e859c0",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -22099,7 +22101,7 @@
             },
             {
               "id": "30491ad7-6a47-59b6-bccf-ab3e7d5b3448",
-              "name": "FinanceLine",
+              "name": "[STRUCTURE FAIL] FinanceLine",
               "request": {
                 "method": "POST",
                 "header": [
@@ -22138,7 +22140,7 @@
               "response": [
                 {
                   "id": "498ac7e3-4335-50e6-b3a4-9c6388aa9c90",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -22282,7 +22284,7 @@
             },
             {
               "id": "9ab41543-6d71-58b0-af66-e54d16a2960e",
-              "name": "FnolStatus",
+              "name": "[REJECTED] FnolStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -22321,7 +22323,7 @@
               "response": [
                 {
                   "id": "8c83f2e5-699c-5e9a-b0fa-75a26f6a841c",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+                  "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -22469,7 +22471,7 @@
             },
             {
               "id": "d191a3f2-4dc7-59ee-b22a-770e5724456e",
-              "name": "FourthLine",
+              "name": "[STRUCTURE FAIL] FourthLine",
               "request": {
                 "method": "POST",
                 "header": [
@@ -22508,7 +22510,7 @@
               "response": [
                 {
                   "id": "e51ae301-b56c-5b4f-bcd0-a17447eb4325",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -22652,7 +22654,7 @@
             },
             {
               "id": "9866d8d3-5d50-5fd2-85c5-58a2e9ef071d",
-              "name": "Gender",
+              "name": "[OK] Gender",
               "request": {
                 "method": "POST",
                 "header": [
@@ -22691,7 +22693,7 @@
               "response": [
                 {
                   "id": "c0d379ec-b326-5aaa-aa4d-e16e12e65fd1",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -22835,7 +22837,7 @@
             },
             {
               "id": "bf9710b6-bd74-5e31-a39a-eedf15bc0569",
-              "name": "IDTypeClaim",
+              "name": "[OK] IDTypeClaim",
               "request": {
                 "method": "POST",
                 "header": [
@@ -22874,7 +22876,7 @@
               "response": [
                 {
                   "id": "ac5ae47b-9914-55fe-a4ec-490932954e15",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -23018,7 +23020,7 @@
             },
             {
               "id": "64c5a8cf-b9bc-56b9-a906-31d2225e7658",
-              "name": "InstallmentType",
+              "name": "[OK] InstallmentType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -23057,7 +23059,7 @@
               "response": [
                 {
                   "id": "5d255b91-cb5a-5049-a8a8-cfe666e19118",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -23201,7 +23203,7 @@
             },
             {
               "id": "11c33d11-63dd-5a23-932a-4351ed11550f",
-              "name": "InsuranceCompany",
+              "name": "[OK] InsuranceCompany",
               "request": {
                 "method": "POST",
                 "header": [
@@ -23240,7 +23242,7 @@
               "response": [
                 {
                   "id": "2a8a5853-7434-520b-8c81-26cdb3304219",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -23388,7 +23390,7 @@
             },
             {
               "id": "f9db77fe-de5d-5a31-819e-1fe6a28073e8",
-              "name": "Language",
+              "name": "[OK] Language",
               "request": {
                 "method": "POST",
                 "header": [
@@ -23427,7 +23429,7 @@
               "response": [
                 {
                   "id": "0d993136-19cc-5c41-97eb-cdfed0555de6",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -23571,7 +23573,7 @@
             },
             {
               "id": "9f6b6a7c-9fcc-532b-b8b3-9cdfbc5d8716",
-              "name": "MaritalStatus",
+              "name": "[OK] MaritalStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -23610,7 +23612,7 @@
               "response": [
                 {
                   "id": "ecef582d-1c70-5014-a2c1-880067d4aca3",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -23754,7 +23756,7 @@
             },
             {
               "id": "40fb802d-5f94-5cac-8410-19fddbd97fe6",
-              "name": "OperatorType",
+              "name": "[STRUCTURE FAIL] OperatorType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -23793,7 +23795,7 @@
               "response": [
                 {
                   "id": "39ca9776-2a77-50d1-aa72-1817a700b484",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -23937,7 +23939,7 @@
             },
             {
               "id": "6056bfaf-9194-5b15-a67a-3ff1301f1147",
-              "name": "Org",
+              "name": "[STRUCTURE FAIL] Org",
               "request": {
                 "method": "POST",
                 "header": [
@@ -23976,7 +23978,7 @@
               "response": [
                 {
                   "id": "1df86b94-ee47-5999-875f-73f10e49db9d",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -24120,7 +24122,7 @@
             },
             {
               "id": "70d636f8-c816-5a53-8b74-c7c3ab21ce57",
-              "name": "Party",
+              "name": "[REJECTED] Party",
               "request": {
                 "method": "POST",
                 "header": [
@@ -24159,7 +24161,7 @@
               "response": [
                 {
                   "id": "6bcc32b9-142d-5ece-8831-caec3fd0e887",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+                  "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -24307,7 +24309,7 @@
             },
             {
               "id": "85b20b7c-26bc-574b-8ea7-466cd31168d7",
-              "name": "PartyRoleCategory",
+              "name": "[OK] PartyRoleCategory",
               "request": {
                 "method": "POST",
                 "header": [
@@ -24346,7 +24348,7 @@
               "response": [
                 {
                   "id": "df23eaa2-f1ac-5090-9ea3-c1199b0379fa",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -24490,7 +24492,7 @@
             },
             {
               "id": "7f0bdaeb-95f4-5ee1-a718-4c9c6f9a521c",
-              "name": "PartyStatus",
+              "name": "[OK] PartyStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -24529,7 +24531,7 @@
               "response": [
                 {
                   "id": "622ffff5-3ebc-5b9f-b4fc-1cf2de47f23b",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -24673,7 +24675,7 @@
             },
             {
               "id": "4ca29aa5-1fe8-571e-bd68-8e8083b2e78a",
-              "name": "PartyType",
+              "name": "[OK] PartyType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -24712,7 +24714,7 @@
               "response": [
                 {
                   "id": "cbfd154a-a9fc-5d2b-b13a-b013967624cc",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -24860,7 +24862,7 @@
             },
             {
               "id": "be484bcd-dadb-5866-8ed4-eecb3418467a",
-              "name": "PayMethod",
+              "name": "[OK] PayMethod",
               "request": {
                 "method": "POST",
                 "header": [
@@ -24899,7 +24901,7 @@
               "response": [
                 {
                   "id": "4e8bc934-ded1-550d-8215-e31e2cc949fc",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -25043,7 +25045,7 @@
             },
             {
               "id": "f821cec5-76a8-56ea-b968-98c08864b4ff",
-              "name": "PayModeClaim",
+              "name": "[OK] PayModeClaim",
               "request": {
                 "method": "POST",
                 "header": [
@@ -25082,7 +25084,7 @@
               "response": [
                 {
                   "id": "8e21e15e-3a53-55ac-8bb6-771b331abe88",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -25230,7 +25232,7 @@
             },
             {
               "id": "b5f423af-f47a-5517-b50f-bf5d91b5b328",
-              "name": "PayerOrPayeeCategory",
+              "name": "[OK] PayerOrPayeeCategory",
               "request": {
                 "method": "POST",
                 "header": [
@@ -25269,7 +25271,7 @@
               "response": [
                 {
                   "id": "27f3623a-2bce-59e1-9ecc-a2228ff33a3d",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -25413,7 +25415,7 @@
             },
             {
               "id": "82e78b24-b4de-5c6e-a2da-e158ed83e3cf",
-              "name": "PersonRelation",
+              "name": "[STRUCTURE FAIL] PersonRelation",
               "request": {
                 "method": "POST",
                 "header": [
@@ -25452,7 +25454,7 @@
               "response": [
                 {
                   "id": "6ac3e712-d19a-5e80-ad6d-5e767b84a285",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -25596,7 +25598,7 @@
             },
             {
               "id": "b6b0f88b-4ff6-5969-8bb8-b102a4169799",
-              "name": "PolicyStatus",
+              "name": "[OK] PolicyStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -25635,7 +25637,7 @@
               "response": [
                 {
                   "id": "e64867af-3337-515d-9e91-7440a534e5cd",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -25779,7 +25781,7 @@
             },
             {
               "id": "ae4435fe-6b15-59b4-af82-065f444b9edd",
-              "name": "PolicyType",
+              "name": "[OK] PolicyType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -25818,7 +25820,7 @@
               "response": [
                 {
                   "id": "f35453b9-350e-56b5-85de-95fb57cdf257",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -25962,7 +25964,7 @@
             },
             {
               "id": "c9198c37-9244-5748-9902-da605823402a",
-              "name": "ProductEffectiveStatus",
+              "name": "[OK] ProductEffectiveStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -26001,7 +26003,7 @@
               "response": [
                 {
                   "id": "810c2dac-75cd-5e60-922c-0f0ab3f6cb75",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -26145,7 +26147,7 @@
             },
             {
               "id": "e54a0035-84c0-53fd-9ce5-f9a110fd57ca",
-              "name": "ProductInsuredCategory",
+              "name": "[OK] ProductInsuredCategory",
               "request": {
                 "method": "POST",
                 "header": [
@@ -26184,7 +26186,7 @@
               "response": [
                 {
                   "id": "19df783d-58f6-55c6-bd22-3dc730d1f3a2",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -26332,7 +26334,7 @@
             },
             {
               "id": "2e94e4d2-c25a-5fc0-9d73-02a1aa458010",
-              "name": "ProductLine",
+              "name": "[OK] ProductLine",
               "request": {
                 "method": "POST",
                 "header": [
@@ -26371,7 +26373,7 @@
               "response": [
                 {
                   "id": "95a6822c-3bc6-534b-980c-a0a82e1b1842",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -26519,7 +26521,7 @@
             },
             {
               "id": "5e3690ed-5b48-56e6-8195-6f8dba45ac51",
-              "name": "ProductLineClaim",
+              "name": "[OK] ProductLineClaim",
               "request": {
                 "method": "POST",
                 "header": [
@@ -26558,7 +26560,7 @@
               "response": [
                 {
                   "id": "7f988b91-f7b8-59f8-98fd-15148151e568",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -26706,7 +26708,7 @@
             },
             {
               "id": "53fda398-1886-5b55-bd1a-ab75de44e7f6",
-              "name": "ProductMaster",
+              "name": "[OK] ProductMaster",
               "request": {
                 "method": "POST",
                 "header": [
@@ -26745,7 +26747,7 @@
               "response": [
                 {
                   "id": "55644d46-81d9-5ed6-8f01-0c28c9334519",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -26893,7 +26895,7 @@
             },
             {
               "id": "a9370901-20fb-54b7-a03b-ea8a17fa9db5",
-              "name": "ProductSpecialModel",
+              "name": "[OK] ProductSpecialModel",
               "request": {
                 "method": "POST",
                 "header": [
@@ -26932,7 +26934,7 @@
               "response": [
                 {
                   "id": "0df6e5a2-07e4-5b21-8265-4ba88aee9586",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -27080,7 +27082,7 @@
             },
             {
               "id": "2001ceac-0d31-5854-b9b8-d500252a3d42",
-              "name": "ProductType",
+              "name": "[OK] ProductType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -27119,7 +27121,7 @@
               "response": [
                 {
                   "id": "ce9ee538-d268-5a7b-9591-7ac76c9d19f9",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -27263,7 +27265,7 @@
             },
             {
               "id": "2336823a-16d5-5b91-bfe5-cb02bc16f03a",
-              "name": "ProposalStatus",
+              "name": "[OK] ProposalStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -27302,7 +27304,7 @@
               "response": [
                 {
                   "id": "13df73b6-bbb7-556f-9db3-984e0477c056",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -27446,7 +27448,7 @@
             },
             {
               "id": "9ebda7fb-915d-5386-a6ec-088d6c26ccb7",
-              "name": "Region",
+              "name": "[STRUCTURE FAIL] Region",
               "request": {
                 "method": "POST",
                 "header": [
@@ -27485,7 +27487,7 @@
               "response": [
                 {
                   "id": "667f6db9-a99e-59ed-9181-92a1f120d7fe",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -27629,7 +27631,7 @@
             },
             {
               "id": "f1bdfb69-7d03-529b-b81d-1d7cbf605704",
-              "name": "RelatedType",
+              "name": "[REJECTED] RelatedType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -27668,7 +27670,7 @@
               "response": [
                 {
                   "id": "ab75f282-401a-5836-bfea-76fc423475a1",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+                  "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -27816,7 +27818,7 @@
             },
             {
               "id": "36d3648b-5766-59b3-8d55-9d80c39d20bc",
-              "name": "SCTypeIndividual",
+              "name": "[OK] SCTypeIndividual",
               "request": {
                 "method": "POST",
                 "header": [
@@ -27855,7 +27857,7 @@
               "response": [
                 {
                   "id": "0b2eb4a3-c93d-53bc-9304-f6217c32df89",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -27999,7 +28001,7 @@
             },
             {
               "id": "7af789f1-3e36-5858-94ee-0bf6e4e4040c",
-              "name": "SCTypeOrg",
+              "name": "[OK] SCTypeOrg",
               "request": {
                 "method": "POST",
                 "header": [
@@ -28038,7 +28040,7 @@
               "response": [
                 {
                   "id": "f56cdc6e-3e0e-580a-90c9-3c8c2915feeb",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -28182,7 +28184,7 @@
             },
             {
               "id": "6ea803db-8222-5e37-87dc-e4d7501ecd86",
-              "name": "SChannelStatus",
+              "name": "[OK] SChannelStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -28221,7 +28223,7 @@
               "response": [
                 {
                   "id": "193c9b79-c36b-5e4b-b2e0-90d1cb2066c0",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -28365,7 +28367,7 @@
             },
             {
               "id": "4582aecb-130b-5284-8b0d-e931ac6d24a5",
-              "name": "SalesCommissionStatus",
+              "name": "[OK] SalesCommissionStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -28404,7 +28406,7 @@
               "response": [
                 {
                   "id": "4013588d-f5d4-5c1b-9fc9-13a56cc75e6e",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -28548,7 +28550,7 @@
             },
             {
               "id": "8ff01056-6aa0-5145-a41a-d7a14e1cfe16",
-              "name": "SalesCommissionType",
+              "name": "[OK] SalesCommissionType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -28587,7 +28589,7 @@
               "response": [
                 {
                   "id": "cadba27f-5db7-5a3a-b9bd-48882e487d74",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -28731,7 +28733,7 @@
             },
             {
               "id": "81cc21f4-9049-562b-a52f-73ed138db4dc",
-              "name": "SecondLine",
+              "name": "[STRUCTURE FAIL] SecondLine",
               "request": {
                 "method": "POST",
                 "header": [
@@ -28770,7 +28772,7 @@
               "response": [
                 {
                   "id": "e3b3b471-12c9-5d82-8f16-9160aef2fc7d",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -28914,7 +28916,7 @@
             },
             {
               "id": "ec869588-f2ed-58ef-ab00-14a1f404b66a",
-              "name": "ShortRateType",
+              "name": "[STRUCTURE FAIL] ShortRateType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -28953,7 +28955,7 @@
               "response": [
                 {
                   "id": "3cca1d10-b2e9-5ea5-9af6-bd61f3403ae7",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -29097,7 +29099,7 @@
             },
             {
               "id": "6a5236af-8b53-5e36-9372-589eacd7db85",
-              "name": "SubclaimStatus",
+              "name": "[OK] SubclaimStatus",
               "request": {
                 "method": "POST",
                 "header": [
@@ -29136,7 +29138,7 @@
               "response": [
                 {
                   "id": "0840ca46-66b4-5941-a965-0b1b690b3207",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -29280,7 +29282,7 @@
             },
             {
               "id": "7d2a9115-adb8-5232-93f7-abe8efaa21e4",
-              "name": "SubclaimType",
+              "name": "[OK] SubclaimType",
               "request": {
                 "method": "POST",
                 "header": [
@@ -29319,7 +29321,7 @@
               "response": [
                 {
                   "id": "c1ba6b5e-56bf-5c64-a502-dccd7faae21f",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -29467,7 +29469,7 @@
             },
             {
               "id": "e40a6278-654c-5d3f-b42d-8d1f29745854",
-              "name": "ThirdLine",
+              "name": "[STRUCTURE FAIL] ThirdLine",
               "request": {
                 "method": "POST",
                 "header": [
@@ -29506,7 +29508,7 @@
               "response": [
                 {
                   "id": "18f9eadf-d642-5fce-a4d6-0a68f7e9777c",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -29650,7 +29652,7 @@
             },
             {
               "id": "c08b6337-88fe-5e2b-b6b0-de1f2a8fed18",
-              "name": "UnderwritingLevel",
+              "name": "[STRUCTURE FAIL] UnderwritingLevel",
               "request": {
                 "method": "POST",
                 "header": [
@@ -29689,7 +29691,7 @@
               "response": [
                 {
                   "id": "27350cd4-e83f-56b4-ba8f-9e2d16c6a02a",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[STRUCTURE FAIL] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -29833,7 +29835,7 @@
             },
             {
               "id": "21649d82-9232-532e-b329-d8ff1a24f2b5",
-              "name": "YesNo",
+              "name": "[OK] YesNo",
               "request": {
                 "method": "POST",
                 "header": [
@@ -29872,7 +29874,7 @@
               "response": [
                 {
                   "id": "f2f2cb04-092b-5888-b68b-5f2e0fa30b4a",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -30016,7 +30018,7 @@
             },
             {
               "id": "fe1c999d-8b92-5e1d-9f42-09152f68d8f6",
-              "name": "YesOrNoClaim",
+              "name": "[OK] YesOrNoClaim",
               "request": {
                 "method": "POST",
                 "header": [
@@ -30055,7 +30057,7 @@
               "response": [
                 {
                   "id": "5dd23494-0617-5b1d-92cc-4933daecae94",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -30206,7 +30208,7 @@
           "item": [
             {
               "id": "a1542bd0-f8dd-5a52-afce-ff190dd1f68d",
-              "name": "ProductElementIdAPI",
+              "name": "[OK] ProductElementIdAPI",
               "request": {
                 "method": "POST",
                 "header": [
@@ -30245,7 +30247,7 @@
               "response": [
                 {
                   "id": "1973a229-68c6-5e0e-9e50-c692e4d7cd8a",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -30393,7 +30395,7 @@
             },
             {
               "id": "faaad1bc-9547-5efc-80de-d7f37750aad5",
-              "name": "Products",
+              "name": "[OK] Products",
               "request": {
                 "method": "POST",
                 "header": [
@@ -30432,7 +30434,7 @@
               "response": [
                 {
                   "id": "f404de7f-5129-5d98-818d-e86cf2943850",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -30580,7 +30582,7 @@
             },
             {
               "id": "a6f667da-a406-58aa-8abf-b51264859761",
-              "name": "PubBranch",
+              "name": "[OK] PubBranch",
               "request": {
                 "method": "POST",
                 "header": [
@@ -30619,7 +30621,7 @@
               "response": [
                 {
                   "id": "9d359b43-9c40-5ef1-8c5b-787a9d09cf38",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -30767,7 +30769,7 @@
             },
             {
               "id": "5eb8d707-59de-52dd-8f21-9a9739e4bcda",
-              "name": "SalesAgreementAPI",
+              "name": "[OK] SalesAgreementAPI",
               "request": {
                 "method": "POST",
                 "header": [
@@ -30806,7 +30808,7 @@
               "response": [
                 {
                   "id": "63415395-a5eb-5f47-8345-45f098daaa90",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -30950,7 +30952,7 @@
             },
             {
               "id": "9775b77a-2bdf-5965-842c-0141c97b4e32",
-              "name": "SalesChannelAPI",
+              "name": "[OK] SalesChannelAPI",
               "request": {
                 "method": "POST",
                 "header": [
@@ -30989,7 +30991,7 @@
               "response": [
                 {
                   "id": "7657cf40-9997-5f0e-aaa4-b5c35548e510",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -31133,7 +31135,7 @@
             },
             {
               "id": "de3eff89-1e4c-5684-a7e5-c49bc0b57525",
-              "name": "UserInfo",
+              "name": "[OK] UserInfo",
               "request": {
                 "method": "POST",
                 "header": [
@@ -31172,7 +31174,7 @@
               "response": [
                 {
                   "id": "03c6a8a3-ed84-58e9-a4ba-2ded29e1dd0c",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 200 OK",
+                  "name": "[OK] 200 OK — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -31327,7 +31329,7 @@
           "item": [
             {
               "id": "64ed8f2f-b162-57b1-99bd-4245bf288725",
-              "name": "Data table - Load Product list ({{ProductListTable}})",
+              "name": "[REJECTED] Data table - Load Product list ({{ProductListTable}})",
               "request": {
                 "method": "POST",
                 "header": [
@@ -31366,7 +31368,7 @@
               "response": [
                 {
                   "id": "c78b521d-7840-58ac-b25e-e5fda9f0d97b",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+                  "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -31513,7 +31515,7 @@
             },
             {
               "id": "50588fae-1842-5619-bcf0-23a52e455e69",
-              "name": "Data table - Load Plan list ({{PlanListTable}})",
+              "name": "[REJECTED] Data table - Load Plan list ({{PlanListTable}})",
               "request": {
                 "method": "POST",
                 "header": [
@@ -31552,7 +31554,7 @@
               "response": [
                 {
                   "id": "c179c1a2-8c05-5097-934d-317aac26f884",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+                  "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -31699,7 +31701,7 @@
             },
             {
               "id": "dfb674a2-02ae-5b86-82d4-4aeb3b5d8bac",
-              "name": "Data table - runtime data by name",
+              "name": "[REJECTED] Data table - runtime data by name",
               "request": {
                 "method": "POST",
                 "header": [
@@ -31739,7 +31741,7 @@
               "response": [
                 {
                   "id": "6a20288d-d2cb-55d9-9bd0-fd299d3c3392",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 500 Internal Server Error",
+                  "name": "[REJECTED] 500 Internal Server Error — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -31894,7 +31896,7 @@
           "item": [
             {
               "id": "aea8556f-a430-551d-9e2d-920e48ff18d7",
-              "name": "Rate/config table - Packages ({{PackageTable}})",
+              "name": "[REJECTED] Rate/config table - Packages ({{PackageTable}})",
               "request": {
                 "method": "POST",
                 "header": [
@@ -31941,7 +31943,7 @@
               "response": [
                 {
                   "id": "b7984de6-d7db-534d-8ab5-9dd7c2757864",
-                  "name": "Captured from trialx, 28 Sep 2026 (real Machine User run) — 400 Bad Request",
+                  "name": "[REJECTED] 400 Bad Request — real trialx response, 28 Sep 2026",
                   "originalRequest": {
                     "method": "POST",
                     "header": [

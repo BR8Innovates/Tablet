@@ -937,7 +937,9 @@ def load_tables_folder():
 # ---------------------------------------------------------------------------
 PRE_REQUEST = r"""
 // Auto-fetch a trialx token (API-02) when none is cached or it is about to expire.
-const skip = pm.info.requestName === 'Get Token';
+// item names are "Get Token — Mandatory" / "Get Token — Full (+ Optional)" - startsWith,
+// not ===, or this never matches and Get Token ends up calling itself recursively.
+const skip = pm.info.requestName.startsWith('Get Token');
 const token = pm.collectionVariables.get('access_token');
 const exp = Number(pm.collectionVariables.get('token_expires_at') || 0);
 if (!skip && (!token || Date.now() > exp) && pm.environment.get('username')) {
