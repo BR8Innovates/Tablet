@@ -74,6 +74,7 @@ def raw_sheet(name, d, n):
 ws_readme = sheet('Read Me', NAVY)
 ws_exec = sheet('Executive Summary', NAVY)
 ws_sum = sheet('Summary 2W & 4W', '7030A0')
+ws_bif = sheet('Error Bifurcation', '7030A0')
 ws_cat = sheet('Category Breakdown', NAVY)
 ws_car = {p: sheet(p, TABCOL[p]) for p in PROVIDERS}
 ws_2w = sheet('2W', '7030A0')

@@ -673,6 +673,46 @@ widths(ws, {'A': 9, 'B': 15, 'C': 13, 'D': 13, 'E': 11, 'F': 11, 'G': 10, 'H': 1
 ws.freeze_panes = 'D6'
 SUMLAST = r
 
+
+# ================================================================== ERROR BIFURCATION: Insurer x Product x PlanType x Error
+ws = ws_bif
+bif = (S['raw'][S['raw'].reg_disp != ''].groupby(['provider', 'product', 'plantype', 'err_n', 'cat'])
+       .agg(o=('occ', 'sum'), regs=('reg_disp', lambda s_: s_[s_ != '(blank)'].nunique())).reset_index())
+bif['pn'] = bif.plantype.map(lambda z: int(z) if str(z).isdigit() else 99)
+bif['po'] = bif.provider.map({p_: i_ for i_, p_ in enumerate(PROVIDERS)})
+bif = bif.sort_values(['po', 'product', 'pn', 'o'], ascending=[True, True, True, False]).reset_index(drop=True)
+title(ws, 'Error Bifurcation — Insurer × Product × PlanType × Error (September 2026)',
+      'Every distinct failed-call error for each insurer, product and PlanType. Occurrences are live SUMIFS on the Raw Data tab; "% of PlanType failures" divides by the failures of the same insurer, product and PlanType; '
+      'August occurrences come from Raw Data Aug. Use the filters on the header row to slice (e.g. Insurer = Tata AIG, Product = 2W, PlanType = 3).', 11)
+ws.row_dimensions[2].height = 44
+header(ws, 4, ['Insurer', 'Product', 'PlanType', 'Error', 'Category', 'Occurrences (Sep)', 'Unique Vehicles', '% of PlanType failures', 'PlanType failures (Sep)', 'Occurrences (Aug)', 'Δ vs Aug'], height=42)
+ptot = S['raw'].groupby(['provider', 'product', 'plantype']).occ.sum()
+BIF0 = 5
+for i, x in enumerate(bif.itertuples(index=False)):
+    r = BIF0 + i
+    text(ws, r, 1, x.provider); text(ws, r, 2, x.product); text(ws, r, 3, str(x.plantype)); text(ws, r, 4, x.err_n, wrap=False); text(ws, r, 5, x.cat)
+    conds = dict(ins=Ref('$A%d' % r), prod=Ref('$B%d' % r), plan=Ref('$C%d' % r), err=Ref('$D%d' % r))
+    formula(ws, r, 6, '=' + sumifs(SEP, nS, **conds), int(x.o))
+    num(ws, r, 7, int(x.regs))
+    pt = int(ptot[(x.provider, x.product, x.plantype)])
+    formula(ws, r, 8, '=F%d/I%d' % (r, r), x.o / pt, '0.0%')
+    formula(ws, r, 9, '=' + sumifs(SEP, nS, ins=Ref('$A%d' % r), prod=Ref('$B%d' % r), plan=Ref('$C%d' % r)), pt)
+    ao = int(A['raw'][(A['raw'].provider == x.provider) & (A['raw']['product'] == x.product) & (A['raw'].plantype == x.plantype) & (A['raw'].err_n == x.err_n)].occ.sum())
+    formula(ws, r, 10, '=' + sumifs(AUG, nA, **conds), ao)
+    formula(ws, r, 11, '=F%d-J%d' % (r, r), int(x.o) - ao, '+#,##0;-#,##0;0')
+BIFN = BIF0 + len(bif) - 1
+r = BIFN + 1
+label(ws, r, 1, 'TOTAL', total=True)
+for c_ in range(2, 6): text(ws, r, c_, '', fill=TOTAL_FILL)
+formula(ws, r, 6, '=SUM(F%d:F%d)' % (BIF0, BIFN), int(bif.o.sum()), total=True)
+for c_ in (7, 8, 9): text(ws, r, c_, '', fill=TOTAL_FILL)
+text(ws, r, 10, '', fill=TOTAL_FILL); text(ws, r, 11, '', fill=TOTAL_FILL)
+BIFTOT = r
+note(ws, r + 2, 'Aug occurrences are shown per error; errors that occurred only in August are not listed here (see Raw Data Aug and the Findings tab).', 11, 30, color='595959')
+widths(ws, {'A': 14, 'B': 9, 'C': 10, 'D': 70, 'E': 28, 'F': 14, 'G': 11, 'H': 13, 'I': 14, 'J': 13, 'K': 10})
+ws.freeze_panes = 'E5'
+ws.auto_filter.ref = 'A4:K%d' % BIFN
+
 # ================================================================== DATA VERIFICATION
 ws = ws_ver
 title(ws, 'Data Verification — reconciliation checks',
@@ -697,6 +737,7 @@ checks = [
     ('Policies: Policy Issuance total = Funnel & GWP total (Aug+Sep)', None, None, 'Funnel & GWP'),
     ('Digit: every Digit policy has BOTH PolicyNo and CarrierPolicyNo', int((allpol.provider == 'Go Digit').sum()), None, 'Policy Issuance detail'),
     ('Summary 2W & 4W: failures (all carriers, all PlanTypes) = Executive Summary failed', "='Executive Summary'!D11", None, 'Executive Summary'),
+    ('Error Bifurcation: Sep occurrences total = Raw Data occurrences', None, None, 'Raw Data tab'),
     ('Aug (calibration): quote calls vs August MBR deck (146,324)', 146324, "='Cumulative (Aug+Sep)'!B11", 'FIBE x insureMO MBR August 2026 v2, slide 6'),
     ('Aug (calibration): failed calls vs August MBR deck (63,023)', 63023, "='Cumulative (Aug+Sep)'!B11-'Cumulative (Aug+Sep)'!E11", 'MBR August deck, slide 6'),
     ('Aug (calibration): ICICI failed calls vs deck (10,766)', 10766, "=SUM('Cumulative (Aug+Sep)'!B5:B6)-SUM('Cumulative (Aug+Sep)'!E5:E6)", 'MBR August deck, slide 9'),
@@ -746,6 +787,8 @@ setf('Cum: Cumulative failed (calls − success) = Cumulative category total', 3
 setf('Cum: 2W + 4W cumulative calls = Cumulative total calls', 3, "='2W'!D8+'4W'!D8", int(a_calls + tot_calls))
 setf('Summary 2W & 4W: failures (all carriers, all PlanTypes) = Executive Summary failed', 3, "=SUMIFS('Summary 2W & 4W'!$G$6:$G$%d,'Summary 2W & 4W'!$C$6:$C$%d,\"All PlanTypes\",'Summary 2W & 4W'!$B$6:$B$%d,\"All carriers\")" % ((SUMLAST,) * 3), len(S['fail']))
 EXPECTED[(ws.title, 'B%d' % CHK['Summary 2W & 4W: failures (all carriers, all PlanTypes) = Executive Summary failed'])] = len(S['fail'])
+setf('Error Bifurcation: Sep occurrences total = Raw Data occurrences', 2, "=SUM('Raw Data'!$F$2:$F$%d)" % (nS + 1), int(bif.o.sum()))
+setf('Error Bifurcation: Sep occurrences total = Raw Data occurrences', 3, "='Error Bifurcation'!F%d" % BIFTOT, int(bif.o.sum()))
 setf('Policies: Policy Issuance total = Funnel & GWP total (Aug+Sep)', 2, "='Policy Issuance'!C%d" % POL_TOT_ROW, n_pol)
 setf('Policies: Policy Issuance total = Funnel & GWP total (Aug+Sep)', 3, "='Funnel & GWP'!H%d+'Funnel & GWP'!I%d" % (FROW['policies'], FROW['policies']), n_pol)
 setf('Digit: every Digit policy has BOTH PolicyNo and CarrierPolicyNo', 3,
