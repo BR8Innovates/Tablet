@@ -1,0 +1,419 @@
+[
+ {
+  "product": "UPPA001",
+  "steps": [
+   {
+    "n": "carrier chip",
+    "ok": true
+   },
+   {
+    "n": "age rule blocks",
+    "ok": true
+   },
+   {
+    "n": "plans",
+    "ok": true,
+    "extra": "5 plans, 2 variants"
+   },
+   {
+    "n": "proposal created",
+    "ok": true,
+    "extra": "Proposal createdProposal no.PUPPA0010000000232InsurerAfillar Insurance CompanyPremium68.00"
+   },
+   {
+    "n": "application pdf",
+    "ok": true
+   },
+   {
+    "n": "proposal updated",
+    "ok": true
+   },
+   {
+    "n": "policy issued",
+    "ok": true,
+    "extra": "POUPPA00100000071"
+   },
+   {
+    "n": "policy pdf",
+    "ok": true
+   },
+   {
+    "n": "load policy",
+    "ok": true
+   },
+   {
+    "n": "cancel check",
+    "ok": true,
+    "extra": "Refund calculation · request POUPPA00100000071-001 PENDINGInsurerAfillar Insurance CompanyDays since start0 (free-look 15 days)Premium paid68.00Pro-rata premium68.00Cancellation typeFREE_LOOK (100%)Re"
+   },
+   {
+    "n": "cancel approved",
+    "ok": true,
+    "extra": "Request APPROVEDPolicy statusCancelledEndorsement no.POUPPA00100000071-002Refund68.00"
+   },
+   {
+    "n": "commission",
+    "ok": true
+   }
+  ],
+  "consoleErrors": []
+ },
+ {
+  "product": "TL001",
+  "steps": [
+   {
+    "n": "carrier chip",
+    "ok": true
+   },
+   {
+    "n": "age rule blocks",
+    "ok": true
+   },
+   {
+    "n": "plans",
+    "ok": true,
+    "extra": "5 plans, 2 variants"
+   },
+   {
+    "n": "proposal created",
+    "ok": true,
+    "extra": "Proposal createdProposal no.PTL0010000000234InsurerAfillar Insurance CompanyPremium216.00"
+   },
+   {
+    "n": "application pdf",
+    "ok": true
+   },
+   {
+    "n": "proposal updated",
+    "ok": true
+   },
+   {
+    "n": "policy issued",
+    "ok": true,
+    "extra": "POTL00100000072"
+   },
+   {
+    "n": "policy pdf",
+    "ok": true
+   },
+   {
+    "n": "load policy",
+    "ok": true
+   },
+   {
+    "n": "cancel check",
+    "ok": true,
+    "extra": "Refund calculation · request POTL00100000072-001 PENDINGInsurerAfillar Insurance CompanyDays since start0 (free-look 15 days)Premium paid216.00Pro-rata premium216.00Cancellation typeFREE_LOOK (100%)Re"
+   },
+   {
+    "n": "cancel approved",
+    "ok": true,
+    "extra": "Request APPROVEDPolicy statusCancelledEndorsement no.POTL00100000072-002Refund216.00"
+   },
+   {
+    "n": "commission",
+    "ok": true
+   }
+  ],
+  "consoleErrors": []
+ },
+ {
+  "product": "FP001",
+  "steps": [
+   {
+    "n": "carrier chip",
+    "ok": true
+   },
+   {
+    "n": "female locked",
+    "ok": true
+   },
+   {
+    "n": "age rule blocks",
+    "ok": true
+   },
+   {
+    "n": "plans",
+    "ok": true,
+    "extra": "5 plans, 1 variants"
+   },
+   {
+    "n": "proposal created",
+    "ok": true,
+    "extra": "Proposal createdProposal no.PFP0010000000104InsurerAfillar Insurance CompanyPremium11.00"
+   },
+   {
+    "n": "application pdf",
+    "ok": true
+   },
+   {
+    "n": "proposal updated",
+    "ok": true
+   },
+   {
+    "n": "policy issued",
+    "ok": true,
+    "extra": "POFP00100000044"
+   },
+   {
+    "n": "policy pdf",
+    "ok": true
+   },
+   {
+    "n": "load policy",
+    "ok": true
+   },
+   {
+    "n": "cancel check",
+    "ok": true,
+    "extra": "Refund calculation · request POFP00100000044-001 PENDINGInsurerAfillar Insurance CompanyDays since start0 (free-look 15 days)Premium paid11.00Pro-rata premium11.00Cancellation typeFREE_LOOK (100%)Refu"
+   },
+   {
+    "n": "cancel approved",
+    "ok": true,
+    "extra": "Request APPROVEDPolicy statusCancelledEndorsement no.POFP00100000044-002Refund11.00"
+   },
+   {
+    "n": "commission",
+    "ok": true
+   }
+  ],
+  "consoleErrors": []
+ },
+ {
+  "product": "HC001",
+  "steps": [
+   {
+    "n": "carrier chip",
+    "ok": true
+   },
+   {
+    "n": "age rule blocks",
+    "ok": true
+   },
+   {
+    "n": "plans",
+    "ok": true,
+    "extra": "5 plans, 1 variants"
+   },
+   {
+    "n": "proposal created",
+    "ok": true,
+    "extra": "Proposal createdProposal no.PHC0010000000233InsurerAfillar Insurance CompanyPremium70.00"
+   },
+   {
+    "n": "application pdf",
+    "ok": true
+   },
+   {
+    "n": "proposal updated",
+    "ok": true
+   },
+   {
+    "n": "policy issued",
+    "ok": true,
+    "extra": "POHC00100000070"
+   },
+   {
+    "n": "policy pdf",
+    "ok": true
+   },
+   {
+    "n": "load policy",
+    "ok": true
+   },
+   {
+    "n": "cancel check",
+    "ok": true,
+    "extra": "Refund calculation · request POHC00100000070-001 PENDINGInsurerAfillar Insurance CompanyDays since start0 (free-look 15 days)Premium paid70.00Pro-rata premium70.00Cancellation typeFREE_LOOK (100%)Refu"
+   },
+   {
+    "n": "cancel approved",
+    "ok": true,
+    "extra": "Request APPROVEDPolicy statusCancelledEndorsement no.POHC00100000070-002Refund70.00"
+   },
+   {
+    "n": "commission",
+    "ok": true
+   }
+  ],
+  "consoleErrors": []
+ },
+ {
+  "product": "CI001",
+  "steps": [
+   {
+    "n": "carrier chip",
+    "ok": true
+   },
+   {
+    "n": "age rule blocks",
+    "ok": true
+   },
+   {
+    "n": "plans",
+    "ok": true,
+    "extra": "5 plans, 3 variants"
+   },
+   {
+    "n": "proposal created",
+    "ok": true,
+    "extra": "Proposal createdProposal no.PCI0010000000324InsurerAfillar Insurance CompanyPremium73.00"
+   },
+   {
+    "n": "application pdf",
+    "ok": true
+   },
+   {
+    "n": "proposal updated",
+    "ok": true
+   },
+   {
+    "n": "policy issued",
+    "ok": true,
+    "extra": "POCI00100000094"
+   },
+   {
+    "n": "policy pdf",
+    "ok": true
+   },
+   {
+    "n": "load policy",
+    "ok": true
+   },
+   {
+    "n": "cancel check",
+    "ok": true,
+    "extra": "Refund calculation · request POCI00100000094-001 PENDINGInsurerAfillar Insurance CompanyDays since start0 (free-look 15 days)Premium paid73.00Pro-rata premium73.00Cancellation typeFREE_LOOK (100%)Refu"
+   },
+   {
+    "n": "cancel approved",
+    "ok": true,
+    "extra": "Request APPROVEDPolicy statusCancelledEndorsement no.POCI00100000094-002Refund73.00"
+   },
+   {
+    "n": "commission",
+    "ok": true
+   }
+  ],
+  "consoleErrors": []
+ },
+ {
+  "product": "LP001",
+  "steps": [
+   {
+    "n": "carrier chip",
+    "ok": true
+   },
+   {
+    "n": "age rule blocks",
+    "ok": true
+   },
+   {
+    "n": "plans",
+    "ok": true,
+    "extra": "5 plans, 1 variants"
+   },
+   {
+    "n": "proposal created",
+    "ok": true,
+    "extra": "Proposal createdProposal no.PLP0010000000113InsurerAfillar Insurance CompanyPremium60.00"
+   },
+   {
+    "n": "application pdf",
+    "ok": true
+   },
+   {
+    "n": "proposal updated",
+    "ok": true
+   },
+   {
+    "n": "policy issued",
+    "ok": true,
+    "extra": "POLP00100000043"
+   },
+   {
+    "n": "policy pdf",
+    "ok": true
+   },
+   {
+    "n": "load policy",
+    "ok": true
+   },
+   {
+    "n": "cancel check",
+    "ok": true,
+    "extra": "Refund calculation · request POLP00100000043-001 PENDINGInsurerAfillar Insurance CompanyDays since start0 (free-look 15 days)Premium paid60.00Pro-rata premium60.00Cancellation typeFREE_LOOK (100%)Refu"
+   },
+   {
+    "n": "cancel approved",
+    "ok": true,
+    "extra": "Request APPROVEDPolicy statusCancelledEndorsement no.POLP00100000043-002Refund60.00"
+   },
+   {
+    "n": "commission",
+    "ok": true
+   }
+  ],
+  "consoleErrors": []
+ },
+ {
+  "product": "DH001",
+  "steps": [
+   {
+    "n": "carrier chip",
+    "ok": true
+   },
+   {
+    "n": "age rule blocks",
+    "ok": true
+   },
+   {
+    "n": "plans",
+    "ok": true,
+    "extra": "2 plans, 1 variants"
+   },
+   {
+    "n": "proposal created",
+    "ok": true,
+    "extra": "Proposal createdProposal no.PDH0010000000078InsurerAfillar Insurance CompanyPremium49.00"
+   },
+   {
+    "n": "application pdf",
+    "ok": true
+   },
+   {
+    "n": "proposal updated",
+    "ok": true
+   },
+   {
+    "n": "policy issued",
+    "ok": true,
+    "extra": "PODH00100000030"
+   },
+   {
+    "n": "policy pdf",
+    "ok": true
+   },
+   {
+    "n": "load policy",
+    "ok": true
+   },
+   {
+    "n": "cancel check",
+    "ok": true,
+    "extra": "Refund calculation · request PODH00100000030-001 PENDINGInsurerAfillar Insurance CompanyDays since start0 (free-look 15 days)Premium paid49.00Pro-rata premium49.00Cancellation typeFREE_LOOK (100%)Refu"
+   },
+   {
+    "n": "cancel approved",
+    "ok": true,
+    "extra": "Request APPROVEDPolicy statusCancelledEndorsement no.PODH00100000030-002Refund49.00"
+   },
+   {
+    "n": "commission",
+    "ok": true
+   }
+  ],
+  "consoleErrors": []
+ }
+]
