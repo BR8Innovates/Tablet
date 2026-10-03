@@ -214,6 +214,51 @@ for j, c in enumerate(PROVIDERS + ['Total']):
         tcol = 'HI'[k]
         formula(ws, r, 2 + 2 * j + k, '=IF(%s%d=0,0,%s%d/%s%d)' % (tcol, FROW['gwp'], col, FROW['gwp'], tcol, FROW['gwp']),
                 pct(vals[('gwp', c, tag)], vals[('gwp', 'Total', tag)]), '0.0%')
+
+# ---- registration funnel by product (2W / 4W)
+r += 2
+ws.cell(row=r, column=1, value='Registration funnel by product — 2W and 4W (all carriers, distinct registrations)').font = font(True, '00B050', 12)
+r += 1
+header(ws, r, ['Metric', '2W\nAug', '2W\nSep', '4W\nAug', '4W\nSep', 'Total\nAug', 'Total\nSep'])
+pf = {}
+for pr in ('2W', '4W'):
+    for tag, d in (('a', A), ('s', S)):
+        qq = d['q']; g = qq[(qq['product'] == pr) & (qq.reg != '')]
+        ap = d['apps']; ap = ap[ap['product'] == pr]
+        pf[(pr, tag)] = dict(leads=g.reg.nunique(), priced=g[g.ok].reg.nunique(), apps=ap.reg.nunique(),
+                             pol=pol_exp('count', None, '2026-08' if tag == 'a' else '2026-09', pr),
+                             gwp=pol_exp('sum', None, '2026-08' if tag == 'a' else '2026-09', pr))
+PFROW = {}
+r += 1
+for lab, key in [('Unique registrations (leads)', 'leads'), ('Leads with at least one price', 'priced'), ('Applications (unique regs)', 'apps')]:
+    label(ws, r, 1, lab); PFROW[key] = r
+    for j, (pr, tag) in enumerate([('2W', 'a'), ('2W', 's'), ('4W', 'a'), ('4W', 's')]):
+        num(ws, r, 2 + j, int(pf[(pr, tag)][key]), blue=True)
+    formula(ws, r, 6, '=B%d+D%d' % (r, r), int(pf[('2W', 'a')][key] + pf[('4W', 'a')][key]))
+    formula(ws, r, 7, '=C%d+E%d' % (r, r), int(pf[('2W', 's')][key] + pf[('4W', 's')][key]))
+    r += 1
+for lab, key, fmt in [('Policies issued', 'pol', '#,##0'), ('GWP (INR)', 'gwp', '#,##0')]:
+    label(ws, r, 1, lab); PFROW[key] = r
+    for j, (pr, tag) in enumerate([('2W', 'a'), ('2W', 's'), ('4W', 'a'), ('4W', 's')]):
+        m_ = '2026-08' if tag == 'a' else '2026-09'
+        formula(ws, r, 2 + j, '=' + pol_f('count' if key == 'pol' else 'sum', None, m_, pr), pf[(pr, tag)][key], fmt)
+    formula(ws, r, 6, '=B%d+D%d' % (r, r), pf[('2W', 'a')][key] + pf[('4W', 'a')][key], fmt)
+    formula(ws, r, 7, '=C%d+E%d' % (r, r), pf[('2W', 's')][key] + pf[('4W', 's')][key], fmt)
+    r += 1
+for lab, nk, dk in [('Lead → price %', 'priced', 'leads'), ('Lead → application %', 'apps', 'leads'), ('Application → policy %', 'pol', 'apps'), ('Lead → policy %', 'pol', 'leads')]:
+    label(ws, r, 1, lab)
+    for j in range(6):
+        col = 'BCDEFG'[j]
+        if j < 4:
+            pr, tag = [('2W', 'a'), ('2W', 's'), ('4W', 'a'), ('4W', 's')][j]
+            e = pct(pf[(pr, tag)][nk], pf[(pr, tag)][dk])
+        else:
+            tag = 'a' if j == 4 else 's'
+            e = pct(pf[('2W', tag)][nk] + pf[('4W', tag)][nk], pf[('2W', tag)][dk] + pf[('4W', tag)][dk])
+        formula(ws, r, 2 + j, '=IF(%s%d=0,0,%s%d/%s%d)' % (col, PFROW[dk], col, PFROW[nk], col, PFROW[dk]), e, '0.00%')
+    r += 1
+note(ws, r + 1, 'Each registration is counted once per product; 2W + 4W equals the combined funnel above for every stage (leads, priced, applications, policies, GWP).', 9, 30, color='595959')
+
 r += 2
 note(ws, r, 'Registrations attempted sum to more than the Total because one vehicle is quoted with several carriers. Aug figures reproduce the August MBR deck exactly '
      '(4,935 leads / 4,556 priced / 242 applications / 59 policies / INR 1,27,793 GWP). July is not shown: the API holds July data only from 5 July and does not '

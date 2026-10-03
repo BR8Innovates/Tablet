@@ -289,6 +289,62 @@ settext(sh_(7), ('Two months, one picture   ', '%s quote calls, %.1f%% returned 
 settext(sh_(9), ('Where the failures sit   ', '%s failed calls in total — Tata AIG %.0f%%, Go Digit %.0f%%, ICICI Lombard %.0f%%.' % (
     ind(a['fail'] + s['fail']), 100 * (fail_(fa, ta_) + fail_(fs, ta_)) / (a['fail'] + s['fail']), 100 * (fail_(fa, dg_) + fail_(fs, dg_)) / (a['fail'] + s['fail']), 100 * (fail_(fa, il_) + fail_(fs, il_)) / (a['fail'] + s['fail']))))
 
+
+# ================================================================== NEW slides: registration funnel by product (clones of slide 5)
+def pfunnel(d, prod):
+    q = d['q']; g = q[(q['product'] == prod) & (q.reg != '')]
+    ap = d['apps']; ap = ap[ap['product'] == prod]; pl = d['pol']; pl = pl[pl['product'] == prod]
+    return dict(leads=g.reg.nunique(), priced=g[g.ok].reg.nunique(), apps=ap.reg.nunique(), bought=pl.reg.nunique(), pol=len(pl), gwp=float(pl.premium.sum()),
+                calls=int((q['product'] == prod).sum()), succ=int(q[q['product'] == prod].ok.sum()))
+
+
+def funnel_slide(prod, name, insert_at):
+    ns_ = duplicate_slide(prs, 4, insert_at)
+    x = lambda k: ns_.shapes[k]
+    fa_, fs_ = pfunnel(AD, prod), pfunnel(SD, prod)
+    settext(x(0), 'The Funnel — %s' % name)
+    settext(x(1), 'September versus August, %s only — every stage and step conversion, per unique registration' % prod)
+    r1 = lambda n, o: '%.1f%%' % (100 * n / o)
+    rows = [[None, 'August 2026', 'September 2026', None, None]]
+    for lab_, k_, com in [(None, 'leads', 'Vehicles entering the funnel'), (None, 'priced', 'Leads that got a price'), (None, 'apps', 'Vehicles reaching application'),
+                          (None, 'bought', 'Vehicles that bought'), (None, 'pol', 'One policy per buying vehicle')]:
+        rows.append([None, ind(fa_[k_]), ind(fs_[k_]), chg(fs_[k_], fa_[k_]), com])
+    rows.append([None, '', '', '', ''])
+    conv_ = [('priced', 'leads', 'Lead → quote'), ('apps', 'leads', 'Quote→ Proposal'), ('bought', 'apps', 'Proposal→ Purchase'), ('bought', 'leads', 'Lead → Purchase')]
+    for n_, d_, _l in conv_:
+        va, vs = fa_[n_] / fa_[d_], fs_[n_] / fs_[d_]
+        dec = 2 if (n_, d_) == ('bought', 'leads') else 1
+        flat = round(100 * vs, dec) == round(100 * va, dec)
+        rows.append([None, '%.*f%%' % (dec, 100 * va), '%.*f%%' % (dec, 100 * vs), '▬ no change' if flat else chgpp(vs, va, dec),
+                     'Flat' if flat else ('Improved' if vs > va else 'Slipped')])
+    fill_table(x(5).table, rows)
+    recolor_arrows(x(5).table, {i: True for i in range(1, 11)})
+    from pptx.dml.color import RGBColor as _R
+    for r_ in range(7, 11):
+        if rows[r_][3] == '▬ no change':
+            set_cell_color(x(5).table, r_, 3, _R(0x59, 0x59, 0x59)); set_cell_color(x(5).table, r_, 4, _R(0x59, 0x59, 0x59))
+    cA, cS = fa_['bought'] / fa_['apps'], fs_['bought'] / fs_['apps']
+    settext(x(7), 'The bottom of the funnel')
+    settext(x(8), ['▪   Application → bought: %.1f%% → %.1f%%' % (100 * cA, 100 * cS),
+                   '▪   Lead → bought: %.2f%% → %.2f%%' % (100 * fa_['bought'] / fa_['leads'], 100 * fs_['bought'] / fs_['leads']),
+                   '▪   %d %s vehicles bought, against %d in August' % (fs_['bought'], prod, fa_['bought']),
+                   '▪   %s GWP: INR %s (Aug INR %s)' % (prod, ind(fs_['gwp']), ind(fa_['gwp']))])
+    settext(x(10), 'The price step')
+    settext(x(11), ['▪   Lead → price: %.1f%% → %.1f%%' % (100 * fa_['priced'] / fa_['leads'], 100 * fs_['priced'] / fs_['leads']),
+                    '▪   %s applications, %s' % (fs_['apps'], chg(fs_['apps'], fa_['apps']).replace('▼ ', 'down ').replace('▲ ', 'up ')),
+                    '▪   Quote-call success %.1f%% (Aug %.1f%%)' % (100 * fs_['succ'] / fs_['calls'], 100 * fa_['succ'] / fa_['calls'])])
+    settext(x(13), 'By carrier (Sep)')
+    pc = PS['S'][prod]
+    settext(x(14), ' · '.join('%s %d of %d priced' % (p, pc[p]['priced'], pc[p]['leads']) for p in P3))
+    settext(x(15), 'Applications and policies are split by the vehicle type on the request / issued policy. Same definitions as the combined funnel.')
+    return fs_, fa_
+
+
+FUN = {}
+FUN['2W'] = funnel_slide('2W', 'Two-Wheeler (2W)', 5)
+FUN['4W'] = funnel_slide('4W', 'Four-Wheeler (4W)', 6)
+pickle.dump({k: v for k, v in FUN.items()}, open('deck_funnel_pw.pkl', 'wb'))
+
 # ================================================================== housekeeping: footers, page numbers
 order = list(prs.slides)
 for n, slide in enumerate(order, start=1):
