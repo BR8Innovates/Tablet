@@ -7,320 +7,267 @@
 <style>
 :root {
   /* ---- Brand block: Sohar International Bank (approximate public colours). Edit these values to apply the official guideline. ---- */
-  --brand: #00695C;          /* primary */
-  --brand-dark: #004D40;     /* header, hover */
-  --brand-soft: #E0F2EF;     /* tints */
-  --accent: #C8A24A;         /* gold accent */
+  --brand: #00695C; --brand-dark: #004D40; --brand-soft: #E0F2EF; --accent: #C8A24A;
   --font: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
-  --bank-name: "Sohar International Bank";
   /* ---- Neutrals and status ---- */
   --text: #26323A; --muted: #66737C; --border: #CBD6DD; --line: #E6ECEF; --bg: #F4F7F8; --card: #FFFFFF;
   --ok: #1B8A5A; --warn: #B7791F; --err: #C0392B; --info: #2B6CB0;
+  /* chart colours (status) */
+  --c-pending: #C8A24A; --c-issued: #00695C; --c-rejected: #C0392B; --c-cancel: #7A8B94;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: var(--font); color: var(--text); background: var(--bg); font-size: 14px; line-height: 1.5; }
-header { background: var(--brand-dark); color: #fff; padding: 14px 28px; display: flex; align-items: center; gap: 16px; border-bottom: 4px solid var(--accent); }
+header { background: var(--brand-dark); color: #fff; padding: 12px 24px; display: flex; align-items: center; gap: 14px; border-bottom: 4px solid var(--accent); flex-wrap: wrap; }
 .logo { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); color: var(--brand-dark); font-weight: 700; font-size: 20px; display: flex; align-items: center; justify-content: center; }
-header h1 { font-size: 18px; font-weight: 600; letter-spacing: .2px; }
+header h1 { font-size: 18px; font-weight: 600; }
 header .sub { font-size: 12px; opacity: .85; }
 header .spacer { flex: 1; }
-.chip { background: rgba(255,255,255,.15); border-radius: 14px; padding: 3px 12px; font-size: 12px; }
-.shell { max-width: 1180px; margin: 0 auto; padding: 18px 20px 60px; }
-nav.steps { display: flex; gap: 0; margin: 4px 0 18px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-nav.steps button { flex: 1; background: none; color: var(--muted); border: none; border-right: 1px solid var(--line); padding: 12px 8px; font: inherit; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-nav.steps button:last-child { border-right: none; }
-nav.steps button .n { width: 24px; height: 24px; border-radius: 50%; background: var(--line); color: var(--muted); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; }
-nav.steps button.active { color: var(--brand); background: var(--brand-soft); }
-nav.steps button.active .n { background: var(--brand); color: #fff; }
-nav.steps button.done .n { background: var(--ok); color: #fff; }
-nav.steps button:disabled { opacity: .45; cursor: not-allowed; }
-.panel { display: none; } .panel.active { display: block; }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 20px 22px; margin-bottom: 16px; }
+.chip { background: rgba(255,255,255,.15); border-radius: 14px; padding: 3px 12px; font-size: 12px; white-space: nowrap; }
+.layout { display: flex; min-height: calc(100vh - 70px); }
+aside { width: 218px; background: #fff; border-right: 1px solid var(--line); padding: 14px 10px; flex-shrink: 0; }
+aside button { display: flex; width: 100%; align-items: center; gap: 10px; text-align: left; background: none; border: none; padding: 10px 12px; border-radius: 6px; font: inherit; font-weight: 600; color: var(--muted); cursor: pointer; margin-bottom: 2px; }
+aside button:hover { background: var(--bg); }
+aside button.active { background: var(--brand-soft); color: var(--brand-dark); }
+aside button .count { margin-left: auto; background: var(--accent); color: var(--brand-dark); border-radius: 10px; font-size: 11px; padding: 0 8px; }
+aside .role { font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin: 12px 12px 6px; }
+main { flex: 1; padding: 18px 22px 60px; min-width: 0; max-width: 1280px; }
+.view { display: none; } .view.active { display: block; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; margin-bottom: 16px; }
 .card h2 { font-size: 16px; color: var(--brand-dark); margin-bottom: 4px; }
-.card .hint { color: var(--muted); font-size: 12.5px; margin-bottom: 14px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 18px; }
-.grid .wide { grid-column: 1 / -1; }
+.card h3 { font-size: 13px; margin: 14px 0 2px; color: var(--brand-dark); }
+.card .hint { color: var(--muted); font-size: 12.5px; margin-bottom: 12px; }
+.pagehead { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.pagehead h1 { font-size: 20px; color: var(--brand-dark); }
+.pagehead .spacer { flex: 1; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 4px 16px; }
 label { display: block; font-weight: 600; font-size: 12.5px; margin: 8px 0 4px; }
 label .req { color: var(--err); }
 input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 5px; font: inherit; background: #fff; }
+textarea { min-height: 80px; resize: vertical; }
 input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand-soft); border-color: var(--brand); }
-input.bad, select.bad { border-color: var(--err); background: #FDF2F0; }
-.fe { color: var(--err); font-size: 12px; min-height: 0; }
-.help { color: var(--muted); font-size: 11.5px; margin-top: 2px; }
-button.btn { background: var(--brand); color: #fff; border: none; border-radius: 5px; padding: 9px 20px; font: inherit; font-weight: 600; cursor: pointer; }
+input.bad, select.bad, textarea.bad { border-color: var(--err); background: #FDF2F0; }
+.fe { color: var(--err); font-size: 12px; } .help { color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+button.btn { background: var(--brand); color: #fff; border: none; border-radius: 5px; padding: 8px 18px; font: inherit; font-weight: 600; cursor: pointer; }
 button.btn:hover { background: var(--brand-dark); }
-button.btn.sec { background: #fff; color: var(--brand); border: 1px solid var(--brand); }
-button.btn.sec:hover { background: var(--brand-soft); }
+button.btn.sec { background: #fff; color: var(--brand); border: 1px solid var(--brand); } button.btn.sec:hover { background: var(--brand-soft); }
 button.btn.danger { background: var(--err); } button.btn.danger:hover { background: #962d22; }
+button.btn.sm { padding: 4px 12px; font-size: 12.5px; }
 button.btn:disabled { background: #BFC9CE; border-color: #BFC9CE; color: #fff; cursor: not-allowed; }
-.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; align-items: center; }
-.alert { padding: 10px 14px; border-radius: 6px; margin: 12px 0; font-size: 13px; border: 1px solid; }
-.alert.err { background: #FDF2F0; border-color: #F2C2BB; color: #8E2A1E; }
-.alert.ok { background: #EAF7F0; border-color: #B8E3CC; color: #14693F; }
-.alert.info { background: #EBF3FB; border-color: #BCD6EF; color: #22527F; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; align-items: center; }
+.alert { padding: 10px 14px; border-radius: 6px; margin: 10px 0; font-size: 13px; border: 1px solid; }
+.alert.err { background: #FDF2F0; border-color: #F2C2BB; color: #8E2A1E; } .alert.ok { background: #EAF7F0; border-color: #B8E3CC; color: #14693F; }
+.alert.info { background: #EBF3FB; border-color: #BCD6EF; color: #22527F; } .alert.warn { background: #FBF3E0; border-color: #EBD9A8; color: #7A5410; }
 .alert ul { margin: 6px 0 0 18px; }
-.plans { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 12px; }
-.plan { border: 2px solid var(--line); border-radius: 8px; padding: 14px 16px; background: #fff; cursor: pointer; }
-.plan:hover { border-color: var(--brand); }
-.plan.sel { border-color: var(--brand); background: var(--brand-soft); }
-.plan h3 { font-size: 15px; color: var(--brand-dark); }
-.plan .prem { font-size: 24px; font-weight: 700; margin: 4px 0 8px; }
-.plan .prem small { font-size: 12px; color: var(--muted); font-weight: 400; }
-.plan table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-.plan td { padding: 2px 0; border-top: 1px dashed var(--line); } .plan td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
-table.t { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
-table.t th { text-align: left; background: var(--brand-soft); color: var(--brand-dark); padding: 7px 9px; font-size: 12px; }
-table.t td { padding: 7px 9px; border-bottom: 1px solid var(--line); }
-dl.kv { display: grid; grid-template-columns: 190px 1fr; gap: 3px 14px; margin-top: 8px; }
-dl.kv dt { color: var(--muted); } dl.kv dd { font-weight: 600; word-break: break-all; }
-.tabs { display: flex; gap: 6px; margin-bottom: 14px; }
-.tabs button { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 6px 16px; font: inherit; cursor: pointer; color: var(--muted); font-weight: 600; }
-.tabs button.active { background: var(--brand); border-color: var(--brand); color: #fff; }
-.sub-panel { display: none; } .sub-panel.active { display: block; }
+.plans { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin-top: 10px; }
+.plan { border: 2px solid var(--line); border-radius: 8px; padding: 12px 14px; background: #fff; cursor: pointer; }
+.plan:hover { border-color: var(--brand); } .plan.sel { border-color: var(--brand); background: var(--brand-soft); }
+.plan h3 { font-size: 15px; margin: 0; } .plan .prem { font-size: 24px; font-weight: 700; margin: 2px 0 6px; } .plan .prem small { font-size: 12px; color: var(--muted); font-weight: 400; }
+.plan table { width: 100%; border-collapse: collapse; font-size: 12.5px; } .plan td { padding: 2px 0; border-top: 1px dashed var(--line); } .plan td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+table.t { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.t th { text-align: left; background: var(--brand-soft); color: var(--brand-dark); padding: 7px 9px; font-size: 12px; white-space: nowrap; }
+table.t td { padding: 7px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.t tr.row:hover td { background: #FAFCFC; } table.t td.num, table.t th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.scroll { overflow-x: auto; }
+dl.kv { display: grid; grid-template-columns: 170px 1fr; gap: 3px 14px; margin-top: 6px; } dl.kv dt { color: var(--muted); } dl.kv dd { font-weight: 600; word-break: break-word; }
 .badge { display: inline-block; padding: 1px 10px; border-radius: 10px; font-size: 12px; font-weight: 600; background: var(--line); }
-.badge.ok { background: #D4F0E1; color: #14693F; } .badge.warn { background: #FBEBC8; color: #8A5A0B; } .badge.err { background: #F7D4CF; color: #8E2A1E; }
-details.log { margin-top: 20px; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 10px 16px; }
-details.log summary { cursor: pointer; font-weight: 600; color: var(--brand-dark); }
-.logrow { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 6px; font-size: 12px; }
-.logrow pre { background: #F4F7F8; padding: 8px; border-radius: 5px; overflow: auto; max-height: 180px; font-size: 11.5px; }
-.spin { display: none; position: fixed; inset: 0; background: rgba(255,255,255,.6); z-index: 50; align-items: center; justify-content: center; font-weight: 600; color: var(--brand-dark); }
-.spin.on { display: flex; }
-.toggle { display: flex; align-items: center; gap: 8px; font-size: 12.5px; margin-top: 10px; } .toggle input { width: auto; }
-.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; } @media (max-width: 760px) { .two { grid-template-columns: 1fr; } nav.steps button span.l { display: none; } }
+.badge.ok { background: #D4F0E1; color: #14693F; } .badge.warn { background: #FBEBC8; color: #8A5A0B; } .badge.err { background: #F7D4CF; color: #8E2A1E; } .badge.mute { background: #E3E8EB; color: #4A5A63; }
+.tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.tabs button { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 5px 16px; font: inherit; cursor: pointer; color: var(--muted); font-weight: 600; }
+.tabs button.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+.steps { display: flex; margin: 0 0 14px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.steps div { flex: 1; padding: 10px 8px; text-align: center; font-weight: 600; color: var(--muted); border-right: 1px solid var(--line); } .steps div:last-child { border-right: none; }
+.steps div.active { background: var(--brand-soft); color: var(--brand-dark); } .steps div.done { color: var(--ok); }
+.filters { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 10px; } .filters > div { min-width: 140px; } .filters label { margin-top: 0; }
+.pager { display: flex; gap: 10px; align-items: center; justify-content: flex-end; margin-top: 10px; color: var(--muted); font-size: 12.5px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.tile { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; border-left: 4px solid var(--brand); cursor: default; }
+.tile.click { cursor: pointer; } .tile.click:hover { background: #FAFCFC; }
+.tile .v { font-size: 26px; font-weight: 700; line-height: 1.2; } .tile .l { color: var(--muted); font-size: 12px; } .tile .s { color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+.tile.warn { border-left-color: var(--accent); } .tile.err { border-left-color: var(--err); } .tile.mute { border-left-color: var(--c-cancel); }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px; margin-bottom: 14px; } .charts .card { margin: 0; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-top: 6px; } .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; }
+details.log { margin-top: 20px; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 10px 16px; } details.log summary { cursor: pointer; font-weight: 600; color: var(--brand-dark); }
+.logrow { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 6px; font-size: 12px; } .logrow pre { background: #F4F7F8; padding: 8px; border-radius: 5px; overflow: auto; max-height: 160px; font-size: 11.5px; }
+.spin { display: none; position: fixed; inset: 0; background: rgba(255,255,255,.6); z-index: 50; align-items: center; justify-content: center; font-weight: 600; color: var(--brand-dark); } .spin.on { display: flex; }
+.modalbg { display: none; position: fixed; inset: 0; background: rgba(20,40,40,.45); z-index: 40; align-items: center; justify-content: center; padding: 16px; } .modalbg.on { display: flex; }
+.modal { background: #fff; border-radius: 10px; padding: 20px 22px; width: 520px; max-width: 100%; max-height: 92vh; overflow: auto; } .modal h2 { color: var(--brand-dark); font-size: 17px; margin-bottom: 8px; }
+.toggle { display: flex; align-items: center; gap: 8px; font-size: 12.5px; } .toggle input { width: auto; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.empty { color: var(--muted); padding: 18px; text-align: center; }
+@media (max-width: 900px) { .layout { flex-direction: column; } aside { width: 100%; display: flex; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--line); } aside button { width: auto; } aside .role { display: none; } .two { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <header>
   <div class="logo">S</div>
-  <div><h1>Sohar International Bank &middot; Insurance</h1><div class="sub">Quotation, proposal, policy and servicing</div></div>
+  <div><h1>Sohar International Bank &middot; Insurance</h1><div class="sub">Quotation, approvals, policy servicing and dashboard</div></div>
   <div class="spacer"></div>
   <span class="chip" id="carrierChip">Insurer: loading...</span>
-  <span class="chip" id="sessionChip"></span>
+  <span class="chip" id="userChip"></span>
 </header>
+<div class="layout">
+  <aside id="side"></aside>
+  <main>
+    <div id="alerts"></div>
 
-<div class="shell">
-  <nav class="steps" id="steps">
-    <button data-step="1"><span class="n">1</span><span class="l">Quotation</span></button>
-    <button data-step="2"><span class="n">2</span><span class="l">Proposal</span></button>
-    <button data-step="3"><span class="n">3</span><span class="l">Issue &amp; documents</span></button>
-    <button data-step="4"><span class="n">4</span><span class="l">Servicing</span></button>
-  </nav>
-  <div id="alerts"></div>
-
-  <!-- ===================== 1 QUOTATION ===================== -->
-  <section class="panel" id="p1">
-    <div class="card">
-      <h2>Basic details for the quotation</h2>
-      <div class="hint">Only the basic details are needed to get the premium of every plan. The remaining details are taken in the next step.</div>
-      <div class="grid">
-        <div><label>Product <span class="req">*</span></label><select id="q_product"></select></div>
-        <div><label>Variant <span class="req">*</span></label><select id="q_variant"></select></div>
-        <div><label>Premium mode <span class="req">*</span></label><select id="q_mode"></select></div>
-        <div id="termWrap"><label>Policy term (years) <span class="req">*</span></label><input type="number" id="q_term" min="1" step="1"><div class="help" id="termHelp"></div></div>
-        <div><label>Cover start date <span class="req">*</span></label><input type="date" id="q_eff"></div>
-        <div><label>Salutation <span class="req">*</span></label><select id="q_sal"></select></div>
-        <div><label>Insured name <span class="req">*</span></label><input id="q_name" maxlength="60" placeholder="As per ID"><div class="fe" id="e_q_name"></div></div>
-        <div><label>Gender <span class="req">*</span></label><select id="q_gender"></select></div>
-        <div><label>Date of birth <span class="req">*</span></label><input type="date" id="q_dob"><div class="help" id="ageHelp"></div><div class="fe" id="e_q_dob"></div></div>
-        <div><label>Residency <span class="req">*</span></label><select id="q_res"></select></div>
-      </div>
-      <div class="actions"><button class="btn" id="btnQuote">Get quotation</button><span class="help" id="ruleNote"></span></div>
-    </div>
-    <div class="card" id="quoteResult" style="display:none">
-      <h2>Quotation</h2>
-      <div class="hint" id="quoteHint"></div>
-      <div class="plans" id="plans"></div>
-      <label class="toggle"><input type="checkbox" id="showComm"> Show agent commission (bank staff)</label>
-      <div class="actions"><button class="btn" id="btnToProposal" disabled>Continue with selected plan &rarr;</button></div>
-    </div>
-  </section>
-
-  <!-- ===================== 2 PROPOSAL ===================== -->
-  <section class="panel" id="p2">
-    <div class="card">
-      <h2>Proposal details</h2>
-      <div class="hint" id="propHint"></div>
-      <h3 style="font-size:13px;margin:6px 0 0">Customer</h3>
-      <div class="grid">
-        <div><label>Customer CIF number <span class="req">*</span></label><input id="p_cif" inputmode="numeric" maxlength="20" placeholder="e.g. 45678"><div class="fe" id="e_p_cif"></div></div>
-        <div><label>ID type <span class="req">*</span></label><select id="p_idtype"></select></div>
-        <div><label>ID number <span class="req">*</span></label><input id="p_idno" maxlength="20"><div class="fe" id="e_p_idno"></div></div>
-        <div><label>Marital status <span class="req">*</span></label><select id="p_marital"></select></div>
-        <div><label>Mobile <span class="req">*</span></label><input id="p_mobile" inputmode="tel" maxlength="15"><div class="fe" id="e_p_mobile"></div></div>
-        <div><label>Email <span class="req">*</span></label><input id="p_email" type="email" maxlength="60"><div class="fe" id="e_p_email"></div></div>
-        <div><label>Address <span class="req">*</span></label><input id="p_addr" maxlength="100"><div class="fe" id="e_p_addr"></div></div>
-        <div><label>Post code <span class="req">*</span></label><input id="p_post" maxlength="10"><div class="fe" id="e_p_post"></div></div>
-        <div><label>Monthly income</label><input id="p_income" type="number" min="0"></div>
-      </div>
-      <h3 style="font-size:13px;margin:14px 0 0">Beneficiary</h3>
-      <div class="grid">
-        <div><label>Beneficiary name <span class="req">*</span></label><input id="b_name" maxlength="60"><div class="fe" id="e_b_name"></div></div>
-        <div><label>Relationship <span class="req">*</span></label><select id="b_rel"></select></div>
-        <div><label>Share % <span class="req">*</span></label><input id="b_share" type="number" min="1" max="100" value="100"></div>
-      </div>
-      <h3 style="font-size:13px;margin:14px 0 0">Payment</h3>
-      <div class="grid">
-        <div><label>Debit account no. <span class="req">*</span></label><input id="pay_acc" inputmode="numeric" maxlength="20"><div class="fe" id="e_pay_acc"></div></div>
-        <div><label>Debit reference</label><input id="pay_ref" maxlength="30"></div>
-      </div>
-      <div id="propResult"></div>
-      <div class="actions">
-        <button class="btn" id="btnCreateProp">Create proposal</button>
-        <button class="btn sec" id="btnUpdateProp" disabled>Save changes to proposal</button>
-        <button class="btn sec" id="btnAppDoc" disabled>Application form (PDF)</button>
-        <button class="btn danger" id="btnRejectProp" disabled>Reject proposal</button>
-        <button class="btn" id="btnToIssue" disabled style="margin-left:auto">Continue to issue &rarr;</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== 3 ISSUE ===================== -->
-  <section class="panel" id="p3">
-    <div class="card">
-      <h2>Review and issue the policy</h2>
-      <div class="hint">Issuing converts the proposal into a policy. Check the summary first.</div>
-      <div id="issueSummary"></div>
-      <div id="issueResult"></div>
-      <div class="actions">
-        <button class="btn" id="btnIssue">Issue policy</button>
-        <button class="btn sec" id="btnPolDoc" disabled>Policy certificate (PDF)</button>
-        <button class="btn sec" id="btnAppDoc2">Application form (PDF)</button>
-        <button class="btn" id="btnToServ" disabled style="margin-left:auto">Open in servicing &rarr;</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== 4 SERVICING ===================== -->
-  <section class="panel" id="p4">
-    <div class="tabs" id="stabs">
-      <button data-tab="s_policy" class="active">Policy</button>
-      <button data-tab="s_cancel">Cancellation</button>
-      <button data-tab="s_comm">Commission</button>
-    </div>
-    <div class="sub-panel active" id="s_policy">
-      <div class="card">
-        <h2>Find a policy or proposal</h2>
-        <div class="grid">
-          <div><label>Policy no.</label><input id="f_policy" placeholder="e.g. POHC00100000068"></div>
-          <div><label>or Proposal no.</label><input id="f_proposal" placeholder="e.g. PHC0010000000229"></div>
+    <!-- ============ Dashboard ============ -->
+    <section class="view" id="v_dash">
+      <div class="pagehead"><h1>Dashboard</h1><span class="spacer"></span>
+        <div class="filters" style="margin:0">
+          <div><label>Period</label><select id="d_period"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="custom">Custom</option></select></div>
+          <div id="d_customWrap" style="display:none;display:none"><label>From</label><input type="date" id="d_from"></div>
+          <div id="d_customWrap2" style="display:none"><label>To</label><input type="date" id="d_to"></div>
+          <div id="d_scopeWrap"><label>Show</label><select id="d_scope"><option value="ALL">All submissions</option><option value="MINE">My submissions</option></select></div>
+          <button class="btn" id="d_refresh">Refresh</button>
         </div>
-        <div class="actions"><button class="btn" id="btnLoad">Load</button><button class="btn sec" id="btnPolDoc2" disabled>Certificate (PDF)</button></div>
-        <div id="loadResult"></div>
       </div>
-    </div>
-    <div class="sub-panel" id="s_cancel">
-      <div class="card">
-        <h2>Cancel a policy</h2>
-        <div class="hint">Step 1 (Checker) calculates the refund and raises the request. Step 2 (Approver) approves or rejects it. Free-look period: full refund; afterwards pro-rata premium &times; refund percent.</div>
-        <div class="grid">
-          <div><label>Policy no. <span class="req">*</span></label><input id="c_policy"></div>
-          <div><label>Cancellation date <span class="req">*</span></label><input type="date" id="c_date"></div>
-          <div><label>Reason <span class="req">*</span></label><input id="c_reason" maxlength="100" value="Customer request"></div>
-        </div>
-        <div class="actions"><button class="btn" id="btnCheck">1. Check (Checker)</button></div>
-        <div id="checkResult"></div>
-        <div class="actions" id="decideRow" style="display:none">
-          <button class="btn" id="btnApprove">2. Approve cancellation</button>
-          <button class="btn danger" id="btnDecline">Reject request</button>
-        </div>
-        <div id="decideResult"></div>
-      </div>
-    </div>
-    <div class="sub-panel" id="s_comm">
-      <div class="two">
+      <div id="d_body"><div class="empty">Loading...</div></div>
+    </section>
+
+    <!-- ============ New quotation (Maker) ============ -->
+    <section class="view" id="v_new">
+      <div class="pagehead"><h1>New quotation</h1></div>
+      <div class="steps" id="n_steps"><div data-s="1">1 &nbsp;Quotation</div><div data-s="2">2 &nbsp;Proposal details</div><div data-s="3">3 &nbsp;Submitted for approval</div></div>
+      <div id="n_s1">
         <div class="card">
-          <h2>Commission by policy</h2>
-          <label>Policy no.</label><input id="m_policy">
-          <div class="actions"><button class="btn" id="btnCommPolicy">Show</button></div>
-        </div>
-        <div class="card">
-          <h2>Commission by period</h2>
-          <div class="grid" style="grid-template-columns:1fr 1fr">
-            <div><label>Product</label><select id="m_product"></select></div>
-            <div><label>Page size</label><input id="m_size" type="number" value="10" min="1" max="100"></div>
-            <div><label>From</label><input type="date" id="m_from"></div>
-            <div><label>To</label><input type="date" id="m_to"></div>
+          <h2>Basic details for the quotation</h2>
+          <div class="hint">Only the basic details are needed to get the premium of every plan. The other details are taken in the next step.</div>
+          <div class="grid">
+            <div><label>Product <span class="req">*</span></label><select id="q_product"></select></div>
+            <div><label>Variant <span class="req">*</span></label><select id="q_variant"></select></div>
+            <div><label>Premium mode <span class="req">*</span></label><select id="q_mode"></select></div>
+            <div id="termWrap"><label>Policy term (years) <span class="req">*</span></label><input type="number" id="q_term" min="1" step="1"><div class="help" id="termHelp"></div></div>
+            <div><label>Cover start date <span class="req">*</span></label><input type="date" id="q_eff"></div>
+            <div><label>Salutation <span class="req">*</span></label><select id="q_sal"></select></div>
+            <div><label>Insured name <span class="req">*</span></label><input id="q_name" maxlength="60" placeholder="As per ID"><div class="fe" id="e_q_name"></div></div>
+            <div><label>Gender <span class="req">*</span></label><select id="q_gender"></select></div>
+            <div><label>Date of birth <span class="req">*</span></label><input type="date" id="q_dob"><div class="help" id="ageHelp"></div><div class="fe" id="e_q_dob"></div></div>
+            <div><label>Residency <span class="req">*</span></label><select id="q_res"></select></div>
           </div>
-          <div class="actions"><button class="btn" id="btnCommPeriod">Show</button></div>
+          <div class="actions"><button class="btn" id="btnQuote">Get quotation</button><span class="help" id="ruleNote"></span></div>
+        </div>
+        <div class="card" id="quoteResult" style="display:none">
+          <h2>Quotation</h2><div class="hint" id="quoteHint"></div><div class="plans" id="plans"></div>
+          <div class="actions"><button class="btn" id="btnToProposal" disabled>Continue with selected plan &rarr;</button><button class="btn sec" id="btnShareQuote" disabled>Share quotation</button>
+            <label class="toggle" style="margin-left:auto"><input type="checkbox" id="showComm"> Show agent commission</label></div>
         </div>
       </div>
-      <div class="card"><h2>Commission rates by plan</h2>
-        <div class="grid" style="grid-template-columns:1fr 1fr 1fr"><div><label>Product</label><select id="m_cproduct"></select></div><div><label>Variant</label><select id="m_cvariant"></select></div><div style="align-self:end"><button class="btn" id="btnCommCfg">Show</button></div></div>
+      <div id="n_s2" style="display:none">
+        <div class="card">
+          <h2>Proposal details</h2><div class="hint" id="propHint"></div>
+          <h3>Customer</h3>
+          <div class="grid">
+            <div><label>Customer CIF number <span class="req">*</span></label><input id="p_cif" inputmode="numeric" maxlength="20" placeholder="e.g. 45678"><div class="fe" id="e_p_cif"></div></div>
+            <div><label>ID type <span class="req">*</span></label><select id="p_idtype"></select></div>
+            <div><label>ID number <span class="req">*</span></label><input id="p_idno" maxlength="20"><div class="fe" id="e_p_idno"></div></div>
+            <div><label>Marital status <span class="req">*</span></label><select id="p_marital"></select></div>
+            <div><label>Mobile <span class="req">*</span></label><input id="p_mobile" inputmode="tel" maxlength="15"><div class="fe" id="e_p_mobile"></div></div>
+            <div><label>Email <span class="req">*</span></label><input id="p_email" type="email" maxlength="60"><div class="fe" id="e_p_email"></div></div>
+            <div><label>Address <span class="req">*</span></label><input id="p_addr" maxlength="100"><div class="fe" id="e_p_addr"></div></div>
+            <div><label>Post code <span class="req">*</span></label><input id="p_post" maxlength="10"><div class="fe" id="e_p_post"></div></div>
+            <div><label>Monthly income</label><input id="p_income" type="number" min="0"></div>
+          </div>
+          <h3>Beneficiary</h3>
+          <div class="grid">
+            <div><label>Beneficiary name <span class="req">*</span></label><input id="b_name" maxlength="60"><div class="fe" id="e_b_name"></div></div>
+            <div><label>Relationship <span class="req">*</span></label><select id="b_rel"></select></div>
+            <div><label>Share % <span class="req">*</span></label><input id="b_share" type="number" min="1" max="100" value="100"></div>
+          </div>
+          <h3>Payment</h3>
+          <div class="grid">
+            <div><label>Debit account no. <span class="req">*</span></label><input id="pay_acc" inputmode="numeric" maxlength="20"><div class="fe" id="e_pay_acc"></div></div>
+            <div><label>Debit reference</label><input id="pay_ref" maxlength="30"></div>
+          </div>
+          <div class="alert info">The proposal is sent to a Proposal Checker for approval. The policy is issued only after approval.</div>
+          <div class="actions">
+            <button class="btn sec" id="btnBackQuote">&larr; Back to quotation</button>
+            <button class="btn" id="btnCreateProp">Submit for approval</button>
+          </div>
+        </div>
       </div>
-      <div id="commResult"></div>
-    </div>
-  </section>
+      <div id="n_s3" style="display:none"><div class="card" id="n_done"></div></div>
+    </section>
 
-  <details class="log"><summary>Technical log (requests and responses)</summary><div id="logBody"></div></details>
+    <!-- ============ My submissions (Maker) ============ -->
+    <section class="view" id="v_mine"><div class="pagehead"><h1>My submissions</h1></div><div id="q_mine"></div><div id="det_mine"></div></section>
+
+    <!-- ============ Proposal approvals (Proposal Checker) ============ -->
+    <section class="view" id="v_papprove"><div class="pagehead"><h1>Proposal approvals</h1></div><div id="q_papprove"></div><div id="det_papprove"></div></section>
+
+    <!-- ============ Cancellations ============ -->
+    <section class="view" id="v_cancel">
+      <div class="pagehead"><h1 id="cancelTitle">Cancellations</h1></div>
+      <div class="tabs" id="cancelTabs"><button data-t="queue" class="active">Requests</button><button data-t="raise" id="tabRaise">Raise a request</button></div>
+      <div id="c_queue"><div id="q_cancel"></div><div id="det_cancel"></div></div>
+      <div id="c_raise" style="display:none">
+        <div class="card">
+          <h2>Raise a cancellation request</h2>
+          <div class="hint">The request is sent to a Cancellation Checker, who approves or rejects it. Free-look period: full refund; afterwards pro-rata premium &times; refund percent.</div>
+          <div class="grid">
+            <div><label>Policy no. <span class="req">*</span></label><input id="c_policy" placeholder="e.g. POHC00100000068"></div>
+            <div><label>Cancellation date <span class="req">*</span></label><input type="date" id="c_date"></div>
+            <div><label>Reason <span class="req">*</span></label><input id="c_reason" maxlength="100" value="Customer request"></div>
+          </div>
+          <div class="actions"><button class="btn sec" id="btnCLoad">Check policy</button><button class="btn" id="btnCSubmit">Submit cancellation request</button></div>
+          <div id="c_policyInfo"></div><div id="c_result"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Policies ============ -->
+    <section class="view" id="v_policies">
+      <div class="pagehead"><h1>Policies</h1></div>
+      <div class="card">
+        <div class="filters"><div><label>Policy no.</label><input id="f_policy" placeholder="POHC00100000068"></div><div><label>or Proposal no.</label><input id="f_proposal" placeholder="PHC0010000000229"></div><button class="btn" id="btnLoad">Search</button></div>
+        <div id="f_result"></div>
+      </div>
+    </section>
+
+    <details class="log"><summary>Technical log (requests and responses)</summary><div id="logBody"></div></details>
+  </main>
 </div>
 <div class="spin" id="spin">Please wait...</div>
+<div class="modalbg" id="modal"><div class="modal" id="modalBody"></div></div>
 
 <script>
 // =====================================================================================
-// UIC helpers (token, tenant, API url) - same patterns as the InsureMO UIC template
+// UIC helpers (token, tenant, API url)
 // =====================================================================================
 function getHostname() { try { return window.top.location.hostname; } catch (e) { try { return window.parent.location.hostname; } catch (e2) { return window.location.hostname; } } }
-function getTenantCode() {
-  const h = getHostname();
-  if (h.includes('portal.') || h.includes('portal-gw.')) return 'platform';
-  return sessionStorage.getItem('tenant_code') || sessionStorage.getItem('x-mo-response-tenant-id') || 'unknown';
-}
-function buildApiUrl(apiPath) {
-  const isGateway = getHostname().includes('-gw');
-  const p = apiPath.includes('{{tenant_code}}') ? apiPath.replace('{{tenant_code}}', getTenantCode()) : apiPath;
-  return (isGateway ? '' : '/api') + p;
-}
-function getAccessToken() {
-  const a = sessionStorage.getItem('Authorization');
-  if (!a) return '';
-  if (a.startsWith('Bearer ')) return a.substring(7).split('&')[0];
-  if (a.startsWith('access_token=')) return a.substring(13).split('&')[0];
-  return a;
-}
-function redirectToLogin() {
-  const u = window.location.origin + '/cas/login?service=' + encodeURIComponent(window.location.href);
-  try { window.parent.location.href = u; } catch (e) { window.location.href = u; }
-}
+function getTenantCode() { const h = getHostname(); if (h.includes('portal.') || h.includes('portal-gw.')) return 'platform'; return sessionStorage.getItem('tenant_code') || sessionStorage.getItem('x-mo-response-tenant-id') || 'unknown'; }
+function buildApiUrl(apiPath) { const isGateway = getHostname().includes('-gw'); const p = apiPath.includes('{{tenant_code}}') ? apiPath.replace('{{tenant_code}}', getTenantCode()) : apiPath; return (isGateway ? '' : '/api') + p; }
+function getAccessToken() { const a = sessionStorage.getItem('Authorization'); if (!a) return ''; if (a.startsWith('Bearer ')) return a.substring(7).split('&')[0]; if (a.startsWith('access_token=')) return a.substring(13).split('&')[0]; return a; }
+function redirectToLogin() { const u = window.location.origin + '/cas/login?service=' + encodeURIComponent(window.location.href); try { window.parent.location.href = u; } catch (e) { window.location.href = u; } }
 
 // =====================================================================================
-// Configuration (change here when the environment changes)
+// Configuration
 // =====================================================================================
-const CFG = {
-  routeBase: '/{{tenant_code}}/api-orchestration-test/v1/flow',   // gateway route of the /up APIs (same as the collection baseUrl)
-  channel: 'SOHAR',
-  branch: '001',
-  org: '1',
-  userName: 'SoharPortal',
-  payLG: '23', payLC: 45,                                          // payment info codes used by the reference flows
-  riskCode: 'R00001'
-};
+const CFG = { routeBase: '/{{tenant_code}}/api-orchestration-test/v1/flow', channel: 'SOHAR', branch: '001', userName: 'SoharPortal', payLG: '23', payLC: 45, riskCode: 'R00001', pageSize: 15 };
+const ROLE = { MAKER: 'MAKER', PC: 'PROPOSAL_CHECKER', CC: 'CANCELLATION_CHECKER' };
+const ROLE_LABEL = { MAKER: 'Maker', PROPOSAL_CHECKER: 'Proposal Checker', CANCELLATION_CHECKER: 'Cancellation Checker' };
 let API_OVERRIDE = ''; try { API_OVERRIDE = sessionStorage.getItem('sohar_api_base') || ''; } catch (e) {}
 function apiUrl(path) { return (API_OVERRIDE ? API_OVERRIDE : buildApiUrl(CFG.routeBase)) + path; }
 
 // =====================================================================================
-// Small utilities
+// Utilities
 // =====================================================================================
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const ymd = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const money = v => (v == null || v === '') ? '-' : Number(v).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-let busy = 0;
-function spin(on) { busy += on ? 1 : -1; $('spin').classList.toggle('on', busy > 0); }
-
+const maskId = s => { s = String(s || ''); return s.length <= 4 ? s : '*'.repeat(s.length - 4) + s.slice(-4); };
+let busy = 0; function spin(on) { busy += on ? 1 : -1; $('spin').classList.toggle('on', busy > 0); }
 function logCall(method, path, body, status, resp) {
-  const d = document.createElement('div'); d.className = 'logrow';
-  const shown = (resp && resp._pdf) ? '[PDF ' + resp.bytes + ' bytes]' : JSON.stringify(resp, null, 1);
-  d.innerHTML = '<b>' + esc(method) + ' ' + esc(path) + '</b> &rarr; ' + status + '<pre>' + esc(body ? JSON.stringify(body, null, 1) : '(no body)') + '</pre><pre>' + esc((shown || '').slice(0, 6000)) + '</pre>';
-  $('logBody').prepend(d);
+  const d = document.createElement('div'); d.className = 'logrow'; const shown = (resp && resp._pdf) ? '[PDF ' + resp.bytes + ' bytes]' : JSON.stringify(resp, null, 1);
+  d.innerHTML = '<b>' + esc(method) + ' ' + esc(path) + '</b> &rarr; ' + status + '<pre>' + esc(body ? JSON.stringify(body, null, 1) : '(no body)') + '</pre><pre>' + esc((shown || '').slice(0, 5000)) + '</pre>';
+  const lb = $('logBody'); lb.prepend(d); while (lb.children.length > 40) lb.removeChild(lb.lastChild);
 }
-
-/** Calls an /up API. Returns {ok,status,data,blob}. Never throws; 401 sends the user to login. */
-async function api(method, path, body, opts) {
-  opts = opts || {};
+/** Calls an /up API. Returns {ok,status,data,blob}; never throws; 401 sends the user to login. quiet = no spinner overlay. */
+async function api(method, path, body, quiet) {
   const token = getAccessToken();
   if (!token) return { ok: false, status: 0, data: { message: 'Authorization token not found. Please log in to InsureMO Portal first.' } };
-  spin(true);
+  if (!quiet) spin(true);
   try {
     const r = await fetch(apiUrl(path), { method, headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
     if (r.status === 401) { setTimeout(redirectToLogin, 1500); return { ok: false, status: 401, data: { message: 'Session expired. Redirecting to login...' } }; }
@@ -329,324 +276,431 @@ async function api(method, path, body, opts) {
     let data; const txt = await r.text(); try { data = JSON.parse(txt); } catch (e) { data = { message: txt.slice(0, 300) }; }
     logCall(method, path, body, r.status, data);
     return { ok: r.ok, status: r.status, data };
-  } catch (e) {
-    return { ok: false, status: 0, data: { message: 'Network error: ' + e.message } };
-  } finally { spin(false); }
+  } catch (e) { return { ok: false, status: 0, data: { message: 'Network error: ' + e.message } }; }
+  finally { if (!quiet) spin(false); }
 }
-
 function showAlert(kind, html) { $('alerts').innerHTML = html ? '<div class="alert ' + kind + '">' + html + '</div>' : ''; if (html) window.scrollTo({ top: 0, behavior: 'smooth' }); }
-/** Turns an error response into a message and marks the fields named in errors[]. */
-function showApiError(res, fieldMap) {
+function errHtml(res, fieldMap) {
   const d = res.data || {}; let h = '<b>' + esc(d.message || ('Request failed (' + res.status + ')')) + '</b>';
-  if (Array.isArray(d.errors) && d.errors.length) {
-    h += '<ul>' + d.errors.map(e => '<li>' + esc(e.field) + ': ' + esc(e.message) + '</li>').join('') + '</ul>';
-    d.errors.forEach(e => { const id = fieldMap && fieldMap[e.field]; if (id && $(id)) $(id).classList.add('bad'); });
-  }
+  if (Array.isArray(d.errors) && d.errors.length) { h += '<ul>' + d.errors.map(e => '<li>' + esc(e.field) + ': ' + esc(e.message) + '</li>').join('') + '</ul>'; d.errors.forEach(e => { const id = fieldMap && fieldMap[e.field]; if (id && $(id)) $(id).classList.add('bad'); }); }
   if (d.trace_id) h += '<div class="help">Reference (trace id): ' + esc(d.trace_id) + '</div>';
-  showAlert('err', h);
+  return h;
 }
+function showApiError(res, fieldMap) { showAlert('err', errHtml(res, fieldMap)); }
 function download(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+function openModal(html) { $('modalBody').innerHTML = html; $('modal').classList.add('on'); }
+function closeModal() { $('modal').classList.remove('on'); $('modalBody').innerHTML = ''; }
+function clearBad(scope) { (scope || document).querySelectorAll('.bad').forEach(e => e.classList.remove('bad')); (scope || document).querySelectorAll('.fe').forEach(e => e.textContent = ''); }
+function fieldErr(id, msg) { const el = $(id); if (el) el.classList.add('bad'); const e = $('e_' + id); if (e) e.textContent = msg; return false; }
+/** Short text for the Email / SMS results returned by the APIs. */
+function notifyHtml(list) {
+  if (!Array.isArray(list) || !list.length) return '';
+  const label = { SENT: 'sent', DRYRUN: 'recorded (dry run, nothing delivered)', NO_ADDRESS: 'no address on file', NO_SMS_TEMPLATE: 'no SMS template configured', FAILED: 'failed' };
+  const rows = list.map(n => '<li>' + esc(n.Channel === 'EMAIL' ? 'Email' : 'SMS') + ' to ' + esc(({ MAKER: 'maker', CUSTOMER: 'customer', PROPOSAL_CHECKER: 'Proposal Checker', CANCELLATION_CHECKER: 'Cancellation Checker' })[n.Recipient] || n.Recipient) + (n.To ? ' (' + esc(n.To) + ')' : '') + ': ' + esc(label[n.Status] || n.Status) + '</li>').join('');
+  return '<div class="help" style="margin-top:8px"><b>Alerts</b><ul style="margin:2px 0 0 18px">' + rows + '</ul></div>';
+}
 
 // =====================================================================================
-// State and master data
+// State, master data, roles
 // =====================================================================================
-const M = {};                 // master tables by name
-const S = { rule: null, master: null, quoteReq: null, quote: null, plan: null, propReq: null, prop: null, proposalNo: '', policyNo: '', check: null };
-let maxStep = 1;
-const FEMALE_ONLY = ['FP001'];   // Female Protection is sold to women only
-
+const M = {}; const S = { me: null, roles: [], rule: null, master: null, quoteReq: null, quote: null, plan: null, plans: null, proposalNo: '', propSaved: null };
+const has = r => S.roles.includes(r);
+const FEMALE_ONLY = ['FP001'];
+const opt = (rows, idKey, txtKey, sel) => rows.map(r => '<option value="' + esc(r[idKey]) + '"' + (String(r[idKey]) === String(sel) ? ' selected' : '') + '>' + esc(r[txtKey]) + '</option>').join('');
 async function loadMaster() {
   const names = ['ProductMaster', 'ProductRule', 'PremiumMode', 'GenderCode', 'IdType', 'Salutation', 'ResidentStatus', 'InsMaritalStatus', 'Relationship', 'UP_Carrier'];
-  const res = await Promise.all(names.map(n => api('POST', '/up/list-master-table', { DataTableName: n, ChannelCode: CFG.channel })));
-  for (let i = 0; i < names.length; i++) {
-    if (!res[i].ok || !Array.isArray(res[i].data)) { showApiError(res[i]); return false; }
-    M[names[i]] = res[i].data;
-  }
+  const res = await Promise.all(names.map(n => api('POST', '/up/list-master-table', { DataTableName: n, ChannelCode: CFG.channel }, true)));
+  for (let i = 0; i < names.length; i++) { if (!res[i].ok || !Array.isArray(res[i].data)) { showApiError(res[i]); return false; } M[names[i]] = res[i].data; }
   return true;
 }
-const opt = (rows, idKey, txtKey, sel) => rows.map(r => '<option value="' + esc(r[idKey]) + '"' + (String(r[idKey]) === String(sel) ? ' selected' : '') + '>' + esc(r[txtKey]) + '</option>').join('');
-function products() {
-  const seen = {}; const out = [];
-  M.ProductMaster.filter(r => r.IsActive === 'Y').forEach(r => { if (!seen[r.IMOProductCode]) { seen[r.IMOProductCode] = 1; out.push({ code: r.IMOProductCode, name: r.LOB || r.IMOProductCode }); } });
-  return out;
+function products() { const seen = {}, out = []; M.ProductMaster.filter(r => r.IsActive === 'Y').forEach(r => { if (!seen[r.IMOProductCode]) { seen[r.IMOProductCode] = 1; out.push({ code: r.IMOProductCode, name: r.LOB || r.IMOProductCode }); } }); return out; }
+function variantsOf(code) { return M.ProductMaster.filter(r => r.IMOProductCode === code && r.IsActive === 'Y').map(r => { const rule = M.ProductRule.find(x => x.Id === r.Id) || {}; return { id: r.Id, name: r.CarrierProductName, subcode: rule.ProductSubcode || r.CarrierProductCode, rule }; }); }
+const productName = code => { const p = products().find(x => x.code === code); return p ? p.name : code; };
+
+// =====================================================================================
+// Navigation by role
+// =====================================================================================
+const NAV = [
+  { id: 'dash', label: 'Dashboard', icon: '&#9638;', roles: null },
+  { id: 'new', label: 'New quotation', icon: '&#10133;', roles: [ROLE.MAKER] },
+  { id: 'mine', label: 'My submissions', icon: '&#9776;', roles: [ROLE.MAKER] },
+  { id: 'papprove', label: 'Proposal approvals', icon: '&#10003;', roles: [ROLE.PC], badge: 'pendingProposals' },
+  { id: 'cancel', label: 'Cancellations', icon: '&#10006;', roles: [ROLE.MAKER, ROLE.CC], badge: 'pendingCancels' },
+  { id: 'policies', label: 'Policies', icon: '&#9993;', roles: null }
+];
+const badges = { pendingProposals: 0, pendingCancels: 0 };
+let currentView = '';
+function buildNav() {
+  const items = NAV.filter(n => !n.roles || n.roles.some(has));
+  $('side').innerHTML = '<div class="role">' + esc(S.roles.map(r => ROLE_LABEL[r] || r).join(' / ')) + '</div>' + items.map(n => {
+    const label = n.id === 'cancel' && has(ROLE.CC) && !has(ROLE.MAKER) ? 'Cancellation approvals' : n.label;
+    return '<button data-v="' + n.id + '"><span>' + n.icon + '</span> ' + esc(label) + (n.badge && badges[n.badge] ? ' <span class="count">' + badges[n.badge] + '</span>' : '') + '</button>';
+  }).join('');
+  $('side').querySelectorAll('button').forEach(b => b.onclick = () => go(b.dataset.v));
+  if (currentView) $('side').querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.v === currentView));
 }
-function variantsOf(code) {
-  return M.ProductMaster.filter(r => r.IMOProductCode === code && r.IsActive === 'Y').map(r => {
-    const rule = M.ProductRule.find(x => x.Id === r.Id) || {};
-    return { id: r.Id, name: r.CarrierProductName, subcode: rule.ProductSubcode || r.CarrierProductCode, rule };
-  });
+function go(view) {
+  showAlert('', ''); currentView = view;
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'v_' + view));
+  $('side').querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.v === view));
+  if (view === 'dash') loadDashboard();
+  if (view === 'mine') queues.mine.load(1);
+  if (view === 'papprove') queues.papprove.load(1);
+  if (view === 'cancel') { cancelTab(has(ROLE.CC) || !has(ROLE.MAKER) ? 'queue' : 'queue'); queues.cancel.load(1); }
+  if (view === 'new') newStep(S.proposalNo && $('n_s3').style.display !== 'none' ? 3 : (S.quote && $('n_s2').style.display !== 'none' ? 2 : 1));
 }
 
+// =====================================================================================
+// Shared renderers
+// =====================================================================================
+const STATUS = { '2': ['Pending approval', 'warn'], '3': ['Issued', 'ok'], '4': ['Rejected', 'err'] };
+function statusBadge(r) { const s = STATUS[r.StatusCode]; return s ? '<span class="badge ' + s[1] + '">' + s[0] + '</span>' : '<span class="badge mute">' + esc(r.Status || '') + '</span>'; }
+function coverRows(plan) { return (plan.PolicyCoverageList || []).map(c => '<tr><td>' + esc(c.CoverageDescription || c.CoverageCode) + '</td><td class="num">' + money(c.SumInsured) + '</td></tr>').join(''); }
+/** Read-only summary of a loaded proposal / policy. */
+function policySummary(p) {
+  const lob = (p.PolicyLobList || [])[0] || {}, risk = (lob.PolicyRiskList || [])[0] || {}, plan = (risk.PlanList || [])[0] || {}, ben = risk.BeneficiaryList || [], pay = (p.PolicyPaymentInfoList || [])[0] || {};
+  const pname = (variantsOf(p.ProductCode).find(v => String(v.subcode) === String(p.ProductSubcode)) || {}).name || p.ProductCode;
+  return '<div class="two"><div><h3>Policy</h3><dl class="kv"><dt>Proposal no.</dt><dd>' + esc(p.ProposalNo || '-') + '</dd><dt>Policy no.</dt><dd>' + esc(p.PolicyNo || '-') + '</dd><dt>Insurer</dt><dd>' + esc(p.CarrierName || '') + '</dd><dt>Product</dt><dd>' + esc(pname) + ' (' + esc(p.ProductCode) + ')</dd><dt>Plan</dt><dd>' + esc(plan.PlanName || p.PlanId || '') + '</dd><dt>Cover</dt><dd>' + esc(String(p.EffectiveDate || '').slice(0, 10)) + ' to ' + esc(String(p.ExpiryDate || '').slice(0, 10)) + '</dd><dt>Premium</dt><dd>' + money(risk.DuePremium || p.DuePremium) + '</dd><dt>Status</dt><dd>' + esc(p.PolicyNo ? (p.PolicyStatus_CodeDesc || '') : (p.ProposalStatus_CodeDesc || '')) + '</dd>' + (p.ProposalRejectDesc ? '<dt>Reject reason</dt><dd style="color:var(--err)">' + esc(p.ProposalRejectDesc) + '</dd>' : '') + '</dl>' +
+    '<h3>Cover</h3><table class="t"><tr><th>Benefit</th><th class="num">Sum insured</th></tr>' + coverRows(plan) + '</table></div>' +
+    '<div><h3>Insured</h3><dl class="kv"><dt>Name</dt><dd>' + esc(risk.InsuredName) + '</dd><dt>Date of birth</dt><dd>' + esc(risk.DateOfBirth) + '</dd><dt>Gender</dt><dd>' + esc(risk.Gender_CodeDesc || risk.Gender) + '</dd><dt>ID number</dt><dd>' + esc(maskId(risk.IdNo)) + '</dd><dt>Mobile</dt><dd>' + esc(risk.Mobile) + '</dd><dt>Email</dt><dd>' + esc(risk.Email) + '</dd><dt>Address</dt><dd>' + esc(risk.Address) + ' ' + esc(risk.PostCode) + '</dd></dl>' +
+    '<h3>Beneficiary</h3>' + (ben.length ? '<table class="t"><tr><th>Name</th><th>Relationship</th><th class="num">Share</th></tr>' + ben.map(b => '<tr><td>' + esc(b.BeneficaryName) + '</td><td>' + esc(b.RelationshipCode_CodeDesc || b.RelationshipCode) + '</td><td class="num">' + esc(b.Share) + '%</td></tr>').join('') + '</table>' : '<div class="help">none</div>') +
+    '<h3>Payment</h3><dl class="kv"><dt>Debit account</dt><dd>' + esc(maskId(pay.DebitAccountNo)) + '</dd><dt>Reference</dt><dd>' + esc(pay.DebitRefNo) + '</dd></dl></div></div>';
+}
+async function getDoc(type, no, subcode) {
+  const body = { DocType: type, ProductSubcode: String(subcode || '1'), ChannelCode: CFG.channel }; body[type === 'Policy' ? 'PolicyNo' : 'ProposalNo'] = no;
+  const r = await api('POST', '/up/doc_generation', body); if (!r.ok || !r.blob) { showApiError(r); return; }
+  download(r.blob, (type === 'Policy' ? 'Policy_' : 'Application_') + no + '.pdf');
+}
+/** Share dialog. ctx = {docType, proposalNo?, policyNo?, productCode?, subcode?, details?, email?, mobile?} */
+function shareDialog(ctx) {
+  openModal('<h2>Share ' + esc(ctx.docType.toLowerCase()) + ' with the customer</h2><div class="hint">Sent by Email and / or SMS from the insurer\'s message service. Leave a field empty to use the details already on file.</div>' +
+    '<label>Send by</label><select id="sh_ch"><option value="EMAIL">Email</option><option value="SMS">SMS</option><option value="BOTH">Email and SMS</option></select>' +
+    '<label>Email</label><input id="sh_email" type="email" maxlength="80" value="' + esc(ctx.email || '') + '"><div class="fe" id="e_sh_email"></div>' +
+    '<label>Mobile</label><input id="sh_mobile" inputmode="tel" maxlength="16" placeholder="e.g. 96891234567" value="' + esc(ctx.mobile || '') + '"><div class="fe" id="e_sh_mobile"></div>' +
+    '<div id="sh_res"></div><div class="actions"><button class="btn" id="sh_send">Send</button><button class="btn sec" id="sh_close">Close</button></div>');
+  $('sh_close').onclick = closeModal;
+  $('sh_send').onclick = async () => {
+    clearBad($('modalBody')); const email = $('sh_email').value.trim(), mobile = $('sh_mobile').value.trim(), ch = $('sh_ch').value;
+    if (ctx.docType === 'QUOTATION' && !email && !mobile) { $('sh_res').innerHTML = '<div class="alert err">Enter an email address or a mobile number.</div>'; return; }
+    const body = { ChannelCode: CFG.channel, DocType: ctx.docType, Channel: ch };
+    if (email) body.Email = email; if (mobile) body.Mobile = mobile;
+    if (ctx.proposalNo) body.ProposalNo = ctx.proposalNo; if (ctx.policyNo) body.PolicyNo = ctx.policyNo;
+    if (ctx.details) { body.Details = ctx.details; body.ProductCode = ctx.productCode; body.ProductSubcode = ctx.subcode; }
+    const r = await api('POST', '/up/share', body);
+    if (!r.ok) { $('sh_res').innerHTML = '<div class="alert err">' + errHtml(r, { Email: 'sh_email', Mobile: 'sh_mobile' }) + '</div>'; return; }
+    $('sh_res').innerHTML = '<div class="alert ok"><b>Done</b>' + notifyHtml(r.data.Notifications) + '</div>';
+  };
+}
+
+// =====================================================================================
+// Generic work queue (Proposal approvals, My submissions, Cancellations)
+// =====================================================================================
+class Queue {
+  constructor(o) { this.o = o; this.page = 1; this.total = 0; this.f = { status: o.statuses[0][0], product: '', from: '', to: '' }; this.mount(); }
+  mount() {
+    const o = this.o, id = o.id;
+    $(o.mountId).innerHTML = '<div class="card"><div class="filters"><div><label>Status</label><select id="' + id + '_st">' + o.statuses.map(s => '<option value="' + s[0] + '">' + s[1] + '</option>').join('') + '</select></div>' +
+      '<div><label>Product</label><select id="' + id + '_pr"><option value="">All products</option>' + products().map(p => '<option value="' + p.code + '">' + esc(p.name) + '</option>').join('') + '</select></div>' +
+      '<div><label>From</label><input type="date" id="' + id + '_fr"></div><div><label>To</label><input type="date" id="' + id + '_to"></div><button class="btn" id="' + id + '_go">Search</button></div>' +
+      '<div class="scroll"><div id="' + id + '_tbl"><div class="empty">Loading...</div></div></div><div class="pager"><span id="' + id + '_info"></span><button class="btn sm sec" id="' + id + '_prev">&larr; Prev</button><button class="btn sm sec" id="' + id + '_next">Next &rarr;</button></div></div>';
+    $(id + '_go').onclick = () => this.load(1); $(id + '_st').onchange = () => this.load(1); $(id + '_pr').onchange = () => this.load(1);
+    $(id + '_prev').onclick = () => this.load(this.page - 1); $(id + '_next').onclick = () => this.load(this.page + 1);
+  }
+  async load(page) {
+    const o = this.o, id = o.id; if (page < 1) page = 1; this.page = page;
+    const body = { ChannelCode: CFG.channel, Type: o.type, Status: $(id + '_st').value, PageNo: page, PageSize: CFG.pageSize };
+    if ($(id + '_pr').value) body.ProductCode = $(id + '_pr').value; if ($(id + '_fr').value) body.FromDate = $(id + '_fr').value; if ($(id + '_to').value) body.ToDate = $(id + '_to').value;
+    $(id + '_tbl').innerHTML = '<div class="empty">Loading...</div>';
+    const r = await api('POST', '/up/worklist', body, true);
+    if (!r.ok) { $(id + '_tbl').innerHTML = '<div class="alert err">' + errHtml(r) + '</div>'; return; }
+    this.total = Number(r.data.Total || 0); this.rows = r.data.Records || [];
+    if (o.onPending && body.Status === o.statuses[0][0] && !body.ProductCode && !body.FromDate && !body.ToDate) { badges[o.badge] = this.total; buildNav(); }
+    const head = '<tr>' + o.cols.map(c => '<th' + (c.num ? ' class="num"' : '') + '>' + c.h + '</th>').join('') + '<th></th></tr>';
+    $(id + '_tbl').innerHTML = this.rows.length ? '<table class="t">' + head + this.rows.map((row, i) => '<tr class="row">' + o.cols.map(c => '<td' + (c.num ? ' class="num"' : '') + '>' + c.f(row) + '</td>').join('') + '<td><button class="btn sm" data-i="' + i + '">Open</button></td></tr>').join('') + '</table>' : '<div class="empty">Nothing here.</div>';
+    $(id + '_tbl').querySelectorAll('button[data-i]').forEach(b => b.onclick = () => o.open(this.rows[Number(b.dataset.i)]));
+    const pages = Math.max(1, Math.ceil(this.total / CFG.pageSize));
+    $(id + '_info').textContent = this.total + ' item(s) · page ' + page + ' of ' + pages; $(id + '_prev').disabled = page <= 1; $(id + '_next').disabled = page >= pages;
+  }
+}
+const colsProposal = [
+  { h: 'Proposal', f: r => '<b>' + esc(r.ProposalNo) + '</b>' + (r.PolicyNo ? '<div class="help">' + esc(r.PolicyNo) + '</div>' : '') },
+  { h: 'Product', f: r => esc(r.ProductName || r.ProductCode) }, { h: 'Insured', f: r => esc(r.InsuredName) }, { h: 'Plan', f: r => esc(r.PlanName) },
+  { h: 'Premium', num: 1, f: r => money(r.Premium) }, { h: 'Maker', f: r => esc(r.Maker) }, { h: 'Submitted', f: r => esc(r.ProposalDate) }, { h: 'Status', f: r => statusBadge(r) }
+];
+const colsCancel = [
+  { h: 'Request', f: r => '<b>' + esc(r.RequestNo) + '</b>' }, { h: 'Policy', f: r => esc(r.PolicyNo) }, { h: 'Product', f: r => esc(r.ProductName || r.ProductCode) }, { h: 'Insured', f: r => esc(r.InsuredName) },
+  { h: 'Premium', num: 1, f: r => money(r.Premium) }, { h: 'Cancel on', f: r => esc(r.CancellationDate) }, { h: 'Requested', f: r => esc(r.RequestedOn) },
+  { h: 'Status', f: r => r.RequestStatus === 'PENDING' ? '<span class="badge warn">Pending approval</span>' : '<span class="badge err">Cancelled</span>' }
+];
+let queues = {};
+function buildQueues() {
+  queues.mine = new Queue({ id: 'qm', mountId: 'q_mine', type: 'MINE', statuses: [['ALL', 'All'], ['PENDING', 'Pending approval'], ['ISSUED', 'Issued'], ['REJECTED', 'Rejected']], cols: colsProposal, open: r => openProposal(r, 'det_mine', false) });
+  queues.papprove = new Queue({ id: 'qp', mountId: 'q_papprove', type: 'PROPOSAL', statuses: [['PENDING', 'Pending approval'], ['ISSUED', 'Issued'], ['REJECTED', 'Rejected'], ['ALL', 'All']], cols: colsProposal, open: r => openProposal(r, 'det_papprove', true), onPending: true, badge: 'pendingProposals' });
+  queues.cancel = new Queue({ id: 'qc', mountId: 'q_cancel', type: 'CANCELLATION', statuses: [['PENDING', 'Pending approval'], ['ISSUED', 'Cancelled']], cols: colsCancel, open: r => openCancel(r), onPending: true, badge: 'pendingCancels' });
+}
+
+// ---- proposal detail (Proposal Checker acts, Maker only views) ----
+async function openProposal(row, mountId, canAct) {
+  const r = await api('GET', '/up/load-policy?proposalNo=' + encodeURIComponent(row.ProposalNo) + '&ChannelCode=' + CFG.channel);
+  if (!r.ok) { showApiError(r); return; }
+  const p = r.data, pending = String(p.ProposalStatus) === '2';
+  const mine = row.MakerId && S.me && row.MakerId === S.me.UserId, selfBlocked = mine && S.me.RoleEnforcement === 'Y' && canAct && !S.allowSelf;
+  $(mountId).innerHTML = '<div class="card" id="pd"><div class="pagehead"><h2 style="margin:0">Proposal ' + esc(p.ProposalNo) + '</h2><span class="spacer"></span>' + statusBadge(row) + '</div>' +
+    '<div class="hint">Submitted by ' + esc(row.Maker || '-') + ' on ' + esc(row.ProposalDate || '-') + '</div>' + policySummary(p) +
+    (canAct && pending ? (selfBlocked ? '<div class="alert warn">You submitted this proposal, so another Proposal Checker must approve it.</div>' : '') : '') +
+    '<div class="actions"><button class="btn sec" id="pd_app">Application form (PDF)</button><button class="btn sec" id="pd_share">Share</button>' + (p.PolicyNo ? '<button class="btn sec" id="pd_pol">Certificate (PDF)</button>' : '') +
+    (canAct && pending ? '<span style="margin-left:auto"></span><button class="btn danger" id="pd_rej"' + (selfBlocked ? ' disabled' : '') + '>Reject</button><button class="btn" id="pd_ok"' + (selfBlocked ? ' disabled' : '') + '>Approve and issue policy</button>' : '') + '</div><div id="pd_res"></div></div>';
+  $(mountId).scrollIntoView({ behavior: 'smooth' });
+  $('pd_app').onclick = () => getDoc('Application', p.ProposalNo, p.ProductSubcode);
+  if ($('pd_pol')) $('pd_pol').onclick = () => getDoc('Policy', p.PolicyNo, p.ProductSubcode);
+  $('pd_share').onclick = () => shareDialog({ docType: p.PolicyNo ? 'POLICY' : 'PROPOSAL', proposalNo: p.ProposalNo, policyNo: p.PolicyNo });
+  if ($('pd_ok')) $('pd_ok').onclick = async () => {
+    if (!confirm('Approve proposal ' + p.ProposalNo + ' and issue the policy?')) return;
+    const x = await api('POST', '/up/issue', { ProposalNo: p.ProposalNo, ProductCode: p.ProductCode, ChannelCode: CFG.channel });
+    if (!x.ok) { $('pd_res').innerHTML = '<div class="alert err">' + errHtml(x) + '</div>'; return; }
+    $('pd_res').innerHTML = '<div class="alert ok"><b>Approved. Policy ' + esc(x.data.PolicyNo) + ' issued.</b>' + notifyHtml(x.data.Notifications) + '</div>';
+    $('pd_ok').disabled = true; $('pd_rej').disabled = true; queues.papprove.load(queues.papprove.page);
+  };
+  if ($('pd_rej')) $('pd_rej').onclick = () => {
+    openModal('<h2>Reject proposal ' + esc(p.ProposalNo) + '</h2><div class="hint">The maker is told the reason.</div><label>Reason <span class="req">*</span></label><textarea id="rj_reason" maxlength="200" placeholder="Why is the proposal rejected?"></textarea><div class="fe" id="e_rj_reason"></div><div id="rj_res"></div><div class="actions"><button class="btn danger" id="rj_go">Reject proposal</button><button class="btn sec" id="rj_close">Cancel</button></div>');
+    $('rj_close').onclick = closeModal;
+    $('rj_go').onclick = async () => {
+      clearBad($('modalBody')); const reason = $('rj_reason').value.trim(); if (reason.length < 3) { fieldErr('rj_reason', 'Enter the reason (at least 3 characters)'); return; }
+      const x = await api('POST', '/up/proposal-reject', { ProposalNo: p.ProposalNo, ProposalRejectDesc: reason, ProductCode: p.ProductCode, ChannelCode: CFG.channel });
+      if (!x.ok) { $('rj_res').innerHTML = '<div class="alert err">' + errHtml(x) + '</div>'; return; }
+      closeModal(); $('pd_res').innerHTML = '<div class="alert ok"><b>Proposal rejected.</b>' + notifyHtml(x.data.Notifications) + '</div>'; $('pd_ok').disabled = true; $('pd_rej').disabled = true; queues.papprove.load(queues.papprove.page);
+    };
+  };
+}
+
+// ---- cancellation detail (Cancellation Checker acts) ----
+async function openCancel(row) {
+  const r = await api('POST', '/up/cancel-detail', { ChannelCode: CFG.channel, PolicyNo: row.PolicyNo });
+  const mount = $('det_cancel');
+  if (!r.ok) { if (row.RequestStatus !== 'PENDING') { mount.innerHTML = '<div class="card"><h2>Cancelled policy ' + esc(row.PolicyNo) + '</h2><div class="hint">This request has been completed.</div></div>'; return; } showApiError(r); return; }
+  const d = r.data, pd = d.PremiumDetails || {}, rf = d.RefundDetails || {}, canAct = has(ROLE.CC), can = d.CanDecide === 'Y';
+  mount.innerHTML = '<div class="card"><div class="pagehead"><h2 style="margin:0">Cancellation request ' + esc(d.RequestNo) + '</h2><span class="spacer"></span><span class="badge warn">Pending approval</span></div>' +
+    '<div class="two"><div><dl class="kv"><dt>Policy</dt><dd>' + esc(d.PolicyInfo.PolicyNo) + '</dd><dt>Insured</dt><dd>' + esc(d.PolicyInfo.InsuredName) + '</dd><dt>Insurer</dt><dd>' + esc(d.CarrierName) + '</dd><dt>Cover</dt><dd>' + esc(d.PolicyInfo.EffectiveDate) + ' to ' + esc(d.PolicyInfo.ExpiryDate) + '</dd><dt>Requested by</dt><dd>' + esc(d.RequestedBy) + ' on ' + esc(d.RequestedOn) + '</dd><dt>Reason</dt><dd>' + esc(d.CancelReason) + '</dd><dt>Cancellation date</dt><dd>' + esc(d.CancellationDate) + '</dd></dl></div>' +
+    '<div><h3 style="margin-top:0">Refund calculation</h3><dl class="kv"><dt>Premium paid</dt><dd>' + money(pd.Premium) + '</dd><dt>Days since start</dt><dd>' + esc(pd.DaysSinceCommencement) + ' (free-look ' + esc(pd.FreeLookDays) + ' days)</dd><dt>Pro-rata premium</dt><dd>' + money(pd.ProRataPremium) + '</dd><dt>Cancellation type</dt><dd>' + esc(rf.CancellationType) + ' (' + esc(rf.RefundPercent) + '%)</dd><dt>Refund</dt><dd style="font-size:17px;color:var(--brand-dark)">' + money(rf.RefundPremium) + '</dd></dl></div></div>' +
+    (canAct && !can ? '<div class="alert warn">You raised this request, so another Cancellation Checker must decide it.</div>' : '') +
+    (canAct ? '<div class="actions"><button class="btn danger" id="cd_rej"' + (can ? '' : ' disabled') + '>Reject request</button><button class="btn" id="cd_ok"' + (can ? '' : ' disabled') + '>Approve cancellation</button></div>' : '') + '<div id="cd_res"></div></div>';
+  mount.scrollIntoView({ behavior: 'smooth' });
+  const decide = async decision => {
+    if (!confirm((decision === 'APPROVE' ? 'Approve' : 'Reject') + ' cancellation request ' + d.RequestNo + '?')) return;
+    const x = await api('POST', '/up/cancel-approve', { PolicyNo: d.PolicyInfo.PolicyNo, RequestNo: d.RequestNo, Decision: decision, ChannelCode: CFG.channel });
+    if (!x.ok) { $('cd_res').innerHTML = '<div class="alert err">' + errHtml(x) + '</div>'; return; }
+    $('cd_res').innerHTML = '<div class="alert ok"><b>Request ' + esc(x.data.RequestStatus) + '</b><dl class="kv"><dt>Policy status</dt><dd>' + esc((x.data.PolicyStatus || {}).Description) + '</dd>' + (x.data.RefundPremium != null ? '<dt>Refund</dt><dd>' + money(x.data.RefundPremium) + '</dd>' : '') + '</dl>' + notifyHtml(x.data.Notifications) + '</div>';
+    $('cd_ok').disabled = true; $('cd_rej').disabled = true; queues.cancel.load(queues.cancel.page);
+  };
+  if ($('cd_ok')) { $('cd_ok').onclick = () => decide('APPROVE'); $('cd_rej').onclick = () => decide('REJECT'); }
+}
+function cancelTab(t) { document.querySelectorAll('#cancelTabs button').forEach(b => b.classList.toggle('active', b.dataset.t === t)); $('c_queue').style.display = t === 'queue' ? '' : 'none'; $('c_raise').style.display = t === 'raise' ? '' : 'none'; }
+async function cancelLoadPolicy() {
+  const no = $('c_policy').value.trim(); if (!no) { showAlert('err', 'Enter the policy number.'); return null; }
+  const r = await api('GET', '/up/load-policy?policyNo=' + encodeURIComponent(no) + '&ChannelCode=' + CFG.channel); if (!r.ok) { showApiError(r); $('c_policyInfo').innerHTML = ''; return null; }
+  const p = r.data, eff = String(p.EffectiveDate || '').slice(0, 10), today = ymd(new Date());
+  $('c_date').min = eff; if (!$('c_date').value || $('c_date').value < eff) $('c_date').value = eff > today ? eff : today;
+  $('c_policyInfo').innerHTML = '<div class="alert info"><b>' + esc(p.PolicyNo) + '</b> &middot; ' + esc(((((p.PolicyLobList || [])[0] || {}).PolicyRiskList || [])[0] || {}).InsuredName) + ' &middot; ' + esc(p.PolicyStatus_CodeDesc) + ' &middot; cover ' + esc(eff) + ' to ' + esc(String(p.ExpiryDate || '').slice(0, 10)) + '</div>'; return p;
+}
+async function cancelSubmit() {
+  showAlert('', ''); clearBad($('c_raise')); const no = $('c_policy').value.trim();
+  if (!no || !$('c_date').value || !$('c_reason').value.trim()) { showAlert('err', 'Policy number, cancellation date and reason are required.'); return; }
+  if (!confirm('Send a cancellation request for policy ' + no + ' to the Cancellation Checker?')) return;
+  const r = await api('POST', '/up/cancel-check', { PolicyNo: no, CancellationDate: $('c_date').value, CancelReason: $('c_reason').value.trim(), ChannelCode: CFG.channel });
+  if (!r.ok) { showApiError(r, { CancellationDate: 'c_date', PolicyNo: 'c_policy', CancelReason: 'c_reason' }); return; }
+  const pd = r.data.PremiumDetails || {}, rf = r.data.RefundDetails || {};
+  $('c_result').innerHTML = '<div class="alert ok"><b>' + (r.data.RequestExists === 'Y' ? 'A request already exists: ' : 'Request submitted: ') + esc(r.data.RequestNo) + '</b> &middot; waiting for the Cancellation Checker<dl class="kv"><dt>Premium paid</dt><dd>' + money(pd.Premium) + '</dd><dt>Cancellation type</dt><dd>' + esc(rf.CancellationType) + ' (' + esc(rf.RefundPercent) + '%)</dd><dt>Refund if approved</dt><dd>' + money(rf.RefundPremium) + '</dd></dl>' + notifyHtml(r.data.Notifications) + '</div>';
+  queues.cancel.load(1);
+}
+
+// =====================================================================================
+// Policies (all roles)
+// =====================================================================================
+async function doSearch() {
+  showAlert('', ''); const pol = $('f_policy').value.trim(), prop = $('f_proposal').value.trim();
+  if (!pol && !prop) { showAlert('err', 'Enter a policy number or a proposal number.'); return; }
+  const r = await api('GET', '/up/load-policy?' + (pol ? 'policyNo=' + encodeURIComponent(pol) : 'proposalNo=' + encodeURIComponent(prop)) + '&ChannelCode=' + CFG.channel);
+  if (!r.ok) { showApiError(r); $('f_result').innerHTML = ''; return; }
+  const p = r.data; $('f_result').innerHTML = '<div class="card" style="margin-top:12px;border:none;padding:0">' + policySummary(p) + '<div class="actions"><button class="btn sec" id="fp_app">Application form (PDF)</button>' + (p.PolicyNo ? '<button class="btn sec" id="fp_pol">Certificate (PDF)</button><button class="btn sec" id="fp_com">Commission</button>' : '') + '<button class="btn sec" id="fp_share">Share</button></div><div id="fp_extra"></div></div>';
+  $('fp_app').onclick = () => getDoc('Application', p.ProposalNo, p.ProductSubcode);
+  if ($('fp_pol')) { $('fp_pol').onclick = () => getDoc('Policy', p.PolicyNo, p.ProductSubcode); $('fp_com').onclick = async () => { const c = await api('POST', '/up/commission-query', { PolicyNo: p.PolicyNo, ChannelCode: CFG.channel }); if (!c.ok) { showApiError(c); return; } $('fp_extra').innerHTML = '<h3>Commission</h3><dl class="kv"><dt>Premium</dt><dd>' + esc(c.data.Premium) + '</dd><dt>Commission rate</dt><dd>' + esc(c.data.CommissionRate) + '</dd><dt>Commission</dt><dd>' + esc(c.data.Commission) + '</dd></dl>'; }; }
+  $('fp_share').onclick = () => shareDialog({ docType: p.PolicyNo ? 'POLICY' : 'PROPOSAL', proposalNo: p.ProposalNo, policyNo: p.PolicyNo });
+}
+
+// =====================================================================================
+// New quotation wizard (Maker)
+// =====================================================================================
 function fillStatic() {
-  $('q_sal').innerHTML = opt(M.Salutation, 'Id', 'Description');
-  $('q_gender').innerHTML = opt(M.GenderCode, 'Id', 'Description');
-  $('q_res').innerHTML = opt(M.ResidentStatus, 'Id', 'Description');
-  $('p_idtype').innerHTML = opt(M.IdType, 'Id', 'Description');
-  $('p_marital').innerHTML = opt(M.InsMaritalStatus.filter(r => r.Id === '1' || r.Id === '2'), 'Id', 'Description');   // other codes in this table are salutations
-  $('b_rel').innerHTML = opt(M.Relationship, 'Id', 'Description');
-  const pr = products(); const po = pr.map(p => '<option value="' + p.code + '">' + esc(p.name) + ' (' + p.code + ')</option>').join('');
-  $('q_product').innerHTML = po; $('m_product').innerHTML = po; $('m_cproduct').innerHTML = po;
-  const c = M.UP_Carrier.find(x => x.IsActive === 'Y');
-  $('carrierChip').textContent = 'Insurer: ' + (c ? c.CarrierName + ' (' + c.CarrierCode + ')' : 'n/a');
-  $('q_eff').value = ymd(addDays(new Date(), 1)); $('q_eff').min = ymd(new Date());
-  $('c_date').value = ymd(new Date()); $('m_from').value = ymd(new Date(new Date().getFullYear(), new Date().getMonth(), 1)); $('m_to').value = ymd(new Date());
-  onProduct(); onCommProduct();
+  $('q_sal').innerHTML = opt(M.Salutation, 'Id', 'Description'); $('q_gender').innerHTML = opt(M.GenderCode, 'Id', 'Description'); $('q_res').innerHTML = opt(M.ResidentStatus, 'Id', 'Description');
+  $('p_idtype').innerHTML = opt(M.IdType, 'Id', 'Description'); $('p_marital').innerHTML = opt(M.InsMaritalStatus.filter(r => r.Id === '1' || r.Id === '2'), 'Id', 'Description'); $('b_rel').innerHTML = opt(M.Relationship, 'Id', 'Description');
+  $('q_product').innerHTML = products().map(p => '<option value="' + p.code + '">' + esc(p.name) + ' (' + p.code + ')</option>').join('');
+  const c = M.UP_Carrier.find(x => x.IsActive === 'Y'); $('carrierChip').textContent = 'Insurer: ' + (c ? c.CarrierName + ' (' + c.CarrierCode + ')' : 'n/a');
+  $('q_eff').value = ymd(addDays(new Date(), 1)); $('q_eff').min = ymd(new Date()); $('c_date').value = ymd(new Date());
+  onProduct();
 }
-function onProduct() {
-  const code = $('q_product').value; const vs = variantsOf(code);
-  $('q_variant').innerHTML = vs.map(v => '<option value="' + v.id + '">' + esc(v.name) + '</option>').join('');
-  onVariant();
-}
+function onProduct() { const vs = variantsOf($('q_product').value); $('q_variant').innerHTML = vs.map(v => '<option value="' + v.id + '">' + esc(v.name) + '</option>').join(''); onVariant(); }
 function onVariant() {
   const v = variantsOf($('q_product').value).find(x => x.id === $('q_variant').value); S.master = v; S.rule = v ? v.rule : null; if (!v) return;
-  const rl = v.rule; const modes = String(rl.PremiumModes || '').split(',').filter(Boolean);
-  $('q_mode').innerHTML = opt(M.PremiumMode.filter(m => modes.includes(m.Id)), 'Id', 'Description');
-  $('q_mode').value = modes.includes('2') ? '2' : modes[0];   // annual premium is the default; single / monthly on request
-  onMode();
-  const female = FEMALE_ONLY.includes($('q_product').value);
-  $('q_gender').value = female ? '2' : $('q_gender').value; $('q_gender').disabled = female;
+  const rl = v.rule, modes = String(rl.PremiumModes || '').split(',').filter(Boolean);
+  $('q_mode').innerHTML = opt(M.PremiumMode.filter(m => modes.includes(m.Id)), 'Id', 'Description'); $('q_mode').value = modes.includes('2') ? '2' : modes[0]; onMode();
+  const female = FEMALE_ONLY.includes($('q_product').value); if (female) $('q_gender').value = '2'; $('q_gender').disabled = female;
   $('ageHelp').textContent = 'Entry age ' + rl.MinAge + ' to ' + rl.MaxEntryAge + ' years';
   $('ruleNote').textContent = 'Free-look ' + rl.FreeLookDays + ' days; refund after free-look ' + rl.ProRataRefundPercent + '% of pro-rata premium.';
 }
 function termRequired() { const r = S.rule; return r && Number(r.MaxTerm) > 1 && $('q_mode').value === '1'; }
-function onMode() {
-  const r = S.rule; if (!r) return; const need = termRequired();
-  $('termWrap').style.display = need ? '' : 'none';
-  if (need) { $('q_term').min = r.MinTerm; $('q_term').max = r.MaxTerm; if (!$('q_term').value || $('q_term').value < r.MinTerm) $('q_term').value = r.MinTerm; $('termHelp').textContent = 'Between ' + r.MinTerm + ' and ' + r.MaxTerm + ' years'; }
-}
-function currentTerm() { return termRequired() ? Number($('q_term').value) : 1; }
+function onMode() { const r = S.rule; if (!r) return; const need = termRequired(); $('termWrap').style.display = need ? '' : 'none'; if (need) { $('q_term').min = r.MinTerm; $('q_term').max = r.MaxTerm; if (!$('q_term').value || $('q_term').value < r.MinTerm) $('q_term').value = r.MinTerm; $('termHelp').textContent = 'Between ' + r.MinTerm + ' and ' + r.MaxTerm + ' years'; } }
+const currentTerm = () => termRequired() ? Number($('q_term').value) : 1;
 function expiryOf(effStr, term) { const d = new Date(effStr + 'T00:00:00'); d.setFullYear(d.getFullYear() + term); d.setDate(d.getDate() - 1); return ymd(d) + 'T23:59:59'; }
 function ageAt(dobStr, effStr) { const b = new Date(dobStr), e = new Date(effStr); let a = e.getFullYear() - b.getFullYear(); const m = e.getMonth() - b.getMonth(); if (m < 0 || (m === 0 && e.getDate() < b.getDate())) a--; return a; }
-function clearBad(scope) { (scope || document).querySelectorAll('.bad').forEach(e => e.classList.remove('bad')); (scope || document).querySelectorAll('.fe').forEach(e => e.textContent = ''); }
-function fieldErr(id, msg) { const el = $(id); if (el) el.classList.add('bad'); const e = $('e_' + id); if (e) e.textContent = msg; return false; }
-
-// =====================================================================================
-// Step navigation
-// =====================================================================================
-function goStep(n) {
-  if (n > maxStep && n !== 4) return; showAlert('', '');   // servicing (4) is always open: existing policies can be serviced directly
-  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'p' + n));
-  document.querySelectorAll('#steps button').forEach(b => { const s = Number(b.dataset.step); b.classList.toggle('active', s === n); b.classList.toggle('done', s < maxStep && s !== n); b.disabled = s > maxStep && s !== 4; });
-  if (n === 3) renderIssueSummary();
+function newStep(n) {
+  ['n_s1', 'n_s2', 'n_s3'].forEach((id, i) => $(id).style.display = (i + 1) === n ? '' : 'none');
+  document.querySelectorAll('#n_steps div').forEach(d => { const s = Number(d.dataset.s); d.classList.toggle('active', s === n); d.classList.toggle('done', s < n); });
 }
-function unlock(n) { if (n > maxStep) maxStep = n; goStep(n); }
-
-// =====================================================================================
-// 1. Quotation
-// =====================================================================================
 function validateQuote() {
-  clearBad($('p1')); let ok = true; const rl = S.rule;
-  if (!$('q_name').value.trim()) ok = fieldErr('q_name', 'Enter the insured name');
-  else if (!/^[\p{L}\p{N} .,'\-\/@+()]+$/u.test($('q_name').value)) ok = fieldErr('q_name', 'Letters, digits and . , \' - / @ + ( ) only');
-  if (!$('q_dob').value) ok = fieldErr('q_dob', 'Enter the date of birth');
-  else { const a = ageAt($('q_dob').value, $('q_eff').value); if (a < rl.MinAge || a > rl.MaxEntryAge) ok = fieldErr('q_dob', 'Age at start is ' + a + '; allowed ' + rl.MinAge + ' to ' + rl.MaxEntryAge); }
+  clearBad($('n_s1')); let ok = true; const rl = S.rule;
+  if (!$('q_name').value.trim()) ok = fieldErr('q_name', 'Enter the insured name'); else if (!/^[\p{L}\p{N} .,'\-\/@+()]+$/u.test($('q_name').value)) ok = fieldErr('q_name', 'Letters, digits and . , \' - / @ + ( ) only');
+  if (!$('q_dob').value) ok = fieldErr('q_dob', 'Enter the date of birth'); else { const a = ageAt($('q_dob').value, $('q_eff').value); if (a < rl.MinAge || a > rl.MaxEntryAge) ok = fieldErr('q_dob', 'Age at start is ' + a + '; allowed ' + rl.MinAge + ' to ' + rl.MaxEntryAge); }
   if (!$('q_eff').value) { $('q_eff').classList.add('bad'); ok = false; }
   if (termRequired()) { const t = Number($('q_term').value); if (!(t >= rl.MinTerm && t <= rl.MaxTerm)) { $('q_term').classList.add('bad'); ok = false; } }
   return ok;
 }
 function quoteBody() {
   const code = $('q_product').value, term = currentTerm(), eff = $('q_eff').value, today = ymd(new Date());
-  return {
-    ApplicationNo: String(Date.now()), ProductCode: code, ProductSubcode: String(S.master.subcode), ChannelCode: CFG.channel,
-    PremiumModeCode: $('q_mode').value, PolicyTerm: term, EffectiveDate: eff, ExpiryDate: expiryOf(eff, term), ApplyDate: today, BranchCode: CFG.branch, UserName: CFG.userName,
-    PolicyLobList: [{ ProductCode: code, PolicyRiskList: [{ ProductElementCode: CFG.riskCode, InsuredName: $('q_name').value.trim(), Salutation: $('q_sal').value, Gender: $('q_gender').value, DateOfBirth: $('q_dob').value, ResidentStatus: $('q_res').value }] }]
-  };
+  return { ApplicationNo: String(Date.now()), ProductCode: code, ProductSubcode: String(S.master.subcode), ChannelCode: CFG.channel, PremiumModeCode: $('q_mode').value, PolicyTerm: term, EffectiveDate: eff, ExpiryDate: expiryOf(eff, term), ApplyDate: today, BranchCode: CFG.branch, UserName: CFG.userName,
+    PolicyLobList: [{ ProductCode: code, PolicyRiskList: [{ ProductElementCode: CFG.riskCode, InsuredName: $('q_name').value.trim(), Salutation: $('q_sal').value, Gender: $('q_gender').value, DateOfBirth: $('q_dob').value, ResidentStatus: $('q_res').value }] }] };
 }
 async function doQuote() {
   showAlert('', ''); if (!validateQuote()) { showAlert('err', 'Please correct the highlighted fields.'); return; }
-  const body = quoteBody(); const r = await api('POST', '/up/get-plans', body);
+  const body = quoteBody(), r = await api('POST', '/up/get-plans', body);
   if (!r.ok) { showApiError(r, { ProductCode: 'q_product', ProductSubcode: 'q_variant', PremiumModeCode: 'q_mode', PolicyTerm: 'q_term', EffectiveDate: 'q_eff' }); return; }
   const plans = ((((r.data.PolicyLobList || [])[0] || {}).PolicyRiskList || [])[0] || {}).PlanList || [];
   if (!plans.length) { showAlert('err', 'No plans are available for these details.'); return; }
-  S.quoteReq = body; S.quote = r.data; S.plan = null; S.prop = null; S.proposalNo = ''; S.policyNo = '';
-  renderPlans(plans); $('btnToProposal').disabled = true; $('quoteResult').style.display = '';
-  $('quoteHint').innerHTML = 'Insurer: <b>' + esc(r.data.CarrierName || '') + '</b> &middot; ' + esc(S.master.name) + ' &middot; cover from ' + esc(body.EffectiveDate) + '. Select a plan.';
-  $('quoteResult').scrollIntoView({ behavior: 'smooth' });
+  S.quoteReq = body; S.quote = r.data; S.plan = null; S.proposalNo = ''; renderPlans(plans); $('btnToProposal').disabled = true; $('btnShareQuote').disabled = true; $('quoteResult').style.display = '';
+  $('quoteHint').innerHTML = 'Insurer: <b>' + esc(r.data.CarrierName || '') + '</b> &middot; ' + esc(S.master.name) + ' &middot; cover from ' + esc(body.EffectiveDate) + '. Select a plan.'; $('quoteResult').scrollIntoView({ behavior: 'smooth' });
 }
 function renderPlans(plans) {
   const showC = $('showComm').checked;
-  $('plans').innerHTML = plans.map((p, i) => '<div class="plan" data-i="' + i + '"><h3>' + esc(p.PlanName || ('Plan ' + p.PlanId)) + '</h3><div class="prem">' + money(p.DuePremium) + ' <small>premium' + (showC ? ' &middot; commission ' + money(p.Commission) : '') + '</small></div><table>' +
-    (p.PolicyCoverageList || []).map(c => '<tr><td>' + esc(c.CoverageDescription || c.CoverageCode) + '</td><td>' + money(c.SumInsured) + '</td></tr>').join('') + '</table></div>').join('');
-  $('plans').querySelectorAll('.plan').forEach(el => el.onclick = () => {
-    $('plans').querySelectorAll('.plan').forEach(x => x.classList.remove('sel')); el.classList.add('sel');
-    S.plan = plans[Number(el.dataset.i)]; $('btnToProposal').disabled = false;
-  });
+  $('plans').innerHTML = plans.map((p, i) => '<div class="plan' + (S.plan === p ? ' sel' : '') + '" data-i="' + i + '"><h3>' + esc(p.PlanName || ('Plan ' + p.PlanId)) + '</h3><div class="prem">' + money(p.DuePremium) + ' <small>premium' + (showC ? ' &middot; commission ' + money(p.Commission) : '') + '</small></div><table>' + coverRows(p) + '</table></div>').join('');
+  $('plans').querySelectorAll('.plan').forEach(el => el.onclick = () => { $('plans').querySelectorAll('.plan').forEach(x => x.classList.remove('sel')); el.classList.add('sel'); S.plan = plans[Number(el.dataset.i)]; $('btnToProposal').disabled = false; $('btnShareQuote').disabled = false; });
   S.plans = plans;
 }
-
-// =====================================================================================
-// 2. Proposal
-// =====================================================================================
-function enterProposal() {
-  const q = S.quoteReq, rk = q.PolicyLobList[0].PolicyRiskList[0];
-  $('propHint').innerHTML = '<b>' + esc(rk.InsuredName) + '</b> &middot; ' + esc(S.master.name) + ' &middot; ' + esc(S.plan.PlanName) + ' &middot; premium <b>' + money(S.plan.DuePremium) + '</b> &middot; insurer ' + esc(S.quote.CarrierName || '');
-  $('b_share').value = 100; unlock(2);
-}
+function enterProposal() { const rk = S.quoteReq.PolicyLobList[0].PolicyRiskList[0]; $('propHint').innerHTML = '<b>' + esc(rk.InsuredName) + '</b> &middot; ' + esc(S.master.name) + ' &middot; ' + esc(S.plan.PlanName) + ' &middot; premium <b>' + money(S.plan.DuePremium) + '</b> &middot; insurer ' + esc(S.quote.CarrierName || ''); $('b_share').value = 100; newStep(2); }
 function validateProposal() {
-  clearBad($('p2')); let ok = true;
-  const need = (id, re, msg) => { const v = $(id).value.trim(); if (!v) ok = fieldErr(id, 'Required'); else if (re && !re.test(v)) ok = fieldErr(id, msg); };
-  need('p_cif', /^[0-9]{1,20}$/, 'Digits only');
-  need('p_idno', /^[A-Za-z0-9\-\/]{4,20}$/, 'Letters, digits, - and / (4-20)');
-  need('p_mobile', /^[0-9+]{7,15}$/, 'Digits only (7-15)');
-  need('p_email', /^[^@\s]+@[^@\s]+\.[^@\s]+$/, 'Enter a valid email');
-  need('p_addr', /^[\p{L}\p{N} .,'\-\/@+()]+$/u, 'Letters, digits and . , \' - / @ + ( ) only');
-  need('p_post', /^[A-Za-z0-9 \-]{2,10}$/, '2-10 letters or digits');
-  need('b_name', /^[\p{L}\p{N} .,'\-\/@+()]+$/u, 'Letters, digits and . , \' - / @ + ( ) only');
-  const sh = Number($('b_share').value); if (!(sh >= 1 && sh <= 100)) { $('b_share').classList.add('bad'); ok = false; }
-  need('pay_acc', /^[0-9]{6,20}$/, 'Digits only (6-20)');   // the update API requires the payment block
-  return ok;
+  clearBad($('n_s2')); let ok = true; const need = (id, re, msg) => { const v = $(id).value.trim(); if (!v) ok = fieldErr(id, 'Required'); else if (re && !re.test(v)) ok = fieldErr(id, msg); };
+  need('p_cif', /^[0-9]{1,20}$/, 'Digits only'); need('p_idno', /^[A-Za-z0-9\-\/]{4,20}$/, 'Letters, digits, - and / (4-20)'); need('p_mobile', /^[0-9+]{7,15}$/, 'Digits only (7-15)');
+  need('p_email', /^[^@\s]+@[^@\s]+\.[^@\s]+$/, 'Enter a valid email'); need('p_addr', /^[\p{L}\p{N} .,'\-\/@+()]+$/u, 'Letters, digits and . , \' - / @ + ( ) only'); need('p_post', /^[A-Za-z0-9 \-]{2,10}$/, '2-10 letters or digits');
+  need('b_name', /^[\p{L}\p{N} .,'\-\/@+()]+$/u, 'Letters, digits and . , \' - / @ + ( ) only'); const sh = Number($('b_share').value); if (!(sh >= 1 && sh <= 100)) { $('b_share').classList.add('bad'); ok = false; }
+  need('pay_acc', /^[0-9]{6,20}$/, 'Digits only (6-20)'); return ok;
 }
 function proposalBody() {
   const q = S.quoteReq, qr = q.PolicyLobList[0].PolicyRiskList[0], p = S.plan, code = q.ProductCode;
-  const risk = {
-    ProductElementCode: CFG.riskCode, InsuredName: qr.InsuredName, Salutation: qr.Salutation, Gender: qr.Gender, DateOfBirth: qr.DateOfBirth, ResidentStatus: qr.ResidentStatus,
-    IdType: $('p_idtype').value, IdNo: $('p_idno').value.trim(), MaritalStatus: $('p_marital').value, Mobile: $('p_mobile').value.trim(), Email: $('p_email').value.trim(),
-    Address: $('p_addr').value.trim(), PostCode: $('p_post').value.trim(),
+  const risk = { ProductElementCode: CFG.riskCode, InsuredName: qr.InsuredName, Salutation: qr.Salutation, Gender: qr.Gender, DateOfBirth: qr.DateOfBirth, ResidentStatus: qr.ResidentStatus, IdType: $('p_idtype').value, IdNo: $('p_idno').value.trim(), MaritalStatus: $('p_marital').value, Mobile: $('p_mobile').value.trim(), Email: $('p_email').value.trim(), Address: $('p_addr').value.trim(), PostCode: $('p_post').value.trim(),
     PlanList: [{ PlanId: Number(p.PlanId), PolicyCoverageList: (p.PolicyCoverageList || []).map(c => ({ ProductElementCode: c.ProductElementCode, SumInsured: c.SumInsured })) }],
-    BeneficiaryList: [{ BeneficaryName: $('b_name').value.trim(), RelationshipCode: $('b_rel').value, Share: String($('b_share').value), BeneficarySequence: '1' }]
-  };
+    BeneficiaryList: [{ BeneficaryName: $('b_name').value.trim(), RelationshipCode: $('b_rel').value, Share: String($('b_share').value), BeneficarySequence: '1' }] };
   if ($('p_income').value) risk.MonthSalaryIncome = String($('p_income').value);
-  const body = {
-    ApplicationNo: q.ApplicationNo, EffectiveDate: q.EffectiveDate, ExpiryDate: q.ExpiryDate, ApplyDate: q.ApplyDate, UserName: q.UserName, BranchCode: q.BranchCode,
-    PolicyCustomerList: [{ CIFNumber: $('p_cif').value.trim(), CustomerType: '1' }],
-    PolicyLobList: [{ ProductCode: code, DuePremium: p.DuePremium, PolicyRiskList: [risk] }],
-    PolicyType: '1', ProductCode: code, ProductSubcode: q.ProductSubcode, PremiumModeCode: q.PremiumModeCode, PlanId: Number(p.PlanId), PolicyTerm: String(q.PolicyTerm),
-    DuePremium: p.DuePremium, ChannelCode: CFG.channel, OrgCode: CFG.org
-  };
-  const acc = $('pay_acc').value.trim();
-  body.PolicyPaymentInfoList = [{ LGCode: CFG.payLG, LCCode: CFG.payLC, IsInstallment: 'N', DebitAccountNo: acc, DebitRefNo: $('pay_ref').value.trim() || ('REF' + q.ApplicationNo.slice(-8)), TransactionDate: q.ApplyDate }];
-  return body;
+  return { ApplicationNo: q.ApplicationNo, EffectiveDate: q.EffectiveDate, ExpiryDate: q.ExpiryDate, ApplyDate: q.ApplyDate, UserName: q.UserName, BranchCode: q.BranchCode, PolicyCustomerList: [{ CIFNumber: $('p_cif').value.trim(), CustomerType: '1' }],
+    PolicyLobList: [{ ProductCode: code, DuePremium: p.DuePremium, PolicyRiskList: [risk] }], PolicyType: '1', ProductCode: code, ProductSubcode: q.ProductSubcode, PremiumModeCode: q.PremiumModeCode, PlanId: Number(p.PlanId), PolicyTerm: String(q.PolicyTerm), DuePremium: p.DuePremium, ChannelCode: CFG.channel, OrgCode: '1',
+    PolicyPaymentInfoList: [{ LGCode: CFG.payLG, LCCode: CFG.payLC, IsInstallment: 'N', DebitAccountNo: $('pay_acc').value.trim(), DebitRefNo: $('pay_ref').value.trim() || ('REF' + q.ApplicationNo.slice(-8)), TransactionDate: q.ApplyDate }] };
 }
 const PROP_FIELDS = { 'PolicyCustomerList[0].CIFNumber': 'p_cif', 'PolicyLobList[0].PolicyRiskList[0].IdNo': 'p_idno', 'PolicyLobList[0].PolicyRiskList[0].Mobile': 'p_mobile', 'PolicyLobList[0].PolicyRiskList[0].Email': 'p_email', 'PolicyLobList[0].PolicyRiskList[0].Address': 'p_addr', 'PolicyLobList[0].PolicyRiskList[0].PostCode': 'p_post', 'PolicyPaymentInfoList[0].DebitAccountNo': 'pay_acc' };
-function renderProposalResult(d, title) {
-  $('propResult').innerHTML = '<div class="alert ok"><b>' + title + '</b><dl class="kv"><dt>Proposal no.</dt><dd>' + esc(d.ProposalNo) + '</dd><dt>Insurer</dt><dd>' + esc(d.CarrierName || '') + '</dd><dt>Premium</dt><dd>' + money(d.DuePremium || S.plan.DuePremium) + '</dd></dl></div>';
-}
-async function doCreateProposal() {
+async function doSubmitProposal() {
   showAlert('', ''); if (!validateProposal()) { showAlert('err', 'Please correct the highlighted fields.'); return; }
-  const body = proposalBody(); const r = await api('POST', '/up/proposal', body);
-  if (!r.ok) { showApiError(r, PROP_FIELDS); return; }
-  S.propReq = body; S.prop = r.data; S.proposalNo = r.data.ProposalNo; renderProposalResult(r.data, 'Proposal created');
-  ['btnUpdateProp', 'btnAppDoc', 'btnRejectProp', 'btnToIssue'].forEach(i => $(i).disabled = false); $('btnCreateProp').disabled = true;
+  const body = proposalBody(), r = await api('POST', '/up/proposal', body); if (!r.ok) { showApiError(r, PROP_FIELDS); return; }
+  S.proposalNo = r.data.ProposalNo; S.propSaved = r.data;
+  $('n_done').innerHTML = '<div class="alert ok"><b>Proposal ' + esc(r.data.ProposalNo) + ' has been submitted for approval.</b><div>A Proposal Checker will approve or reject it. You can follow it under My submissions.</div>' + notifyHtml(r.data.Notifications) + '</div>' +
+    '<dl class="kv"><dt>Insurer</dt><dd>' + esc(r.data.CarrierName || '') + '</dd><dt>Insured</dt><dd>' + esc(S.quoteReq.PolicyLobList[0].PolicyRiskList[0].InsuredName) + '</dd><dt>Plan</dt><dd>' + esc(S.plan.PlanName) + '</dd><dt>Premium</dt><dd>' + money(S.plan.DuePremium) + '</dd></dl>' +
+    '<div class="actions"><button class="btn sec" id="nd_app">Application form (PDF)</button><button class="btn sec" id="nd_share">Share proposal</button><button class="btn sec" id="nd_mine">My submissions</button><button class="btn" id="nd_new">New quotation</button></div>';
+  $('nd_app').onclick = () => getDoc('Application', S.proposalNo, S.quoteReq.ProductSubcode);
+  $('nd_share').onclick = () => shareDialog({ docType: 'PROPOSAL', proposalNo: S.proposalNo, email: $('p_email').value.trim(), mobile: $('p_mobile').value.trim() });
+  $('nd_mine').onclick = () => go('mine'); $('nd_new').onclick = resetWizard; newStep(3); window.scrollTo({ top: 0 });
 }
-async function doUpdateProposal() {
-  showAlert('', ''); if (!validateProposal()) { showAlert('err', 'Please correct the highlighted fields.'); return; }
-  const body = Object.assign({ ProposalNo: S.proposalNo }, proposalBody()); const r = await api('POST', '/up/update-proposal', body);
-  if (!r.ok) { showApiError(r, PROP_FIELDS); return; }
-  S.propReq = body; S.prop = r.data; renderProposalResult(r.data, 'Proposal updated');
-}
-async function doRejectProposal() {
-  const reason = prompt('Reason for rejecting proposal ' + S.proposalNo + ':'); if (!reason) return;
-  const r = await api('POST', '/up/proposal-reject', { ProposalNo: S.proposalNo, ProposalRejectDesc: reason, ProductCode: S.quoteReq.ProductCode, ChannelCode: CFG.channel });
-  if (!r.ok) { showApiError(r); return; }
-  showAlert('ok', 'Proposal ' + esc(S.proposalNo) + ' rejected.'); ['btnUpdateProp', 'btnAppDoc', 'btnRejectProp', 'btnToIssue'].forEach(i => $(i).disabled = true); $('btnCreateProp').disabled = false; S.proposalNo = '';
-}
-async function getDoc(type, no) {
-  const body = { DocType: type, ProductSubcode: String(S.quoteReq ? S.quoteReq.ProductSubcode : (S.loaded && S.loaded.ProductSubcode) || '1'), ChannelCode: CFG.channel };
-  body[type === 'Policy' ? 'PolicyNo' : 'ProposalNo'] = no;
-  const r = await api('POST', '/up/doc_generation', body);
-  if (!r.ok || !r.blob) { showApiError(r); return; }
-  download(r.blob, (type === 'Policy' ? 'Policy_' : 'Application_') + no + '.pdf');
-}
+function resetWizard() { S.quote = null; S.plan = null; S.plans = null; S.proposalNo = ''; $('quoteResult').style.display = 'none'; ['q_name', 'q_dob', 'p_cif', 'p_idno', 'p_mobile', 'p_email', 'p_addr', 'p_post', 'p_income', 'b_name', 'pay_acc', 'pay_ref'].forEach(i => $(i).value = ''); newStep(1); }
 
 // =====================================================================================
-// 3. Issue
+// Dashboard
 // =====================================================================================
-function renderIssueSummary() {
-  if (!S.proposalNo) { $('issueSummary').innerHTML = '<div class="alert info">Create a proposal first.</div>'; return; }
-  const q = S.quoteReq, rk = q.PolicyLobList[0].PolicyRiskList[0];
-  $('issueSummary').innerHTML = '<dl class="kv"><dt>Proposal no.</dt><dd>' + esc(S.proposalNo) + '</dd><dt>Insurer</dt><dd>' + esc((S.prop || {}).CarrierName || S.quote.CarrierName) + '</dd><dt>Product</dt><dd>' + esc(S.master.name) + ' (' + esc(q.ProductCode) + ')</dd><dt>Plan</dt><dd>' + esc(S.plan.PlanName) + '</dd><dt>Insured</dt><dd>' + esc(rk.InsuredName) + '</dd><dt>Cover</dt><dd>' + esc(q.EffectiveDate) + ' to ' + esc(q.ExpiryDate.slice(0, 10)) + '</dd><dt>Premium</dt><dd>' + money(S.plan.DuePremium) + '</dd></dl>';
-  $('btnIssue').disabled = !!S.policyNo;
+const PCOLORS = { Pending: 'var(--c-pending)', Issued: 'var(--c-issued)', Rejected: 'var(--c-rejected)' };
+function barSvg(rows, w) {   // stacked horizontal bars: rows = [{label, parts:[{key,value}]}]
+  const max = Math.max(1, ...rows.map(r => r.parts.reduce((a, p) => a + p.value, 0))), lh = 26, lw = 130, W = w || 460, plot = W - lw - 50;
+  return '<svg viewBox="0 0 ' + W + ' ' + (rows.length * lh + 6) + '" width="100%" role="img" aria-label="Proposals by product and status">' + rows.map((r, i) => { let x = lw; const y = i * lh + 3, total = r.parts.reduce((a, p) => a + p.value, 0);
+    return '<text x="' + (lw - 8) + '" y="' + (y + 15) + '" text-anchor="end" font-size="12" fill="#4A5A63">' + esc(r.label) + '</text>' + r.parts.map(p => { const wd = p.value / max * plot; const seg = '<rect x="' + x + '" y="' + y + '" width="' + Math.max(0, wd) + '" height="18" rx="2" fill="' + PCOLORS[p.key] + '"><title>' + esc(r.label + ' · ' + p.key + ': ' + p.value) + '</title></rect>'; x += wd; return seg; }).join('') + '<text x="' + (x + 6) + '" y="' + (y + 14) + '" font-size="12" fill="#26323A">' + total + '</text>'; }).join('') + '</svg>';
 }
-async function doIssue() {
-  showAlert('', ''); if (!confirm('Issue the policy for proposal ' + S.proposalNo + '?')) return;
-  const r = await api('POST', '/up/issue', { ProposalNo: S.proposalNo, ProductCode: S.quoteReq.ProductCode, ChannelCode: CFG.channel });
-  if (!r.ok) { showApiError(r); return; }
-  S.policyNo = r.data.PolicyNo; $('issueResult').innerHTML = '<div class="alert ok"><b>Policy issued</b><dl class="kv"><dt>Policy no.</dt><dd>' + esc(r.data.PolicyNo) + '</dd><dt>Insurer</dt><dd>' + esc(r.data.CarrierName || '') + '</dd><dt>Status</dt><dd>' + esc((r.data.PolicyStatus && r.data.PolicyStatus.Description) || r.data.PolicyStatus || 'Effective') + '</dd></dl></div>';
-  $('btnPolDoc').disabled = false; $('btnToServ').disabled = false; $('btnIssue').disabled = true; maxStep = 4; goStep(3);
+function hbarSvg(rows, w) {   // simple horizontal bars: rows = [{label, value}]
+  const max = Math.max(1, ...rows.map(r => r.value)), lh = 26, lw = 130, W = w || 460, plot = W - lw - 80;
+  return '<svg viewBox="0 0 ' + W + ' ' + (rows.length * lh + 6) + '" width="100%" role="img" aria-label="Commission by product">' + rows.map((r, i) => { const y = i * lh + 3, wd = r.value / max * plot;
+    return '<text x="' + (lw - 8) + '" y="' + (y + 15) + '" text-anchor="end" font-size="12" fill="#4A5A63">' + esc(r.label) + '</text><rect x="' + lw + '" y="' + y + '" width="' + Math.max(1, wd) + '" height="18" rx="2" fill="var(--brand)"><title>' + esc(r.label + ': ' + money(r.value)) + '</title></rect><text x="' + (lw + wd + 6) + '" y="' + (y + 14) + '" font-size="12" fill="#26323A">' + money(r.value) + '</text>'; }).join('') + '</svg>';
 }
-
-// =====================================================================================
-// 4. Servicing
-// =====================================================================================
-const statusText = p => { const s = p.PolicyStatus; const map = { '1': 'Proposal', '2': 'Effective', '3': 'Cancelled' }; return (s && s.Description) ? s.Description : (map[String(s)] || String(s == null ? '' : s)); };
-function renderPolicy(d) {
-  const risk = ((((d.PolicyLobList || [])[0] || {}).PolicyRiskList || [])[0]) || {};
-  const plan = (risk.PlanList || [])[0] || {};
-  return '<dl class="kv"><dt>Policy no.</dt><dd>' + esc(d.PolicyNo || '-') + '</dd><dt>Proposal no.</dt><dd>' + esc(d.ProposalNo || '-') + '</dd><dt>Insurer</dt><dd>' + esc(d.CarrierName || '') + ' (' + esc(d.CarrierCode || '') + ')</dd><dt>Product</dt><dd>' + esc(d.ProductCode || '') + ' / ' + esc(d.ProductSubcode || '') + '</dd><dt>Insured</dt><dd>' + esc(risk.InsuredName || '') + '</dd><dt>Plan</dt><dd>' + esc(plan.PlanName || d.PlanId || '') + '</dd><dt>Cover</dt><dd>' + esc(String(d.EffectiveDate || '').slice(0, 10)) + ' to ' + esc(String(d.ExpiryDate || '').slice(0, 10)) + '</dd><dt>Premium</dt><dd>' + money(d.DuePremium || plan.DuePremium) + '</dd><dt>Status</dt><dd><span class="badge ' + (/cancel/i.test(statusText(d)) ? 'err' : 'ok') + '">' + esc(statusText(d)) + '</span></dd></dl>';
+function donutSvg(parts) {
+  const total = parts.reduce((a, p) => a + p.value, 0) || 1; let a0 = -Math.PI / 2; const R = 62, r = 38, cx = 80, cy = 74;
+  const arcs = parts.filter(p => p.value > 0).map(p => { const a1 = a0 + p.value / total * 2 * Math.PI, large = (a1 - a0) > Math.PI ? 1 : 0; const pt = (rad, a) => (cx + rad * Math.cos(a)).toFixed(1) + ' ' + (cy + rad * Math.sin(a)).toFixed(1);
+    const full = p.value === total; const d = full ? 'M ' + pt(R, a0) + ' A ' + R + ' ' + R + ' 0 1 1 ' + pt(R, a0 + 3.1415) + ' A ' + R + ' ' + R + ' 0 1 1 ' + pt(R, a0) + ' M ' + pt(r, a0) + ' A ' + r + ' ' + r + ' 0 1 0 ' + pt(r, a0 + 3.1415) + ' A ' + r + ' ' + r + ' 0 1 0 ' + pt(r, a0) : 'M ' + pt(R, a0) + ' A ' + R + ' ' + R + ' 0 ' + large + ' 1 ' + pt(R, a1) + ' L ' + pt(r, a1) + ' A ' + r + ' ' + r + ' 0 ' + large + ' 0 ' + pt(r, a0) + ' Z';
+    a0 = a1; return '<path d="' + d + '" fill="' + p.color + '" fill-rule="evenodd"><title>' + esc(p.label + ': ' + p.value) + '</title></path>'; }).join('');
+  return '<svg viewBox="0 0 330 150" width="100%" role="img" aria-label="Proposal status split">' + arcs + '<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" font-size="18" font-weight="700" fill="#26323A">' + total + '</text>' +
+    parts.map((p, i) => '<rect x="170" y="' + (34 + i * 26) + '" width="12" height="12" rx="2" fill="' + p.color + '"/><text x="190" y="' + (45 + i * 26) + '" font-size="13" fill="#26323A">' + esc(p.label) + ': <tspan font-weight="700">' + p.value + '</tspan></text>').join('') + '</svg>';
 }
-async function doLoad() {
-  showAlert('', ''); const pol = $('f_policy').value.trim(), prop = $('f_proposal').value.trim();
-  if (!pol && !prop) { showAlert('err', 'Enter a policy number or a proposal number.'); return; }
-  const q = pol ? 'policyNo=' + encodeURIComponent(pol) : 'proposalNo=' + encodeURIComponent(prop);
-  const r = await api('GET', '/up/load-policy?' + q + '&ChannelCode=' + CFG.channel);
-  if (!r.ok) { showApiError(r); $('loadResult').innerHTML = ''; return; }
-  S.loaded = r.data; $('loadResult').innerHTML = renderPolicy(r.data);
-  $('btnPolDoc2').disabled = !r.data.PolicyNo;
-  if (r.data.PolicyNo) {
-    $('c_policy').value = r.data.PolicyNo; $('m_policy').value = r.data.PolicyNo;
-    const eff = String(r.data.EffectiveDate || '').slice(0, 10), today = ymd(new Date());
-    if (eff) { $('c_date').min = eff; $('c_date').value = eff > today ? eff : today; }   // cancellation cannot be before the commencement date
-  }
+function dashWindow() {
+  const p = $('d_period').value, to = new Date();
+  if (p === 'custom') return { from: $('d_from').value, to: $('d_to').value };
+  return { from: ymd(addDays(to, -Number(p))), to: ymd(to) };
 }
-async function doCheck() {
-  showAlert('', ''); clearBad($('s_cancel')); const pol = $('c_policy').value.trim();
-  if (!pol || !$('c_date').value || !$('c_reason').value.trim()) { showAlert('err', 'Policy number, cancellation date and reason are required.'); return; }
-  const r = await api('POST', '/up/cancel-check', { PolicyNo: pol, CancellationDate: $('c_date').value, CancelReason: $('c_reason').value.trim(), ChannelCode: CFG.channel });
-  if (!r.ok) { showApiError(r, { CancellationDate: 'c_date', PolicyNo: 'c_policy', CancelReason: 'c_reason' }); $('checkResult').innerHTML = ''; $('decideRow').style.display = 'none'; return; }
-  S.check = r.data; const pd = r.data.PremiumDetails || {}, rf = r.data.RefundDetails || {};
-  $('checkResult').innerHTML = '<div class="alert info"><b>Refund calculation</b> &middot; request ' + esc(r.data.RequestNo) + ' <span class="badge warn">' + esc(r.data.RequestStatus) + '</span><dl class="kv"><dt>Insurer</dt><dd>' + esc(r.data.CarrierName || '') + '</dd><dt>Days since start</dt><dd>' + esc(pd.DaysSinceCommencement) + ' (free-look ' + esc(pd.FreeLookDays) + ' days)</dd><dt>Premium paid</dt><dd>' + money(pd.Premium) + '</dd><dt>Pro-rata premium</dt><dd>' + money(pd.ProRataPremium) + '</dd><dt>Cancellation type</dt><dd>' + esc(rf.CancellationType) + ' (' + esc(rf.RefundPercent) + '%)</dd><dt>Refund</dt><dd style="color:var(--brand-dark);font-size:16px">' + money(rf.RefundPremium) + '</dd></dl></div>';
-  $('decideRow').style.display = ''; $('decideResult').innerHTML = '';
-}
-async function doDecide(decision) {
-  if (!S.check) return; if (!confirm((decision === 'APPROVE' ? 'Approve' : 'Reject') + ' cancellation request ' + S.check.RequestNo + '?')) return;
-  const r = await api('POST', '/up/cancel-approve', { PolicyNo: $('c_policy').value.trim(), RequestNo: S.check.RequestNo, Decision: decision, ChannelCode: CFG.channel });
-  if (!r.ok) { showApiError(r); return; }
-  $('decideResult').innerHTML = '<div class="alert ok"><b>Request ' + esc(r.data.RequestStatus) + '</b><dl class="kv"><dt>Policy status</dt><dd>' + esc((r.data.PolicyStatus && r.data.PolicyStatus.Description) || '') + '</dd>' + (r.data.EndorsementNo ? '<dt>Endorsement no.</dt><dd>' + esc(r.data.EndorsementNo) + '</dd>' : '') + (r.data.RefundPremium != null ? '<dt>Refund</dt><dd>' + money(r.data.RefundPremium) + '</dd>' : '') + '</dl></div>';
-  $('decideRow').style.display = 'none'; S.check = null;
-}
-function commTable(rows, cols) {
-  if (!rows.length) return '<div class="alert info">No records.</div>';
-  return '<table class="t"><tr>' + cols.map(c => '<th>' + c[0] + '</th>').join('') + '</tr>' + rows.map(r => '<tr>' + cols.map(c => '<td>' + esc(r[c[1]]) + '</td>').join('') + '</tr>').join('') + '</table>';
-}
-const COMM_COLS = [['Policy', 'PolicyNo'], ['Insurer', 'CarrierName'], ['Product', 'ProductCode'], ['Plan', 'PlanName'], ['Start', 'CommencementDate'], ['Status', 'PolicyStatus'], ['Premium', 'Premium'], ['Rate', 'CommissionRate'], ['Commission', 'Commission']];
-async function doCommPolicy() {
-  const p = $('m_policy').value.trim(); if (!p) { showAlert('err', 'Enter a policy number.'); return; }
-  const r = await api('POST', '/up/commission-query', { PolicyNo: p, ChannelCode: CFG.channel }); if (!r.ok) { showApiError(r); return; }
-  $('commResult').innerHTML = '<div class="card"><h2>Commission</h2>' + commTable([r.data], COMM_COLS) + '</div>';
-}
-async function doCommPeriod() {
-  const r = await api('POST', '/up/commission-query', { ProductCode: $('m_product').value, FromDate: $('m_from').value, ToDate: $('m_to').value, PageNo: 1, PageSize: Number($('m_size').value) || 10, ChannelCode: CFG.channel }); if (!r.ok) { showApiError(r); return; }
-  const d = r.data; $('commResult').innerHTML = '<div class="card"><h2>Commission ' + esc(d.FromDate) + ' to ' + esc(d.ToDate) + '</h2><div class="help">Records: ' + esc(d.Total) + ' &middot; page premium ' + esc(d.PageTotalPremium) + ' &middot; page commission ' + esc(d.PageTotalCommission) + '</div>' + commTable(d.Records || [], COMM_COLS) + '</div>';
-}
-function onCommProduct() { $('m_cvariant').innerHTML = variantsOf($('m_cproduct').value).map(v => '<option value="' + esc(v.subcode) + '">' + esc(v.name) + '</option>').join(''); }
-async function doCommCfg() {
-  const r = await api('POST', '/up/commission-query', { ProductCode: $('m_cproduct').value, ProductSubcode: $('m_cvariant').value, ChannelCode: CFG.channel }); if (!r.ok) { showApiError(r); return; }
-  $('commResult').innerHTML = '<div class="card"><h2>Commission rates</h2>' + commTable(r.data.Records || [], [['Plan', 'PlanName'], ['Insurer', 'CarrierName'], ['Premium', 'Premium'], ['Rate', 'CommissionRate'], ['Commission', 'Commission']]) + '</div>';
+async function loadDashboard() {
+  const w = dashWindow(); if (!w.from || !w.to) { $('d_body').innerHTML = '<div class="alert err">Choose the dates.</div>'; return; }
+  $('d_body').innerHTML = '<div class="empty">Loading the figures... (this takes a few seconds)</div>';
+  const scope = $('d_scope').value, common = { ChannelCode: CFG.channel, FromDate: w.from, ToDate: w.to, Scope: scope };
+  const prods = products();
+  const [sum, ...comm] = await Promise.all([api('POST', '/up/dashboard', Object.assign({ Section: 'SUMMARY' }, common), true), ...prods.map(p => api('POST', '/up/dashboard', Object.assign({ Section: 'COMMISSION', ProductCode: p.code }, common), true))]);
+  if (!sum.ok) { $('d_body').innerHTML = '<div class="alert err">' + errHtml(sum) + '</div>'; return; }
+  const d = sum.data, pr = d.Proposals, cn = d.Cancellations, okc = comm.filter(c => c.ok).map(c => c.data);
+  badges.pendingProposals = pr.Pending; badges.pendingCancels = cn.Pending; buildNav();
+  const tot = k => okc.reduce((a, c) => a + Number(c[k] || 0), 0), truncated = okc.some(c => c.Truncated);
+  const tile = (v, l, s, cls, go) => '<div class="tile ' + (cls || '') + (go ? ' click' : '') + '"' + (go ? ' data-go="' + go + '"' : '') + '><div class="v">' + v + '</div><div class="l">' + l + '</div>' + (s ? '<div class="s">' + s + '</div>' : '') + '</div>';
+  const tiles = [];
+  if (has(ROLE.PC)) tiles.push(tile(pr.Pending, 'Proposals waiting for approval', pr.PendingOlderThanOneDay ? pr.PendingOlderThanOneDay + ' older than one day' : 'none older than a day', 'warn', 'papprove'));
+  if (has(ROLE.CC) || has(ROLE.MAKER)) tiles.push(tile(cn.Pending, 'Cancellation requests pending', '', 'warn', 'cancel'));
+  tiles.push(tile(pr.Submitted, 'Proposals submitted', 'in the period'), tile(pr.Issued, 'Policies issued', 'approved proposals', ''), tile(pr.Rejected, 'Proposals rejected', '', 'err'), tile(cn.Issued, 'Policies cancelled', 'in the period', 'mute'));
+  tiles.push(tile(money(tot('Premium')), 'Premium (in force)', okc.reduce((a, c) => a + Number(c.InForce || 0), 0) + ' policies'), tile(money(tot('Commission')), 'Commission (in force)', 'agent commission'), tile(money(tot('CancelledPremium')), 'Premium of cancelled policies', okc.reduce((a, c) => a + Number(c.Cancelled || 0), 0) + ' policies', 'mute'));
+  const bars = prods.map(p => ({ label: p.code, parts: ['Pending', 'Issued', 'Rejected'].map(k => ({ key: k, value: Number((d.ByProduct[p.code] || {})[k] || 0) })) }));
+  const comRows = prods.map((p, i) => ({ label: p.code, value: Number((comm[i].ok ? comm[i].data.Commission : 0) || 0) }));
+  const table = '<div class="scroll"><table class="t"><tr><th>Product</th><th class="num">Submitted</th><th class="num">Pending</th><th class="num">Issued</th><th class="num">Rejected</th><th class="num">In force</th><th class="num">Cancelled</th><th class="num">Premium</th><th class="num">Commission</th></tr>' +
+    prods.map((p, i) => { const b = d.ByProduct[p.code] || {}, c = comm[i].ok ? comm[i].data : {}; return '<tr class="row"><td><b>' + esc(p.name) + '</b> <span class="help">' + p.code + '</span></td><td class="num">' + (Number(b.Pending || 0) + Number(b.Issued || 0) + Number(b.Rejected || 0)) + '</td><td class="num">' + (b.Pending || 0) + '</td><td class="num">' + (b.Issued || 0) + '</td><td class="num">' + (b.Rejected || 0) + '</td><td class="num">' + (c.InForce == null ? '-' : c.InForce) + '</td><td class="num">' + (c.Cancelled == null ? '-' : c.Cancelled) + '</td><td class="num">' + money(c.Premium) + '</td><td class="num">' + money(c.Commission) + '</td></tr>'; }).join('') + '</table></div>';
+  const plans = []; okc.forEach(c => (c.ByPlan || []).forEach(p => { if (Number(p.Policies)) plans.push({ product: c.ProductCode, name: p.PlanName, n: p.Policies, prem: p.Premium, com: p.Commission }); }));
+  $('d_body').innerHTML = '<div class="help" style="margin-bottom:8px">' + esc(w.from) + ' to ' + esc(w.to) + ' &middot; ' + (d.Scope === 'MINE' ? 'my submissions' : 'all submissions') + '</div><div class="tiles">' + tiles.join('') + '</div>' +
+    (truncated ? '<div class="alert warn">Premium and commission are read from the newest policies of each product (up to the configured limit); products marked below were capped, so their totals are lower than the real totals.</div>' : '') +
+    '<div class="charts"><div class="card"><h2>Proposals by product</h2>' + barSvg(bars) + '<div class="legend"><span><i style="background:var(--c-pending)"></i>Pending</span><span><i style="background:var(--c-issued)"></i>Issued</span><span><i style="background:var(--c-rejected)"></i>Rejected</span></div></div>' +
+    '<div class="card"><h2>Proposal status</h2>' + donutSvg([{ label: 'Pending', value: pr.Pending, color: 'var(--c-pending)' }, { label: 'Issued', value: pr.Issued, color: 'var(--c-issued)' }, { label: 'Rejected', value: pr.Rejected, color: 'var(--c-rejected)' }]) + '</div>' +
+    '<div class="card"><h2>Commission by product</h2>' + hbarSvg(comRows) + '</div></div>' +
+    '<div class="card"><h2>By product</h2>' + table + '</div>' +
+    '<div class="card"><h2>By plan (in force)</h2>' + (plans.length ? '<div class="scroll"><table class="t"><tr><th>Product</th><th>Plan</th><th class="num">Policies</th><th class="num">Premium</th><th class="num">Commission</th></tr>' + plans.map(p => '<tr class="row"><td>' + esc(p.product) + '</td><td>' + esc(p.name) + '</td><td class="num">' + p.n + '</td><td class="num">' + money(p.prem) + '</td><td class="num">' + money(p.com) + '</td></tr>').join('') + '</table></div>' : '<div class="empty">No in-force policies in the period.</div>') + '</div>';
+  $('d_body').querySelectorAll('.tile[data-go]').forEach(t => t.onclick = () => go(t.dataset.go));
 }
 
 // =====================================================================================
 // Wire-up
 // =====================================================================================
 function bind() {
-  document.querySelectorAll('#steps button').forEach(b => b.onclick = () => goStep(Number(b.dataset.step)));
-  document.querySelectorAll('#stabs button').forEach(b => b.onclick = () => { document.querySelectorAll('#stabs button').forEach(x => x.classList.toggle('active', x === b)); document.querySelectorAll('.sub-panel').forEach(p => p.classList.toggle('active', p.id === b.dataset.tab)); showAlert('', ''); });
-  $('q_product').onchange = onProduct; $('q_variant').onchange = onVariant; $('q_mode').onchange = onMode;
-  $('btnQuote').onclick = doQuote; $('btnToProposal').onclick = enterProposal; $('showComm').onchange = () => { if (S.plans) renderPlans(S.plans); };
-  $('btnCreateProp').onclick = doCreateProposal; $('btnUpdateProp').onclick = doUpdateProposal; $('btnRejectProp').onclick = doRejectProposal;
-  $('btnAppDoc').onclick = () => getDoc('Application', S.proposalNo); $('btnAppDoc2').onclick = () => getDoc('Application', S.proposalNo);
-  $('btnToIssue').onclick = () => unlock(3); $('btnIssue').onclick = doIssue; $('btnPolDoc').onclick = () => getDoc('Policy', S.policyNo);
-  $('btnToServ').onclick = () => { $('f_policy').value = S.policyNo; $('c_policy').value = S.policyNo; $('m_policy').value = S.policyNo; unlock(4); doLoad(); };
-  $('btnLoad').onclick = doLoad; $('btnPolDoc2').onclick = () => getDoc('Policy', S.loaded.PolicyNo);
-  $('btnCheck').onclick = doCheck; $('btnApprove').onclick = () => doDecide('APPROVE'); $('btnDecline').onclick = () => doDecide('REJECT');
-  $('btnCommPolicy').onclick = doCommPolicy; $('btnCommPeriod').onclick = doCommPeriod; $('btnCommCfg').onclick = doCommCfg; $('m_cproduct').onchange = onCommProduct;
-  // free servicing: a policy can be serviced without going through steps 1-3
-  maxStep = 1;
+  $('q_product').onchange = onProduct; $('q_variant').onchange = onVariant; $('q_mode').onchange = onMode; $('btnQuote').onclick = doQuote; $('btnToProposal').onclick = enterProposal; $('showComm').onchange = () => { if (S.plans) renderPlans(S.plans); };
+  $('btnShareQuote').onclick = () => { const rk = S.quoteReq.PolicyLobList[0].PolicyRiskList[0]; shareDialog({ docType: 'QUOTATION', productCode: S.quoteReq.ProductCode, subcode: S.quoteReq.ProductSubcode, details: { InsuredName: rk.InsuredName, ProductName: S.master.name, PlanName: S.plan.PlanName, Premium: S.plan.DuePremium, EffectiveDate: S.quoteReq.EffectiveDate } }); };
+  $('btnBackQuote').onclick = () => newStep(1); $('btnCreateProp').onclick = doSubmitProposal;
+  $('cancelTabs').querySelectorAll('button').forEach(b => b.onclick = () => cancelTab(b.dataset.t)); $('btnCLoad').onclick = cancelLoadPolicy; $('btnCSubmit').onclick = cancelSubmit; $('btnLoad').onclick = doSearch;
+  $('d_refresh').onclick = loadDashboard; $('d_period').onchange = () => { const c = $('d_period').value === 'custom'; $('d_customWrap').style.display = c ? '' : 'none'; $('d_customWrap2').style.display = c ? '' : 'none'; if (!c) loadDashboard(); };
+  $('d_from').value = ymd(addDays(new Date(), -30)); $('d_to').value = ymd(new Date()); $('modal').onclick = e => { if (e.target === $('modal')) closeModal(); };
 }
 async function init() {
   bind();
   if (!getAccessToken()) { showAlert('err', 'Authorization token not found. Please log in to InsureMO Portal first.'); return; }
-  $('sessionChip').textContent = 'Tenant: ' + getTenantCode();
-  if (await loadMaster()) { fillStatic(); goStep(1); }
+  const [me, ok] = await Promise.all([api('GET', '/up/me', null, true), loadMaster()]);
+  if (!me.ok) { showApiError(me); return; }
+  S.me = me.data; S.roles = me.data.Roles || []; S.allowSelf = me.data.AllowSelfApproval === 'Y';
+  $('userChip').textContent = (S.me.DisplayName || S.me.UserName) + (S.roles.length ? ' · ' + S.roles.map(r => ROLE_LABEL[r] || r).join(', ') : '');
+  if (!S.roles.length) { $('side').innerHTML = ''; showAlert('err', '<b>Access denied.</b> Your user (' + esc(S.me.UserName) + ') is not set up for this portal. Ask the administrator to add you as Maker, Proposal Checker or Cancellation Checker.'); return; }
+  if (!ok) return;
+  fillStatic(); buildQueues(); buildNav();
+  $('d_scopeWrap').style.display = (S.roles.length === 1 && has(ROLE.MAKER)) ? 'none' : '';
+  if (S.roles.length === 1 && has(ROLE.MAKER)) $('d_scope').value = 'MINE';
+  if (!has(ROLE.MAKER)) { $('tabRaise').style.display = 'none'; $('cancelTitle').textContent = 'Cancellation approvals'; }
+  go('dash');
+  // pending counters for the checkers (cheap: one search each)
+  if (has(ROLE.PC)) queues.papprove.load(1); if (has(ROLE.CC) || has(ROLE.MAKER)) queues.cancel.load(1);
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 </script>
