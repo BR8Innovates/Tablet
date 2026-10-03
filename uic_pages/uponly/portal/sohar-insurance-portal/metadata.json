@@ -1,0 +1,16 @@
+{
+  "page_id": "",
+  "page_name": "Sohar Insurance Portal",
+  "page_path": "sohar-insurance-portal",
+  "page_code": "sohar-insurance-portal",
+  "env": "portal",
+  "html_file": "./uic_pages/uponly/portal/sohar-insurance-portal/index.html",
+  "description": "",
+  "update_history": [
+    {
+      "timestamp": "2026-10-03T06:54:07.900336594Z",
+      "memo": "Initialized local UIC page"
+    }
+  ],
+  "original_data": null
+}

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sohar Insurance Portal</title>
+<style>
+:root {
+  /* ---- Brand block: Sohar International Bank (approximate public colours). Edit these values to apply the official guideline. ---- */
+  --brand: #00695C;          /* primary */
+  --brand-dark: #004D40;     /* header, hover */
+  --brand-soft: #E0F2EF;     /* tints */
+  --accent: #C8A24A;         /* gold accent */
+  --font: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+  --bank-name: "Sohar International Bank";
+  /* ---- Neutrals and status ---- */
+  --text: #26323A; --muted: #66737C; --border: #CBD6DD; --line: #E6ECEF; --bg: #F4F7F8; --card: #FFFFFF;
+  --ok: #1B8A5A; --warn: #B7791F; --err: #C0392B; --info: #2B6CB0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); font-size: 14px; line-height: 1.5; }
+header { background: var(--brand-dark); color: #fff; padding: 14px 28px; display: flex; align-items: center; gap: 16px; border-bottom: 4px solid var(--accent); }
+.logo { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); color: var(--brand-dark); font-weight: 700; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+header h1 { font-size: 18px; font-weight: 600; letter-spacing: .2px; }
+header .sub { font-size: 12px; opacity: .85; }
+header .spacer { flex: 1; }
+.chip { background: rgba(255,255,255,.15); border-radius: 14px; padding: 3px 12px; font-size: 12px; }
+.shell { max-width: 1180px; margin: 0 auto; padding: 18px 20px 60px; }
+nav.steps { display: flex; gap: 0; margin: 4px 0 18px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+nav.steps button { flex: 1; background: none; color: var(--muted); border: none; border-right: 1px solid var(--line); padding: 12px 8px; font: inherit; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+nav.steps button:last-child { border-right: none; }
+nav.steps button .n { width: 24px; height: 24px; border-radius: 50%; background: var(--line); color: var(--muted); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; }
+nav.steps button.active { color: var(--brand); background: var(--brand-soft); }
+nav.steps button.active .n { background: var(--brand); color: #fff; }
+nav.steps button.done .n { background: var(--ok); color: #fff; }
+nav.steps button:disabled { opacity: .45; cursor: not-allowed; }
+.panel { display: none; } .panel.active { display: block; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 20px 22px; margin-bottom: 16px; }
+.card h2 { font-size: 16px; color: var(--brand-dark); margin-bottom: 4px; }
+.card .hint { color: var(--muted); font-size: 12.5px; margin-bottom: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 18px; }
+.grid .wide { grid-column: 1 / -1; }
+label { display: block; font-weight: 600; font-size: 12.5px; margin: 8px 0 4px; }
+label .req { color: var(--err); }
+input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 5px; font: inherit; background: #fff; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand-soft); border-color: var(--brand); }
+input.bad, select.bad { border-color: var(--err); background: #FDF2F0; }
+.fe { color: var(--err); font-size: 12px; min-height: 0; }
+.help { color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+button.btn { background: var(--brand); color: #fff; border: none; border-radius: 5px; padding: 9px 20px; font: inherit; font-weight: 600; cursor: pointer; }
+button.btn:hover { background: var(--brand-dark); }
+button.btn.sec { background: #fff; color: var(--brand); border: 1px solid var(--brand); }
+button.btn.sec:hover { background: var(--brand-soft); }
+button.btn.danger { background: var(--err); } button.btn.danger:hover { background: #962d22; }
+button.btn:disabled { background: #BFC9CE; border-color: #BFC9CE; color: #fff; cursor: not-allowed; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; align-items: center; }
+.alert { padding: 10px 14px; border-radius: 6px; margin: 12px 0; font-size: 13px; border: 1px solid; }
+.alert.err { background: #FDF2F0; border-color: #F2C2BB; color: #8E2A1E; }
+.alert.ok { background: #EAF7F0; border-color: #B8E3CC; color: #14693F; }
+.alert.info { background: #EBF3FB; border-color: #BCD6EF; color: #22527F; }
+.alert ul { margin: 6px 0 0 18px; }
+.plans { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 12px; }
+.plan { border: 2px solid var(--line); border-radius: 8px; padding: 14px 16px; background: #fff; cursor: pointer; }
+.plan:hover { border-color: var(--brand); }
+.plan.sel { border-color: var(--brand); background: var(--brand-soft); }
+.plan h3 { font-size: 15px; color: var(--brand-dark); }
+.plan .prem { font-size: 24px; font-weight: 700; margin: 4px 0 8px; }
+.plan .prem small { font-size: 12px; color: var(--muted); font-weight: 400; }
+.plan table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.plan td { padding: 2px 0; border-top: 1px dashed var(--line); } .plan td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+table.t { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+table.t th { text-align: left; background: var(--brand-soft); color: var(--brand-dark); padding: 7px 9px; font-size: 12px; }
+table.t td { padding: 7px 9px; border-bottom: 1px solid var(--line); }
+dl.kv { display: grid; grid-template-columns: 190px 1fr; gap: 3px 14px; margin-top: 8px; }
+dl.kv dt { color: var(--muted); } dl.kv dd { font-weight: 600; word-break: break-all; }
+.tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.tabs button { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 6px 16px; font: inherit; cursor: pointer; color: var(--muted); font-weight: 600; }
+.tabs button.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+.sub-panel { display: none; } .sub-panel.active { display: block; }
+.badge { display: inline-block; padding: 1px 10px; border-radius: 10px; font-size: 12px; font-weight: 600; background: var(--line); }
+.badge.ok { background: #D4F0E1; color: #14693F; } .badge.warn { background: #FBEBC8; color: #8A5A0B; } .badge.err { background: #F7D4CF; color: #8E2A1E; }
+details.log { margin-top: 20px; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 10px 16px; }
+details.log summary { cursor: pointer; font-weight: 600; color: var(--brand-dark); }
+.logrow { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 6px; font-size: 12px; }
+.logrow pre { background: #F4F7F8; padding: 8px; border-radius: 5px; overflow: auto; max-height: 180px; font-size: 11.5px; }
+.spin { display: none; position: fixed; inset: 0; background: rgba(255,255,255,.6); z-index: 50; align-items: center; justify-content: center; font-weight: 600; color: var(--brand-dark); }
+.spin.on { display: flex; }
+.toggle { display: flex; align-items: center; gap: 8px; font-size: 12.5px; margin-top: 10px; } .toggle input { width: auto; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; } @media (max-width: 760px) { .two { grid-template-columns: 1fr; } nav.steps button span.l { display: none; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">S</div>
+  <div><h1>Sohar International Bank &middot; Insurance</h1><div class="sub">Quotation, proposal, policy and servicing</div></div>
+  <div class="spacer"></div>
+  <span class="chip" id="carrierChip">Insurer: loading...</span>
+  <span class="chip" id="sessionChip"></span>
+</header>
+
+<div class="shell">
+  <nav class="steps" id="steps">
+    <button data-step="1"><span class="n">1</span><span class="l">Quotation</span></button>
+    <button data-step="2"><span class="n">2</span><span class="l">Proposal</span></button>
+    <button data-step="3"><span class="n">3</span><span class="l">Issue &amp; documents</span></button>
+    <button data-step="4"><span class="n">4</span><span class="l">Servicing</span></button>
+  </nav>
+  <div id="alerts"></div>
+
+  <!-- ===================== 1 QUOTATION ===================== -->
+  <section class="panel" id="p1">
+    <div class="card">
+      <h2>Basic details for the quotation</h2>
+      <div class="hint">Only the basic details are needed to get the premium of every plan. The remaining details are taken in the next step.</div>
+      <div class="grid">
+        <div><label>Product <span class="req">*</span></label><select id="q_product"></select></div>
+        <div><label>Variant <span class="req">*</span></label><select id="q_variant"></select></div>
+        <div><label>Premium mode <span class="req">*</span></label><select id="q_mode"></select></div>
+        <div id="termWrap"><label>Policy term (years) <span class="req">*</span></label><input type="number" id="q_term" min="1" step="1"><div class="help" id="termHelp"></div></div>
+        <div><label>Cover start date <span class="req">*</span></label><input type="date" id="q_eff"></div>
+        <div><label>Salutation <span class="req">*</span></label><select id="q_sal"></select></div>
+        <div><label>Insured name <span class="req">*</span></label><input id="q_name" maxlength="60" placeholder="As per ID"><div class="fe" id="e_q_name"></div></div>
+        <div><label>Gender <span class="req">*</span></label><select id="q_gender"></select></div>
+        <div><label>Date of birth <span class="req">*</span></label><input type="date" id="q_dob"><div class="help" id="ageHelp"></div><div class="fe" id="e_q_dob"></div></div>
+        <div><label>Residency <span class="req">*</span></label><select id="q_res"></select></div>
+      </div>
+      <div class="actions"><button class="btn" id="btnQuote">Get quotation</button><span class="help" id="ruleNote"></span></div>
+    </div>
+    <div class="card" id="quoteResult" style="display:none">
+      <h2>Quotation</h2>
+      <div class="hint" id="quoteHint"></div>
+      <div class="plans" id="plans"></div>
+      <label class="toggle"><input type="checkbox" id="showComm"> Show agent commission (bank staff)</label>
+      <div class="actions"><button class="btn" id="btnToProposal" disabled>Continue with selected plan &rarr;</button></div>
+    </div>
+  </section>
+
+  <!-- ===================== 2 PROPOSAL ===================== -->
+  <section class="panel" id="p2">
+    <div class="card">
+      <h2>Proposal details</h2>
+      <div class="hint" id="propHint"></div>
+      <h3 style="font-size:13px;margin:6px 0 0">Customer</h3>
+      <div class="grid">
+        <div><label>Customer CIF number <span class="req">*</span></label><input id="p_cif" inputmode="numeric" maxlength="20" placeholder="e.g. 45678"><div class="fe" id="e_p_cif"></div></div>
+        <div><label>ID type <span class="req">*</span></label><select id="p_idtype"></select></div>
+        <div><label>ID number <span class="req">*</span></label><input id="p_idno" maxlength="20"><div class="fe" id="e_p_idno"></div></div>
+        <div><label>Marital status <span class="req">*</span></label><select id="p_marital"></select></div>
+        <div><label>Mobile <span class="req">*</span></label><input id="p_mobile" inputmode="tel" maxlength="15"><div class="fe" id="e_p_mobile"></div></div>
+        <div><label>Email <span class="req">*</span></label><input id="p_email" type="email" maxlength="60"><div class="fe" id="e_p_email"></div></div>
+        <div><label>Address <span class="req">*</span></label><input id="p_addr" maxlength="100"><div class="fe" id="e_p_addr"></div></div>
+        <div><label>Post code <span class="req">*</span></label><input id="p_post" maxlength="10"><div class="fe" id="e_p_post"></div></div>
+        <div><label>Monthly income</label><input id="p_income" type="number" min="0"></div>
+      </div>
+      <h3 style="font-size:13px;margin:14px 0 0">Beneficiary</h3>
+      <div class="grid">
+        <div><label>Beneficiary name <span class="req">*</span></label><input id="b_name" maxlength="60"><div class="fe" id="e_b_name"></div></div>
+        <div><label>Relationship <span class="req">*</span></label><select id="b_rel"></select></div>
+        <div><label>Share % <span class="req">*</span></label><input id="b_share" type="number" min="1" max="100" value="100"></div>
+      </div>
+      <h3 style="font-size:13px;margin:14px 0 0">Payment</h3>
+      <div class="grid">
+        <div><label>Debit account no. <span class="req">*</span></label><input id="pay_acc" inputmode="numeric" maxlength="20"><div class="fe" id="e_pay_acc"></div></div>
+        <div><label>Debit reference</label><input id="pay_ref" maxlength="30"></div>
+      </div>
+      <div id="propResult"></div>
+      <div class="actions">
+        <button class="btn" id="btnCreateProp">Create proposal</button>
+        <button class="btn sec" id="btnUpdateProp" disabled>Save changes to proposal</button>
+        <button class="btn sec" id="btnAppDoc" disabled>Application form (PDF)</button>
+        <button class="btn danger" id="btnRejectProp" disabled>Reject proposal</button>
+        <button class="btn" id="btnToIssue" disabled style="margin-left:auto">Continue to issue &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 3 ISSUE ===================== -->
+  <section class="panel" id="p3">
+    <div class="card">
+      <h2>Review and issue the policy</h2>
+      <div class="hint">Issuing converts the proposal into a policy. Check the summary first.</div>
+      <div id="issueSummary"></div>
+      <div id="issueResult"></div>
+      <div class="actions">
+        <button class="btn" id="btnIssue">Issue policy</button>
+        <button class="btn sec" id="btnPolDoc" disabled>Policy certificate (PDF)</button>
+        <button class="btn sec" id="btnAppDoc2">Application form (PDF)</button>
+        <button class="btn" id="btnToServ" disabled style="margin-left:auto">Open in servicing &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 4 SERVICING ===================== -->
+  <section class="panel" id="p4">
+    <div class="tabs" id="stabs">
+      <button data-tab="s_policy" class="active">Policy</button>
+      <button data-tab="s_cancel">Cancellation</button>
+      <button data-tab="s_comm">Commission</button>
+    </div>
+    <div class="sub-panel active" id="s_policy">
+      <div class="card">
+        <h2>Find a policy or proposal</h2>
+        <div class="grid">
+          <div><label>Policy no.</label><input id="f_policy" placeholder="e.g. POHC00100000068"></div>
+          <div><label>or Proposal no.</label><input id="f_proposal" placeholder="e.g. PHC0010000000229"></div>
+        </div>
+        <div class="actions"><button class="btn" id="btnLoad">Load</button><button class="btn sec" id="btnPolDoc2" disabled>Certificate (PDF)</button></div>
+        <div id="loadResult"></div>
+      </div>
+    </div>
+    <div class="sub-panel" id="s_cancel">
+      <div class="card">
+        <h2>Cancel a policy</h2>
+        <div class="hint">Step 1 (Checker) calculates the refund and raises the request. Step 2 (Approver) approves or rejects it. Free-look period: full refund; afterwards pro-rata premium &times; refund percent.</div>
+        <div class="grid">
+          <div><label>Policy no. <span class="req">*</span></label><input id="c_policy"></div>
+          <div><label>Cancellation date <span class="req">*</span></label><input type="date" id="c_date"></div>
+          <div><label>Reason <span class="req">*</span></label><input id="c_reason" maxlength="100" value="Customer request"></div>
+        </div>
+        <div class="actions"><button class="btn" id="btnCheck">1. Check (Checker)</button></div>
+        <div id="checkResult"></div>
+        <div class="actions" id="decideRow" style="display:none">
+          <button class="btn" id="btnApprove">2. Approve cancellation</button>
+          <button class="btn danger" id="btnDecline">Reject request</button>
+        </div>
+        <div id="decideResult"></div>
+      </div>
+    </div>
+    <div class="sub-panel" id="s_comm">
+      <div class="two">
+        <div class="card">
+          <h2>Commission by policy</h2>
+          <label>Policy no.</label><input id="m_policy">
+          <div class="actions"><button class="btn" id="btnCommPolicy">Show</button></div>
+        </div>
+        <div class="card">
+          <h2>Commission by period</h2>
+          <div class="grid" style="grid-template-columns:1fr 1fr">
+            <div><label>Product</label><select id="m_product"></select></div>
+            <div><label>Page size</label><input id="m_size" type="number" value="10" min="1" max="100"></div>
+            <div><label>From</label><input type="date" id="m_from"></div>
+            <div><label>To</label><input type="date" id="m_to"></div>
+          </div>
+          <div class="actions"><button class="btn" id="btnCommPeriod">Show</button></div>
+        </div>
+      </div>
+      <div class="card"><h2>Commission rates by plan</h2>
+        <div class="grid" style="grid-template-columns:1fr 1fr 1fr"><div><label>Product</label><select id="m_cproduct"></select></div><div><label>Variant</label><select id="m_cvariant"></select></div><div style="align-self:end"><button class="btn" id="btnCommCfg">Show</button></div></div>
+      </div>
+      <div id="commResult"></div>
+    </div>
+  </section>
+
+  <details class="log"><summary>Technical log (requests and responses)</summary><div id="logBody"></div></details>
+</div>
+<div class="spin" id="spin">Please wait...</div>
+
+<script>
+// =====================================================================================
+// UIC helpers (token, tenant, API url) - same patterns as the InsureMO UIC template
+// =====================================================================================
+function getHostname() { try { return window.top.location.hostname; } catch (e) { try { return window.parent.location.hostname; } catch (e2) { return window.location.hostname; } } }
+function getTenantCode() {
+  const h = getHostname();
+  if (h.includes('portal.') || h.includes('portal-gw.')) return 'platform';
+  return sessionStorage.getItem('tenant_code') || sessionStorage.getItem('x-mo-response-tenant-id') || 'unknown';
+}
+function buildApiUrl(apiPath) {
+  const isGateway = getHostname().includes('-gw');
+  const p = apiPath.includes('{{tenant_code}}') ? apiPath.replace('{{tenant_code}}', getTenantCode()) : apiPath;
+  return (isGateway ? '' : '/api') + p;
+}
+function getAccessToken() {
+  const a = sessionStorage.getItem('Authorization');
+  if (!a) return '';
+  if (a.startsWith('Bearer ')) return a.substring(7).split('&')[0];
+  if (a.startsWith('access_token=')) return a.substring(13).split('&')[0];
+  return a;
+}
+function redirectToLogin() {
+  const u = window.location.origin + '/cas/login?service=' + encodeURIComponent(window.location.href);
+  try { window.parent.location.href = u; } catch (e) { window.location.href = u; }
+}
+
+// =====================================================================================
+// Configuration (change here when the environment changes)
+// =====================================================================================
+const CFG = {
+  routeBase: '/{{tenant_code}}/api-orchestration-test/v1/flow',   // gateway route of the /up APIs (same as the collection baseUrl)
+  channel: 'SOHAR',
+  branch: '001',
+  org: '1',
+  userName: 'SoharPortal',
+  payLG: '23', payLC: 45,                                          // payment info codes used by the reference flows
+  riskCode: 'R00001'
+};
+let API_OVERRIDE = ''; try { API_OVERRIDE = sessionStorage.getItem('sohar_api_base') || ''; } catch (e) {}
+function apiUrl(path) { return (API_OVERRIDE ? API_OVERRIDE : buildApiUrl(CFG.routeBase)) + path; }
+
+// =====================================================================================
+// Small utilities
+// =====================================================================================
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ymd = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const money = v => (v == null || v === '') ? '-' : Number(v).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+let busy = 0;
+function spin(on) { busy += on ? 1 : -1; $('spin').classList.toggle('on', busy > 0); }
+
+function logCall(method, path, body, status, resp) {
+  const d = document.createElement('div'); d.className = 'logrow';
+  const shown = (resp && resp._pdf) ? '[PDF ' + resp.bytes + ' bytes]' : JSON.stringify(resp, null, 1);
+  d.innerHTML = '<b>' + esc(method) + ' ' + esc(path) + '</b> &rarr; ' + status + '<pre>' + esc(body ? JSON.stringify(body, null, 1) : '(no body)') + '</pre><pre>' + esc((shown || '').slice(0, 6000)) + '</pre>';
+  $('logBody').prepend(d);
+}
+
+/** Calls an /up API. Returns {ok,status,data,blob}. Never throws; 401 sends the user to login. */
+async function api(method, path, body, opts) {
+  opts = opts || {};
+  const token = getAccessToken();
+  if (!token) return { ok: false, status: 0, data: { message: 'Authorization token not found. Please log in to InsureMO Portal first.' } };
+  spin(true);
+  try {
+    const r = await fetch(apiUrl(path), { method, headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    if (r.status === 401) { setTimeout(redirectToLogin, 1500); return { ok: false, status: 401, data: { message: 'Session expired. Redirecting to login...' } }; }
+    const ct = r.headers.get('Content-Type') || '';
+    if (ct.includes('pdf')) { const blob = await r.blob(); logCall(method, path, body, r.status, { _pdf: true, bytes: blob.size }); return { ok: r.ok, status: r.status, blob }; }
+    let data; const txt = await r.text(); try { data = JSON.parse(txt); } catch (e) { data = { message: txt.slice(0, 300) }; }
+    logCall(method, path, body, r.status, data);
+    return { ok: r.ok, status: r.status, data };
+  } catch (e) {
+    return { ok: false, status: 0, data: { message: 'Network error: ' + e.message } };
+  } finally { spin(false); }
+}
+
+function showAlert(kind, html) { $('alerts').innerHTML = html ? '<div class="alert ' + kind + '">' + html + '</div>' : ''; if (html) window.scrollTo({ top: 0, behavior: 'smooth' }); }
+/** Turns an error response into a message and marks the fields named in errors[]. */
+function showApiError(res, fieldMap) {
+  const d = res.data || {}; let h = '<b>' + esc(d.message || ('Request failed (' + res.status + ')')) + '</b>';
+  if (Array.isArray(d.errors) && d.errors.length) {
+    h += '<ul>' + d.errors.map(e => '<li>' + esc(e.field) + ': ' + esc(e.message) + '</li>').join('') + '</ul>';
+    d.errors.forEach(e => { const id = fieldMap && fieldMap[e.field]; if (id && $(id)) $(id).classList.add('bad'); });
+  }
+  if (d.trace_id) h += '<div class="help">Reference (trace id): ' + esc(d.trace_id) + '</div>';
+  showAlert('err', h);
+}
+function download(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+
+// =====================================================================================
+// State and master data
+// =====================================================================================
+const M = {};                 // master tables by name
+const S = { rule: null, master: null, quoteReq: null, quote: null, plan: null, propReq: null, prop: null, proposalNo: '', policyNo: '', check: null };
+let maxStep = 1;
+const FEMALE_ONLY = ['FP001'];   // Female Protection is sold to women only
+
+async function loadMaster() {
+  const names = ['ProductMaster', 'ProductRule', 'PremiumMode', 'GenderCode', 'IdType', 'Salutation', 'ResidentStatus', 'InsMaritalStatus', 'Relationship', 'UP_Carrier'];
+  const res = await Promise.all(names.map(n => api('POST', '/up/list-master-table', { DataTableName: n, ChannelCode: CFG.channel })));
+  for (let i = 0; i < names.length; i++) {
+    if (!res[i].ok || !Array.isArray(res[i].data)) { showApiError(res[i]); return false; }
+    M[names[i]] = res[i].data;
+  }
+  return true;
+}
+const opt = (rows, idKey, txtKey, sel) => rows.map(r => '<option value="' + esc(r[idKey]) + '"' + (String(r[idKey]) === String(sel) ? ' selected' : '') + '>' + esc(r[txtKey]) + '</option>').join('');
+function products() {
+  const seen = {}; const out = [];
+  M.ProductMaster.filter(r => r.IsActive === 'Y').forEach(r => { if (!seen[r.IMOProductCode]) { seen[r.IMOProductCode] = 1; out.push({ code: r.IMOProductCode, name: r.LOB || r.IMOProductCode }); } });
+  return out;
+}
+function variantsOf(code) {
+  return M.ProductMaster.filter(r => r.IMOProductCode === code && r.IsActive === 'Y').map(r => {
+    const rule = M.ProductRule.find(x => x.Id === r.Id) || {};
+    return { id: r.Id, name: r.CarrierProductName, subcode: rule.ProductSubcode || r.CarrierProductCode, rule };
+  });
+}
+
+function fillStatic() {
+  $('q_sal').innerHTML = opt(M.Salutation, 'Id', 'Description');
+  $('q_gender').innerHTML = opt(M.GenderCode, 'Id', 'Description');
+  $('q_res').innerHTML = opt(M.ResidentStatus, 'Id', 'Description');
+  $('p_idtype').innerHTML = opt(M.IdType, 'Id', 'Description');
+  $('p_marital').innerHTML = opt(M.InsMaritalStatus.filter(r => r.Id === '1' || r.Id === '2'), 'Id', 'Description');   // other codes in this table are salutations
+  $('b_rel').innerHTML = opt(M.Relationship, 'Id', 'Description');
+  const pr = products(); const po = pr.map(p => '<option value="' + p.code + '">' + esc(p.name) + ' (' + p.code + ')</option>').join('');
+  $('q_product').innerHTML = po; $('m_product').innerHTML = po; $('m_cproduct').innerHTML = po;
+  const c = M.UP_Carrier.find(x => x.IsActive === 'Y');
+  $('carrierChip').textContent = 'Insurer: ' + (c ? c.CarrierName + ' (' + c.CarrierCode + ')' : 'n/a');
+  $('q_eff').value = ymd(addDays(new Date(), 1)); $('q_eff').min = ymd(new Date());
+  $('c_date').value = ymd(new Date()); $('m_from').value = ymd(new Date(new Date().getFullYear(), new Date().getMonth(), 1)); $('m_to').value = ymd(new Date());
+  onProduct(); onCommProduct();
+}
+function onProduct() {
+  const code = $('q_product').value; const vs = variantsOf(code);
+  $('q_variant').innerHTML = vs.map(v => '<option value="' + v.id + '">' + esc(v.name) + '</option>').join('');
+  onVariant();
+}
+function onVariant() {
+  const v = variantsOf($('q_product').value).find(x => x.id === $('q_variant').value); S.master = v; S.rule = v ? v.rule : null; if (!v) return;
+  const rl = v.rule; const modes = String(rl.PremiumModes || '').split(',').filter(Boolean);
+  $('q_mode').innerHTML = opt(M.PremiumMode.filter(m => modes.includes(m.Id)), 'Id', 'Description');
+  $('q_mode').value = modes.includes('2') ? '2' : modes[0];   // annual premium is the default; single / monthly on request
+  onMode();
+  const female = FEMALE_ONLY.includes($('q_product').value);
+  $('q_gender').value = female ? '2' : $('q_gender').value; $('q_gender').disabled = female;
+  $('ageHelp').textContent = 'Entry age ' + rl.MinAge + ' to ' + rl.MaxEntryAge + ' years';
+  $('ruleNote').textContent = 'Free-look ' + rl.FreeLookDays + ' days; refund after free-look ' + rl.ProRataRefundPercent + '% of pro-rata premium.';
+}
+function termRequired() { const r = S.rule; return r && Number(r.MaxTerm) > 1 && $('q_mode').value === '1'; }
+function onMode() {
+  const r = S.rule; if (!r) return; const need = termRequired();
+  $('termWrap').style.display = need ? '' : 'none';
+  if (need) { $('q_term').min = r.MinTerm; $('q_term').max = r.MaxTerm; if (!$('q_term').value || $('q_term').value < r.MinTerm) $('q_term').value = r.MinTerm; $('termHelp').textContent = 'Between ' + r.MinTerm + ' and ' + r.MaxTerm + ' years'; }
+}
+function currentTerm() { return termRequired() ? Number($('q_term').value) : 1; }
+function expiryOf(effStr, term) { const d = new Date(effStr + 'T00:00:00'); d.setFullYear(d.getFullYear() + term); d.setDate(d.getDate() - 1); return ymd(d) + 'T23:59:59'; }
+function ageAt(dobStr, effStr) { const b = new Date(dobStr), e = new Date(effStr); let a = e.getFullYear() - b.getFullYear(); const m = e.getMonth() - b.getMonth(); if (m < 0 || (m === 0 && e.getDate() < b.getDate())) a--; return a; }
+function clearBad(scope) { (scope || document).querySelectorAll('.bad').forEach(e => e.classList.remove('bad')); (scope || document).querySelectorAll('.fe').forEach(e => e.textContent = ''); }
+function fieldErr(id, msg) { const el = $(id); if (el) el.classList.add('bad'); const e = $('e_' + id); if (e) e.textContent = msg; return false; }
+
+// =====================================================================================
+// Step navigation
+// =====================================================================================
+function goStep(n) {
+  if (n > maxStep && n !== 4) return; showAlert('', '');   // servicing (4) is always open: existing policies can be serviced directly
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'p' + n));
+  document.querySelectorAll('#steps button').forEach(b => { const s = Number(b.dataset.step); b.classList.toggle('active', s === n); b.classList.toggle('done', s < maxStep && s !== n); b.disabled = s > maxStep && s !== 4; });
+  if (n === 3) renderIssueSummary();
+}
+function unlock(n) { if (n > maxStep) maxStep = n; goStep(n); }
+
+// =====================================================================================
+// 1. Quotation
+// =====================================================================================
+function validateQuote() {
+  clearBad($('p1')); let ok = true; const rl = S.rule;
+  if (!$('q_name').value.trim()) ok = fieldErr('q_name', 'Enter the insured name');
+  else if (!/^[\p{L}\p{N} .,'\-\/@+()]+$/u.test($('q_name').value)) ok = fieldErr('q_name', 'Letters, digits and . , \' - / @ + ( ) only');
+  if (!$('q_dob').value) ok = fieldErr('q_dob', 'Enter the date of birth');
+  else { const a = ageAt($('q_dob').value, $('q_eff').value); if (a < rl.MinAge || a > rl.MaxEntryAge) ok = fieldErr('q_dob', 'Age at start is ' + a + '; allowed ' + rl.MinAge + ' to ' + rl.MaxEntryAge); }
+  if (!$('q_eff').value) { $('q_eff').classList.add('bad'); ok = false; }
+  if (termRequired()) { const t = Number($('q_term').value); if (!(t >= rl.MinTerm && t <= rl.MaxTerm)) { $('q_term').classList.add('bad'); ok = false; } }
+  return ok;
+}
+function quoteBody() {
+  const code = $('q_product').value, term = currentTerm(), eff = $('q_eff').value, today = ymd(new Date());
+  return {
+    ApplicationNo: String(Date.now()), ProductCode: code, ProductSubcode: String(S.master.subcode), ChannelCode: CFG.channel,
+    PremiumModeCode: $('q_mode').value, PolicyTerm: term, EffectiveDate: eff, ExpiryDate: expiryOf(eff, term), ApplyDate: today, BranchCode: CFG.branch, UserName: CFG.userName,
+    PolicyLobList: [{ ProductCode: code, PolicyRiskList: [{ ProductElementCode: CFG.riskCode, InsuredName: $('q_name').value.trim(), Salutation: $('q_sal').value, Gender: $('q_gender').value, DateOfBirth: $('q_dob').value, ResidentStatus: $('q_res').value }] }]
+  };
+}
+async function doQuote() {
+  showAlert('', ''); if (!validateQuote()) { showAlert('err', 'Please correct the highlighted fields.'); return; }
+  const body = quoteBody(); const r = await api('POST', '/up/get-plans', body);
+  if (!r.ok) { showApiError(r, { ProductCode: 'q_product', ProductSubcode: 'q_variant', PremiumModeCode: 'q_mode', PolicyTerm: 'q_term', EffectiveDate: 'q_eff' }); return; }
+  const plans = ((((r.data.PolicyLobList || [])[0] || {}).PolicyRiskList || [])[0] || {}).PlanList || [];
+  if (!plans.length) { showAlert('err', 'No plans are available for these details.'); return; }
+  S.quoteReq = body; S.quote = r.data; S.plan = null; S.prop = null; S.proposalNo = ''; S.policyNo = '';
+  renderPlans(plans); $('btnToProposal').disabled = true; $('quoteResult').style.display = '';
+  $('quoteHint').innerHTML = 'Insurer: <b>' + esc(r.data.CarrierName || '') + '</b> &middot; ' + esc(S.master.name) + ' &middot; cover from ' + esc(body.EffectiveDate) + '. Select a plan.';
+  $('quoteResult').scrollIntoView({ behavior: 'smooth' });
+}
+function renderPlans(plans) {
+  const showC = $('showComm').checked;
+  $('plans').innerHTML = plans.map((p, i) => '<div class="plan" data-i="' + i + '"><h3>' + esc(p.PlanName || ('Plan ' + p.PlanId)) + '</h3><div class="prem">' + money(p.DuePremium) + ' <small>premium' + (showC ? ' &middot; commission ' + money(p.Commission) : '') + '</small></div><table>' +
+    (p.PolicyCoverageList || []).map(c => '<tr><td>' + esc(c.CoverageDescription || c.CoverageCode) + '</td><td>' + money(c.SumInsured) + '</td></tr>').join('') + '</table></div>').join('');
+  $('plans').querySelectorAll('.plan').forEach(el => el.onclick = () => {
+    $('plans').querySelectorAll('.plan').forEach(x => x.classList.remove('sel')); el.classList.add('sel');
+    S.plan = plans[Number(el.dataset.i)]; $('btnToProposal').disabled = false;
+  });
+  S.plans = plans;
+}
+
+// =====================================================================================
+// 2. Proposal
+// =====================================================================================
+function enterProposal() {
+  const q = S.quoteReq, rk = q.PolicyLobList[0].PolicyRiskList[0];
+  $('propHint').innerHTML = '<b>' + esc(rk.InsuredName) + '</b> &middot; ' + esc(S.master.name) + ' &middot; ' + esc(S.plan.PlanName) + ' &middot; premium <b>' + money(S.plan.DuePremium) + '</b> &middot; insurer ' + esc(S.quote.CarrierName || '');
+  $('b_share').value = 100; unlock(2);
+}
+function validateProposal() {
+  clearBad($('p2')); let ok = true;
+  const need = (id, re, msg) => { const v = $(id).value.trim(); if (!v) ok = fieldErr(id, 'Required'); else if (re && !re.test(v)) ok = fieldErr(id, msg); };
+  need('p_cif', /^[0-9]{1,20}$/, 'Digits only');
+  need('p_idno', /^[A-Za-z0-9\-\/]{4,20}$/, 'Letters, digits, - and / (4-20)');
+  need('p_mobile', /^[0-9+]{7,15}$/, 'Digits only (7-15)');
+  need('p_email', /^[^@\s]+@[^@\s]+\.[^@\s]+$/, 'Enter a valid email');
+  need('p_addr', /^[\p{L}\p{N} .,'\-\/@+()]+$/u, 'Letters, digits and . , \' - / @ + ( ) only');
+  need('p_post', /^[A-Za-z0-9 \-]{2,10}$/, '2-10 letters or digits');
+  need('b_name', /^[\p{L}\p{N} .,'\-\/@+()]+$/u, 'Letters, digits and . , \' - / @ + ( ) only');
+  const sh = Number($('b_share').value); if (!(sh >= 1 && sh <= 100)) { $('b_share').classList.add('bad'); ok = false; }
+  need('pay_acc', /^[0-9]{6,20}$/, 'Digits only (6-20)');   // the update API requires the payment block
+  return ok;
+}
+function proposalBody() {
+  const q = S.quoteReq, qr = q.PolicyLobList[0].PolicyRiskList[0], p = S.plan, code = q.ProductCode;
+  const risk = {
+    ProductElementCode: CFG.riskCode, InsuredName: qr.InsuredName, Salutation: qr.Salutation, Gender: qr.Gender, DateOfBirth: qr.DateOfBirth, ResidentStatus: qr.ResidentStatus,
+    IdType: $('p_idtype').value, IdNo: $('p_idno').value.trim(), MaritalStatus: $('p_marital').value, Mobile: $('p_mobile').value.trim(), Email: $('p_email').value.trim(),
+    Address: $('p_addr').value.trim(), PostCode: $('p_post').value.trim(),
+    PlanList: [{ PlanId: Number(p.PlanId), PolicyCoverageList: (p.PolicyCoverageList || []).map(c => ({ ProductElementCode: c.ProductElementCode, SumInsured: c.SumInsured })) }],
+    BeneficiaryList: [{ BeneficaryName: $('b_name').value.trim(), RelationshipCode: $('b_rel').value, Share: String($('b_share').value), BeneficarySequence: '1' }]
+  };
+  if ($('p_income').value) risk.MonthSalaryIncome = String($('p_income').value);
+  const body = {
+    ApplicationNo: q.ApplicationNo, EffectiveDate: q.EffectiveDate, ExpiryDate: q.ExpiryDate, ApplyDate: q.ApplyDate, UserName: q.UserName, BranchCode: q.BranchCode,
+    PolicyCustomerList: [{ CIFNumber: $('p_cif').value.trim(), CustomerType: '1' }],
+    PolicyLobList: [{ ProductCode: code, DuePremium: p.DuePremium, PolicyRiskList: [risk] }],
+    PolicyType: '1', ProductCode: code, ProductSubcode: q.ProductSubcode, PremiumModeCode: q.PremiumModeCode, PlanId: Number(p.PlanId), PolicyTerm: String(q.PolicyTerm),
+    DuePremium: p.DuePremium, ChannelCode: CFG.channel, OrgCode: CFG.org
+  };
+  const acc = $('pay_acc').value.trim();
+  body.PolicyPaymentInfoList = [{ LGCode: CFG.payLG, LCCode: CFG.payLC, IsInstallment: 'N', DebitAccountNo: acc, DebitRefNo: $('pay_ref').value.trim() || ('REF' + q.ApplicationNo.slice(-8)), TransactionDate: q.ApplyDate }];
+  return body;
+}
+const PROP_FIELDS = { 'PolicyCustomerList[0].CIFNumber': 'p_cif', 'PolicyLobList[0].PolicyRiskList[0].IdNo': 'p_idno', 'PolicyLobList[0].PolicyRiskList[0].Mobile': 'p_mobile', 'PolicyLobList[0].PolicyRiskList[0].Email': 'p_email', 'PolicyLobList[0].PolicyRiskList[0].Address': 'p_addr', 'PolicyLobList[0].PolicyRiskList[0].PostCode': 'p_post', 'PolicyPaymentInfoList[0].DebitAccountNo': 'pay_acc' };
+function renderProposalResult(d, title) {
+  $('propResult').innerHTML = '<div class="alert ok"><b>' + title + '</b><dl class="kv"><dt>Proposal no.</dt><dd>' + esc(d.ProposalNo) + '</dd><dt>Insurer</dt><dd>' + esc(d.CarrierName || '') + '</dd><dt>Premium</dt><dd>' + money(d.DuePremium || S.plan.DuePremium) + '</dd></dl></div>';
+}
+async function doCreateProposal() {
+  showAlert('', ''); if (!validateProposal()) { showAlert('err', 'Please correct the highlighted fields.'); return; }
+  const body = proposalBody(); const r = await api('POST', '/up/proposal', body);
+  if (!r.ok) { showApiError(r, PROP_FIELDS); return; }
+  S.propReq = body; S.prop = r.data; S.proposalNo = r.data.ProposalNo; renderProposalResult(r.data, 'Proposal created');
+  ['btnUpdateProp', 'btnAppDoc', 'btnRejectProp', 'btnToIssue'].forEach(i => $(i).disabled = false); $('btnCreateProp').disabled = true;
+}
+async function doUpdateProposal() {
+  showAlert('', ''); if (!validateProposal()) { showAlert('err', 'Please correct the highlighted fields.'); return; }
+  const body = Object.assign({ ProposalNo: S.proposalNo }, proposalBody()); const r = await api('POST', '/up/update-proposal', body);
+  if (!r.ok) { showApiError(r, PROP_FIELDS); return; }
+  S.propReq = body; S.prop = r.data; renderProposalResult(r.data, 'Proposal updated');
+}
+async function doRejectProposal() {
+  const reason = prompt('Reason for rejecting proposal ' + S.proposalNo + ':'); if (!reason) return;
+  const r = await api('POST', '/up/proposal-reject', { ProposalNo: S.proposalNo, ProposalRejectDesc: reason, ProductCode: S.quoteReq.ProductCode, ChannelCode: CFG.channel });
+  if (!r.ok) { showApiError(r); return; }
+  showAlert('ok', 'Proposal ' + esc(S.proposalNo) + ' rejected.'); ['btnUpdateProp', 'btnAppDoc', 'btnRejectProp', 'btnToIssue'].forEach(i => $(i).disabled = true); $('btnCreateProp').disabled = false; S.proposalNo = '';
+}
+async function getDoc(type, no) {
+  const body = { DocType: type, ProductSubcode: String(S.quoteReq ? S.quoteReq.ProductSubcode : (S.loaded && S.loaded.ProductSubcode) || '1'), ChannelCode: CFG.channel };
+  body[type === 'Policy' ? 'PolicyNo' : 'ProposalNo'] = no;
+  const r = await api('POST', '/up/doc_generation', body);
+  if (!r.ok || !r.blob) { showApiError(r); return; }
+  download(r.blob, (type === 'Policy' ? 'Policy_' : 'Application_') + no + '.pdf');
+}
+
+// =====================================================================================
+// 3. Issue
+// =====================================================================================
+function renderIssueSummary() {
+  if (!S.proposalNo) { $('issueSummary').innerHTML = '<div class="alert info">Create a proposal first.</div>'; return; }
+  const q = S.quoteReq, rk = q.PolicyLobList[0].PolicyRiskList[0];
+  $('issueSummary').innerHTML = '<dl class="kv"><dt>Proposal no.</dt><dd>' + esc(S.proposalNo) + '</dd><dt>Insurer</dt><dd>' + esc((S.prop || {}).CarrierName || S.quote.CarrierName) + '</dd><dt>Product</dt><dd>' + esc(S.master.name) + ' (' + esc(q.ProductCode) + ')</dd><dt>Plan</dt><dd>' + esc(S.plan.PlanName) + '</dd><dt>Insured</dt><dd>' + esc(rk.InsuredName) + '</dd><dt>Cover</dt><dd>' + esc(q.EffectiveDate) + ' to ' + esc(q.ExpiryDate.slice(0, 10)) + '</dd><dt>Premium</dt><dd>' + money(S.plan.DuePremium) + '</dd></dl>';
+  $('btnIssue').disabled = !!S.policyNo;
+}
+async function doIssue() {
+  showAlert('', ''); if (!confirm('Issue the policy for proposal ' + S.proposalNo + '?')) return;
+  const r = await api('POST', '/up/issue', { ProposalNo: S.proposalNo, ProductCode: S.quoteReq.ProductCode, ChannelCode: CFG.channel });
+  if (!r.ok) { showApiError(r); return; }
+  S.policyNo = r.data.PolicyNo; $('issueResult').innerHTML = '<div class="alert ok"><b>Policy issued</b><dl class="kv"><dt>Policy no.</dt><dd>' + esc(r.data.PolicyNo) + '</dd><dt>Insurer</dt><dd>' + esc(r.data.CarrierName || '') + '</dd><dt>Status</dt><dd>' + esc((r.data.PolicyStatus && r.data.PolicyStatus.Description) || r.data.PolicyStatus || 'Effective') + '</dd></dl></div>';
+  $('btnPolDoc').disabled = false; $('btnToServ').disabled = false; $('btnIssue').disabled = true; maxStep = 4; goStep(3);
+}
+
+// =====================================================================================
+// 4. Servicing
+// =====================================================================================
+const statusText = p => { const s = p.PolicyStatus; const map = { '1': 'Proposal', '2': 'Effective', '3': 'Cancelled' }; return (s && s.Description) ? s.Description : (map[String(s)] || String(s == null ? '' : s)); };
+function renderPolicy(d) {
+  const risk = ((((d.PolicyLobList || [])[0] || {}).PolicyRiskList || [])[0]) || {};
+  const plan = (risk.PlanList || [])[0] || {};
+  return '<dl class="kv"><dt>Policy no.</dt><dd>' + esc(d.PolicyNo || '-') + '</dd><dt>Proposal no.</dt><dd>' + esc(d.ProposalNo || '-') + '</dd><dt>Insurer</dt><dd>' + esc(d.CarrierName || '') + ' (' + esc(d.CarrierCode || '') + ')</dd><dt>Product</dt><dd>' + esc(d.ProductCode || '') + ' / ' + esc(d.ProductSubcode || '') + '</dd><dt>Insured</dt><dd>' + esc(risk.InsuredName || '') + '</dd><dt>Plan</dt><dd>' + esc(plan.PlanName || d.PlanId || '') + '</dd><dt>Cover</dt><dd>' + esc(String(d.EffectiveDate || '').slice(0, 10)) + ' to ' + esc(String(d.ExpiryDate || '').slice(0, 10)) + '</dd><dt>Premium</dt><dd>' + money(d.DuePremium || plan.DuePremium) + '</dd><dt>Status</dt><dd><span class="badge ' + (/cancel/i.test(statusText(d)) ? 'err' : 'ok') + '">' + esc(statusText(d)) + '</span></dd></dl>';
+}
+async function doLoad() {
+  showAlert('', ''); const pol = $('f_policy').value.trim(), prop = $('f_proposal').value.trim();
+  if (!pol && !prop) { showAlert('err', 'Enter a policy number or a proposal number.'); return; }
+  const q = pol ? 'policyNo=' + encodeURIComponent(pol) : 'proposalNo=' + encodeURIComponent(prop);
+  const r = await api('GET', '/up/load-policy?' + q + '&ChannelCode=' + CFG.channel);
+  if (!r.ok) { showApiError(r); $('loadResult').innerHTML = ''; return; }
+  S.loaded = r.data; $('loadResult').innerHTML = renderPolicy(r.data);
+  $('btnPolDoc2').disabled = !r.data.PolicyNo;
+  if (r.data.PolicyNo) {
+    $('c_policy').value = r.data.PolicyNo; $('m_policy').value = r.data.PolicyNo;
+    const eff = String(r.data.EffectiveDate || '').slice(0, 10), today = ymd(new Date());
+    if (eff) { $('c_date').min = eff; $('c_date').value = eff > today ? eff : today; }   // cancellation cannot be before the commencement date
+  }
+}
+async function doCheck() {
+  showAlert('', ''); clearBad($('s_cancel')); const pol = $('c_policy').value.trim();
+  if (!pol || !$('c_date').value || !$('c_reason').value.trim()) { showAlert('err', 'Policy number, cancellation date and reason are required.'); return; }
+  const r = await api('POST', '/up/cancel-check', { PolicyNo: pol, CancellationDate: $('c_date').value, CancelReason: $('c_reason').value.trim(), ChannelCode: CFG.channel });
+  if (!r.ok) { showApiError(r, { CancellationDate: 'c_date', PolicyNo: 'c_policy', CancelReason: 'c_reason' }); $('checkResult').innerHTML = ''; $('decideRow').style.display = 'none'; return; }
+  S.check = r.data; const pd = r.data.PremiumDetails || {}, rf = r.data.RefundDetails || {};
+  $('checkResult').innerHTML = '<div class="alert info"><b>Refund calculation</b> &middot; request ' + esc(r.data.RequestNo) + ' <span class="badge warn">' + esc(r.data.RequestStatus) + '</span><dl class="kv"><dt>Insurer</dt><dd>' + esc(r.data.CarrierName || '') + '</dd><dt>Days since start</dt><dd>' + esc(pd.DaysSinceCommencement) + ' (free-look ' + esc(pd.FreeLookDays) + ' days)</dd><dt>Premium paid</dt><dd>' + money(pd.Premium) + '</dd><dt>Pro-rata premium</dt><dd>' + money(pd.ProRataPremium) + '</dd><dt>Cancellation type</dt><dd>' + esc(rf.CancellationType) + ' (' + esc(rf.RefundPercent) + '%)</dd><dt>Refund</dt><dd style="color:var(--brand-dark);font-size:16px">' + money(rf.RefundPremium) + '</dd></dl></div>';
+  $('decideRow').style.display = ''; $('decideResult').innerHTML = '';
+}
+async function doDecide(decision) {
+  if (!S.check) return; if (!confirm((decision === 'APPROVE' ? 'Approve' : 'Reject') + ' cancellation request ' + S.check.RequestNo + '?')) return;
+  const r = await api('POST', '/up/cancel-approve', { PolicyNo: $('c_policy').value.trim(), RequestNo: S.check.RequestNo, Decision: decision, ChannelCode: CFG.channel });
+  if (!r.ok) { showApiError(r); return; }
+  $('decideResult').innerHTML = '<div class="alert ok"><b>Request ' + esc(r.data.RequestStatus) + '</b><dl class="kv"><dt>Policy status</dt><dd>' + esc((r.data.PolicyStatus && r.data.PolicyStatus.Description) || '') + '</dd>' + (r.data.EndorsementNo ? '<dt>Endorsement no.</dt><dd>' + esc(r.data.EndorsementNo) + '</dd>' : '') + (r.data.RefundPremium != null ? '<dt>Refund</dt><dd>' + money(r.data.RefundPremium) + '</dd>' : '') + '</dl></div>';
+  $('decideRow').style.display = 'none'; S.check = null;
+}
+function commTable(rows, cols) {
+  if (!rows.length) return '<div class="alert info">No records.</div>';
+  return '<table class="t"><tr>' + cols.map(c => '<th>' + c[0] + '</th>').join('') + '</tr>' + rows.map(r => '<tr>' + cols.map(c => '<td>' + esc(r[c[1]]) + '</td>').join('') + '</tr>').join('') + '</table>';
+}
+const COMM_COLS = [['Policy', 'PolicyNo'], ['Insurer', 'CarrierName'], ['Product', 'ProductCode'], ['Plan', 'PlanName'], ['Start', 'CommencementDate'], ['Status', 'PolicyStatus'], ['Premium', 'Premium'], ['Rate', 'CommissionRate'], ['Commission', 'Commission']];
+async function doCommPolicy() {
+  const p = $('m_policy').value.trim(); if (!p) { showAlert('err', 'Enter a policy number.'); return; }
+  const r = await api('POST', '/up/commission-query', { PolicyNo: p, ChannelCode: CFG.channel }); if (!r.ok) { showApiError(r); return; }
+  $('commResult').innerHTML = '<div class="card"><h2>Commission</h2>' + commTable([r.data], COMM_COLS) + '</div>';
+}
+async function doCommPeriod() {
+  const r = await api('POST', '/up/commission-query', { ProductCode: $('m_product').value, FromDate: $('m_from').value, ToDate: $('m_to').value, PageNo: 1, PageSize: Number($('m_size').value) || 10, ChannelCode: CFG.channel }); if (!r.ok) { showApiError(r); return; }
+  const d = r.data; $('commResult').innerHTML = '<div class="card"><h2>Commission ' + esc(d.FromDate) + ' to ' + esc(d.ToDate) + '</h2><div class="help">Records: ' + esc(d.Total) + ' &middot; page premium ' + esc(d.PageTotalPremium) + ' &middot; page commission ' + esc(d.PageTotalCommission) + '</div>' + commTable(d.Records || [], COMM_COLS) + '</div>';
+}
+function onCommProduct() { $('m_cvariant').innerHTML = variantsOf($('m_cproduct').value).map(v => '<option value="' + esc(v.subcode) + '">' + esc(v.name) + '</option>').join(''); }
+async function doCommCfg() {
+  const r = await api('POST', '/up/commission-query', { ProductCode: $('m_cproduct').value, ProductSubcode: $('m_cvariant').value, ChannelCode: CFG.channel }); if (!r.ok) { showApiError(r); return; }
+  $('commResult').innerHTML = '<div class="card"><h2>Commission rates</h2>' + commTable(r.data.Records || [], [['Plan', 'PlanName'], ['Insurer', 'CarrierName'], ['Premium', 'Premium'], ['Rate', 'CommissionRate'], ['Commission', 'Commission']]) + '</div>';
+}
+
+// =====================================================================================
+// Wire-up
+// =====================================================================================
+function bind() {
+  document.querySelectorAll('#steps button').forEach(b => b.onclick = () => goStep(Number(b.dataset.step)));
+  document.querySelectorAll('#stabs button').forEach(b => b.onclick = () => { document.querySelectorAll('#stabs button').forEach(x => x.classList.toggle('active', x === b)); document.querySelectorAll('.sub-panel').forEach(p => p.classList.toggle('active', p.id === b.dataset.tab)); showAlert('', ''); });
+  $('q_product').onchange = onProduct; $('q_variant').onchange = onVariant; $('q_mode').onchange = onMode;
+  $('btnQuote').onclick = doQuote; $('btnToProposal').onclick = enterProposal; $('showComm').onchange = () => { if (S.plans) renderPlans(S.plans); };
+  $('btnCreateProp').onclick = doCreateProposal; $('btnUpdateProp').onclick = doUpdateProposal; $('btnRejectProp').onclick = doRejectProposal;
+  $('btnAppDoc').onclick = () => getDoc('Application', S.proposalNo); $('btnAppDoc2').onclick = () => getDoc('Application', S.proposalNo);
+  $('btnToIssue').onclick = () => unlock(3); $('btnIssue').onclick = doIssue; $('btnPolDoc').onclick = () => getDoc('Policy', S.policyNo);
+  $('btnToServ').onclick = () => { $('f_policy').value = S.policyNo; $('c_policy').value = S.policyNo; $('m_policy').value = S.policyNo; unlock(4); doLoad(); };
+  $('btnLoad').onclick = doLoad; $('btnPolDoc2').onclick = () => getDoc('Policy', S.loaded.PolicyNo);
+  $('btnCheck').onclick = doCheck; $('btnApprove').onclick = () => doDecide('APPROVE'); $('btnDecline').onclick = () => doDecide('REJECT');
+  $('btnCommPolicy').onclick = doCommPolicy; $('btnCommPeriod').onclick = doCommPeriod; $('btnCommCfg').onclick = doCommCfg; $('m_cproduct').onchange = onCommProduct;
+  // free servicing: a policy can be serviced without going through steps 1-3
+  maxStep = 1;
+}
+async function init() {
+  bind();
+  if (!getAccessToken()) { showAlert('err', 'Authorization token not found. Please log in to InsureMO Portal first.'); return; }
+  $('sessionChip').textContent = 'Tenant: ' + getTenantCode();
+  if (await loadMaster()) { fillStatic(); goStep(1); }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+</script>
+</body>
+</html>
