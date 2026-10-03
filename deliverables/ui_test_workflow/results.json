@@ -1,0 +1,118 @@
+[
+ {
+  "n": "dashboard tiles",
+  "ok": true,
+  "x": 9
+ },
+ {
+  "n": "dashboard charts",
+  "ok": true
+ },
+ {
+  "n": "user chip shows roles",
+  "ok": true,
+  "x": "Ravi Teja (test user - replace with bank staff) · Maker, Proposal Checker, Cancellation Checker"
+ },
+ {
+  "n": "nav has all role items",
+  "ok": true,
+  "x": [
+   "▦ Dashboard",
+   "➕ New quotation",
+   "☰ My submissions",
+   "✓ Proposal approvals 567",
+   "✖ Cancellations 110",
+   "✉ Policies"
+  ]
+ },
+ {
+  "n": "share quotation (dry run)",
+  "ok": true,
+  "x": "DoneAlertsEmail to customer (c***@example.com): recorded (dry run, nothing delivered)SMS to customer (***4567): recorded (dry run, nothing delivered)"
+ },
+ {
+  "n": "maker submits for approval",
+  "ok": true,
+  "x": "PDH0010000000079"
+ },
+ {
+  "n": "submit shows alert to checker",
+  "ok": true,
+  "x": ""
+ },
+ {
+  "n": "my submissions lists it",
+  "ok": true,
+  "x": "PDH0010000000079"
+ },
+ {
+  "n": "checker queue shows it",
+  "ok": true,
+  "x": "PDH0010000000079"
+ },
+ {
+  "n": "proposal detail opens with approve/reject",
+  "ok": true
+ },
+ {
+  "n": "share proposal (dry run)",
+  "ok": true
+ },
+ {
+  "n": "checker approves and policy issues",
+  "ok": true,
+  "x": "PODH00100000031"
+ },
+ {
+  "n": "approval alerts shown",
+  "ok": true,
+  "x": ""
+ },
+ {
+  "n": "reject without reason is blocked",
+  "ok": true
+ },
+ {
+  "n": "checker rejects with a reason",
+  "ok": true,
+  "x": "PDH0010000000080"
+ },
+ {
+  "n": "maker sees the reject reason",
+  "ok": true,
+  "x": ""
+ },
+ {
+  "n": "maker view has no approve button",
+  "ok": true
+ },
+ {
+  "n": "maker raises cancellation request",
+  "ok": true,
+  "x": "PODH00100000031-001"
+ },
+ {
+  "n": "request in the cancellation queue",
+  "ok": true,
+  "x": "PODH00100000031-001"
+ },
+ {
+  "n": "cancellation detail shows refund and approve",
+  "ok": true
+ },
+ {
+  "n": "cancellation approved",
+  "ok": true,
+  "x": "Request APPROVEDPolicy statusCancelledRefund49.00AlertsEmail to maker (r***@insuremo.com): recorded (dry run, nothing de"
+ },
+ {
+  "n": "policy view with commission",
+  "ok": true,
+  "x": ""
+ },
+ {
+  "n": "no console errors",
+  "ok": true,
+  "x": ""
+ }
+]

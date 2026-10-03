@@ -1,0 +1,177 @@
+[
+ {
+  "check": "me returns three roles",
+  "ok": true,
+  "extra": "['MAKER', 'PROPOSAL_CHECKER', 'CANCELLATION_CHECKER']"
+ },
+ {
+  "check": "maker submits proposal",
+  "ok": true,
+  "extra": "PHC0010000000241"
+ },
+ {
+  "check": "SUBMITTED alert to the Proposal Checker (dry run)",
+  "ok": true,
+  "extra": "[{'Channel': 'EMAIL', 'Event': 'SUBMITTED', 'Recipient': 'PROPOSAL_CHECKER', 'Status': 'DRYRUN', 'To': 'r***@insuremo.com'}, {'Channel': 'SMS', 'Event': 'SUBMITTED', 'Recipient': 'PROPOSAL_CHECKER', 'Status': 'NO_ADDRESS', 'To': ''}]"
+ },
+ {
+  "check": "proposal appears in the checker queue",
+  "ok": true,
+  "extra": "['PHC0010000000241', 'PHC0010000000239', 'PHC0010000000236', 'PHC0010000000234', 'PHC0010000000228']"
+ },
+ {
+  "check": "proposal appears in 'my submissions' with the maker id",
+  "ok": true,
+  "extra": "Ravi Teja (test user - replace with bank staff)"
+ },
+ {
+  "check": "self-approval refused (issue) = 403 UP-403",
+  "ok": true,
+  "extra": "The person who created an item cannot approve or reject it."
+ },
+ {
+  "check": "self-rejection refused = 403",
+  "ok": true,
+  "extra": "The person who created an item cannot approve or reject it."
+ },
+ {
+  "check": "maker-only user cannot issue = 403",
+  "ok": true,
+  "extra": "You do not have the role required for this action."
+ },
+ {
+  "check": "maker-only user cannot read the checker queue = 403",
+  "ok": true,
+  "extra": "403"
+ },
+ {
+  "check": "maker-only user cannot approve a cancellation = 403",
+  "ok": true,
+  "extra": "403"
+ },
+ {
+  "check": "maker can update own proposal",
+  "ok": true,
+  "extra": "PHC0010000000241"
+ },
+ {
+  "check": "checker-only user cannot create a proposal = 403",
+  "ok": true,
+  "extra": "403"
+ },
+ {
+  "check": "checker-only user cannot raise a cancellation = 403",
+  "ok": true,
+  "extra": "403"
+ },
+ {
+  "check": "user without a role cannot read a policy = 403",
+  "ok": true,
+  "extra": "403"
+ },
+ {
+  "check": "user without a role cannot open the dashboard = 403",
+  "ok": true,
+  "extra": "403"
+ },
+ {
+  "check": "/up/me still answers for a user without roles",
+  "ok": false,
+  "extra": "None"
+ },
+ {
+  "check": "checker issues the policy",
+  "ok": true,
+  "extra": "POHC00100000073"
+ },
+ {
+  "check": "ISSUED alerts to the maker and the customer (dry run)",
+  "ok": true,
+  "extra": "{('MAKER', 'EMAIL'): 'DRYRUN', ('MAKER', 'SMS'): 'NO_ADDRESS', ('CUSTOMER', 'EMAIL'): 'DRYRUN', ('CUSTOMER', 'SMS'): 'DRYRUN'}"
+ },
+ {
+  "check": "checker rejects with a reason",
+  "ok": true,
+  "extra": "premium mismatch"
+ },
+ {
+  "check": "REJECTED alert to the maker",
+  "ok": true,
+  "extra": "[{'Channel': 'EMAIL', 'Event': 'PROPOSAL_REJECTED', 'Recipient': 'MAKER', 'Status': 'DRYRUN', 'To': 'r***@insuremo.com'}, {'Channel': 'SMS', 'Event': 'PROPOSAL_REJECTED', 'Recipient': 'MAKER', 'Status': 'NO_ADDRESS', 'To': ''}]"
+ },
+ {
+  "check": "reject without a reason = 400",
+  "ok": true,
+  "extra": "[{'code': 'REQUIRED', 'field': 'ProposalRejectDesc', 'message': 'Reject reason is required'}]"
+ },
+ {
+  "check": "maker raises the cancellation request",
+  "ok": true,
+  "extra": "POHC00100000073-001"
+ },
+ {
+  "check": "CANCEL_REQUESTED alert to the Cancellation Checker",
+  "ok": true,
+  "extra": "[{'Channel': 'EMAIL', 'Event': 'CANCEL_REQUESTED', 'Recipient': 'CANCELLATION_CHECKER', 'Status': 'DRYRUN', 'To': 'r***@insuremo.com'}, {'Channel': 'SMS', 'Event': 'CANCEL_REQUESTED', 'Recipient': 'CANCELLATION_CHECKER', 'Status': 'NO_ADDRESS', 'To': ''}]"
+ },
+ {
+  "check": "cancel-detail shows requester, reason and refund",
+  "ok": true,
+  "extra": "{'RequestedBy': 'Ravi Teja (test user - replace with bank staff)', 'CanDecide': 'Y'}"
+ },
+ {
+  "check": "request appears in the cancellation queue",
+  "ok": true,
+  "extra": "16"
+ },
+ {
+  "check": "requester cannot approve own cancellation = 403",
+  "ok": true,
+  "extra": "The person who created an item cannot approve or reject it."
+ },
+ {
+  "check": "cancel-detail says CanDecide = N for the requester",
+  "ok": true,
+  "extra": "N"
+ },
+ {
+  "check": "Cancellation Checker approves",
+  "ok": true,
+  "extra": "APPROVED"
+ },
+ {
+  "check": "CANCEL_APPROVED alerts to the maker and the customer",
+  "ok": true,
+  "extra": "{('CANCEL_APPROVED', 'MAKER', 'EMAIL'): 'DRYRUN', ('CANCEL_APPROVED', 'MAKER', 'SMS'): 'NO_ADDRESS', ('CANCEL_APPROVED', 'CUSTOMER', 'EMAIL'): 'DRYRUN', ('CANCEL_APPROVED', 'CUSTOMER', 'SMS'): 'DRYRUN'}"
+ },
+ {
+  "check": "a maker cannot change another maker's proposal = 403",
+  "ok": true,
+  "extra": "Only the maker who created this proposal can change it."
+ },
+ {
+  "check": "share policy by email and SMS (dry run)",
+  "ok": true,
+  "extra": "{'EMAIL': 'DRYRUN', 'SMS': 'DRYRUN'}"
+ },
+ {
+  "check": "share with a bad email = 400",
+  "ok": true,
+  "extra": "[{'code': 'INVALID_FORMAT', 'field': 'Email', 'message': 'Email address has an invalid format'}]"
+ },
+ {
+  "check": "dashboard summary (mine) answers",
+  "ok": true,
+  "extra": "{'Issued': 3, 'Pending': 2, 'PendingOlderThanOneDay': 0, 'Rejected': 3, 'Submitted': 8}"
+ },
+ {
+  "check": "dashboard window over DashboardMaxDays = 400",
+  "ok": true,
+  "extra": "The date window must be between 0 and 180 days"
+ },
+ {
+  "check": "RoleEnforcement=N keeps the old open behaviour",
+  "ok": true,
+  "extra": "200"
+ }
+]

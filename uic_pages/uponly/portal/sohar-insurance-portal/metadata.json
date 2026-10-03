@@ -4,12 +4,16 @@
   "page_path": "sohar-insurance-portal",
   "page_code": "sohar-insurance-portal",
   "env": "portal",
-  "html_file": "/home/user/Tablet/uic_pages/uponly/portal/sohar-insurance-portal/index.html",
+  "html_file": "uic_pages/uponly/portal/sohar-insurance-portal/index.html",
   "description": "Quotation, proposal, issue and servicing for the Afillar insurance APIs",
   "update_history": [
     {
       "timestamp": "2026-10-03T07:08:29.695037874Z",
       "memo": "Initial creation"
+    },
+    {
+      "timestamp": "2026-10-03T08:15:01.104790386Z",
+      "memo": "Maker/checker workflow, dashboard, share by email/SMS"
     }
   ],
   "original_data": null
