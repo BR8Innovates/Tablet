@@ -88,6 +88,10 @@ dl.kv { display: grid; grid-template-columns: 170px 1fr; gap: 3px 14px; margin-t
 .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-top: 6px; } .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; }
 details.log { margin-top: 20px; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 10px 16px; } details.log summary { cursor: pointer; font-weight: 600; color: var(--brand-dark); }
 .logrow { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 6px; font-size: 12px; } .logrow pre { background: #F4F7F8; padding: 8px; border-radius: 5px; overflow: auto; max-height: 160px; font-size: 11.5px; }
+.loginbg { position: fixed; inset: 0; z-index: 60; background: linear-gradient(135deg, var(--brand-dark), var(--brand)); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.loginbox { background: #fff; border-radius: 12px; width: 400px; max-width: 100%; padding: 28px 28px 22px; box-shadow: 0 10px 40px rgba(0,0,0,.3); border-top: 5px solid var(--accent); }
+.loginbox .logo { margin: 0 auto 10px; width: 52px; height: 52px; font-size: 26px; } .loginbox h1 { text-align: center; font-size: 19px; color: var(--brand-dark); } .loginbox .sub { text-align: center; color: var(--muted); font-size: 12.5px; margin-bottom: 14px; }
+.loginbox .btn { width: 100%; margin-top: 14px; padding: 10px; } .loginbox .or { text-align: center; color: var(--muted); font-size: 12px; margin: 14px 0 0; }
 .spin { display: none; position: fixed; inset: 0; background: rgba(255,255,255,.6); z-index: 50; align-items: center; justify-content: center; font-weight: 600; color: var(--brand-dark); } .spin.on { display: flex; }
 .modalbg { display: none; position: fixed; inset: 0; background: rgba(20,40,40,.45); z-index: 40; align-items: center; justify-content: center; padding: 16px; } .modalbg.on { display: flex; }
 .modal { background: #fff; border-radius: 10px; padding: 20px 22px; width: 520px; max-width: 100%; max-height: 92vh; overflow: auto; } .modal h2 { color: var(--brand-dark); font-size: 17px; margin-bottom: 8px; }
@@ -98,12 +102,24 @@ details.log { margin-top: 20px; background: #fff; border: 1px solid var(--line);
 </style>
 </head>
 <body>
+<div class="loginbg" id="loginScreen">
+  <form class="loginbox" id="loginForm" autocomplete="on">
+    <div class="logo">S</div><h1>Sohar International Bank</h1><div class="sub">Insurance portal &middot; staff sign-in</div>
+    <div id="loginMsg"></div>
+    <label for="lg_user">User name</label><input id="lg_user" name="username" autocomplete="username" maxlength="80" placeholder="your InsureMO user name or email">
+    <label for="lg_pass">Password</label><input id="lg_pass" name="password" type="password" autocomplete="current-password" maxlength="100">
+    <button class="btn" type="submit" id="lg_go">Sign in</button>
+    <div id="lg_sessionWrap" style="display:none"><div class="or">or</div><button class="btn sec" type="button" id="lg_session">Continue as the user signed in to InsureMO</button></div>
+    <div class="help" style="margin-top:12px;text-align:center">Use the user name and password of your InsureMO account. Your password is only sent to the sign-in service and is never stored.</div>
+  </form>
+</div>
 <header>
   <div class="logo">S</div>
   <div><h1>Sohar International Bank &middot; Insurance</h1><div class="sub">Quotation, approvals, policy servicing and dashboard</div></div>
   <div class="spacer"></div>
   <span class="chip" id="carrierChip">Insurer: loading...</span>
   <span class="chip" id="userChip"></span>
+  <button class="btn sm sec" id="btnSignOut" style="display:none;background:transparent;color:#fff;border-color:rgba(255,255,255,.6)">Sign out</button>
 </header>
 <div class="layout">
   <aside id="side"></aside>
@@ -236,13 +252,15 @@ details.log { margin-top: 20px; background: #fff; border: 1px solid var(--line);
 function getHostname() { try { return window.top.location.hostname; } catch (e) { try { return window.parent.location.hostname; } catch (e2) { return window.location.hostname; } } }
 function getTenantCode() { const h = getHostname(); if (h.includes('portal.') || h.includes('portal-gw.')) return 'platform'; return sessionStorage.getItem('tenant_code') || sessionStorage.getItem('x-mo-response-tenant-id') || 'unknown'; }
 function buildApiUrl(apiPath) { const isGateway = getHostname().includes('-gw'); const p = apiPath.includes('{{tenant_code}}') ? apiPath.replace('{{tenant_code}}', getTenantCode()) : apiPath; return (isGateway ? '' : '/api') + p; }
-function getAccessToken() { const a = sessionStorage.getItem('Authorization'); if (!a) return ''; if (a.startsWith('Bearer ')) return a.substring(7).split('&')[0]; if (a.startsWith('access_token=')) return a.substring(13).split('&')[0]; return a; }
+const AUTH = { token: '', mode: '' };   // mode: 'login' (own sign-in) or 'session' (the InsureMO portal session)
+function getAccessToken() { return AUTH.token; }
+function portalToken() { const a = sessionStorage.getItem('Authorization'); if (!a) return ''; if (a.startsWith('Bearer ')) return a.substring(7).split('&')[0]; if (a.startsWith('access_token=')) return a.substring(13).split('&')[0]; return a; }
 function redirectToLogin() { const u = window.location.origin + '/cas/login?service=' + encodeURIComponent(window.location.href); try { window.parent.location.href = u; } catch (e) { window.location.href = u; } }
 
 // =====================================================================================
 // Configuration
 // =====================================================================================
-const CFG = { routeBase: '/{{tenant_code}}/api-orchestration-test/v1/flow', channel: 'SOHAR', branch: '001', userName: 'SoharPortal', payLG: '23', payLC: 45, riskCode: 'R00001', pageSize: 15 };
+const CFG = { casUrl: 'https://portal-gw.insuremo.com', tenant: 'uponly', idleMinutes: 30, routeBase: '/{{tenant_code}}/api-orchestration-test/v1/flow', channel: 'SOHAR', branch: '001', userName: 'SoharPortal', payLG: '23', payLC: 45, riskCode: 'R00001', pageSize: 15 };
 const ROLE = { MAKER: 'MAKER', PC: 'PROPOSAL_CHECKER', CC: 'CANCELLATION_CHECKER' };
 const ROLE_LABEL = { MAKER: 'Maker', PROPOSAL_CHECKER: 'Proposal Checker', CANCELLATION_CHECKER: 'Cancellation Checker' };
 let API_OVERRIDE = ''; try { API_OVERRIDE = sessionStorage.getItem('sohar_api_base') || ''; } catch (e) {}
@@ -270,7 +288,7 @@ async function api(method, path, body, quiet) {
   if (!quiet) spin(true);
   try {
     const r = await fetch(apiUrl(path), { method, headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
-    if (r.status === 401) { setTimeout(redirectToLogin, 1500); return { ok: false, status: 401, data: { message: 'Session expired. Redirecting to login...' } }; }
+    if (r.status === 401) { if (AUTH.mode === 'login') { endSession('Your session has expired. Please sign in again.'); } else { setTimeout(redirectToLogin, 1500); } return { ok: false, status: 401, data: { message: 'Session expired. Please sign in again.' } }; }
     const ct = r.headers.get('Content-Type') || '';
     if (ct.includes('pdf')) { const blob = await r.blob(); logCall(method, path, body, r.status, { _pdf: true, bytes: blob.size }); return { ok: r.ok, status: r.status, blob }; }
     let data; const txt = await r.text(); try { data = JSON.parse(txt); } catch (e) { data = { message: txt.slice(0, 300) }; }
@@ -686,9 +704,8 @@ function bind() {
   $('d_refresh').onclick = loadDashboard; $('d_period').onchange = () => { const c = $('d_period').value === 'custom'; $('d_customWrap').style.display = c ? '' : 'none'; $('d_customWrap2').style.display = c ? '' : 'none'; if (!c) loadDashboard(); };
   $('d_from').value = ymd(addDays(new Date(), -30)); $('d_to').value = ymd(new Date()); $('modal').onclick = e => { if (e.target === $('modal')) closeModal(); };
 }
-async function init() {
-  bind();
-  if (!getAccessToken()) { showAlert('err', 'Authorization token not found. Please log in to InsureMO Portal first.'); return; }
+async function startApp() {
+  $('loginScreen').style.display = 'none'; $('btnSignOut').style.display = '';
   const [me, ok] = await Promise.all([api('GET', '/up/me', null, true), loadMaster()]);
   if (!me.ok) { showApiError(me); return; }
   S.me = me.data; S.roles = me.data.Roles || []; S.allowSelf = me.data.AllowSelfApproval === 'Y';
@@ -700,8 +717,38 @@ async function init() {
   if (S.roles.length === 1 && has(ROLE.MAKER)) $('d_scope').value = 'MINE';
   if (!has(ROLE.MAKER)) { $('tabRaise').style.display = 'none'; $('cancelTitle').textContent = 'Cancellation approvals'; }
   go('dash');
-  // pending counters for the checkers (cheap: one search each)
   if (has(ROLE.PC)) queues.papprove.load(1); if (has(ROLE.CC) || has(ROLE.MAKER)) queues.cancel.load(1);
+  armIdle();
+}
+// ---- sign-in / sign-out ----
+function loginMessage(kind, text) { $('loginMsg').innerHTML = text ? '<div class="alert ' + kind + '">' + esc(text) + '</div>' : ''; }
+function endSession(message) { try { sessionStorage.removeItem('sohar_token'); if (message) sessionStorage.setItem('sohar_msg', message); } catch (e) {} AUTH.token = ''; AUTH.mode = ''; window.location.reload(); }
+let idleTimer = null;
+function armIdle() { const reset = () => { clearTimeout(idleTimer); idleTimer = setTimeout(() => endSession('You were signed out after ' + CFG.idleMinutes + ' minutes of inactivity.'), CFG.idleMinutes * 60000); }; ['click', 'keydown', 'mousemove'].forEach(ev => document.addEventListener(ev, reset, { passive: true })); reset(); }
+async function doLogin(e) {
+  if (e) e.preventDefault(); loginMessage('', '');
+  const user = $('lg_user').value.trim(), pass = $('lg_pass').value;
+  if (!user || !pass) { loginMessage('err', 'Enter your user name and password.'); return; }
+  $('lg_go').disabled = true; spin(true);
+  try {
+    const r = await fetch(CFG.casUrl + '/cas/ebao/v2/json/tickets', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-mo-user-source-id': 'platform', 'x-mo-tenant-id': CFG.tenant }, body: JSON.stringify({ username: user, password: pass }) });
+    const txt = await r.text(); let tok = null; try { const j = JSON.parse(txt); tok = j.access_token || j.token || j.ticket || j.Token || (j.data && (j.data.access_token || j.data.token || j.data.ticket)); } catch (x) { tok = txt.trim(); }
+    if (!r.ok || !tok || typeof tok !== 'string') { loginMessage('err', r.status >= 500 ? 'The sign-in service is not available. Try again later.' : 'Sign-in failed. Check your user name and password.'); return; }
+    AUTH.token = tok; AUTH.mode = 'login'; try { sessionStorage.setItem('sohar_token', tok); } catch (x) {}
+    $('lg_pass').value = ''; await startApp();
+  } catch (x) { loginMessage('err', 'The sign-in service could not be reached. Check your connection.'); }
+  finally { $('lg_go').disabled = false; spin(false); }
+}
+async function init() {
+  bind();
+  $('loginForm').onsubmit = doLogin; $('btnSignOut').onclick = () => endSession('You have signed out.');
+  $('lg_session').onclick = async () => { const t = portalToken(); if (!t) { loginMessage('err', 'No InsureMO session found. Sign in with your user name and password.'); return; } AUTH.token = t; AUTH.mode = 'session'; await startApp(); };
+  let msg = ''; try { msg = sessionStorage.getItem('sohar_msg') || ''; sessionStorage.removeItem('sohar_msg'); } catch (e) {}
+  if (msg) loginMessage('info', msg);
+  if (portalToken()) $('lg_sessionWrap').style.display = '';
+  let saved = ''; try { saved = sessionStorage.getItem('sohar_token') || ''; } catch (e) {}
+  if (saved) { AUTH.token = saved; AUTH.mode = 'login'; await startApp(); return; }
+  $('lg_user').focus();
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 </script>
