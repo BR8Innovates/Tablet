@@ -22,6 +22,63 @@ def carrier_good(rows):
     return g
 
 
+
+def apps_by(d, p, prod):
+    a_ = d['apps']
+    return int(a_[(a_.provider == p) & (a_['product'] == prod)].reg.nunique())
+
+
+def carrier_rows_pw(p):
+    """metrics by 2W / 4W / Total, each cell 'Aug -> Sep (change)'"""
+    def cellv(av, sv, fmt=ind, pp=False):
+        if pp:
+            return '%s → %s  (%s)' % (fmt(av), fmt(sv), chgpp(sv, av) if av is not None else '—')
+        return '%s → %s  (%s)' % (fmt(av), fmt(sv), chg(sv, av) if av else '—')
+    pct1 = lambda x: '%.1f%%' % (100 * x)
+    rows = [[None, '2W: Aug → Sep', '4W: Aug → Sep', 'Total: Aug → Sep']]
+    cols = []
+    for prod in ('2W', '4W', 'Total'):
+        if prod == 'Total':
+            xa, xs = fa[p], fs[p]
+            ap_a, ap_s = fa[p]['apps'], fs[p]['apps']
+            pa_, ps_ = fa[p]['policies'], fs[p]['policies']
+            ga, gs = fa[p]['gwp'], fs[p]['gwp']
+        else:
+            xa, xs = PS['A'][prod][p], PS['S'][prod][p]
+            ap_a, ap_s = apps_by(AD, p, prod), apps_by(SD, p, prod)
+            pa_, ps_ = xa['pol'], xs['pol']
+            ga, gs = xa['gwp'], xs['gwp']
+        lead_a, lead_s = xa['leads'], xs['leads']
+        pr_a, pr_s = xa['priced'], xs['priced']
+        c_a, c_s = xa['calls'], xs['calls']
+        su_a, su_s = xa['succ'], xs['succ']
+        cols.append([
+            cellv(lead_a, lead_s), cellv(pr_a, pr_s), cellv(pr_a / lead_a, pr_s / lead_s, pct1, True),
+            cellv(ap_a, ap_s), cellv(pa_, ps_), cellv(ga, gs),
+            (cellv(ga / pa_, gs / ps_) if pa_ and ps_ else ('—' if not ps_ else '— → %s' % ind(gs / ps_))),
+            cellv(su_a / c_a, su_s / c_s, pct1, True), cellv(c_a, c_s), cellv(c_a - su_a, c_s - su_s)])
+    labels = ['Registrations attempted', 'Leads with a price', 'Lead → price %', 'Applications', 'Policies issued', 'GWP (INR)',
+              'Average premium (INR)', 'Call success %', 'Quote calls', 'Failed calls']
+    for i, lab in enumerate(labels):
+        rows.append([lab, cols[0][i], cols[1][i], cols[2][i]])
+    return rows
+
+
+def fill_pw(i, k, p):
+    t = sh(i, k).table
+    rows = carrier_rows_pw(p)
+    fill_table(t, rows)
+    wd = [1330000, 1780000, 1780000, 1780000]
+    for c, w in zip(t.columns, wd):
+        c.width = w
+    recolor_arrows(t, {1: True, 2: True, 3: True, 4: True, 5: True, 6: True, 7: True, 8: True, 9: False, 10: False}, skip_cols=(0,))
+    for r in range(1, 11):
+        for c in range(1, 4):
+            for run in t.cell(r, c).text_frame.paragraphs[0].runs:
+                run.font.size = Pt(7.5)
+                run.font.bold = False
+
+
 def top_cnt(p, err):
     return int(SD['fail'][(SD['fail'].provider == p) & (SD['fail'].err_n == err)].shape[0])
 
@@ -35,7 +92,7 @@ T(14, 6, str(fs[p]['policies'])); T(14, 7, 'Policies in September'); TC(14, 8, '
 T(14, 10, 'INR ' + ind(fs[p]['gwp'])); T(14, 11, 'GWP in September'); T(14, 12, '%.0f%% of the book' % (100 * shr(fs, p)))
 T(14, 14, '%.1f%%' % (100 * L(fs[p]))); T(14, 15, 'Leads priced'); TC(14, 16, '%.1f%% in August' % (100 * L(fa[p])), L(fs[p]) >= L(fa[p]))
 T(14, 18, '%.1f' % s['calls_reg'][p]); T(14, 19, 'Calls per registration'); T(14, 20, 'Still the highest')
-rows = carrier_rows(p); TB(14, 21, rows, carrier_good(rows)); recolor_arrows(sh(14, 21).table, {10: False, 9: False})
+fill_pw(14, 21, p)
 tp = top_cnt(p, 'TP is not allowed'); nsm = top_cnt(p, 'java.lang.NoSuchMethodError')
 ilf = SD['fail'][SD['fail'].provider == p]
 T(14, 24, ['▪   Lead → price held at %.1f%% (Aug %.1f%%)' % (100 * L(fs[p]), 100 * L(fa[p])),
@@ -55,7 +112,7 @@ T(15, 6, str(fs[p]['policies'])); T(15, 7, 'Policies in September'); T(15, 8, '%
 T(15, 10, 'INR ' + ind(fs[p]['gwp'])); T(15, 11, 'GWP in September'); T(15, 12, '%.0f%% → %.0f%% of the book' % (100 * shr(fa, p), 100 * shr(fs, p)))
 T(15, 14, '%.1f%%' % (100 * L(fs[p]))); T(15, 15, 'Leads priced'); TC(15, 16, '%.1f%% in August' % (100 * L(fa[p])), L(fs[p]) >= L(fa[p]))
 T(15, 18, '%.1f' % (fs[p]['apps'] / fs[p]['policies'])); T(15, 19, 'Applications per policy'); T(15, 20, '%.1f in August' % (fa[p]['apps'] / fa[p]['policies']))
-rows = carrier_rows(p); TB(15, 21, rows, carrier_good(rows)); recolor_arrows(sh(15, 21).table, {10: False, 9: False})
+fill_pw(15, 21, p)
 uw = top_cnt(p, 'UW rules violated!!'); dgl = SD['fail'][SD['fail'].provider == p]
 outt = int(dgl.err_n.str.contains('outtrf').sum())
 rto = top_cnt(p, 'Invalid RTO identified from registration number (see RegistrationNo column)')
@@ -66,9 +123,9 @@ T(15, 24, ['▪   GWP up %s to INR %s, now the biggest premium contributor' % (c
            '▪   Lead → price improved %.1f%% → %.1f%%' % (100 * L(fa[p]), 100 * L(fs[p])),
            '▪   Both 2W (%.1f%%) and 4W (%.1f%%) call success rose' % (100 * SD['calls'].loc[(p, '2W')].succ / SD['calls'].loc[(p, '2W')].calls, 100 * SD['calls'].loc[(p, '4W')].succ / SD['calls'].loc[(p, '4W')].calls)])
 T(15, 27, ['▪   Policies %d → %d; applications per policy %.1f → %.1f' % (fa[p]['policies'], fs[p]['policies'], fa[p]['apps'] / fa[p]['policies'], fs[p]['apps'] / fs[p]['policies']),
-           '▪   UW rules rejected %s calls (%.0f%% of failures)' % (ind(uw), 100 * uw / fail_(fs, p)),
+           '▪   UW rules rejected %s calls (%.0f%%)' % (ind(uw), 100 * uw / fail_(fs, p)),
            '▪   %d calls hit the iHub "outtrf" rule fault (platform)' % outt,
-           '▪   Fibe-fixable: RTO lookups %d, far-future dates %d' % (rto, far)])
+           '▪   Fibe-fixable: RTO %d, far-future dates %d' % (rto, far)])
 T(15, 28, 'Issued = PolicyNo and CarrierPolicyNo both returned; %d of %d Sept policies are UW_REFFERED (see workbook).' % (int((polS_dg.policy_status == 'UW_REFFERED').sum()), len(polS_dg)))
 
 # ---------------- slide 16 Tata
@@ -78,7 +135,7 @@ T(16, 6, str(fs[p]['policies'])); T(16, 7, 'Policies in September'); T(16, 8, '%
 T(16, 10, 'INR ' + ind(fs[p]['gwp'])); T(16, 11, 'GWP in September'); TC(16, 12, '%s on August' % chg(fs[p]['gwp'], fa[p]['gwp']), False)
 T(16, 14, 'INR ' + ind(avgp(fs, p))); T(16, 15, 'Average premium'); T(16, 16, 'Highest of the three')
 T(16, 18, '%.1f%%' % (100 * L(fs[p]))); T(16, 19, 'Leads priced'); TC(16, 20, '%.1f%% in August' % (100 * L(fa[p])), L(fs[p]) >= L(fa[p]))
-rows = carrier_rows(p); TB(16, 21, rows, carrier_good(rows)); recolor_arrows(sh(16, 21).table, {10: False, 9: False})
+fill_pw(16, 21, p)
 bund = top_cnt(p, '1182-please provide bundle od start date and bundle od end date'); eso = top_cnt(p, 'engine_secure_options  is mandatory.'); ipp = top_cnt(p, 'Invalid Policy Plan')
 t2 = SD['calls'].loc[(p, '2W')]; t4 = SD['calls'].loc[(p, '4W')]
 T(16, 24, ['▪   Richest ticket: INR %s against a book average of %s' % (ind(avgp(fs, p)), ind(avg_s)),
