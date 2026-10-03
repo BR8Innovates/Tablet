@@ -345,6 +345,8 @@ FUN['2W'] = funnel_slide('2W', 'Two-Wheeler (2W)', 5)
 FUN['4W'] = funnel_slide('4W', 'Four-Wheeler (4W)', 6)
 pickle.dump({k: v for k, v in FUN.items()}, open('deck_funnel_pw.pkl', 'wb'))
 
+exec(open('diag_pw.py').read())
+
 # ================================================================== housekeeping: footers, page numbers
 order = list(prs.slides)
 for n, slide in enumerate(order, start=1):

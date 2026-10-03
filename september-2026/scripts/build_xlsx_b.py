@@ -586,6 +586,93 @@ formula(ws, r, 11, '=H%d-I%d' % (r, r), int(dd.calls.sum() - dd.succ.sum()), tot
 widths(ws, {'A': 12, 'B': 12, 'C': 12, 'D': 12, 'E': 12, 'F': 12, 'G': 12, 'H': 12, 'I': 12, 'J': 14, 'K': 10})
 ws.freeze_panes = 'B5'
 
+
+# ================================================================== SUMMARY 2W & 4W by PlanType
+ws = ws_sum
+title(ws, 'Summary — 2W & 4W by PlanType, September 2026',
+      'Unique registrations, quote calls, success rate, failures and the major errors (with counts) for each product and PlanType. Section 1 = all carriers; section 2 = by carrier. '
+      'Calls, success and unique registrations are API-derived inputs (blue); failures, success rate and error counts are formulas on the Raw Data tab. PlanType codes are as sent by Fibe in the request.', 17)
+ws.row_dimensions[2].height = 44
+SH = ['Product', 'Carrier', 'PlanType', 'Unique Registrations', 'Quote Calls', 'Success', 'Failures', 'Success Rate', 'Aug Success Rate', 'Δ (pp)', 'Failures (Raw Data check)',
+      'Major error #1', 'Count #1', 'Major error #2', 'Count #2', 'Major error #3', 'Count #3']
+qS, qA = S['q'], A['q']
+
+
+def grp(q_, p=None, pr=None, plan=None):
+    g = q_
+    if p: g = g[g.provider == p]
+    if pr: g = g[g['product'] == pr]
+    if plan is not None: g = g[g.plantype == plan]
+    return g
+
+
+def raw_occ(p, pr, plan, err=None):
+    r_ = S['raw']
+    if p: r_ = r_[r_.provider == p]
+    if pr: r_ = r_[r_['product'] == pr]
+    if plan is not None: r_ = r_[r_.plantype == plan]
+    if err is not None: r_ = r_[r_.err_n == err]
+    return int(r_.occ.sum())
+
+
+def sum_row(r, pr, p, plan, total=False):
+    g = grp(qS, p, pr, plan); ga = grp(qA, p, pr, plan)
+    calls_, succ_ = len(g), int(g.ok.sum())
+    label(ws, r, 1, pr, total=total); label(ws, r, 2, p or 'All carriers', total=total); label(ws, r, 3, plan if plan is not None else 'All PlanTypes', total=total)
+    num(ws, r, 4, int(g[g.reg != ''].reg.nunique()), blue=True, total=total)
+    num(ws, r, 5, calls_, blue=True, total=total); num(ws, r, 6, succ_, blue=True, total=total)
+    formula(ws, r, 7, '=E%d-F%d' % (r, r), calls_ - succ_, total=total)
+    formula(ws, r, 8, '=IF(E%d=0,0,F%d/E%d)' % (r, r, r), pct(succ_, calls_), '0.0%', total=total)
+    if len(ga):
+        num(ws, r, 9, float(ga.ok.mean()), '0.0%', blue=True, total=total)
+        formula(ws, r, 10, '=(H%d-I%d)*100' % (r, r), (pct(succ_, calls_) - float(ga.ok.mean())) * 100, '+0.0;-0.0;0.0', total=total)
+    else:
+        text(ws, r, 9, 'n/a'); text(ws, r, 10, 'n/a')
+    conds = dict(prod=pr)
+    if p: conds['ins'] = p
+    if plan is not None: conds['plan'] = plan
+    formula(ws, r, 11, '=' + sumifs(SEP, nS, **conds), raw_occ(p, pr, plan), total=total)
+    f_ = S['fail']; f_ = f_[f_['product'] == pr]
+    if p: f_ = f_[f_.provider == p]
+    if plan is not None: f_ = f_[f_.plantype == plan]
+    top = f_.groupby('err_n').size().sort_values(ascending=False).head(3)
+    for k in range(3):
+        if k < len(top):
+            e_ = top.index[k]
+            text(ws, r, 12 + 2 * k, e_, wrap=True)
+            formula(ws, r, 13 + 2 * k, '=' + sumifs(SEP, nS, err=Ref('%s%d' % ('LNP'[k], r)), **conds), raw_occ(p, pr, plan, e_))
+        else:
+            text(ws, r, 12 + 2 * k, '—'); text(ws, r, 13 + 2 * k, '')
+
+
+r = 4
+ws.cell(row=r, column=1, value='1. All carriers — by product and PlanType').font = font(True, '7030A0', 12)
+r += 1
+header(ws, r, SH, fill='7030A0', height=42)
+r += 1
+for pr in ('2W', '4W'):
+    plans = sorted(set(qS[qS['product'] == pr].plantype), key=lambda z: int(z) if str(z).isdigit() else 99)
+    for plan in plans:
+        sum_row(r, pr, None, plan); r += 1
+    sum_row(r, pr, None, None, total=True); r += 1
+r += 1
+ws.cell(row=r, column=1, value='2. By carrier — product and PlanType').font = font(True, '7030A0', 12)
+r += 1
+header(ws, r, SH, fill='7030A0', height=42)
+r += 1
+for p_ in PROVIDERS:
+    for pr in ('2W', '4W'):
+        plans = sorted(set(qS[(qS.provider == p_) & (qS['product'] == pr)].plantype), key=lambda z: int(z) if str(z).isdigit() else 99)
+        for plan in plans:
+            sum_row(r, pr, p_, plan); r += 1
+        sum_row(r, pr, p_, None, total=True); r += 1
+r += 1
+note(ws, r, 'Unique registrations in a TOTAL row are distinct vehicles for that scope, so they can be lower than the sum of the PlanType rows (a vehicle may be quoted under more than one PlanType). '
+     'Failures are failed quote calls; Success Rate = successful calls ÷ quote calls. Major errors are the three most frequent normalised errors for that row.', 17, 44, color='595959')
+widths(ws, {'A': 9, 'B': 15, 'C': 13, 'D': 13, 'E': 11, 'F': 11, 'G': 10, 'H': 10, 'I': 11, 'J': 9, 'K': 13, 'L': 46, 'M': 9, 'N': 46, 'O': 9, 'P': 46, 'Q': 9})
+ws.freeze_panes = 'D6'
+SUMLAST = r
+
 # ================================================================== DATA VERIFICATION
 ws = ws_ver
 title(ws, 'Data Verification — reconciliation checks',
@@ -609,6 +696,7 @@ checks = [
     ('Cum: 2W + 4W cumulative calls = Cumulative total calls', "='Cumulative (Aug+Sep)'!D11", None, 'Cumulative tab'),
     ('Policies: Policy Issuance total = Funnel & GWP total (Aug+Sep)', None, None, 'Funnel & GWP'),
     ('Digit: every Digit policy has BOTH PolicyNo and CarrierPolicyNo', int((allpol.provider == 'Go Digit').sum()), None, 'Policy Issuance detail'),
+    ('Summary 2W & 4W: failures (all carriers, all PlanTypes) = Executive Summary failed', "='Executive Summary'!D11", None, 'Executive Summary'),
     ('Aug (calibration): quote calls vs August MBR deck (146,324)', 146324, "='Cumulative (Aug+Sep)'!B11", 'FIBE x insureMO MBR August 2026 v2, slide 6'),
     ('Aug (calibration): failed calls vs August MBR deck (63,023)', 63023, "='Cumulative (Aug+Sep)'!B11-'Cumulative (Aug+Sep)'!E11", 'MBR August deck, slide 6'),
     ('Aug (calibration): ICICI failed calls vs deck (10,766)', 10766, "=SUM('Cumulative (Aug+Sep)'!B5:B6)-SUM('Cumulative (Aug+Sep)'!E5:E6)", 'MBR August deck, slide 9'),
@@ -656,6 +744,8 @@ setf('Sep: Go Digit deep-dive 2W+4W = Executive Summary failed', 3, "=SUM('Go Di
 setf('Sep: Tata AIG deep-dive 2W+4W = Executive Summary failed', 3, "=SUM('Tata AIG'!B%d,'Tata AIG'!D%d)" % ((5 + len(cats_for('Tata AIG')),) * 2), int(S['calls'].loc['Tata AIG'].fail.sum()))
 setf('Cum: Cumulative failed (calls − success) = Cumulative category total', 3, "='Cumulative (Aug+Sep)'!D%d" % (14 + 14), tot_cum_failed)
 setf('Cum: 2W + 4W cumulative calls = Cumulative total calls', 3, "='2W'!D8+'4W'!D8", int(a_calls + tot_calls))
+setf('Summary 2W & 4W: failures (all carriers, all PlanTypes) = Executive Summary failed', 3, "=SUMIFS('Summary 2W & 4W'!$G$6:$G$%d,'Summary 2W & 4W'!$C$6:$C$%d,\"All PlanTypes\",'Summary 2W & 4W'!$B$6:$B$%d,\"All carriers\")" % ((SUMLAST,) * 3), len(S['fail']))
+EXPECTED[(ws.title, 'B%d' % CHK['Summary 2W & 4W: failures (all carriers, all PlanTypes) = Executive Summary failed'])] = len(S['fail'])
 setf('Policies: Policy Issuance total = Funnel & GWP total (Aug+Sep)', 2, "='Policy Issuance'!C%d" % POL_TOT_ROW, n_pol)
 setf('Policies: Policy Issuance total = Funnel & GWP total (Aug+Sep)', 3, "='Funnel & GWP'!H%d+'Funnel & GWP'!I%d" % (FROW['policies'], FROW['policies']), n_pol)
 setf('Digit: every Digit policy has BOTH PolicyNo and CarrierPolicyNo', 3,
