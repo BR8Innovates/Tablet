@@ -443,6 +443,7 @@ function buildQueues() {
 async function openProposal(row, mountId, canAct) {
   const r = await api('GET', '/up/load-policy?proposalNo=' + encodeURIComponent(row.ProposalNo) + '&ChannelCode=' + CFG.channel);
   if (!r.ok) { showApiError(r); return; }
+  ['det_mine', 'det_papprove'].forEach(m => { if (m !== mountId) $(m).innerHTML = ''; });   // ids inside the detail card are unique per page
   const p = r.data, pending = String(p.ProposalStatus) === '2';
   const mine = row.MakerId && S.me && row.MakerId === S.me.UserId, selfBlocked = mine && S.me.RoleEnforcement === 'Y' && canAct && !S.allowSelf;
   $(mountId).innerHTML = '<div class="card" id="pd"><div class="pagehead"><h2 style="margin:0">Proposal ' + esc(p.ProposalNo) + '</h2><span class="spacer"></span>' + statusBadge(row) + '</div>' +
