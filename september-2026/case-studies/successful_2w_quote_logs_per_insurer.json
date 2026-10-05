@@ -1,0 +1,1484 @@
+[
+  {
+    "insurer": "ICICI Lombard",
+    "traceId": "daefa6e946889c5bfdcb4d04ac48017b",
+    "clientRequestId": "6a6fb6ef-5c48-4a06-9c00-e1fefc8b4e6e",
+    "time": "2026-09-14T20:48:56",
+    "registration": "GA03AQ7316",
+    "planType": "3",
+    "planCode": "",
+    "premium": 2036.0,
+    "endpoint": "il.motor.2w.quickquote.url",
+    "syncStatus": "1",
+    "syncStart": "2026-09-14 20:48:57",
+    "syncEnd": "2026-09-14 20:48:58",
+    "fibe_request": {
+      "AgentCode": 2,
+      "BodyPriceEdit": "0",
+      "BrokerCode": "",
+      "BrokerName": "",
+      "CarrierCode": 10,
+      "EffectiveDate": "2026-09-14",
+      "ExpiryDate": "2027-09-14T23:59:59",
+      "ParentPolicyNo": "",
+      "PlanType": 3,
+      "PolicyCustomerList": [
+        {
+          "PINCode": ""
+        }
+      ],
+      "PolicyHolderType": 1,
+      "PolicyLobList": [
+        {
+          "PolicyRiskList": [
+            {
+              "BodyIDV": "0",
+              "CPACoverReason": "",
+              "CPATerm": 1,
+              "CarrierType": 1,
+              "EngineNo": "",
+              "FuelType": 1,
+              "IsAntiTheftAttached": "0",
+              "Make": "39",
+              "ManufactureYear": "2021-03-01",
+              "Model": "29105",
+              "NoOfTrailor": 0,
+              "PolicyCoverageList": [
+                {
+                  "ADDONIsNILDep": 1,
+                  "ProductElementCode": "C0000662"
+                },
+                {
+                  "ADDONIsRSA": 1,
+                  "ProductElementCode": "C0000664"
+                },
+                {
+                  "ProductElementCode": "C0000506"
+                }
+              ],
+              "PrevInsuranceList": [
+                {
+                  "ADDONIsEngineProt": 0,
+                  "ADDONIsNILDep": 0,
+                  "ClaimInPrevPolicy": "0",
+                  "IsPrevPolicyAvailable": 0,
+                  "IsPrevZdApplicable": "0",
+                  "PrevPolicyExpiryDate": "2026-04-11",
+                  "PrevPolicyNCB": "0",
+                  "PreviousPolicyType": "3"
+                }
+              ],
+              "ProductElementCode": "R00004",
+              "PurchasePrice": 0,
+              "RTOCode": "GA03",
+              "RegistrationDate": "2021-04-13",
+              "RegistrationNo": "GA03AQ7316",
+              "TrailerIDV": 0,
+              "VehicleAge": 5.42,
+              "VoluntaryDeductible": ""
+            }
+          ],
+          "ProductCode": "COMMOTOR",
+          "ProductElementCode": "COMMOTOR"
+        }
+      ],
+      "ProductCode": "COMMOTOR",
+      "ProductType": 2,
+      "ProductVersion": "1.0",
+      "RenewalId": "",
+      "SubInsuranceProductCode": "PB",
+      "TypeofPolicy": 2
+    },
+    "carrier_request": {
+      "AddOns": [
+        "ZD",
+        "RSA"
+      ],
+      "HasExistingPACover": false,
+      "IDVType": 3,
+      "IsCibilDiscount": false,
+      "IsLive": false,
+      "MakeCode": 39,
+      "ModelCode": 29105,
+      "OwnerType": 1,
+      "Pincode": "",
+      "PreviousPolicyClaimed": false,
+      "PreviousPolicyExpiryDate": "2026-04-11",
+      "PreviousPolicyHasZdCover": false,
+      "PreviousPolicyNcbPercentage": 0,
+      "PreviousPolicyType": "3",
+      "ProductCode": 13,
+      "RTOCode": 657,
+      "RegistrationDate": "2021-04-13",
+      "RegistrationNo": "GA03AQ7316"
+    },
+    "carrier_response": {
+      "BaseOdPremium": 287,
+      "BaseTPPremium": 714,
+      "CachedId": "Dis",
+      "CorelationId": "1c112b92-0602-4846-86b5-3b4657ab4463",
+      "ErrorCode": "",
+      "FinalPremium": 2036,
+      "GST": 311,
+      "IDV": 38841,
+      "IsCachedPremium": false,
+      "IsInspectionRequire": false,
+      "MaxIDV": 48273,
+      "MinIDV": 29409,
+      "MotorPremium": {
+        "BreakInLoading": 0,
+        "Liability": {
+          "BasicLiability": 714,
+          "BiFuelKit": 0,
+          "NamedPassengerPALiability": 0,
+          "OwnerDriverPALiability": 525,
+          "PaidDriverLegalLiability": 0,
+          "PaidEmployeeLegalLiability": 0,
+          "SmartAssistLiability": 0,
+          "TotalLiabilityPremium": 1239,
+          "UnnamedPassengerPALiability": 0
+        },
+        "MotorOwnDamage": {
+          "AntiTheftDiscount": 0,
+          "AutoAssnMemDiscount": 0,
+          "BasicOD": 287,
+          "BatteryProtectPremium": 0,
+          "BiFuelKit": 0,
+          "ConsumablePremium": 0,
+          "DrivingAccessoriesPremium": 0,
+          "ElectricalAccesories": 0,
+          "EmergencyMedicalExprensesPremium": 0,
+          "EngineProtectPlusPremium": 0,
+          "GarageCashPremium": 0,
+          "KeyProtectPremium": 0,
+          "LossOfPersonalBelongingsPremium": 0,
+          "NcbProtectionPremium": 0,
+          "NoClaimBonusDiscount": 0,
+          "NonElectricalAccesories": 0,
+          "PayUDiscount": 0,
+          "ReturnToInvoicePremium": 0,
+          "RsaPremium": 199,
+          "SmartAssistPremium": 0,
+          "SmartSaverPremium": 0,
+          "TotalOwnDamagePremium": 486,
+          "TyreProtectPremium": 0,
+          "VoluntaryDiscount": 0,
+          "ZeroDepreciationPremium": 0
+        },
+        "NcbDiscount": 0,
+        "OtherDiscount": 0,
+        "TPPDDiscount": 0,
+        "imT23OD": 0
+      },
+      "NcbAmount": 0,
+      "NcbPercentage": 0,
+      "NoCacheCalculationReason": "disablecache",
+      "OdPremium": 486,
+      "PaCoverAmount": 525,
+      "PaidDriverLegalLiability": 0,
+      "PolicyEndDate": "2027-09-16T23:59:59",
+      "PolicyEndtDate": "2027-09-16T23:59:59",
+      "PolicyStartDate": "2026-09-17T00:00:00",
+      "Premium": 1725,
+      "Success": true,
+      "TransactionId": "epn_6kp2ePUq941LRI2STY",
+      "isRSA99Applicable": false
+    },
+    "insuremo_response": {
+      "ClientRequestId": "6a6fb6ef-5c48-4a06-9c00-e1fefc8b4e6e",
+      "CountryCode": "IND-2W",
+      "ProviderCode": "IL",
+      "Result": {
+        "BeforeVatPremium": "1725",
+        "CarrierCode": "10",
+        "DuePremium": "2036",
+        "EffectiveDate": "2026-09-17T00:00:00",
+        "ExpiryDate": "2027-09-16T23:59:59",
+        "GrossPremium": "2036",
+        "IsInspectionRequire": false,
+        "PolicyLobList": [
+          {
+            "PolicyRiskList": [
+              {
+                "BreakinAmount": "0",
+                "CPATerm": 1,
+                "ChassisMax": 48273,
+                "ChassisMin": 29409,
+                "IDV": 38841,
+                "PolicyCoverageList": [
+                  {
+                    "BasicTPL": "714",
+                    "ProductElementCode": "C0000532"
+                  },
+                  {
+                    "PACoverPremOwnerDriver": "525",
+                    "ProductElementCode": "C0000654"
+                  },
+                  {
+                    "BasicODP": "287",
+                    "ProductElementCode": "C0000506"
+                  },
+                  {
+                    "ADDONAddRoadAssistAmt": "199",
+                    "ProductElementCode": "C0000664"
+                  }
+                ],
+                "PrevInsuranceList": [
+                  {
+                    "CurrentNcbPer": 0,
+                    "NCBAmount": "0"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "ProductCode": "COMMOTOR",
+        "ProductVersion": "1.0",
+        "ServiceTax": "311",
+        "ServiceType": "GST",
+        "StatusCode": true,
+        "TotalPremium": "1725",
+        "TransactionId": "epn_6kp2ePUq941LRI2STY"
+      },
+      "ResultCode": 1,
+      "TransactionType": 1001
+    }
+  },
+  {
+    "insurer": "Go Digit",
+    "traceId": "9b0271063365da33fe3aac560a5b654c",
+    "clientRequestId": "f57b2100-cd7d-4dce-a915-14a379a8d4fd",
+    "time": "2026-09-14T22:10:31",
+    "registration": "HR01AL9102",
+    "planType": "3",
+    "planCode": "",
+    "premium": 1351.1,
+    "endpoint": "digit.motor.quickquote.url",
+    "syncStatus": "1",
+    "syncStart": "2026-09-14 22:10:31",
+    "syncEnd": "2026-09-14 22:10:32",
+    "fibe_request": {
+      "AgentCode": 2,
+      "BodyPriceEdit": "0",
+      "BrokerCode": "",
+      "BrokerName": "",
+      "CarrierCode": 33,
+      "EffectiveDate": "2026-09-14",
+      "EnquiryId": "ENQ_1789404017789_138923380529_9",
+      "ExpiryDate": "2027-09-14T23:59:59",
+      "ParentPolicyNo": "",
+      "PlanType": 3,
+      "PolicyCustomerList": [
+        {
+          "PINCode": ""
+        }
+      ],
+      "PolicyHolderType": 1,
+      "PolicyLobList": [
+        {
+          "PolicyRiskList": [
+            {
+              "BodyIDV": "0",
+              "CPACoverReason": "",
+              "CPATerm": 1,
+              "CarrierType": 1,
+              "EngineNo": "",
+              "FuelType": 1,
+              "IsAntiTheftAttached": "0",
+              "ManufactureYear": "2015-04-01",
+              "NoOfTrailor": 0,
+              "OwnerSerialNo": "2",
+              "PolicyCoverageList": [
+                {
+                  "ProductElementCode": "C0000506",
+                  "SumInsured": 0
+                },
+                {
+                  "ADDONIsTyreCover": 1,
+                  "ProductElementCode": "C0001600"
+                },
+                {
+                  "ElectricAccIDV": 1,
+                  "ProductElementCode": "C0000657"
+                },
+                {
+                  "ADDONIsNILDep": 1,
+                  "ProductElementCode": "C0000662"
+                },
+                {
+                  "ADDONIsWheelRim": 1,
+                  "ProductElementCode": "C0000842"
+                },
+                {
+                  "PACoverUnnamedDriver": "1",
+                  "PANoOfPerson": 2,
+                  "ProductElementCode": "C0000830",
+                  "SumInsured": 10000
+                },
+                {
+                  "ADDONIsKeyReplacement": 1,
+                  "ProductElementCode": "C000KP01"
+                },
+                {
+                  "IsLLPaidDriver": 1,
+                  "ProductElementCode": "C0000825"
+                },
+                {
+                  "NonElectricAccIDV": 1,
+                  "ProductElementCode": "C0000656"
+                },
+                {
+                  "ADDONIsEngineProt": 1,
+                  "ProductElementCode": "C0000666"
+                },
+                {
+                  "ADDONIsRSA": 1,
+                  "ProductElementCode": "C0000664"
+                },
+                {
+                  "ADDONIsConsumable": 1,
+                  "ProductElementCode": "C0000667"
+                },
+                {
+                  "ADDONIsRTI": 1,
+                  "ProductElementCode": "C0000661"
+                },
+                {
+                  "ADDONIsPersonalBelonging": 1,
+                  "ProductElementCode": "C000LPB01",
+                  "SumInsured": 20000
+                },
+                {
+                  "IsLLOtherEmp": 1,
+                  "ProductElementCode": "C0000824"
+                }
+              ],
+              "PrevInsuranceList": [
+                {
+                  "ADDONIsEngineProt": 0,
+                  "ADDONIsNILDep": 0,
+                  "ClaimInPrevPolicy": "1",
+                  "IsPrevPolicyAvailable": 1,
+                  "IsPrevZdApplicable": "0",
+                  "PrevPolicyExpiryDate": "2026-04-12",
+                  "PrevPolicyNCB": "0",
+                  "PrevPolicyNo": "D197347032",
+                  "PreviousPolicyType": "5"
+                }
+              ],
+              "ProductElementCode": "R00004",
+              "PurchasePrice": 0,
+              "RTOCode": "HR85",
+              "RegistrationDate": "2015-05-04",
+              "RegistrationNo": "HR01AL9102",
+              "TrailerIDV": 0,
+              "VehicleAge": 11.36,
+              "VehicleIDV": "0",
+              "VehicleMaincode": "1311410101",
+              "VoluntaryDeductible": ""
+            }
+          ],
+          "ProductCode": "COMMOTOR",
+          "ProductElementCode": "COMMOTOR"
+        }
+      ],
+      "ProductCode": "COMMOTOR",
+      "ProductType": 2,
+      "ProductVersion": "1.0",
+      "RenewalId": "",
+      "SubInsuranceProductCode": "PB",
+      "TypeofPolicy": 2
+    },
+    "carrier_request": {
+      "contract": {
+        "coverages": {
+          "accessories": {
+            "cng": {
+              "insuredAmount": 0,
+              "selection": false
+            },
+            "electrical": {
+              "insuredAmount": 1,
+              "selection": true
+            },
+            "nonElectrical": {
+              "insuredAmount": 1,
+              "selection": true
+            }
+          },
+          "addons": {
+            "consumables": {
+              "selection": true
+            },
+            "engineProtection": {
+              "selection": true
+            },
+            "keyAndLockProtect": {
+              "selection": true
+            },
+            "partsDepreciation": {
+              "selection": true
+            },
+            "personalBelonging": {
+              "selection": true
+            },
+            "returnToInvoice": {
+              "selection": true
+            },
+            "rimProtection": {
+              "selection": true
+            },
+            "roadSideAssistance": {
+              "selection": true
+            },
+            "tyreProtection": {
+              "selection": true
+            }
+          },
+          "isGeoExt": false,
+          "isIMT23": false,
+          "isTheftAndConversionRiskIMT43": false,
+          "legalLiability": {
+            "employeesLL": {
+              "insuredCount": 1,
+              "selection": true
+            },
+            "nonFarePaxLL": {},
+            "paidDriverLL": {
+              "insuredCount": 1,
+              "selection": true
+            },
+            "unnamedPaxLL": {},
+            "workersCompensationLL": {}
+          },
+          "ownDamage": {
+            "discount": {}
+          },
+          "personalAccident": {
+            "coverTerm": 1,
+            "selection": true
+          },
+          "thirdPartyLiability": {},
+          "unnamedPA": {
+            "unnamedCleaner": {
+              "insuredAmount": 0,
+              "insuredCount": 0,
+              "selection": false
+            },
+            "unnamedConductor": {
+              "insuredAmount": 0,
+              "insuredCount": 0,
+              "selection": false
+            },
+            "unnamedHirer": {
+              "insuredAmount": 0,
+              "insuredCount": 0,
+              "selection": false
+            },
+            "unnamedPaidDriver": {
+              "insuredAmount": 0,
+              "insuredCount": 0,
+              "selection": false
+            },
+            "unnamedPax": {
+              "insuredAmount": 0,
+              "insuredCount": 0,
+              "selection": false
+            },
+            "unnamedPillionRider": {
+              "insuredAmount": 0,
+              "insuredCount": 0,
+              "selection": false
+            }
+          }
+        },
+        "endDate": "2027-09-14T23:59:59",
+        "insuranceProductCode": "20201",
+        "isNCBTransfer": false,
+        "policyHolderType": "INDIVIDUAL",
+        "startDate": "2026-09-14",
+        "subInsuranceProductCode": ""
+      },
+      "enquiryId": "ENQ_1789404017789_138923380529_9",
+      "pincode": "",
+      "pospInfo": {
+        "isPOSP": true
+      },
+      "preInspection": {},
+      "previousInsurer": {
+        "currentThirdPartyPolicy": {
+          "currentThirdPartyPolicyExpiryDateTime": "",
+          "currentThirdPartyPolicyInsurerCode": "058",
+          "currentThirdPartyPolicyStartDateTime": "",
+          "isCurrentThirdPartyPolicyActive": false
+        },
+        "isClaimInLastYear": true,
+        "isPreviousInsurerKnown": true,
+        "originalPreviousPolicyType": "0OD_1TP",
+        "previousInsurerCode": "058",
+        "previousNoClaimBonus": "ZERO",
+        "previousPolicyExpiryDate": "2026-04-12",
+        "previousPolicyNumber": "D197347032",
+        "previousPolicyType": "comprehensive"
+      },
+      "vehicle": {
+        "engineNumber": "",
+        "isVehicleNew": false,
+        "licensePlateNumber": "HR01AL9102",
+        "manufactureDate": "2015-04-01",
+        "ownershipSerialNumber": "2",
+        "permitType": "PUBLIC",
+        "registrationAuthority": "HR85",
+        "registrationDate": "2015-05-04",
+        "vehicleIDV": {
+          "idv": 1
+        },
+        "vehicleMaincode": "1311410101"
+      }
+    },
+    "carrier_response": {
+      "contract": {
+        "coverages": {
+          "accessories": {
+            "cng": {
+              "insuredAmount": 0,
+              "odPremium": "INR 0.00",
+              "selection": false
+            },
+            "electrical": {
+              "insuredAmount": 62,
+              "maxAllowed": 1243,
+              "minAllowed": 62,
+              "odPremium": "INR 0.00",
+              "selection": true
+            },
+            "nonElectrical": {
+              "insuredAmount": 62,
+              "maxAllowed": 3108,
+              "minAllowed": 62,
+              "odPremium": "INR 0.00",
+              "selection": true
+            }
+          },
+          "addons": {
+            "accidental": {
+              "coverAvailability": "AVAILABLE",
+              "netPremium": "INR 199.00",
+              "selection": false
+            },
+            "consumables": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "emiProtection": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "emiAmount": {
+                "selection": false
+              },
+              "netPremium": "INR 0.00",
+              "noOfEmis": {
+                "selection": false
+              },
+              "selection": false,
+              "timeExcess": {
+                "selection": false
+              }
+            },
+            "engineProtection": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "evShield": {
+              "copay10EV": {
+                "selection": false
+              },
+              "copay20EV": {
+                "selection": false
+              },
+              "coverAvailability": "NOT_AVAILABLE",
+              "evClaims2": {
+                "selection": false
+              },
+              "netPremium": "INR 0.00",
+              "noCopayEV": {
+                "selection": false
+              },
+              "planA": {
+                "selection": false
+              },
+              "planC": {
+                "selection": false
+              },
+              "selection": false
+            },
+            "idvBooster": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "selection": false
+            },
+            "keyAndLockProtect": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "ncbProtector": {
+              "claimsCovered": 0,
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "partsDepreciation": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "payAsYouDrive": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "personalBelonging": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "preferredGarage": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "returnToInvoice": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "rimProtection": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "roadSideAssistance": {
+              "additionCover": {
+                "premiumExperience": {
+                  "selection": false
+                }
+              },
+              "coverAvailability": "AVAILABLE",
+              "netPremium": "INR 40.00",
+              "selection": true
+            },
+            "towingCover": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            },
+            "tyreProtection": {
+              "coverAvailability": "NOT_AVAILABLE",
+              "netPremium": "INR 0.00",
+              "selection": false
+            }
+          },
+          "fire": {
+            "selection": false
+          },
+          "isGeoExt": false,
+          "isIMT23": false,
+          "isOverturningExclusionIMT47": false,
+          "isTheftAndConversionRiskIMT43": false,
+          "legalLiability": {
+            "cleanersLL": {
+              "selection": false
+            },
+            "employeesLL": {
+              "insuredCount": 2,
+              "netPremium": "INR 120.00",
+              "selection": true
+            },
+            "nonFarePaxLL": {
+              "selection": false
+            },
+            "paidDriverLL": {
+              "insuredCount": 1,
+              "netPremium": "INR 50.00",
+              "selection": true
+            },
+            "unnamedPaxLL": {
+              "insuredCount": 2,
+              "netPremium": "INR 100.00",
+              "selection": false
+            },
+            "workersCompensationLL": {
+              "selection": false
+            }
+          },
+          "ownDamage": {
+            "discount": {
+              "appliedPreInspectionDiscount": 0,
+              "defaultSpecialDiscountPercent": 99.9,
+              "discounts": [
+                {
+                  "discountAmount": "INR 227.39",
+                  "discountPercent": 99.9,
+                  "discountType": "UW_DISCOUNT"
+                },
+                {
+                  "discountAmount": "INR 0.00",
+                  "discountPercent": 0,
+                  "discountType": "NCB_DISCOUNT"
+                }
+              ],
+              "discountsWithoutZeroDep": [
+                {
+                  "discountAmount": "INR 227.39",
+                  "discountPercent": 99.9,
+                  "discountType": "UW_DISCOUNT"
+                },
+                {
+                  "discountAmount": "INR 0.00",
+                  "discountPercent": 0,
+                  "discountType": "NCB_DISCOUNT"
+                }
+              ],
+              "effectiveSpecialDiscountPercent": 0,
+              "effectiveSpecialDiscountPercentWithoutZeroDep": 0,
+              "incremental": {
+                "addonIncrementalAllowed": false,
+                "defaultCommisionPercentage": 0,
+                "incrementalCD2Flag": false,
+                "isIncrementalApplicable": false,
+                "maximumIncrementalPercentage": 0
+              },
+              "maxBudgetDiscountPercent": -0.34,
+              "maxSpecialDiscountPercent": 99.9,
+              "minSpecialDiscountPercent": 0,
+              "userSpecialDiscountPercent": 0
+            },
+            "ncbDiscountWithZeroDep": "INR 0.00",
+            "ncbDiscountWithoutZeroDep": "INR 0.00",
+            "netPremium": "INR 1.00",
+            "policyGrossPremiumWithoutZeroDep": "INR 1351.10",
+            "policyNetPremiumWithoutZeroDep": "INR 1145.00",
+            "selection": false,
+            "surcharge": {},
+            "traiffPremium": "INR 228.00",
+            "withZeroDepNetPremium": "INR 0.00",
+            "withoutZeroDepNetPremium": "INR 1.00"
+          },
+          "personalAccident": {
+            "coverAvailability": "AVAILABLE",
+            "coverTerm": 1,
+            "netPremium": "INR 220.00",
+            "selection": true
+          },
+          "theft": {
+            "selection": false
+          },
+          "thirdPartyLiability": {
+            "isTPPD": false,
+            "netPremium": "INR 714.00",
+            "selection": false
+          },
+          "unnamedPA": {
+            "unnamedCleaner": {
+              "selection": false
+            },
+            "unnamedConductor": {
+              "selection": false
+            },
+            "unnamedHirer": {
+              "selection": false
+            },
+            "unnamedPaidDriver": {
+              "insuredAmount": 100000,
+              "netPremium": "INR 70.00",
+              "selection": false
+            },
+            "unnamedPax": {
+              "insuredAmount": 100000,
+              "netPremium": "INR 140.00",
+              "selection": false
+            },
+            "unnamedPillionRider": {
+              "selection": false
+            }
+          }
+        },
+        "currentNoClaimBonus": "ZERO",
+        "endDate": "2027-09-15",
+        "insuranceProductCode": "20201",
+        "isNCBTransfer": false,
+        "isRenewalAvailable": false,
+        "policyHolderType": "INDIVIDUAL",
+        "quotationDate": "2026-09-14",
+        "startDate": "2026-09-16",
+        "subInsuranceProductCode": "PB"
+      },
+      "discounts": {
+        "otherDiscounts": [
+          {
+            "discountAmount": "INR 227.39",
+            "discountPercent": 99.9,
+            "discountType": "UW_DISCOUNT"
+          }
+        ],
+        "specialDiscountAmount": "INR 0.00"
+      },
+      "enquiryId": "ENQ_1789404017789_138923380529_9",
+      "error": {
+        "errorCode": 0,
+        "httpCode": 200
+      },
+      "grossPremium": "INR 1351.10",
+      "loadings": {
+        "totalLoadingAmount": "INR 0.00"
+      },
+      "motorBreakIn": {
+        "isBreakin": true,
+        "isPreInspectionCompleted": false,
+        "isPreInspectionWaived": true
+      },
+      "netPremium": "INR 1145.00",
+      "pincode": "",
+      "pospInfo": {
+        "isPOSP": true
+      },
+      "preInspection": {
+        "isPreInspectionEligible": false,
+        "isPreInspectionOpted": false,
+        "isPreInspectionRequired": false,
+        "isPreInspectionWaived": true,
+        "isSchoolBusWaiverEligibleWithTPlusFortyEight": false,
+        "piOptions": [
+          {
+            "displayValue": "PI WAIVER",
+            "preInspectionType": "PI_WIAVER",
+            "rid": "T+48"
+          }
+        ],
+        "piType": "PI_WIAVER",
+        "preInspectionReasons": [
+          "BREAKIN_PI"
+        ],
+        "rid": "T+48"
+      },
+      "previousInsurer": {
+        "currentThirdPartyPolicy": {
+          "currentThirdPartyPolicyInsurerCode": "058",
+          "isCurrentThirdPartyPolicyActive": false
+        },
+        "isClaimInLastYear": false,
+        "isPreviousInsurerKnown": true,
+        "originalPreviousPolicyType": "0OD_1TP",
+        "previousInsurerCode": "158",
+        "previousNoClaimBonus": "ZERO",
+        "previousPolicyExpiryDate": "2026-04-12",
+        "previousPolicyNumber": "D197347032",
+        "previousPolicyType": "TP only policy"
+      },
+      "serviceTax": {
+        "cgst": "INR 0.00",
+        "igst": "INR 206.10",
+        "sgst": "INR 0.00",
+        "taxType": "IGST",
+        "totalTax": "INR 206.10",
+        "utgst": "INR 0.00"
+      },
+      "vehicle": {
+        "engineNumber": "",
+        "isVehicleNew": false,
+        "licensePlateNumber": "HR01AL9102",
+        "make": "HONDA",
+        "manufactureDate": "2015-04-01",
+        "model": "ACTIVA",
+        "ownershipSerialNumber": "2",
+        "permitType": "PUBLIC",
+        "registrationAuthority": "HR85",
+        "registrationDate": "2015-05-04",
+        "vehicleAgeInYears": 0,
+        "vehicleIDV": {
+          "defaultIdv": 15540,
+          "idv": 12432,
+          "maximumIdv": 18648,
+          "minimumIdv": 12432
+        },
+        "vehicleMaincode": "1311410101",
+        "vehicleType": "KFZK130"
+      }
+    },
+    "insuremo_response": {
+      "ClientRequestId": "f57b2100-cd7d-4dce-a915-14a379a8d4fd",
+      "CountryCode": "IND",
+      "ProviderCode": "DIGIT",
+      "Result": {
+        "AgentCode": 2,
+        "BeforeVatPremium": "1145.00",
+        "CGSTPer": "0.00",
+        "CarrierCode": 33,
+        "DuePremium": "1351.10",
+        "EffectiveDate": "2026-09-16",
+        "EnquiryId": "ENQ_1789404017789_138923380529_9",
+        "ErrorCode": "",
+        "ExpiryDate": "2027-09-15",
+        "GrossPremium": "1351.10",
+        "HttpCode": "",
+        "IGSTPer": "206.10",
+        "IsInspectionRequire": true,
+        "IsTPPD": 0,
+        "ODDiscountAmt": "227.39",
+        "ODDiscountValue": 99.9,
+        "PolicyCustomerList": [
+          {
+            "PINCode": ""
+          }
+        ],
+        "PolicyHolderType": 1,
+        "PolicyLobList": [
+          {
+            "PolicyRiskList": [
+              {
+                "CPATerm": 1,
+                "ChassisMax": 18648,
+                "ChassisMin": 12432,
+                "IDV": 12432,
+                "IsAntiTheftAttached": 0,
+                "ManufactureYear": "2015-04-01",
+                "PolicyCoverageList": [
+                  {
+                    "LLPaidDrivPremium": "50.00",
+                    "ProductElementCode": "C0000825"
+                  },
+                  {
+                    "LLOtherEmpPremium": "120.00",
+                    "ProductElementCode": "C0000824"
+                  },
+                  {
+                    "BasicTPL": "714.00",
+                    "ProductElementCode": "C0000532"
+                  },
+                  {
+                    "BasicODP": "1.00",
+                    "ProductElementCode": "C0000506"
+                  },
+                  {
+                    "PACoverPremOwnerDriver": "220.00",
+                    "ProductElementCode": "C0000654"
+                  },
+                  {
+                    "ProductElementCode": "C0000657"
+                  },
+                  {
+                    "ProductElementCode": "C0000656"
+                  },
+                  {
+                    "ADDONAddRoadAssistAmt": "40.00",
+                    "ProductElementCode": "C0000664"
+                  }
+                ],
+                "PrevInsuranceList": [
+                  {
+                    "CurrentNcbPer": 0,
+                    "IsNCB": 0,
+                    "IsNCBcarryforward": "",
+                    "IsPrevPolicyAvailable": 1,
+                    "NCBAmount": "0.00",
+                    "PrevPolicyExpiryDate": "2026-04-12",
+                    "PrevPolicyNCB": "ZERO",
+                    "PrevPolicyNo": "D197347032"
+                  }
+                ],
+                "ProductElementCode": "R00004",
+                "RegistrationDate": "2015-05-04",
+                "RegistrationNo": "HR01AL9102",
+                "VehicleAge": 0,
+                "VehicleIDV": 12432
+              }
+            ],
+            "ProductCode": "COMMOTOR",
+            "ProductElementCode": "COMMOTOR"
+          }
+        ],
+        "ProductCode": "COMMOTOR",
+        "ProductType": 2,
+        "ProductVersion": "1.0",
+        "SGSTPer": "0.00",
+        "ServiceTax": "206.10",
+        "ServiceType": "IGST",
+        "TotalPremium": "1145.00",
+        "TypeofPolicy": 2
+      },
+      "ResultCode": 1,
+      "TransactionType": 1001
+    }
+  },
+  {
+    "insurer": "Tata AIG",
+    "traceId": "286a0ddb0c37efb153080b1a7219a32e",
+    "clientRequestId": "f4cf0e1d-6a5a-4102-b987-94049f56dec9",
+    "time": "2026-09-14T22:40:28",
+    "registration": "BR05AK0101",
+    "planType": "5",
+    "planCode": "1",
+    "premium": 2143.0,
+    "endpoint": "tataaig.motor.quickquote2w.url",
+    "syncStatus": "1",
+    "syncStart": "2026-09-14 22:40:28",
+    "syncEnd": "2026-09-14 22:40:30",
+    "fibe_request": {
+      "CarrierCode": 25,
+      "CibilScore": "767",
+      "EffectiveDate": "2026-09-15",
+      "ExpiryDate": "2027-09-15",
+      "Finalize": "0",
+      "PlanCode": "1",
+      "PlanType": 5,
+      "PolicyCustomerList": [
+        {
+          "PINCode": "845401"
+        }
+      ],
+      "PolicyHolderType": 1,
+      "PolicyLobList": [
+        {
+          "PolicyRiskList": [
+            {
+              "CPATerm": 1,
+              "CarrierType": 1,
+              "ChassisNo": "ME3J3C5FER2010298",
+              "EngineNo": "J3A5FER2002823",
+              "FuelType": 1,
+              "IsAntiTheftAttached": "0",
+              "Make": "ROYAL ENFIELD",
+              "ManufactureYear": "2024-05-01",
+              "Model": "CLASSIC",
+              "PrevInsuranceList": [
+                {
+                  "ADDONIsConsumable": 0,
+                  "ADDONIsEngineProt": 0,
+                  "ADDONIsRTI": "0",
+                  "ClaimInPrevPolicy": "0",
+                  "IsPrevPolicyAvailable": 1,
+                  "IsPrevZdApplicable": "0",
+                  "PrevPolicyExpiryDate": "2025-07-22",
+                  "PrevPolicyNCB": "0",
+                  "PrevPolicyNo": "P0021300038/4113/104462",
+                  "PreviousInsurerCode": "16",
+                  "PreviousPolicyType": "5",
+                  "ProductElementCode": "PREVINSURANCEDTLS"
+                }
+              ],
+              "ProductElementCode": "R00004",
+              "RTOCode": "BR05",
+              "RegistrationDate": "2024-08-09",
+              "RegistrationNo": "BR05AK0101",
+              "Variant": "350 ABS SIGNALS",
+              "VehicleAge": 2.1,
+              "VehicleIDV": "",
+              "VehicleMaincode": "142154",
+              "VoluntaryDeductible": ""
+            }
+          ],
+          "ProductCode": "COMMOTOR",
+          "ProductElementCode": "COMMOTOR"
+        }
+      ],
+      "PrevPolicyExpiryDateCal": "2024-07-23",
+      "ProductCode": "COMMOTOR",
+      "ProductType": 2,
+      "ProductVersion": "1.0",
+      "TypeofPolicy": 3
+    },
+    "carrier_request": {
+      "__finalize": "1",
+      "add_pa_owner": "false",
+      "add_pa_owner_si": "",
+      "add_pa_unnamed": "false",
+      "add_pa_unnamed_si": "",
+      "add_towing": "false",
+      "add_towing_amount": "",
+      "add_tppd": "false",
+      "add_tppd_si": "",
+      "antitheft_cover": "false",
+      "automobile_association_cover": "[REDACTED]",
+      "automobile_association_mem_exp_date": "",
+      "automobile_association_mem_no": "",
+      "ble_od_end": "",
+      "ble_od_start": "",
+      "ble_tp_end": "",
+      "ble_tp_start": "",
+      "business_type": "Roll Over",
+      "claim_last": "false",
+      "claim_last_amount": "",
+      "claim_last_count": "",
+      "cng_lpg": "false",
+      "cng_lpg_cover": "false",
+      "cng_lpg_si": "",
+      "consumbale_expense": "false",
+      "dep_reimb": "false",
+      "dep_reimburse": "false",
+      "dep_reimburse_claims": "",
+      "dep_reimburse_deductible": "",
+      "dor": "2024-08-09",
+      "driving_tution": "false",
+      "electric_surge_secure_opt": "false",
+      "electrical_acc": "false",
+      "electrical_des": "",
+      "electrical_si": "",
+      "emg_med_exp": "false",
+      "emg_med_exp_si": "",
+      "event_from_date": "",
+      "event_name": "",
+      "event_to_date": "",
+      "ext_racing": "false",
+      "fibre_fuel_tank": "false",
+      "fleet_code": "",
+      "fleet_name": "",
+      "fleet_policy": "false",
+      "geography_extension": "false",
+      "geography_extension_bang": "false",
+      "geography_extension_bhutan": "false",
+      "geography_extension_lanka": "false",
+      "geography_extension_maldives": "false",
+      "geography_extension_nepal": "false",
+      "geography_extension_pak": "false",
+      "imported_veh_without_cus_duty": "false",
+      "is_posp": "N",
+      "ll_emp": "false",
+      "ll_emp_no": "",
+      "ll_paid": "false",
+      "ll_paid_no": "",
+      "loss_accessories": "false",
+      "loss_accessories_idv": "",
+      "make_code": "1201",
+      "man_year": "2024",
+      "manu_month": "",
+      "model_code": "16796",
+      "no_past_pol": "true",
+      "non_electrical_acc": "false",
+      "non_electrical_des": "",
+      "non_electrical_si": "",
+      "own_premises": "false",
+      "pa_named": "false",
+      "pa_owner": "true",
+      "pa_owner_declaration": "None",
+      "pa_owner_tenure": "1",
+      "pa_paid": "false",
+      "pa_paid_no": "",
+      "pa_paid_si": "",
+      "pa_unnamed": "false",
+      "pa_unnamed_no": "",
+      "pa_unnamed_si": "",
+      "place_reg": "MOTIHARI",
+      "place_reg_no": "660",
+      "plan_type": "Standalone TP (1 year)",
+      "pol_start_date": "2026-09-15",
+      "pol_tenure": "Standalone TP (1 year)",
+      "pre_pol_ncb": "0",
+      "prev_pol_end_date": "2025-07-22",
+      "prev_pol_start_date": "2024-07-23",
+      "prev_pol_type": "Liability",
+      "promoter_name": "",
+      "proposer_email": "",
+      "proposer_first_name": "",
+      "proposer_last_name": "",
+      "proposer_mobile": "",
+      "proposer_pincode": "845401",
+      "proposer_salutation": "",
+      "proposer_type": "Individual",
+      "q_agent_pan": "",
+      "q_office_location": "",
+      "q_producer_code": "2958590000",
+      "q_producer_email": "[REDACTED]",
+      "quote_id": "",
+      "regno_1": "BR",
+      "regno_2": "05",
+      "regno_3": "AK",
+      "regno_4": "0101",
+      "return_invoice": "false",
+      "rsa": "false",
+      "rtn_invoice": "false",
+      "side_car": "false",
+      "side_car_idv": "",
+      "sol_id": "",
+      "special_regno": "false",
+      "tppd_discount": "false",
+      "uw_discount": "",
+      "uw_loading": "",
+      "variant_code": "142154",
+      "veh_plying_city": "",
+      "vehicle_blind": "false",
+      "vehicle_idv": "",
+      "vehicle_make": "ROYAL ENFIELD",
+      "vehicle_model": "CLASSIC",
+      "vehicle_trails_racing": "false",
+      "vehicle_variant": "350 ABS SIGNALS",
+      "voluntary_amount": "",
+      "voluntary_deductibles": "false"
+    },
+    "carrier_response": {
+      "data": {
+        "BH_regno": false,
+        "business_type": "Roll Over",
+        "data": {
+          "addOnBundle": "",
+          "baseIDV": 0,
+          "breakInDays": 420,
+          "cngOrLpgKitIDV": 0,
+          "cngidv1": 0,
+          "cngidv2": 0,
+          "cngidv3": 0,
+          "cngidv4": 0,
+          "cngidv5": 0,
+          "currentYearNCB": 0,
+          "declines": {},
+          "electricalAccessoriesIDV": 0,
+          "eleidv1": 0,
+          "eleidv2": 0,
+          "eleidv3": 0,
+          "eleidv4": 0,
+          "eleidv5": 0,
+          "error": false,
+          "ex_showroom_price": "221000",
+          "exceptionRules": {},
+          "genderDiscount": 0,
+          "hasBreakIn": "Yes",
+          "inspectionRights": "",
+          "inspectionValidity": 0,
+          "lossOfAccessoriesIDV": 0,
+          "loss_acc_idv1": 0,
+          "loss_acc_idv2": 0,
+          "loss_acc_idv3": 0,
+          "loss_acc_idv4": 0,
+          "loss_acc_idv5": 0,
+          "max_idv": 0,
+          "maximumIDV": 0,
+          "min_idv": 0,
+          "minimumIDV": 0,
+          "moratoriumApprovalAuthority": "UW",
+          "moratoriumCode": "-1",
+          "neleidv1": 0,
+          "neleidv2": 0,
+          "neleidv3": 0,
+          "neleidv4": 0,
+          "neleidv5": 0,
+          "netPremium": 1816,
+          "net_premium": 1816,
+          "noOfPhotographs": "",
+          "nonElectricalAccessoriesIDV": 0,
+          "overrideInspection": false,
+          "proRataFactorOD": 0,
+          "referrals": {},
+          "refferal": "N",
+          "rsdDays": 0,
+          "sdidv1": 0,
+          "sdidv2": 0,
+          "sdidv3": 0,
+          "sdidv4": 0,
+          "sdidv5": 0,
+          "selfInspection": false,
+          "sideCarIDV": 0,
+          "systemIDVYearFive": 0,
+          "systemIDVYearFour": 0,
+          "systemIDVYearOne": 0,
+          "systemIDVYearThree": 0,
+          "systemIDVYearTwo": 0,
+          "thirdPartyInspection": false,
+          "underwritingMessages": {},
+          "vehicleAge": 2,
+          "vehicleIdv_1": 0,
+          "vehicleIdv_2": 0,
+          "vehicleIdv_3": 0,
+          "vehicleIdv_4": 0,
+          "vehicleIdv_5": 0,
+          "vehicleInspectionFlag": false,
+          "vehicleInspections": {},
+          "vehicle_idv": 0,
+          "vehicle_make_no": "1201",
+          "vehicle_model_no": "16796",
+          "vehicle_variant_no": "142154"
+        },
+        "dor": "2024-08-09",
+        "is_posp": "N",
+        "make_code": "1201",
+        "man_year": "2024",
+        "model_code": "16796",
+        "place_reg": "MOTIHARI",
+        "place_reg_no": "660",
+        "plan_type": "Standalone TP (1 year)",
+        "pol_dlts": {
+          "basic_od": 0,
+          "inspectionMsg": "",
+          "inspectionOverride": false,
+          "pp_curr_ncb": 0,
+          "refferal": "false",
+          "selfInspection": false,
+          "thirdPartyInspection": false,
+          "total_discount": 0,
+          "tp_tenure": "1",
+          "vehicleInspectionFlag": "false"
+        },
+        "pol_end_date": "2027-09-14",
+        "pol_start_date": "2026-09-15",
+        "policy_id": "P500215887650",
+        "premium_break_up": {
+          "cgst_prem": 0,
+          "final_premium": 2143,
+          "igst_prem": 327,
+          "net_premium": 1816,
+          "sgst_prem": 0,
+          "total_addOns": {
+            "consumbale_expense_prem": 0,
+            "dep_allowance_bat_prem": 0,
+            "dep_reimburse_prem": 0,
+            "elec_surge_secure_prem": 0,
+            "emergency_medical_expense_prem": 0,
+            "engine_secure_prem": 0,
+            "ncb_prem": 0,
+            "return_invoice_prem": 0,
+            "rsa_prem": 0,
+            "total_addon": 0,
+            "tyre_secure_prem": 0
+          },
+          "total_od_premium": {
+            "discount_od": {
+              "disc_antitheft_prem": 0,
+              "disc_auto_asso_prem": 0,
+              "disc_blind_handi_prem": 0,
+              "disc_side_car": 0,
+              "limited_own_od_prem": 0,
+              "voluntary_prem": 0
+            },
+            "loading_od": {},
+            "od": {
+              "add_towing_prem": 0,
+              "basic_od": 0,
+              "cng_lpg_od_prem": 0,
+              "driving_tution_od_prem": 0,
+              "electrical_prem": 0,
+              "geography_extension_od_prem": 0,
+              "imported_vehicle_prem": 0,
+              "loss_access_prem": 0,
+              "non_electrical_prem": 0,
+              "reliability_trials_od_prem": 0,
+              "side_car_prem": 0,
+              "vehicle_fitted_fuel_prem": 0
+            },
+            "total_od": 0
+          },
+          "total_tp_premium": {
+            "addi_pa_own_drive_prem": 0,
+            "addi_pa_unnamed_prem": 0,
+            "addi_tppd_prem": 0,
+            "basic_tp_prem": 1366,
+            "cng_lpg_tp_prem": 0,
+            "disc_limited_own_tp_prem": 0,
+            "disc_tppd_prem": 0,
+            "geo_extension_tp_prem": 0,
+            "ll_paid_driver_prem": 0,
+            "ll_paid_employee_prem": 0,
+            "pa_cover_prem": 450,
+            "pa_paid_driver_prem": 0,
+            "pa_unnamed_prem": 0,
+            "reliability_trials_tp_prem": 0,
+            "total_tp_prem": 1816
+          },
+          "ugst_prem": 0
+        },
+        "proposal_id": "PR500063872942",
+        "proposer_pincode": "845401",
+        "proposer_type": "Individual",
+        "q_agent_pan": "",
+        "q_office_location": 90280,
+        "q_producer_code": "2958590000",
+        "q_producer_email": "9158cc33-fc7b-4c82-a9b4-321fca52ca07@ucon.net",
+        "quote_datetime": "2026-09-14 17:10:29",
+        "quote_id": "Q500215887641",
+        "quote_no": "QT/26/6177191675",
+        "quote_stage": "completed",
+        "regno_1": "BR",
+        "regno_2": "05",
+        "regno_3": "AK",
+        "regno_4": "0101",
+        "sol_id": "",
+        "special_regno": "false",
+        "status": 0,
+        "variant_code": "142154",
+        "vehicle_make": "ROYAL ENFIELD",
+        "vehicle_model": "CLASSIC",
+        "vehicle_variant": "350 ABS SIGNALS"
+      },
+      "message_txt": "Quotation converted to proposal successfully",
+      "status": 200
+    },
+    "insuremo_response": {
+      "ClientRequestId": "f4cf0e1d-6a5a-4102-b987-94049f56dec9",
+      "CountryCode": "IND-2W",
+      "ProviderCode": "TATAAIG",
+      "Result": {
+        "BeforeVatPremium": "1816",
+        "CarrierCode": "25",
+        "CarrierProposalId": "PR500063872942",
+        "DuePremium": "2143",
+        "EffectiveDate": "2026-09-15",
+        "ExpiryDate": "2027-09-14",
+        "IGSTPer": "327",
+        "IsInspectionRequire": false,
+        "PolicyCustomerList": [
+          {
+            "PINCode": "845401"
+          }
+        ],
+        "PolicyHolderType": "Individual",
+        "PolicyLobList": [
+          {
+            "PolicyRiskList": [
+              {
+                "ChassisMax": 0,
+                "ChassisMin": 0,
+                "IDV": 0,
+                "Make": "ROYAL ENFIELD",
+                "ManufactureYear": "2024",
+                "MinSpecialOD": "",
+                "Model": "CLASSIC",
+                "PolicyCoverageList": [
+                  {
+                    "PACoverPremOwnerDriver": "450",
+                    "ProductElementCode": "C0000654"
+                  },
+                  {
+                    "BasicTPL": "1366",
+                    "ProductElementCode": "C0000532"
+                  }
+                ],
+                "PrevInsuranceList": [
+                  {
+                    "CurrentNcbPer": 0,
+                    "IsNCB": 0,
+                    "IsPrevPolicyAvailable": 1,
+                    "NCBAmount": "0",
+                    "PrevPolicyExpiryDate": "2025-07-22",
+                    "PrevPolicyNCB": "ZERO",
+                    "PreviousInsurerCode": "16"
+                  }
+                ],
+                "ProductElementCode": "R00004",
+                "RegistrationDate": "2024-08-09",
+                "RegistrationNo": "BR05AK0101",
+                "Variant": "350 ABS SIGNALS",
+                "VehicleAge": 2,
+                "VehicleIDV": "0"
+              }
+            ],
+            "ProductCode": "COMMOTOR",
+            "ProductElementCode": "COMMOTOR"
+          }
+        ],
+        "ProductCode": "COMMOTOR",
+        "ServiceTax": "0"
+      },
+      "ResultCode": 1,
+      "TransactionType": 1001
+    }
+  }
+]
