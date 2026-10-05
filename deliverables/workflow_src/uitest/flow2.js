@@ -17,7 +17,7 @@ const shotDir = process.argv[2] || 'shots3'; const prod = process.argv[3] || 'HC
   const out = []; const ok = (n, c, x) => { out.push({ n, ok: !!c, x }); console.log((c ? 'PASS ' : 'FAIL ') + n + (x ? ' | ' + String(x).slice(0, 140) : '')); };
   const shot = n => page.screenshot({ path: `${shotDir}/${n}.png`, fullPage: true });
   try {
-    await page.goto(PAGE); await page.waitForSelector('#d_body .tiles', { timeout: 120000 });
+    await page.goto(PAGE); await page.waitForSelector('#lg_session', { state: 'visible' }); await page.click('#lg_session'); await page.waitForSelector('#d_body .tiles', { timeout: 120000 });
     ok('dashboard tiles', await page.locator('#d_body .tile').count() >= 6, await page.locator('#d_body .tile').count()); ok('dashboard charts', await page.locator('#d_body svg').count() >= 3);
     ok('user chip shows roles', /Maker/.test(await page.textContent('#userChip')) && /Proposal Checker/.test(await page.textContent('#userChip')), await page.textContent('#userChip'));
     ok('nav has all role items', await page.locator('#side button').count() === 6, await page.locator('#side button').allTextContents());
@@ -32,7 +32,7 @@ const shotDir = process.argv[2] || 'shots3'; const prod = process.argv[3] || 'HC
     await page.click('#btnCreateProp'); await page.waitForSelector('#n_done .alert', { timeout: 90000 });
     const done = await page.textContent('#n_done'); const pno = (done.match(/P[A-Z]+\d{8,}/) || [])[0]; ok('maker submits for approval', /submitted for approval/.test(done) && pno, pno); ok('submit shows alert to checker', /Proposal Checker/.test(done), ''); await shot('04_submitted');
     // my submissions
-    await page.click('#side button[data-v="mine"]'); await page.waitForSelector('#qm_tbl table', { timeout: 60000 }); await page.selectOption('#qm_pr', prod); await page.waitForTimeout(1500); await page.waitForSelector('#qm_tbl table, #qm_tbl .empty');
+    await page.click('#side button[data-v="mine"]'); await page.waitForSelector('#qm_tbl table', { timeout: 60000 }); await page.selectOption('#qm_pr', prod); await page.waitForFunction(n => (document.getElementById('qm_tbl').textContent || '').includes(n), pno, { timeout: 30000 }).catch(() => {});
     ok('my submissions lists it', (await page.textContent('#qm_tbl')).includes(pno), pno); await shot('05_mine');
     // checker queue
     await page.click('#side button[data-v="papprove"]'); await page.waitForSelector('#qp_tbl table', { timeout: 60000 }); await page.selectOption('#qp_pr', prod); await page.waitForTimeout(2500);

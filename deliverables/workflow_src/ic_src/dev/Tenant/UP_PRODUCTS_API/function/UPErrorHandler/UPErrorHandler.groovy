@@ -47,6 +47,14 @@ Map<String, Object> handle(String apiName, Exception ex) {
             message = "Validation failed: " + fieldErrors.size() + " field error(s)"
             code = "UP-VALIDATION"
         }
+    } else if (ex.getClass().getName().endsWith("MultipleBusinessException") && String.valueOf(ex.getMessage()).startsWith("Policy Validation Error")) {
+        // the platform's own policy validation (code tables, data dictionary) rejected the request: a caller problem, shown as 400 with the platform's text
+        status = 400
+        code = "UP-PLATFORM-VALIDATION"
+        message = String.valueOf(ex.getMessage())
+        if (isInternalText(message)) {
+            message = configText("MsgPlatformInput", "A value in the request could not be processed.")
+        }
     } else if (ex instanceof IllegalStateException) {
         // the detail (which table / key is missing) stays in the platform log; the caller gets the generic text and the trace id
         code = "UP-CONFIG"

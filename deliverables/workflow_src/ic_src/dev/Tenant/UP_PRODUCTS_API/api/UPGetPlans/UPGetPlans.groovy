@@ -5,6 +5,7 @@
  * Optional: PremiumModeCode, PolicyTerm. Age and term rules are checked when the date of birth is supplied.
  */
 import com.insuremo.icomposer.utils.IComposerJsonUtils
+import com.insuremo.sdk.services.quotation.QuotationSdkClient
 
 UPErrorHandler errorHandler = (UPErrorHandler) getCommonService("UPErrorHandler")
 try {
@@ -25,6 +26,14 @@ try {
     String modeCode = util.str(input.get("PremiumModeCode"))
     products.getVariant(productCode, subcode)
     Map<String, Object> rule = products.getRule(productCode, subcode)
+
+    // Same gate as the PA001 Get Plans: the platform's own quotation validation (data dictionary and configured rules) runs first; the result is not used,
+    // a rejection stops the request. Switched by UP_ApiConfig GetPlansPlatformValidate (TrueValue = on).
+    if (util.isYes(util.cfg("GetPlansPlatformValidate", "*"))) {
+        QuotationSdkClient quotationSdkClient = (QuotationSdkClient) getSDK("com.insuremo.sdk.services.quotation.QuotationSdkClient")
+        Map<String, Object> platformCopy = (Map<String, Object>) IComposerJsonUtils.fromJSON(IComposerJsonUtils.toJSON(input), Map.class)
+        quotationSdkClient.quotationApi().newValidateRequestBuilder().eventCode("").langId("").requestBody(platformCopy).doRequest()
+    }
 
     List<Map<String, Object>> lobs = (List<Map<String, Object>>) input.get("PolicyLobList")
     if (lobs == null || lobs.isEmpty()) {

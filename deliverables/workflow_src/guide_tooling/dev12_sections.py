@@ -25,12 +25,13 @@ def read_first(g):
         ["12", "The specification (v1.1), UAT plan, policy model, OpenAPI file and Postman collection were **not updated** for v1.2. This guide is the only document that describes the new APIs.", "Section 15.7 holds request and response examples. Update the other documents before they are given to partners.", "15.7, 19"],
         ["13", "`GET /up/me` omits the `Roles` list when the caller has no roles (the platform drops empty lists).", "Treat a missing `Roles` as an empty list (the portal does).", "15.2"],
         ["14", "An inactive probe API `UPSpikeWho` (path `/up/spike-who`) remains in MC from the identity spike. The `imo` tool cannot delete an API.", "Delete it in the iComposer console before UAT. It must not be deployed.", "19"],
+        ["16", "**Get Plans runs the platform's quotation validation first** (as the PA001 Get Plans does), switched by `GetPlansPlatformValidate` (MC: Y). It rejects code values outside their code table (gender, residency), an unknown risk element and non-numeric salary, but accepts a wrong ID type and marital status code (neither the platform nor our rules check them).", "A quote that was accepted before can now be refused with 400 `UP-PLATFORM-VALIDATION` or the platform's own 400. Set the key to N to return to the table-only behaviour.", "5, 9"],
         ["15", "Static type checking on push: `UPShaper.shapeResponse` returns `Object` (cast it), SMS and email builders take `requestBody(...)`, an anonymous `Comparator` may not use method variables.", "Compile errors on push usually mean one of these; the fix is a cast or a different method name.", "3.3"]], [4, 36, 46, 14])
     H2("1.5 Release History")
     TBL(["Version", "What it added"], [
         ["1.0", "13 APIs for 7 products (get plans, proposal, update, issue, load, reject, documents, cancel check and approve, master data, commission, feed file), table-driven validation, security controls, full test suite, collections."],
         ["1.1", "Insurer (`CarrierCode` / `CarrierName`, table `UP_Carrier`) in every response and an optional validated request field; developer guide and UAT plan."],
-        ["1.2", "Roles (Maker, Proposal Checker, Cancellation Checker) with maker-checker rules; work queues, cancellation detail, dashboard, share by email / SMS and automatic alerts; the staff portal (UIC page) with sign-in; 5 new APIs, 3 new functions, 2 new tables, about 32 new configuration keys and 29 new field rules; analysis of PA001 and iHub."]], [12, 88])
+        ["1.2", "Roles (Maker, Proposal Checker, Cancellation Checker) with maker-checker rules; work queues, cancellation detail, dashboard, share by email / SMS and automatic alerts; the staff portal (UIC page) with sign-in; 5 new APIs, 3 new functions, 2 new tables, about 33 new configuration keys and 29 new field rules; analysis of PA001 and iHub. Update 5 Oct: Get Plans now runs the platform quotation validation like PA001 (key `GetPlansPlatformValidate`) and platform policy-validation errors return 400."]], [12, 88])
 
 
 def sections(g):
@@ -269,4 +270,5 @@ def sections(g):
         ["5", "Dashboard accuracy and speed (cap 60, 7 to 10 s)", "Pre-aggregation (batch) or a reporting table if figures must be exact"], ["6", "Rejected cancellation requests not listable", "Record the decision outside the platform or read endorsement history"],
         ["7", "No audit table (who approved what, when)", "Audit table or the platform audit module"], ["8", "ID number and `TempData` in responses", "Mask / strip in `UPShaper`"],
         ["9", "Edit of a submitted proposal in the portal", "Add an edit view (fields are masked in the load response: ask for them again)"], ["10", "Documents lag behind the code", "Update specification, plan, model, OpenAPI, collection"],
-        ["11", "PA001 / iHub open questions (18.4)", "Live check after login"], ["12", "Unit tests for pure functions", "Data-driven tests"]], [5, 50, 45])
+        ["11", "PA001 / iHub open questions (18.4)", "Live check after login"], ["12", "Unit tests for pure functions", "Data-driven tests"],
+        ["13", "Wrong ID type and marital status codes are accepted by Get Plans (neither the platform validation nor `UP_FieldRule` checks them)", "Add `UP_FieldRule` rows with `CodeTable` IdType / InsMaritalStatus (note the odd values in InsMaritalStatus)"]], [5, 50, 45])
