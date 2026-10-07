@@ -37,12 +37,13 @@ def set_rtl_run(run, font):
     if rf is None: rf = OxmlElement("w:rFonts"); rpr.append(rf)
     for k in ("w:ascii", "w:hAnsi", "w:cs"): rf.set(qn(k), font)
 def fmt_run(run, font, size, bold=False, color=None, rtl=False):
-    run.font.name = font; run.font.size = Pt(size); run.font.bold = bold
+    run.font.name = font; run.font.size = Pt(size); run.font.bold = bold; run.font.cs_bold = bold
     rpr = run._r.get_or_add_rPr(); rf = rpr.find(qn("w:rFonts"))
+    sz = OxmlElement("w:szCs"); sz.set(qn("w:val"), str(int(size * 2))); rpr.append(sz)
     if rf is None: rf = OxmlElement("w:rFonts"); rpr.append(rf)
     rf.set(qn("w:eastAsia"), font); rf.set(qn("w:cs"), font)
     if color: run.font.color.rgb = RGBColor.from_string(color)
-    if rtl: set_rtl_run(run, "Segoe UI")
+    if rtl: set_rtl_run(run, "Arial")
 def para_fmt(p, rtl=False, align=None, before=0, after=0):
     pf = p.paragraph_format; pf.space_before = Pt(before); pf.space_after = Pt(after); pf.line_spacing = 1.0
     ppr = p._p.get_or_add_pPr()
@@ -82,7 +83,10 @@ def inline(p, nodes, font, size, bold, rtl, color=None):
         if isinstance(n, str):
             t = re.sub(r"\s+", " ", n.replace("\xa0", " ") if n.strip() == "\xa0" else n)
             if t.strip() == "" and not p.runs: continue
-            fmt_run(p.add_run(t), font, size, bold, color, rtl)
+            if rtl:
+                for seg in re.split(r"(\{\{[^}]*\}\})", t):
+                    if seg: fmt_run(p.add_run(seg), "Arial", size, bold, color, rtl and not seg.startswith("{{"))
+            else: fmt_run(p.add_run(t), font, size, bold, color, rtl)
         elif n.tag == "br": p.add_run().add_break()
         elif n.tag == "b": inline(p, n.c, font, size, True, rtl, color)
         elif n.tag == "img": add_img(p, n)
@@ -93,7 +97,7 @@ BLOCK = {"div", "table"}
 def render_cell(cell, td, ctx):
     cls = td.cls; rtl = "ar" in cls or "arb" in cls
     kind = ctx["cls"]; tp = "tp" in ctx["parents"]
-    font = "Segoe UI" if rtl else ("Arial" if (doc_kind == "cert" or tp) else "Times New Roman")
+    font = "Arial" if rtl else ("Arial" if (doc_kind == "cert" or tp) else "Times New Roman")
     base = 8.5 if tp and not rtl else (9 if (tp or doc_kind == "cert") else (9.5 if rtl else 9))
     st = td.st; size = px(st.get("font-size"))[0] or base
     bold = "b" in cls or "arb" in cls or ctx.get("bold", False); color = "FFFFFF" if ctx.get("white") else None
@@ -128,22 +132,33 @@ def render_table(d, tnode, parents):
     if len(colw) != ncols: colw = [100.0 / ncols] * ncols
     tw = 186.0; tbl = d.add_table(rows=0, cols=ncols); tbl.alignment = WD_TABLE_ALIGNMENT.CENTER; tbl.autofit = False
     tblPr = tbl._tbl.tblPr; lay = OxmlElement("w:tblLayout"); lay.set(qn("w:type"), "fixed"); tblPr.append(lay); borders(tbl, bordered)
+    grid = tbl._tbl.tblGrid
+    for gc, w in zip(grid.findall(qn("w:gridCol")), colw): gc.set(qn("w:w"), str(int(w * tw / 100.0 * 56.7)))
+    tw_el = OxmlElement("w:tblW"); tw_el.set(qn("w:w"), str(int(tw * 56.7))); tw_el.set(qn("w:type"), "dxa")
+    for old in tblPr.findall(qn("w:tblW")): tblPr.remove(old)
+    tblPr.append(tw_el)
     for ri, (tr, pre) in enumerate(rows):
         row = tbl.add_row(); tds = [x for x in tr.c if not isinstance(x, str) and x.tag == "td"]
-        ci = 0; ctxrow = {"cls": cls, "parents": parents, "white": "bh" in tr.cls or "bar" in tr.cls, "bold": "bh" in tr.cls or "bar" in tr.cls}
+        ci = 0; rowh = 0; ctxrow = {"cls": cls, "parents": parents, "white": "bh" in tr.cls or "bar" in tr.cls, "bold": "bh" in tr.cls or "bar" in tr.cls}
         for k, td in enumerate(tds):
             span = int(td.a.get("colspan", 1)); cell = row.cells[ci]
             if span > 1: cell = cell.merge(row.cells[ci + span - 1])
             w = sum(colw[ci:ci + span]) * tw / 100.0; cell.width = Mm(w)
-            if k == 0 and pre: td.c.insert(0, "".join(pre) + " ")
-            if ri == len(rows) - 1 and k == len(tds) - 1 and tail: td.c.append(" " + "".join(tail))
             render_cell(cell, td, ctxrow)
-            if bordered: cell_margins(cell, 1.2, 1.6)
+            if k == 0 and pre:
+                mp = cell.paragraphs[0].insert_paragraph_before(); para_fmt(mp); fmt_run(mp.add_run("".join(pre)), "Arial", 7, False, "7F7F7F")
+            if ri == len(rows) - 1 and k == 0 and tail:
+                mp = cell.add_paragraph(); para_fmt(mp); fmt_run(mp.add_run("".join(tail)), "Arial", 7, False, "7F7F7F")
+            if bordered:
+                cell_margins(cell, 1.2, 1.6); tcb = OxmlElement("w:tcBorders")
+                for e in ("top", "left", "bottom", "right"):
+                    x = OxmlElement("w:" + e); x.set(qn("w:val"), "single"); x.set(qn("w:sz"), "4"); x.set(qn("w:space"), "0"); x.set(qn("w:color"), "000000"); tcb.append(x)
+                cell._tc.get_or_add_tcPr().append(tcb)
             if ctxrow["white"] and "bar" in tr.cls: shade(cell, "000000")
             elif ctxrow["white"]: shade(cell, "2F7CA3")
-            h = px(td.st.get("height"))[0]
-            if h or (bordered and doc_kind == "cert" and "g" in cls): row.height = Mm(h or 5.8); row.height_rule = 1
+            h = px(td.st.get("height"))[0]; rowh = max(rowh, h or 0)
             ci += span
+        if rowh or (bordered and doc_kind == "cert" and "g" in cls): row.height = Mm(rowh or 5.8); row.height_rule = 1
     return tbl
 def spacer(d, pts=4):
     p = d.add_paragraph(); para_fmt(p); r = p.add_run(" "); r.font.size = Pt(pts); p.paragraph_format.line_spacing = Pt(pts)
@@ -154,17 +169,20 @@ def walk(d, nodes, parents=()):
             if n.strip(): p = d.add_paragraph(); para_fmt(p); inline(p, [n.strip()], "Arial", 9, False, False)
             continue
         c = n.cls
-        if n.tag == "table": render_table(d, n, parents)
+        if n.tag == "table":
+            if "sig" in c: spacer(d, 10)
+            render_table(d, n, parents)
         elif n.tag == "img": p = d.add_paragraph(); para_fmt(p); add_img(p, n)
         elif n.tag == "div":
             if "gap" in c or "sp" in c: spacer(d, 4); continue
-            if "foot" in c: p = d.add_paragraph(); para_fmt(p); [add_img(p, i, width_mm=186) for i in n.c if not isinstance(i, str) and i.tag == "img"]; continue
+            mt = px(n.st.get("margin-top"))[0] if px(n.st.get("margin-top"))[1] == "mm" else 0
+            if "foot" in c: p = d.add_paragraph(); para_fmt(p, before=(mt or 0) * 2.83); [add_img(p, i, width_mm=186) for i in n.c if not isinstance(i, str) and i.tag == "img"]; continue
             if "pg" in c:
                 pagebreak(d); p = d.paragraphs[-1]; p2 = d.add_paragraph(); para_fmt(p2, align="center")
                 [add_img(p2, i, height_mm=255) for i in n.c if not isinstance(i, str) and i.tag == "img"]; continue
             if "tp" in c: pagebreak(d); walk(d, n.c, parents + ("tp",)); continue
             if "h3" in c: p = d.add_paragraph(); para_fmt(p, before=4, after=2); inline(p, n.c, "Arial" if n.st.get("font-family") else "Times New Roman", 10, True, False); continue
-            p = d.add_paragraph(); para_fmt(p); inline(p, n.c, "Arial", 9, False, False)
+            p = d.add_paragraph(); para_fmt(p, before=(mt or 0) * 2.83); inline(p, n.c, "Arial", 9, False, False)
         else: walk(d, n.c, parents)
 def footer_fields(d):
     p = d.sections[0].footer.paragraphs[0]; para_fmt(p, align="right")
@@ -237,9 +255,9 @@ def render_header(d, tnode):
             para_fmt(p, before=2, after=2); inline(p, dv.c, "Arial", 12, True, False, "1F6A99")
             ppr = p._p.get_or_add_pPr(); bd = OxmlElement("w:pBdr")
             for e in ("top", "left", "bottom", "right"): x = OxmlElement("w:" + e); x.set(qn("w:val"), "single"); x.set(qn("w:sz"), "4"); x.set(qn("w:space"), "4"); x.set(qn("w:color"), "CCCCCC"); bd.append(x)
-            ppr.append(bd)
+            ppr.append(bd); p.paragraph_format.left_indent = Mm(3); p.paragraph_format.right_indent = Mm(40)
         elif "t1" in cl: para_fmt(p, before=8); inline(p, dv.c, "Times New Roman", 17, True, False)
-        elif "t2" in cl: para_fmt(p, True, "right", before=4); inline(p, dv.c, "Segoe UI", 11, True, True)
+        elif "t2" in cl: para_fmt(p, True, "right", before=4); inline(p, dv.c, "Arial", 11, True, True)
         else: para_fmt(p); inline(p, dv.c, "Arial", 9, False, False)
     pr = R.paragraphs[0]; para_fmt(pr, align="right")
     for i in tds[1].c:
