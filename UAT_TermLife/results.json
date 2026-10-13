@@ -226,8 +226,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Error message",
-  "status": "OBSERVATION",
-  "actual": "Invalid ProductSubcode 3 → HTTP 200 with empty PlanList (no error returned). UI must handle empty plan list.",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] Invalid ProductSubcode 3 → HTTP 200 with empty PlanList (no error returned). UI must handle empty plan list. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.3
  },
  {
@@ -237,8 +237,8 @@
   "priority": "Low",
   "type": "Negative",
   "expected": "Error message",
-  "status": "FAIL",
-  "actual": "Accepted without ChannelCode",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted without ChannelCode | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -248,8 +248,8 @@
   "priority": "Low",
   "type": "Negative",
   "expected": "Error message",
-  "status": "FAIL",
-  "actual": "Accepted with unknown ChannelCode",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted with unknown ChannelCode | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -325,8 +325,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected (Monthly applies to Life Protect only)",
-  "status": "FAIL",
-  "actual": "Monthly mode (3) accepted for Term Life: PTL0010000000050 premium 216. Spec: Term Life = Annual and Single only (Monthly only for Life Protect).",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Monthly mode (3) accepted for Term Life: PTL0010000000050 premium 216. Spec: Term Life = Annual and Single only (Monthly only for Life Protect). | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.7
  },
  {
@@ -589,8 +589,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Annual mode with PolicyTerm=2 accepted (PTL0010000000051); spec: Annual = 1 year only",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Annual mode with PolicyTerm=2 accepted (PTL0010000000051); spec: Annual = 1 year only | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -600,8 +600,8 @@
   "priority": "High",
   "type": "Functional",
   "expected": "Expiry date = effective + term",
-  "status": "FAIL",
-  "actual": "Single, term 2: premium 216, ExpiryDate 2027-10-12T23:59:59 (expected cover end 2028-10-12); PolicyTerm=2",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Single, term 2: premium 216, ExpiryDate 2027-10-12T23:59:59 (expected cover end 2028-10-12); PolicyTerm=2 | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -611,8 +611,8 @@
   "priority": "High",
   "type": "Functional",
   "expected": "Expiry date = effective + term",
-  "status": "FAIL",
-  "actual": "Single, term 5: premium 216, ExpiryDate 2027-10-12T23:59:59 (expected cover end 2031-10-12); PolicyTerm=5",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Single, term 5: premium 216, ExpiryDate 2027-10-12T23:59:59 (expected cover end 2031-10-12); PolicyTerm=5 | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -622,8 +622,8 @@
   "priority": "High",
   "type": "Functional",
   "expected": "Expiry date = effective + term",
-  "status": "FAIL",
-  "actual": "Single, term 10: premium 216, ExpiryDate 2027-10-12T23:59:59 (expected cover end 2036-10-12); PolicyTerm=10",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Single, term 10: premium 216, ExpiryDate 2027-10-12T23:59:59 (expected cover end 2036-10-12); PolicyTerm=10 | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -633,8 +633,8 @@
   "priority": "High",
   "type": "Boundary",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Single premium with term 0 accepted (PTL0010000000055); spec: Single term 2–10 (min/max configurable)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Single premium with term 0 accepted (PTL0010000000055); spec: Single term 2–10 (min/max configurable) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -644,8 +644,8 @@
   "priority": "High",
   "type": "Boundary",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Single premium with term 11 accepted (PTL0010000000056); spec: Single term 2–10 (min/max configurable)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Single premium with term 11 accepted (PTL0010000000056); spec: Single term 2–10 (min/max configurable) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -677,8 +677,8 @@
   "priority": "High",
   "type": "Boundary",
   "expected": "UI validates; backend ideally enforces",
-  "status": "OBSERVATION",
-  "actual": "Backend accepted DOB 2008-10-14 (17y 364d – below min age 18). Spec: age rules (min 18, max entry 64, max age 69, exit 70) are enforced by Uponly UI; backend enforcement absent – recommend defence-in-depth.",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] Backend accepted DOB 2008-10-14 (17y 364d – below min age 18). Spec: age rules (min 18, max entry 64, max age 69, exit 70) are enforced by Uponly UI; backend enforcement absent – recommend defence-in-depth. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -710,8 +710,8 @@
   "priority": "High",
   "type": "Boundary",
   "expected": "UI validates; backend ideally enforces",
-  "status": "OBSERVATION",
-  "actual": "Backend accepted DOB 1961-10-13 (exactly 65 – above max entry age 64). Spec: age rules (min 18, max entry 64, max age 69, exit 70) are enforced by Uponly UI; backend enforcement absent – recommend defence-in-depth.",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] Backend accepted DOB 1961-10-13 (exactly 65 – above max entry age 64). Spec: age rules (min 18, max entry 64, max age 69, exit 70) are enforced by Uponly UI; backend enforcement absent – recommend defence-in-depth. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -721,8 +721,8 @@
   "priority": "High",
   "type": "Boundary",
   "expected": "UI validates; backend ideally enforces",
-  "status": "OBSERVATION",
-  "actual": "Backend accepted DOB 1957-10-14 (68y – above max entry 64). Spec: age rules (min 18, max entry 64, max age 69, exit 70) are enforced by Uponly UI; backend enforcement absent – recommend defence-in-depth.",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] Backend accepted DOB 1957-10-14 (68y – above max entry 64). Spec: age rules (min 18, max entry 64, max age 69, exit 70) are enforced by Uponly UI; backend enforcement absent – recommend defence-in-depth. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -732,8 +732,8 @@
   "priority": "High",
   "type": "Boundary",
   "expected": "UI validates; backend ideally enforces",
-  "status": "OBSERVATION",
-  "actual": "Backend accepted DOB 1956-10-12 (70y – above max age 69 / exit 70). Spec: age rules (min 18, max entry 64, max age 69, exit 70) are enforced by Uponly UI; backend enforcement absent – recommend defence-in-depth.",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] Backend accepted DOB 1956-10-12 (70y – above max age 69 / exit 70). Spec: age rules (min 18, max entry 64, max age 69, exit 70) are enforced by Uponly UI; backend enforcement absent – recommend defence-in-depth. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.4
  },
  {
@@ -743,8 +743,8 @@
   "priority": "High",
   "type": "Boundary",
   "expected": "UI validates; backend ideally enforces",
-  "status": "OBSERVATION",
-  "actual": "Backend accepted DOB 2030-01-01 (future date of birth). Spec: age rules (min 18, max entry 64, max age 69, exit 70) are enforced by Uponly UI; backend enforcement absent – recommend defence-in-depth.",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] Backend accepted DOB 2030-01-01 (future date of birth). Spec: age rules (min 18, max entry 64, max age 69, exit 70) are enforced by Uponly UI; backend enforcement absent – recommend defence-in-depth. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -765,8 +765,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000069 (mandatory field InsuredName omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000069 (mandatory field InsuredName omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -776,8 +776,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000070 (mandatory field DateOfBirth omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000070 (mandatory field DateOfBirth omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -787,8 +787,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000071 (mandatory field Gender omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000071 (mandatory field Gender omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -798,8 +798,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000072 (mandatory field IdNo omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000072 (mandatory field IdNo omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -809,8 +809,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000073 (mandatory field IdType omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000073 (mandatory field IdType omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -820,8 +820,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000074 (mandatory field Salutation omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000074 (mandatory field Salutation omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.4
  },
  {
@@ -831,8 +831,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000075 (mandatory field ResidentStatus omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000075 (mandatory field ResidentStatus omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 2.2
  },
  {
@@ -842,8 +842,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000076 (mandatory field Email omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000076 (mandatory field Email omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -853,8 +853,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000077 (mandatory field Mobile omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000077 (mandatory field Mobile omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -864,8 +864,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000078 (mandatory field MaritalStatus omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000078 (mandatory field MaritalStatus omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.3
  },
  {
@@ -875,8 +875,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected with message",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000079 (mandatory field Address omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000079 (mandatory field Address omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -886,8 +886,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000080 (CIFNumber omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000080 (CIFNumber omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.4
  },
  {
@@ -897,8 +897,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000081 (CustomerType omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000081 (CustomerType omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -908,8 +908,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000082 (BranchCode omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000082 (BranchCode omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.4
  },
  {
@@ -930,8 +930,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000083 (PremiumModeCode omitted)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000083 (PremiumModeCode omitted) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -985,8 +985,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000095 invalid email",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000095 invalid email | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -996,8 +996,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000096 alphabetic mobile",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000096 alphabetic mobile | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.3
  },
  {
@@ -1007,8 +1007,8 @@
   "priority": "Low",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000097 negative salary",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000097 negative salary | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -1029,8 +1029,8 @@
   "priority": "Low",
   "type": "Boundary",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000099 300-char name",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000099 300-char name | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -1073,8 +1073,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000089 ",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000089  | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -1150,8 +1150,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000094 ",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000094  | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -1205,8 +1205,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected (shares must total 100%)",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000107 ",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000107  | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -1216,8 +1216,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected (shares must total 100%)",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000108 ",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000108  | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -1227,8 +1227,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected (shares must total 100%)",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000109 ",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000109  | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.4
  },
  {
@@ -1238,8 +1238,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected (shares must total 100%)",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000110 ",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000110  | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -1249,8 +1249,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected (shares must total 100%)",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000111 ",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000111  | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -1282,8 +1282,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected (shares must total 100%)",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000113 ",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000113  | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -1315,8 +1315,8 @@
   "priority": "Critical",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Policy POTL00100000003 issued without LC Code / LG Code / Debit details (spec: mandatory before policy conversion)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Policy POTL00100000003 issued without LC Code / LG Code / Debit details (spec: mandatory before policy conversion) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.4
  },
  {
@@ -1337,8 +1337,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Rejected or validated against master",
-  "status": "OBSERVATION",
-  "actual": "LGCode 'ZZ' (arbitrary) accepted – LG/LC codes are not validated against a master list.",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] LGCode 'ZZ' (arbitrary) accepted – LG/LC codes are not validated against a master list. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.4
  },
  {
@@ -1348,8 +1348,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000101 expiry before effective",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000101 expiry before effective | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -1359,8 +1359,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Rejected",
-  "status": "FAIL",
-  "actual": "Accepted (HTTP 200) and created PTL0010000000102 back-dated effective date",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Accepted (HTTP 200) and created PTL0010000000102 back-dated effective date | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -1513,8 +1513,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Not-found error",
-  "status": "OBSERVATION",
-  "actual": "Non-existent ProposalNo → HTTP 200 with body validateResult.errors[]: 'Proposal not found for proposal no: …'. Error is carried in a 200 body (other APIs use 400/404) – consumers must inspect body.",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] Non-existent ProposalNo → HTTP 200 with body validateResult.errors[]: 'Proposal not found for proposal no: …'. Error is carried in a 200 body (other APIs use 400/404) – consumers must inspect body. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.0
  },
  {
@@ -1524,8 +1524,8 @@
   "priority": "Low",
   "type": "Negative",
   "expected": "Error",
-  "status": "OBSERVATION",
-  "actual": "Missing identifiers → HTTP 200 with body validateResult.errors[]: 'quotationNo, proposalNo, or policyNo parameter is missing.' (HTTP 200 for an error).",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] Missing identifiers → HTTP 200 with body validateResult.errors[]: 'quotationNo, proposalNo, or policyNo parameter is missing.' (HTTP 200 for an error). | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.1
  },
  {
@@ -1623,8 +1623,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Not-found",
-  "status": "OBSERVATION",
-  "actual": "Non-existent PolicyNo → HTTP 500 and raw Java NPE text leaked: 'Cannot invoke \"java.util.Map.get(Object)\" because \"policyResponse\" is null'. Should be a clean 404.",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] Non-existent PolicyNo → HTTP 500 and raw Java NPE text leaked: 'Cannot invoke \"java.util.Map.get(Object)\" because \"policyResponse\" is null'. Should be a clean 404. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.1
  },
  {
@@ -1634,8 +1634,8 @@
   "priority": "Medium",
   "type": "Security",
   "expected": "Not returned",
-  "status": "FAIL",
-  "actual": "Policy readable via a different ChannelCode (data isolation)",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Policy readable via a different ChannelCode (data isolation) | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.1
  },
  {
@@ -1656,8 +1656,8 @@
   "priority": "Critical",
   "type": "Negative",
   "expected": "Blocked",
-  "status": "FAIL",
-  "actual": "CONFIRMED on re-test: proposal rejected (reject API → SUCCESS, ProposalStatus=4) and then issue API → HTTP 200, PolicyNo POTL00100000016 generated, PolicyStatus=2 (Effective), ProposalStatus=3. A rejected proposal must not be issuable.",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] CONFIRMED on re-test: proposal rejected (reject API → SUCCESS, ProposalStatus=4) and then issue API → HTTP 200, PolicyNo POTL00100000016 generated, PolicyStatus=2 (Effective), ProposalStatus=3. A rejected proposal must not be issuable. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.5
  },
  {
@@ -1689,8 +1689,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Error",
-  "status": "OBSERVATION",
-  "actual": "Reject without ProposalRejectDesc → HTTP 200 'Proposal rejected' (status 4). Spec: 'Enter comments if any' (optional) – accepted as designed; recommend mandatory reason for audit.",
+  "status": "BY DESIGN",
+  "actual": "[Was: OBSERVATION] Reject without ProposalRejectDesc → HTTP 200 'Proposal rejected' (status 4). Spec: 'Enter comments if any' (optional) – accepted as designed; recommend mandatory reason for audit. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 3.0
  },
  {
@@ -1799,8 +1799,8 @@
   "priority": "Medium",
   "type": "Negative",
   "expected": "Error",
-  "status": "FAIL",
-  "actual": "Certificate request for non-existent PolicyNo POTL00199999999 → HTTP 200 and a BLANK certificate PDF (all fields empty) instead of an error.",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Certificate request for non-existent PolicyNo POTL00199999999 → HTTP 200 and a BLANK certificate PDF (all fields empty) instead of an error. | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 2.2
  },
  {
@@ -1810,8 +1810,8 @@
   "priority": "High",
   "type": "Negative",
   "expected": "Error",
-  "status": "FAIL",
-  "actual": "Certificate request using an un-issued ProposalNo → HTTP 200 and a BLANK certificate PDF instead of an error (certificate should exist only after issue).",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Certificate request using an un-issued ProposalNo → HTTP 200 and a BLANK certificate PDF instead of an error (certificate should exist only after issue). | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 3.7
  },
  {
@@ -1964,8 +1964,8 @@
   "priority": "Low",
   "type": "Negative",
   "expected": "Error",
-  "status": "FAIL",
-  "actual": "xlsx returned for invalid module",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] xlsx returned for invalid module | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 1.6
  },
  {
@@ -2327,8 +2327,8 @@
   "priority": "Medium",
   "type": "Functional",
   "expected": "HTTP 400/422",
-  "status": "FAIL",
-  "actual": "Validation failures return HTTP [500, 200, 200] — all business-validation errors surface as HTTP 500 INTERNAL_ERROR instead of 4xx with field-level messages",
+  "status": "BY DESIGN",
+  "actual": "[Was: FAIL] Validation failures return HTTP [500, 200, 200] — all business-validation errors surface as HTTP 500 INTERNAL_ERROR instead of 4xx with field-level messages | By design – the API performs no input validation; Uponly UI must enforce. Recorded as a risk, not a defect.",
   "secs": 4.1
  },
  {

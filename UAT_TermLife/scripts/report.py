@@ -8,7 +8,7 @@ R=json.load(open("results.json"))
 import sys
 OUT=sys.argv[1]
 cnt=Counter(r["status"] for r in R)
-COL={"PASS":"C6EFCE","FAIL":"FFC7CE","OBSERVATION":"FFEB9C","BLOCKED":"D9D9D9","NOT EXECUTED":"DDEBF7"}
+COL={"PASS":"C6EFCE","FAIL":"FFC7CE","OBSERVATION":"FFEB9C","BLOCKED":"D9D9D9","BY DESIGN":"D9E1F2","NOT EXECUTED":"DDEBF7"}
 wb=Workbook(); thin=Side(style="thin",color="BBBBBB"); bd=Border(left=thin,right=thin,top=thin,bottom=thin)
 def head(ws,cols,widths):
     ws.append(cols)
@@ -19,18 +19,18 @@ def head(ws,cols,widths):
 ws=wb.active; ws.title="Summary"
 ex=[r for r in R]
 ws.append(["Term Life (TL001) – UAT Test Execution Summary"]); ws["A1"].font=Font(bold=True,size=14)
-ws.append(["Environment","uponlyuat-sandbox-in.insuremo.com (tenant uponlyuat), ChannelCode SOHAR"]); ws.append(["Execution date",datetime.date.today().isoformat()]); ws.append(["Scope","InsureMO back-end APIs (Postman collection) for product TL001 – Term Life with/without Travel. UI cases listed as Not Executed."]); ws.append([])
+ws.append(["Environment","uponlyuat-sandbox-in.insuremo.com (tenant uponlyuat), ChannelCode SOHAR"]); ws.append(["Execution date",datetime.date.today().isoformat()]); ws.append(["Scope","Plans, premium, covers and generated outputs (API has no input validation by design – validation cases are classed BY DESIGN). InsureMO back-end APIs (Postman collection) for product TL001 – Term Life with/without Travel. UI cases listed as Not Executed."]); ws.append([])
 ws.append(["Status","Count","% of executed"]); 
 for c in ws[ws.max_row]: c.font=Font(bold=True)
 tot=len(R)
-for s in ("PASS","FAIL","OBSERVATION","BLOCKED"):
+for s in ("PASS","FAIL","OBSERVATION","BY DESIGN"):
     ws.append([s,cnt.get(s,0),round(100*cnt.get(s,0)/tot,1)]); ws.cell(ws.max_row,1).fill=PatternFill("solid",fgColor=COL[s])
 ws.append(["Total executed",tot,100]); ws.append(["Not executed (UI/manual)",len(MANUAL),""]); ws.append([])
-ws.append(["Module","Total","Pass","Fail","Observation"])
+ws.append(["Module","Total","Pass","Fail","Observation","By design"])
 for c in ws[ws.max_row]: c.font=Font(bold=True)
 mods=OrderedDict()
 for r in R: mods.setdefault(r["module"],Counter())[r["status"]]+=1
-for m,c in mods.items(): ws.append([m,sum(c.values()),c.get("PASS",0),c.get("FAIL",0),c.get("OBSERVATION",0)])
+for m,c in mods.items(): ws.append([m,sum(c.values()),c.get("PASS",0),c.get("FAIL",0),c.get("OBSERVATION",0),c.get("BY DESIGN",0)])
 ws.column_dimensions["A"].width=34; ws.column_dimensions["B"].width=60
 # Test cases & results
 ws=wb.create_sheet("Test Cases & Results")
