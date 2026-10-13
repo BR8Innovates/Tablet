@@ -1,0 +1,880 @@
+{
+  "info": {
+    "name": "UPONLY UAT – Term Life – Defect Failure Examples",
+    "description": "One request per open defect (DEF-01..08) from the Term Life UAT of 13-Oct-2026. Each request description holds Steps / Expected / Actual; the saved 'FAILURE EXAMPLE' response shows the UAT output; the Tests tab asserts the expected behaviour and fails while the defect exists.\nSetup: set collection variables baseUrl, username, password. Run '0. Token' first. demoProposalNo / demoPolicyNo point at policy created for this evidence (data may be reset).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://uponlyuat-sandbox-in.insuremo.com"
+    },
+    {
+      "key": "username",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "demoProposalNo",
+      "value": "PTL0010000000156"
+    },
+    {
+      "key": "demoPolicyNo",
+      "value": "POTL00100000019"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Token (sets {{token}})",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-user-source-id",
+            "value": "platform"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "uponlyuat"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/cas/ebao/v2/json/tickets",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "cas",
+            "ebao",
+            "v2",
+            "json",
+            "tickets"
+          ]
+        },
+        "description": "Set collection variables `username` / `password` first (not stored here). Saves access_token to {{token}}."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set('token', pm.response.json().access_token);"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "DEF-01 – Sum Insured double-counted (duplicate empty plan in PlanList)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/proposal",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "uponlyuat",
+            "api-orchestration",
+            "v1",
+            "flow",
+            "proposal"
+          ]
+        },
+        "description": "## DEF-01 – Sum Insured double-counted (duplicate empty plan in PlanList)  [High]\n\n**Steps:** POST proposal – Term Life With Travel, Plan 1, Annual (body below).\n\n**EXPECTED:** Policy/LOB/Risk SumInsured = benefits of the selected plan only (DTH 10000 + PTD 10000 + PPD 10000 + REX 1000 = 31000). PlanList has exactly 1 entry.\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nSumInsured = 62000 (2x). PlanList has 2 entries; the 2nd has no PlanId / PlanName but repeats all coverages (see saved example).\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ApplicationNo\": \"UAT-DEMO\",\n  \"EffectiveDate\": \"2026-10-13\",\n  \"ExpiryDate\": \"2027-10-12T23:59:59\",\n  \"UserName\": \"Salman\",\n  \"ApplyDate\": \"2026-10-13\",\n  \"BranchCode\": \"001\",\n  \"DiscountAmount\": 0,\n  \"StaffId\": \"76\",\n  \"PolicyCustomerList\": [\n    {\n      \"CIFNumber\": \"45678\",\n      \"CustomerType\": \"1\"\n    }\n  ],\n  \"PolicyLobList\": [\n    {\n      \"PolicyRiskList\": [\n        {\n          \"Gender\": \"1\",\n          \"IdNo\": \"123456789\",\n          \"IdType\": \"1\",\n          \"Salutation\": \"1\",\n          \"InsuredName\": \"Mohamed\",\n          \"DateOfBirth\": \"1988-10-01\",\n          \"ResidentStatus\": \"1\",\n          \"Email\": \"Mohamed@gmail.com\",\n          \"MaritalStatus\": \"1\",\n          \"PostCode\": \"100345\",\n          \"Mobile\": \"9989374444\",\n          \"Address\": \"Oman\",\n          \"MonthSalaryIncome\": \"10000\",\n          \"PlanList\": [\n            {\n              \"PolicyCoverageList\": [\n                {\n                  \"ProductElementCode\": \"DTH\",\n                  \"SumInsured\": 10000\n                },\n                {\n                  \"ProductElementCode\": \"PTD\",\n                  \"SumInsured\": 10000\n                },\n                {\n                  \"ProductElementCode\": \"PPD\",\n                  \"SumInsured\": 10000\n                },\n                {\n                  \"ProductElementCode\": \"TRV\",\n                  \"SumInsured\": 0\n                },\n                {\n                  \"ProductElementCode\": \"REX\",\n                  \"SumInsured\": 1000\n                }\n              ],\n              \"PlanId\": 2\n            }\n          ],\n          \"BeneficiaryList\": [\n            {\n              \"BeneficaryName\": \"Sayyed\",\n              \"RelationshipCode\": \"1\",\n              \"Share\": \"100\",\n              \"BeneficarySequence\": \"1\"\n            }\n          ],\n          \"ProductElementCode\": \"R00001\"\n        }\n      ],\n      \"ProductCode\": \"TL001\",\n      \"DuePremium\": 216\n    }\n  ],\n  \"PolicyPaymentInfoList\": [\n    {\n      \"LGCode\": \"23\",\n      \"LCCode\": 45,\n      \"IsInstallment\": \"N\",\n      \"DebitAccountNo\": \"896236508\",\n      \"DebitRefNo\": \"wer455\",\n      \"TransactionDate\": \"2026-10-13\"\n    }\n  ],\n  \"PolicyType\": \"1\",\n  \"ProductCode\": \"TL001\",\n  \"PremiumModeCode\": 2,\n  \"ProductSubcode\": 1,\n  \"ChannelCode\": \"SOHAR\",\n  \"PlanId\": 2,\n  \"PolicyTerm\": 1,\n  \"DuePremium\": 153\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// DEF-01 FAILURE: SumInsured is doubled; PlanList contains a duplicate entry without PlanId",
+              "const j = pm.response.json();",
+              "const risk = j.PolicyLobList[0].PolicyRiskList[0];",
+              "pm.test('PlanList has only the selected plan (expected 1, UAT returns 2)', () => pm.expect(risk.PlanList.length).to.eql(1));",
+              "pm.test('Total SumInsured = 31000 (UAT returns 62000)', () => pm.expect(j.SumInsured).to.eql(31000));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "FAILURE EXAMPLE – DEF-01",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/proposal",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "uponlyuat",
+                "api-orchestration",
+                "v1",
+                "flow",
+                "proposal"
+              ]
+            },
+            "description": "## DEF-01 – Sum Insured double-counted (duplicate empty plan in PlanList)  [High]\n\n**Steps:** POST proposal – Term Life With Travel, Plan 1, Annual (body below).\n\n**EXPECTED:** Policy/LOB/Risk SumInsured = benefits of the selected plan only (DTH 10000 + PTD 10000 + PPD 10000 + REX 1000 = 31000). PlanList has exactly 1 entry.\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nSumInsured = 62000 (2x). PlanList has 2 entries; the 2nd has no PlanId / PlanName but repeats all coverages (see saved example).\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ApplicationNo\": \"UAT-DEMO\",\n  \"EffectiveDate\": \"2026-10-13\",\n  \"ExpiryDate\": \"2027-10-12T23:59:59\",\n  \"UserName\": \"Salman\",\n  \"ApplyDate\": \"2026-10-13\",\n  \"BranchCode\": \"001\",\n  \"DiscountAmount\": 0,\n  \"StaffId\": \"76\",\n  \"PolicyCustomerList\": [\n    {\n      \"CIFNumber\": \"45678\",\n      \"CustomerType\": \"1\"\n    }\n  ],\n  \"PolicyLobList\": [\n    {\n      \"PolicyRiskList\": [\n        {\n          \"Gender\": \"1\",\n          \"IdNo\": \"123456789\",\n          \"IdType\": \"1\",\n          \"Salutation\": \"1\",\n          \"InsuredName\": \"Mohamed\",\n          \"DateOfBirth\": \"1988-10-01\",\n          \"ResidentStatus\": \"1\",\n          \"Email\": \"Mohamed@gmail.com\",\n          \"MaritalStatus\": \"1\",\n          \"PostCode\": \"100345\",\n          \"Mobile\": \"9989374444\",\n          \"Address\": \"Oman\",\n          \"MonthSalaryIncome\": \"10000\",\n          \"PlanList\": [\n            {\n              \"PolicyCoverageList\": [\n                {\n                  \"ProductElementCode\": \"DTH\",\n                  \"SumInsured\": 10000\n                },\n                {\n                  \"ProductElementCode\": \"PTD\",\n                  \"SumInsured\": 10000\n                },\n                {\n                  \"ProductElementCode\": \"PPD\",\n                  \"SumInsured\": 10000\n                },\n                {\n                  \"ProductElementCode\": \"TRV\",\n                  \"SumInsured\": 0\n                },\n                {\n                  \"ProductElementCode\": \"REX\",\n                  \"SumInsured\": 1000\n                }\n              ],\n              \"PlanId\": 2\n            }\n          ],\n          \"BeneficiaryList\": [\n            {\n              \"BeneficaryName\": \"Sayyed\",\n              \"RelationshipCode\": \"1\",\n              \"Share\": \"100\",\n              \"BeneficarySequence\": \"1\"\n            }\n          ],\n          \"ProductElementCode\": \"R00001\"\n        }\n      ],\n      \"ProductCode\": \"TL001\",\n      \"DuePremium\": 216\n    }\n  ],\n  \"PolicyPaymentInfoList\": [\n    {\n      \"LGCode\": \"23\",\n      \"LCCode\": 45,\n      \"IsInstallment\": \"N\",\n      \"DebitAccountNo\": \"896236508\",\n      \"DebitRefNo\": \"wer455\",\n      \"TransactionDate\": \"2026-10-13\"\n    }\n  ],\n  \"PolicyType\": \"1\",\n  \"ProductCode\": \"TL001\",\n  \"PremiumModeCode\": 2,\n  \"ProductSubcode\": 1,\n  \"ChannelCode\": \"SOHAR\",\n  \"PlanId\": 2,\n  \"PolicyTerm\": 1,\n  \"DuePremium\": 153\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"ProposalNo\": \"PTL0010000000156\",\n  \"SumInsured\": 122000,\n  \"PolicyLobList\": [\n    {\n      \"SumInsured\": 122000,\n      \"DuePremium\": 328,\n      \"PolicyRiskList\": [\n        {\n          \"SumInsured\": 122000,\n          \"PlanList\": [\n            {\n              \"PlanId\": \"2\",\n              \"PlanName\": \"Plan 2\",\n              \"SequenceNumber\": 1,\n              \"PolicyCoverageList\": [\n                {\n                  \"ProductElementCode\": \"DTH\",\n                  \"SumInsured\": 20000\n                },\n                {\n                  \"ProductElementCode\": \"PTD\",\n                  \"SumInsured\": 20000\n                },\n                {\n                  \"ProductElementCode\": \"PPD\",\n                  \"SumInsured\": 20000\n                },\n                {\n                  \"ProductElementCode\": \"TRV\",\n                  \"SumInsured\": 0\n                },\n                {\n                  \"ProductElementCode\": \"REX\",\n                  \"SumInsured\": 1000\n                }\n              ]\n            },\n            {\n              \"PlanId\": null,\n              \"PlanName\": null,\n              \"SequenceNumber\": 2,\n              \"PolicyCoverageList\": [\n                {\n                  \"ProductElementCode\": \"DTH\",\n                  \"SumInsured\": 20000\n                },\n                {\n                  \"ProductElementCode\": \"PTD\",\n                  \"SumInsured\": 20000\n                },\n                {\n                  \"ProductElementCode\": \"PPD\",\n                  \"SumInsured\": 20000\n                },\n                {\n                  \"ProductElementCode\": \"TRV\",\n                  \"SumInsured\": 0\n                },\n                {\n                  \"ProductElementCode\": \"REX\",\n                  \"SumInsured\": 1000\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "DEF-02 – Feed: wrong Product Name for Term Life policies",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/generate-feedfile",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "uponlyuat",
+            "api-orchestration",
+            "v1",
+            "flow",
+            "generate-feedfile"
+          ]
+        },
+        "description": "## DEF-02 – Feed: wrong Product Name for Term Life policies  [High]\n\n**Steps:** POST generate-feedfile for 13-Oct-2026 (TL001) and open the downloaded xlsx.\n\n**EXPECTED:** Product Name = 'Term Life with Travel' / 'Term Life without Travel'.\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nProduct Name = 'Personal Accident with TTD' for Term Life policy POTL00100000019.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"Conditions\": {\n    \"ProductCode\": \"TL001\"\n  },\n  \"FromRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T00:00:00\"\n  },\n  \"ToRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T23:59:59\"\n  },\n  \"Module\": \"Policy\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"SearchType\": \"Policy\",\n  \"SortField\": \"index_time\",\n  \"SortType\": \"desc\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// DEF-02 FAILURE: feed is an xlsx; open the download and check column 'Product Name' for the TL001 row",
+              "// Expected 'Term Life with/without Travel'; UAT shows 'Personal Accident with TTD/without TTD'",
+              "pm.test('Feed returned (manual check of Product Name in downloaded xlsx)', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "FAILURE EXAMPLE – DEF-02",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/generate-feedfile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "uponlyuat",
+                "api-orchestration",
+                "v1",
+                "flow",
+                "generate-feedfile"
+              ]
+            },
+            "description": "## DEF-02 – Feed: wrong Product Name for Term Life policies  [High]\n\n**Steps:** POST generate-feedfile for 13-Oct-2026 (TL001) and open the downloaded xlsx.\n\n**EXPECTED:** Product Name = 'Term Life with Travel' / 'Term Life without Travel'.\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nProduct Name = 'Personal Accident with TTD' for Term Life policy POTL00100000019.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Conditions\": {\n    \"ProductCode\": \"TL001\"\n  },\n  \"FromRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T00:00:00\"\n  },\n  \"ToRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T23:59:59\"\n  },\n  \"Module\": \"Policy\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"SearchType\": \"Policy\",\n  \"SortField\": \"index_time\",\n  \"SortType\": \"desc\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"note\": \"Response is an .xlsx (binary). Row for demo policy shown as text:\",\n  \"columns_returned\": 27,\n  \"missing_vs_spec\": [\n    \"Branch Code\",\n    \"LCCode\",\n    \"LGCode\"\n  ],\n  \"row\": {\n    \"Certificate No\": \"POTL00100000019\",\n    \"Product Name\": \"Personal Accident with TTD\",\n    \"Policy Status\": \"Effective\",\n    \"Cancelled Date\": \"2026-10-13T11:02:20\",\n    \"Plan Term\": \"1\",\n    \"Premium Amount\": \"328\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "DEF-03 – Feed: Cancelled Date filled for Effective policies",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/generate-feedfile",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "uponlyuat",
+            "api-orchestration",
+            "v1",
+            "flow",
+            "generate-feedfile"
+          ]
+        },
+        "description": "## DEF-03 – Feed: Cancelled Date filled for Effective policies  [High]\n\n**Steps:** POST generate-feedfile for 13-Oct-2026 (TL001) and open the downloaded xlsx.\n\n**EXPECTED:** Cancelled Date blank while Policy Status = Effective.\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nPolicy POTL00100000019 Status = Effective but Cancelled Date = 2026-10-13T11:02:20.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"Conditions\": {\n    \"ProductCode\": \"TL001\"\n  },\n  \"FromRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T00:00:00\"\n  },\n  \"ToRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T23:59:59\"\n  },\n  \"Module\": \"Policy\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"SearchType\": \"Policy\",\n  \"SortField\": \"index_time\",\n  \"SortType\": \"desc\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// DEF-03 FAILURE: in the downloaded xlsx, 'Cancelled Date' must be empty for Policy Status = Effective",
+              "// UAT shows the issue timestamp for every Effective policy",
+              "pm.test('Feed returned (manual check of Cancelled Date in downloaded xlsx)', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "FAILURE EXAMPLE – DEF-03",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/generate-feedfile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "uponlyuat",
+                "api-orchestration",
+                "v1",
+                "flow",
+                "generate-feedfile"
+              ]
+            },
+            "description": "## DEF-03 – Feed: Cancelled Date filled for Effective policies  [High]\n\n**Steps:** POST generate-feedfile for 13-Oct-2026 (TL001) and open the downloaded xlsx.\n\n**EXPECTED:** Cancelled Date blank while Policy Status = Effective.\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nPolicy POTL00100000019 Status = Effective but Cancelled Date = 2026-10-13T11:02:20.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Conditions\": {\n    \"ProductCode\": \"TL001\"\n  },\n  \"FromRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T00:00:00\"\n  },\n  \"ToRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T23:59:59\"\n  },\n  \"Module\": \"Policy\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"SearchType\": \"Policy\",\n  \"SortField\": \"index_time\",\n  \"SortType\": \"desc\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"note\": \"Response is an .xlsx (binary). Row for demo policy shown as text:\",\n  \"columns_returned\": 27,\n  \"missing_vs_spec\": [\n    \"Branch Code\",\n    \"LCCode\",\n    \"LGCode\"\n  ],\n  \"row\": {\n    \"Certificate No\": \"POTL00100000019\",\n    \"Product Name\": \"Personal Accident with TTD\",\n    \"Policy Status\": \"Effective\",\n    \"Cancelled Date\": \"2026-10-13T11:02:20\",\n    \"Plan Term\": \"1\",\n    \"Premium Amount\": \"328\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "DEF-08 – Feed: Branch Code, LCCode, LGCode columns missing",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/generate-feedfile",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "uponlyuat",
+            "api-orchestration",
+            "v1",
+            "flow",
+            "generate-feedfile"
+          ]
+        },
+        "description": "## DEF-08 – Feed: Branch Code, LCCode, LGCode columns missing  [Low]\n\n**Steps:** POST generate-feedfile for 13-Oct-2026 (TL001) and open the downloaded xlsx.\n\n**EXPECTED:** 30 columns per spec 'Feed File' sheet incl. Branch Code, LCCode, LGCode.\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nOnly 27 columns returned; the three columns are absent.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"Conditions\": {\n    \"ProductCode\": \"TL001\"\n  },\n  \"FromRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T00:00:00\"\n  },\n  \"ToRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T23:59:59\"\n  },\n  \"Module\": \"Policy\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"SearchType\": \"Policy\",\n  \"SortField\": \"index_time\",\n  \"SortType\": \"desc\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// DEF-08 FAILURE: downloaded xlsx has 27 columns; spec lists 30 (Branch Code, LCCode, LGCode missing)",
+              "pm.test('Feed returned (manual check of header row in downloaded xlsx)', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "FAILURE EXAMPLE – DEF-08",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/generate-feedfile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "uponlyuat",
+                "api-orchestration",
+                "v1",
+                "flow",
+                "generate-feedfile"
+              ]
+            },
+            "description": "## DEF-08 – Feed: Branch Code, LCCode, LGCode columns missing  [Low]\n\n**Steps:** POST generate-feedfile for 13-Oct-2026 (TL001) and open the downloaded xlsx.\n\n**EXPECTED:** 30 columns per spec 'Feed File' sheet incl. Branch Code, LCCode, LGCode.\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nOnly 27 columns returned; the three columns are absent.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Conditions\": {\n    \"ProductCode\": \"TL001\"\n  },\n  \"FromRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T00:00:00\"\n  },\n  \"ToRangeConditions\": {\n    \"EffectiveDate\": \"2026-10-13T23:59:59\"\n  },\n  \"Module\": \"Policy\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"SearchType\": \"Policy\",\n  \"SortField\": \"index_time\",\n  \"SortType\": \"desc\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"note\": \"Response is an .xlsx (binary). Row for demo policy shown as text:\",\n  \"columns_returned\": 27,\n  \"missing_vs_spec\": [\n    \"Branch Code\",\n    \"LCCode\",\n    \"LGCode\"\n  ],\n  \"row\": {\n    \"Certificate No\": \"POTL00100000019\",\n    \"Product Name\": \"Personal Accident with TTD\",\n    \"Policy Status\": \"Effective\",\n    \"Cancelled Date\": \"2026-10-13T11:02:20\",\n    \"Plan Term\": \"1\",\n    \"Premium Amount\": \"328\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "DEF-04 – cancel-check on a pending request returns stale refund for the old date",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/cancel-check",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "uponlyuat",
+            "api-orchestration",
+            "v1",
+            "flow",
+            "cancel-check"
+          ]
+        },
+        "description": "## DEF-04 – cancel-check on a pending request returns stale refund for the old date  [Medium]\n\n**Steps:** 1) POST cancel-check with CancellationDate 2026-10-20 (creates request -001, day 7). 2) POST again with 2027-01-13 (this request).\n\n**EXPECTED:** Second call recalculates for 2027-01-13: day 92, PRO_RATA, refund ~ 80% of unearned (about 197), or returns an explicit 'request already pending' message.\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nSecond call returns RequestExists/ same RequestNo with DaysSinceCommencement = 0, FREE_LOOK, RefundPremium = 328 – the first request's figures, not the new date's.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"PolicyNo\": \"{{demoPolicyNo}}\",\n  \"CancellationDate\": \"2027-01-13\",\n  \"CancelReason\": \"Customer request\",\n  \"ChannelCode\": \"SOHAR\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// DEF-04 FAILURE: policy already has a PENDING request (created with 2026-10-20). Date 2027-01-13 should be day 92 / PRO_RATA.",
+              "const j = pm.response.json();",
+              "pm.test('Cancellation recalculated for new date (expected day 92, UAT returns stale day 7/0)', () => pm.expect(j.PremiumDetails.DaysSinceCommencement).to.eql(92));",
+              "pm.test('Pro-rata applies after free-look', () => pm.expect(j.RefundDetails.CancellationType).to.eql('PRO_RATA'));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "FAILURE EXAMPLE – DEF-04",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/cancel-check",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "uponlyuat",
+                "api-orchestration",
+                "v1",
+                "flow",
+                "cancel-check"
+              ]
+            },
+            "description": "## DEF-04 – cancel-check on a pending request returns stale refund for the old date  [Medium]\n\n**Steps:** 1) POST cancel-check with CancellationDate 2026-10-20 (creates request -001, day 7). 2) POST again with 2027-01-13 (this request).\n\n**EXPECTED:** Second call recalculates for 2027-01-13: day 92, PRO_RATA, refund ~ 80% of unearned (about 197), or returns an explicit 'request already pending' message.\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nSecond call returns RequestExists/ same RequestNo with DaysSinceCommencement = 0, FREE_LOOK, RefundPremium = 328 – the first request's figures, not the new date's.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"PolicyNo\": \"{{demoPolicyNo}}\",\n  \"CancellationDate\": \"2027-01-13\",\n  \"CancelReason\": \"Customer request\",\n  \"ChannelCode\": \"SOHAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"CancelReason\": \"Customer request\",\n  \"CancellationDate\": \"2026-10-13\",\n  \"CarrierCode\": \"AFIC\",\n  \"CarrierName\": \"Afillar Insurance Company\",\n  \"PolicyInfo\": {\n    \"CarrierCode\": \"AFIC\",\n    \"CarrierName\": \"Afillar Insurance Company\",\n    \"ChannelCode\": \"SOHAR\",\n    \"EffectiveDate\": \"2026-10-13\",\n    \"ExpiryDate\": \"2027-10-12\",\n    \"InsuredName\": \"Mohamed\",\n    \"PlanId\": \"2\",\n    \"PolicyNo\": \"POTL00100000019\",\n    \"ProductCode\": \"TL001\",\n    \"ProductSubcode\": \"1\",\n    \"ProposalNo\": \"PTL0010000000156\"\n  },\n  \"PolicyStatus\": {\n    \"Code\": \"2\",\n    \"Description\": \"Effective\"\n  },\n  \"PremiumDetails\": {\n    \"DaysSinceCommencement\": 0,\n    \"FreeLookDays\": 15,\n    \"PolicyPeriodDays\": 365,\n    \"Premium\": 328,\n    \"ProRataPremium\": 328,\n    \"UnexpiredDays\": 365\n  },\n  \"RefundDetails\": {\n    \"CancellationType\": \"FREE_LOOK\",\n    \"RefundPercent\": 100,\n    \"RefundPremium\": 328\n  },\n  \"RequestExists\": \"Y\",\n  \"RequestNo\": \"POTL00100000019-001\",\n  \"RequestStatus\": \"PENDING\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "DEF-05 – Free-look period 15 days vs 30 days on application form",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/cancel-check",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "uponlyuat",
+            "api-orchestration",
+            "v1",
+            "flow",
+            "cancel-check"
+          ]
+        },
+        "description": "## DEF-05 – Free-look period 15 days vs 30 days on application form  [Medium]\n\n**Steps:** POST cancel-check on any Effective TL policy and read PremiumDetails.FreeLookDays.\n\n**EXPECTED:** FreeLookDays = 30 (Application form 'Review Period: full refund if cancelled within 30 days of the Application Date').\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nFreeLookDays = 15; a cancellation on day 16–30 gets only the pro-rata 80% refund instead of a full refund.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"PolicyNo\": \"{{demoPolicyNo}}\",\n  \"CancellationDate\": \"2026-10-20\",\n  \"CancelReason\": \"Customer request\",\n  \"ChannelCode\": \"SOHAR\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// DEF-05 FAILURE: system free-look is 15 days, form promises 30",
+              "const j = pm.response.json();",
+              "pm.test('FreeLookDays = 30 per application form (UAT returns 15)', () => pm.expect(j.PremiumDetails.FreeLookDays).to.eql(30));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "FAILURE EXAMPLE – DEF-05",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/cancel-check",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "uponlyuat",
+                "api-orchestration",
+                "v1",
+                "flow",
+                "cancel-check"
+              ]
+            },
+            "description": "## DEF-05 – Free-look period 15 days vs 30 days on application form  [Medium]\n\n**Steps:** POST cancel-check on any Effective TL policy and read PremiumDetails.FreeLookDays.\n\n**EXPECTED:** FreeLookDays = 30 (Application form 'Review Period: full refund if cancelled within 30 days of the Application Date').\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nFreeLookDays = 15; a cancellation on day 16–30 gets only the pro-rata 80% refund instead of a full refund.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"PolicyNo\": \"{{demoPolicyNo}}\",\n  \"CancellationDate\": \"2026-10-20\",\n  \"CancelReason\": \"Customer request\",\n  \"ChannelCode\": \"SOHAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"CancelReason\": \"Customer request\",\n  \"CancellationDate\": \"2026-10-20\",\n  \"CarrierCode\": \"AFIC\",\n  \"CarrierName\": \"Afillar Insurance Company\",\n  \"Notifications\": [\n    {\n      \"Channel\": \"EMAIL\",\n      \"Event\": \"CANCEL_REQUESTED\",\n      \"Recipient\": \"CANCELLATION_CHECKER\",\n      \"Status\": \"DRYRUN\",\n      \"To\": \"r***@insuremo.com\"\n    },\n    {\n      \"Channel\": \"SMS\",\n      \"Event\": \"CANCEL_REQUESTED\",\n      \"Recipient\": \"CANCELLATION_CHECKER\",\n      \"Status\": \"NO_ADDRESS\",\n      \"To\": \"\"\n    }\n  ],\n  \"PolicyInfo\": {\n    \"CarrierCode\": \"AFIC\",\n    \"CarrierName\": \"Afillar Insurance Company\",\n    \"ChannelCode\": \"SOHAR\",\n    \"EffectiveDate\": \"2026-10-13\",\n    \"ExpiryDate\": \"2027-10-12\",\n    \"InsuredName\": \"Mohamed\",\n    \"PlanId\": \"2\",\n    \"PolicyNo\": \"POTL00100000019\",\n    \"ProductCode\": \"TL001\",\n    \"ProductSubcode\": \"1\",\n    \"ProposalNo\": \"PTL0010000000156\"\n  },\n  \"PolicyStatus\": {\n    \"Code\": \"2\",\n    \"Description\": \"Effective\"\n  },\n  \"PremiumDetails\": {\n    \"DaysSinceCommencement\": 7,\n    \"FreeLookDays\": 15,\n    \"PolicyPeriodDays\": 365,\n    \"Premium\": 328,\n    \"ProRataPremium\": 321.71,\n    \"UnexpiredDays\": 358\n  },\n  \"RefundDetails\": {\n    \"CancellationType\": \"FREE_LOOK\",\n    \"RefundPercent\": 100,\n    \"RefundPremium\": 328\n  },\n  \"RequestExists\": \"N\",\n  \"RequestNo\": \"POTL00100000019-001\",\n  \"RequestStatus\": \"PENDING\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "DEF-06 – Carrier name 'Afillar Insurance Company' vs 'Arabia Falcon Insurance'",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/cancel-check",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "uponlyuat",
+            "api-orchestration",
+            "v1",
+            "flow",
+            "cancel-check"
+          ]
+        },
+        "description": "## DEF-06 – Carrier name 'Afillar Insurance Company' vs 'Arabia Falcon Insurance'  [Medium]\n\n**Steps:** POST cancel-check (or cancel-approve) and read CarrierName / CarrierCode.\n\n**EXPECTED:** CarrierName = 'Arabia Falcon Insurance SAOG' (as on certificate and application form).\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nCarrierName = 'Afillar Insurance Company', CarrierCode = 'AFIC'.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"PolicyNo\": \"{{demoPolicyNo}}\",\n  \"CancellationDate\": \"2026-10-20\",\n  \"CancelReason\": \"Customer request\",\n  \"ChannelCode\": \"SOHAR\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// DEF-06 FAILURE",
+              "const j = pm.response.json();",
+              "pm.test('CarrierName is Arabia Falcon Insurance (UAT returns Afillar Insurance Company)', () => pm.expect(j.CarrierName).to.include('Arabia Falcon'));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "FAILURE EXAMPLE – DEF-06",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/cancel-check",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "uponlyuat",
+                "api-orchestration",
+                "v1",
+                "flow",
+                "cancel-check"
+              ]
+            },
+            "description": "## DEF-06 – Carrier name 'Afillar Insurance Company' vs 'Arabia Falcon Insurance'  [Medium]\n\n**Steps:** POST cancel-check (or cancel-approve) and read CarrierName / CarrierCode.\n\n**EXPECTED:** CarrierName = 'Arabia Falcon Insurance SAOG' (as on certificate and application form).\n\n**ACTUAL (failure example from UAT 13-Oct-2026):**\nCarrierName = 'Afillar Insurance Company', CarrierCode = 'AFIC'.\n\nRun the request: the test tab below FAILS while the defect exists and passes once fixed.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"PolicyNo\": \"{{demoPolicyNo}}\",\n  \"CancellationDate\": \"2026-10-20\",\n  \"CancelReason\": \"Customer request\",\n  \"ChannelCode\": \"SOHAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"CarrierCode\": \"AFIC\",\n  \"CarrierName\": \"Afillar Insurance Company\",\n  \"PolicyInfo\": {\n    \"PolicyNo\": \"POTL00100000019\",\n    \"ProductCode\": \"TL001\"\n  },\n  \"PolicyStatus\": {\n    \"Code\": \"2\",\n    \"Description\": \"Effective\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "DEF-07 – Application form prints '8096' instead of '80%' (PDF)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/uponlyuat/api-orchestration/v1/flow/doc_generation",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "uponlyuat",
+            "api-orchestration",
+            "v1",
+            "flow",
+            "doc_generation"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"DocType\": \"Application\",\n  \"ProposalNo\": \"{{demoProposalNo}}\",\n  \"ProductSubcode\": \"1\",\n  \"ChannelCode\": \"SOHAR\",\n  \"ProductCode\": \"TL001\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "## DEF-07 – Application form wording  [Medium]\n\n**Steps:** POST doc_generation (Application) for any Term Life proposal; save the response as PDF and open page 2.\n\n**EXPECTED:** Cancellation clause reads \"…is cancelled by the Insured Person or the Company, 80% of the unearned Premium shall be refunded on a pro-rata basis…\" and the footer reads \"Page 2 of 3\".\n\n**ACTUAL (UAT 13-Oct-2026):** English text prints \"…the Company, **8096** of the unearned Premium shall be refunded…\" (Arabic side correctly shows 80%). Footer is clipped: \"Page 2 of\" / \"3\" wraps and is cut off.\nEvidence: UAT_TermLife/evidence/Application_Form_TL_Plan3_Annual.pdf (page 2)."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// DEF-07 FAILURE: binary PDF – verify visually (page 2, 'Cancellation' row). Expected '80%' ; UAT prints '8096'.",
+              "pm.test('PDF returned (manual check of cancellation clause on page 2)', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": []
+    }
+  ]
+}
