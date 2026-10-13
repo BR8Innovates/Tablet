@@ -1,0 +1,66 @@
+[
+ [
+  "Without-Travel Plan 1 Death benefit",
+  "Spec shows Death 4,500 for Plan 1 (PTD/PPD 7,500; other plans Death = PTD = PPD). System returns 7,500. Is 4,500 a typo?"
+ ],
+ [
+  "Premium Mode – Single premium term",
+  "Spec lists one premium for 'Annual and Single'. Is a multi-year Single premium (2–10 yrs) priced at the same premium regardless of term? System returns 216 for 1, 2, 5 and 10 yrs (and cancel refunds are pro-rated over the full term)."
+ ],
+ [
+  "Single-premium term limits",
+  "Confirm min/max term for Term Life Single premium (spec says 2–10 for PA; 'configurable product-wise'). Currently terms 0 and 11 are accepted."
+ ],
+ [
+  "Premium Mode for Without-Travel",
+  "Premium & Rates sheet states 'Annual and Single' only against the With-Travel table. Confirm the same for Without-Travel."
+ ],
+ [
+  "Age rules",
+  "Min age 18, max entry 64, max age 69, exit 70 – conflicting thresholds (max age 69 vs max entry 64 vs exit 70). Confirm exact calculation (age last/nearest birthday) and that the back-end should also enforce them."
+ ],
+ [
+  "Free-look / review period",
+  "Application form: 30 days full refund. System: 15 days. Which is correct? Also 80% refund of unearned premium after free-look – confirm."
+ ],
+ [
+  "Discount",
+  "Feed File includes 'Discount' and the API accepts DiscountAmount, but no discount rule is specified; DiscountAmount=10 currently has no effect on premium."
+ ],
+ [
+  "Customer type pricing",
+  "Normal / Staff / Special customer types: any differential pricing or rules? All currently price identically."
+ ],
+ [
+  "Application number",
+  "Form prints ProposalNo (PTL…) as 'Application Number'; Uponly's ApplicationNo is not printed. Which should appear? Need the agreed Application No format (spec question still open)."
+ ],
+ [
+  "PO Box / Postal code / Country",
+  "Form has Country, Postal Code and P.O Box; API has a single PostCode (max 10 chars). Confirm mapping and max length."
+ ],
+ [
+  "Reject comment",
+  "Spec: 'Enter comments if any'. Should rejection reason be mandatory (audit)?"
+ ],
+ [
+  "Certificate – Policy Holder vs Insured",
+  "Certificate prints Policy Holder = Insured and 'Nationality' = Resident Status. Confirm expected mapping."
+ ],
+ [
+  "Staff Id usage",
+  "Feed File: 'Confirm on this where need use, need details from InsureMO' – still open."
+ ],
+ [
+  "Premium Frequency in feed",
+  "Spec: 'Confirm on this' – feed prints 'Annual Premium'/'Single Premium'."
+ ],
+ [
+  "Commission display",
+  "Commission/CommissionRate are returned in API responses; UI must hide them (Production Report only). Please confirm the Production Report data source (no API in collection)."
+ ],
+ [
+  "Reusable test data",
+  "Test run created ~155 proposals and ~19 policies in UAT (all with ApplicationNo UAT-0001/ CIF 45678). Confirm clean-up approach."
+ ]
+]

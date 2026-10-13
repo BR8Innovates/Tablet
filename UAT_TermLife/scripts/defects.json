@@ -1,0 +1,182 @@
+[
+ {
+  "id": "DEF-01",
+  "sev": "Critical",
+  "module": "Proposal Reject / Issue",
+  "title": "A rejected proposal can still be issued as an Effective policy",
+  "desc": "Create proposal → proposal-reject (SUCCESS, ProposalStatus=4) → issue returns HTTP 200 with a new PolicyNo (POTL00100000016, PolicyStatus=2). Checker rejection is bypassable; business control failure.",
+  "spec": "Policy Lifecycle – Approval Process (approve or reject)",
+  "tests": "TL-REJ-02",
+  "rec": "Block issue (and update) when ProposalStatus = Rejected; return a clear 4xx."
+ },
+ {
+  "id": "DEF-02",
+  "sev": "Critical",
+  "module": "Issue / Payment",
+  "title": "Policy can be issued without LC Code, LG Code or payment/debit details",
+  "desc": "Proposal saved without PolicyPaymentInfoList and then issued → POTL00100000003 Effective. Spec: LC Code, LG Code, Premium mandatory before policy conversion.",
+  "spec": "Fields sheet – LC Code / LG Code 'Mandatory (before policy conversion)'",
+  "tests": "TL-PAY-01, TL-PAY-02, TL-PAY-04",
+  "rec": "Enforce mandatory payment fields (and validate LG/LC against master) in the issue step."
+ },
+ {
+  "id": "DEF-03",
+  "sev": "High",
+  "module": "Create Proposal",
+  "title": "Sum Insured is double-counted – PlanList contains a duplicate, empty plan entry",
+  "desc": "Every proposal response contains 2 PlanList entries (2nd has no PlanId/PlanName but all coverages). Policy/LOB/Risk SumInsured = 2× the selected plan (Plan 1 With Travel: 62,000 instead of 31,000; Plan 2: 122,000 instead of 61,000).",
+  "spec": "Coverages and Sum Assured sheet",
+  "tests": "TL-PREM-90",
+  "rec": "Return only the selected plan; fix SumInsured roll-up. Verify Production Report / feed totals are not affected."
+ },
+ {
+  "id": "DEF-04",
+  "sev": "High",
+  "module": "Feed File",
+  "title": "Product Name in feed is wrong for Term Life policies",
+  "desc": "Feed rows for TL001 policies show 'Personal Accident with TTD' / 'Personal Accident without TTD'. Expected 'Term Life with Travel' / 'Term Life without Travel'.",
+  "spec": "Feed File sheet – Product Name",
+  "tests": "TL-FEED-03",
+  "rec": "Fix product-name mapping (ProductSubcode → name) in feed template."
+ },
+ {
+  "id": "DEF-05",
+  "sev": "High",
+  "module": "Feed File",
+  "title": "Cancelled Date populated for non-cancelled (Effective) policies",
+  "desc": "6 of 6 Effective policies in the feed carry a Cancelled Date equal to the issue timestamp.",
+  "spec": "Feed File sheet – Cancelled Date",
+  "tests": "TL-FEED-04",
+  "rec": "Populate only when policy status = Cancelled."
+ },
+ {
+  "id": "DEF-06",
+  "sev": "High",
+  "module": "Beneficiary",
+  "title": "Beneficiary share total is not validated",
+  "desc": "Shares 50 (single), 60+60, 150, -100 and a blank beneficiary name were all accepted. Forms state 'Share % (total to equal 100%)'.",
+  "spec": "Application form / Fields – Beneficiary",
+  "tests": "TL-BEN-03..07, TL-BEN-10",
+  "rec": "Validate Σshare = 100, each 0<share≤100, name mandatory, at least one beneficiary."
+ },
+ {
+  "id": "DEF-07",
+  "sev": "High",
+  "module": "Field Validation",
+  "title": "Mandatory fields are not enforced by the back-end",
+  "desc": "Proposal created successfully with InsuredName, DateOfBirth, Gender, IdNo, IdType, Salutation, ResidentStatus, Email, Mobile, MaritalStatus, Address, CIFNumber, CustomerType, BranchCode or PremiumModeCode omitted (14 of 16 tested). Only PlanId is enforced (via an iHub exception).",
+  "spec": "Fields sheet – 'Mandatory' flags",
+  "tests": "TL-VAL-01..14, TL-VAL-16",
+  "rec": "Add mandatory-field validation in the Create/Update Proposal API (UI-only validation is bypassable)."
+ },
+ {
+  "id": "DEF-08",
+  "sev": "Medium",
+  "module": "Premium Mode",
+  "title": "Monthly premium mode accepted for Term Life",
+  "desc": "PremiumModeCode=3 creates a TL proposal (premium unchanged at 216). Monthly is meant only for Life Protect; Term Life = Annual & Single.",
+  "spec": "Premium & Rates / LOV – Premium Mode is product-wise",
+  "tests": "TL-PREM-96",
+  "rec": "Restrict PremiumMode by product (configurable)."
+ },
+ {
+  "id": "DEF-09",
+  "sev": "Medium",
+  "module": "Term",
+  "title": "Policy term / expiry not validated or derived",
+  "desc": "Annual with term 2, Single with term 0 and 11 accepted; PolicyTerm and ExpiryDate are independent (term 5 with 1-year expiry accepted). With a consistent expiry the certificate is correct (TL-TERM-08).",
+  "spec": "Fields sheet – Term (Single 2–10 yrs; min/max configurable per product)",
+  "tests": "TL-TERM-01..06",
+  "rec": "Derive ExpiryDate from term; enforce Annual=1 and Single min/max (configurable)."
+ },
+ {
+  "id": "DEF-10",
+  "sev": "Medium",
+  "module": "Field Validation",
+  "title": "Data-quality validations missing",
+  "desc": "Accepted: invalid email, alphabetic mobile, negative salary, 300-char name, IdType=9, MaritalStatus=9, ExpiryDate earlier than EffectiveDate, back-dated EffectiveDate.",
+  "spec": "Fields sheet / LOV fields",
+  "tests": "TL-VAL-30,31,32,34, TL-LOV-24, TL-LOV-31, TL-DATE-01, TL-DATE-02",
+  "rec": "Add format/range/code-table validation; reject illogical dates."
+ },
+ {
+  "id": "DEF-11",
+  "sev": "Medium",
+  "module": "Cancellation",
+  "title": "Repeat cancel-check on a pending request returns stale data and skips validation",
+  "desc": "After the first cancel-check creates a PENDING request, later calls with different CancellationDate return the first request's calculation (e.g. day 0 / FREE_LOOK 216 even for a 2027-01-13 date) and bypass before-commencement / after-expiry checks.",
+  "spec": "Policy Lifecycle / cancellation flow",
+  "tests": "TL-CAN-21 (masked TL-CAN-05/06 in first run)",
+  "rec": "Recalculate and validate each request, or reject with 'request already pending'."
+ },
+ {
+  "id": "DEF-12",
+  "sev": "Medium",
+  "module": "Cancellation / Documents",
+  "title": "Free-look period mismatch: system 15 days vs application form 30 days",
+  "desc": "cancel-check FreeLookDays=15; Day-15 cancellation falls to pro-rata. Application form 'Review Period' promises full refund within 30 days.",
+  "spec": "Application form – Review Period",
+  "tests": "TL-CAN-03",
+  "rec": "Align configuration with the form (or correct the form)."
+ },
+ {
+  "id": "DEF-13",
+  "sev": "Medium",
+  "module": "Cancellation",
+  "title": "Carrier name inconsistent: 'Afillar Insurance Company' vs 'Arabia Falcon Insurance'",
+  "desc": "cancel-check and cancel-approve return CarrierCode AFIC / 'Afillar Insurance Company'; certificate and application form show 'Arabia Falcon Insurance SAOG'.",
+  "spec": "Certificate / Application format",
+  "tests": "TL-CAN-20",
+  "rec": "Correct carrier master data / notification templates."
+ },
+ {
+  "id": "DEF-14",
+  "sev": "Medium",
+  "module": "Documents",
+  "title": "Application form: English cancellation clause prints '8096 of the unearned Premium'; footer 'Page 2 of 3' truncated",
+  "desc": "Static clause renders '80%' as '8096' on page 2 of the generated application form (Arabic side correct). Page-number footer is clipped.",
+  "spec": "Application form format",
+  "tests": "TL-DOC-05",
+  "rec": "Fix the template (escape '%' / font) and footer width."
+ },
+ {
+  "id": "DEF-15",
+  "sev": "Medium",
+  "module": "Documents",
+  "title": "Blank certificate generated for non-existent policy and for un-issued proposal",
+  "desc": "doc_generation DocType=Policy returns HTTP 200 + empty-field PDF for POTL00199999999 and for a PTL… proposal number.",
+  "spec": "Policy Lifecycle – certificate printed after approval",
+  "tests": "TL-DOC-09, TL-DOC-10",
+  "rec": "Return 404/400 when policy not found or not issued."
+ },
+ {
+  "id": "DEF-16",
+  "sev": "Medium",
+  "module": "API Error Handling",
+  "title": "Business-validation errors return HTTP 500 INTERNAL_ERROR and leak internal details",
+  "desc": "Invalid codes/plan/product etc. return HTTP 500 with iHub URLs, Java exceptions (e.g. NPE text in load-policy for unknown policy). Some not-found cases return HTTP 200 with validateResult.errors. Cancellation APIs, by contrast, return proper 400/404/409.",
+  "spec": "General",
+  "tests": "TL-NFR-06, TL-POL-02, TL-LOAD-02/03, TL-PLAN-12",
+  "rec": "Standardise to 4xx with field-level messages; hide internal stack/URLs."
+ },
+ {
+  "id": "DEF-17",
+  "sev": "Medium",
+  "module": "Security",
+  "title": "ChannelCode not enforced as a data boundary",
+  "desc": "get-plans accepts a missing or unknown ChannelCode; an issued policy can be loaded with ChannelCode=OTHER.",
+  "spec": "General – channel-based access",
+  "tests": "TL-PLAN-14, TL-PLAN-15, TL-POL-03",
+  "rec": "Validate ChannelCode against the token's channel and scope data access."
+ },
+ {
+  "id": "DEF-18",
+  "sev": "Low",
+  "module": "Feed File",
+  "title": "Feed missing Branch Code, LCCode, LGCode columns; invalid Module accepted",
+  "desc": "Feed has 27 columns; spec lists 30. Module='Nope' still returns an xlsx.",
+  "spec": "Feed File sheet",
+  "tests": "TL-FEED-02, TL-FEED-12",
+  "rec": "Add the three columns; validate Module."
+ }
+]
