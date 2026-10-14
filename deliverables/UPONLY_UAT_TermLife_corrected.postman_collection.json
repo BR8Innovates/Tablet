@@ -1,0 +1,827 @@
+{
+  "info": {
+    "name": "UPONLY UAT - Term Life (corrected)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Term Life (TL001, variant 1, plan 1) on the UAT tenant. Set username and password in the collection variables, run '0. Get Token' (or just run a request: the token is refreshed automatically), then run the folder in order. ProposalNo, PolicyNo and RequestNo are saved by the tests of the previous requests; dates and ApplicationNo are generated. Differences from the earlier collection: no stored bearer tokens, no fixed proposal / policy / request numbers, current dates, one variant (1) in every request, no premium sent (the platform rates the plan), no // comments inside bodies."
+  },
+  "item": [
+    {
+      "name": "UAT - Term Life",
+      "item": [
+        {
+          "name": "0. Get Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-mo-user-source-id",
+                "value": "platform"
+              },
+              {
+                "key": "x-mo-tenant-id",
+                "value": "uponlyuat"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{casUrl}}/cas/ebao/v2/json/tickets",
+              "host": [
+                "{{casUrl}}"
+              ],
+              "path": [
+                "cas",
+                "ebao",
+                "v2",
+                "json",
+                "tickets"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.collectionVariables.set('token', pm.response.json().access_token);",
+                  "pm.collectionVariables.set('tokenAt', String(Date.now()));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "1. Master Data - Relationship",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/list-master-table",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "list-master-table"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"DataTableName\": \"Relationship\",\n    \"ChannelCode\": \"SOHAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. Get Plans (TL001 variant 1)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/get-plans",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "get-plans"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ApplicationNo\": \"{{applicationNo}}\",\n    \"EffectiveDate\": \"{{effectiveDate}}\",\n    \"ExpiryDate\": \"{{expiry1y}}\",\n    \"UserName\": \"maker01\",\n    \"ApplyDate\": \"{{applyDate}}\",\n    \"BranchCode\": \"001\",\n    \"DiscountAmount\": 0,\n    \"StaffId\": \"76\",\n    \"PolicyCustomerList\": [\n        {\n            \"CIFNumber\": \"45678\",\n            \"CustomerType\": \"1\"\n        }\n    ],\n    \"PolicyLobList\": [\n        {\n            \"PolicyRiskList\": [\n                {\n                    \"Gender\": \"1\",\n                    \"IdNo\": \"123456789\",\n                    \"IdType\": \"1\",\n                    \"Salutation\": \"1\",\n                    \"InsuredName\": \"Mohamed\",\n                    \"DateOfBirth\": \"1988-10-01\",\n                    \"ResidentStatus\": \"1\",\n                    \"Email\": \"Mohamed@gmail.com\",\n                    \"MaritalStatus\": \"1\",\n                    \"PostCode\": \"100345\",\n                    \"Mobile\": \"9989374444\",\n                    \"Address\": \"Oman\",\n                    \"MonthSalaryIncome\": \"10000\",\n                    \"ProductElementCode\": \"R00001\"\n                }\n            ],\n            \"ProductCode\": \"TL001\"\n        }\n    ],\n    \"ProductCode\": \"TL001\",\n    \"PremiumModeCode\": \"2\",\n    \"ProductSubcode\": \"1\",\n    \"ChannelCode\": \"SOHAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "var j = pm.response.json();",
+                  "pm.test('Plans returned', function () { pm.expect(j.PolicyLobList[0].PolicyRiskList[0].PlanList.length).to.be.above(0); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. Create Proposal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/proposal",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "proposal"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ApplicationNo\": \"{{applicationNo}}\",\n    \"EffectiveDate\": \"{{effectiveDate}}\",\n    \"ExpiryDate\": \"{{expiry1y}}\",\n    \"UserName\": \"maker01\",\n    \"ApplyDate\": \"{{applyDate}}\",\n    \"BranchCode\": \"001\",\n    \"DiscountAmount\": 0,\n    \"StaffId\": \"76\",\n    \"PolicyCustomerList\": [\n        {\n            \"CIFNumber\": \"45678\",\n            \"CustomerType\": \"1\"\n        }\n    ],\n    \"PolicyLobList\": [\n        {\n            \"PolicyRiskList\": [\n                {\n                    \"Gender\": \"1\",\n                    \"IdNo\": \"123456789\",\n                    \"IdType\": \"1\",\n                    \"Salutation\": \"1\",\n                    \"InsuredName\": \"Mohamed\",\n                    \"DateOfBirth\": \"1988-10-01\",\n                    \"ResidentStatus\": \"1\",\n                    \"Email\": \"Mohamed@gmail.com\",\n                    \"MaritalStatus\": \"1\",\n                    \"PostCode\": \"100345\",\n                    \"Mobile\": \"9989374444\",\n                    \"Address\": \"Oman\",\n                    \"MonthSalaryIncome\": \"10000\",\n                    \"PlanList\": [\n                        {\n                            \"PolicyCoverageList\": [\n                                {\n                                    \"ProductElementCode\": \"DTH\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"PTD\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"PPD\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"TRV\",\n                                    \"SumInsured\": 0\n                                },\n                                {\n                                    \"ProductElementCode\": \"REX\",\n                                    \"SumInsured\": 1000\n                                }\n                            ],\n                            \"PlanId\": \"1\"\n                        }\n                    ],\n                    \"BeneficiaryList\": [\n                        {\n                            \"BeneficaryName\": \"Sayyed\",\n                            \"RelationshipCode\": \"1\",\n                            \"Share\": \"100\",\n                            \"BeneficarySequence\": \"1\"\n                        }\n                    ],\n                    \"ProductElementCode\": \"R00001\"\n                }\n            ],\n            \"ProductCode\": \"TL001\"\n        }\n    ],\n    \"PolicyPaymentInfoList\": [\n        {\n            \"LGCode\": \"23\",\n            \"LCCode\": 45,\n            \"IsInstallment\": \"N\",\n            \"DebitAccountNo\": \"896236508\",\n            \"DebitRefNo\": \"wer455\",\n            \"TransactionDate\": \"{{applyDate}}\"\n        }\n    ],\n    \"PolicyType\": \"1\",\n    \"ProductCode\": \"TL001\",\n    \"PremiumModeCode\": \"2\",\n    \"ProductSubcode\": \"1\",\n    \"ChannelCode\": \"SOHAR\",\n    \"PlanId\": \"1\",\n    \"PolicyTerm\": \"1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "var j = pm.response.json();",
+                  "pm.test('ProposalNo returned', function () { pm.expect(j.ProposalNo).to.be.a('string').and.not.empty; });",
+                  "pm.collectionVariables.set('proposalNo', j.ProposalNo);",
+                  "pm.test('Premium rated (risk level)', function () { pm.expect(j.PolicyLobList[0].PolicyRiskList[0].DuePremium).to.eql(216); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4. Update Proposal (enrolment)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/update-proposal",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "update-proposal"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ProposalNo\": \"{{proposalNo}}\",\n    \"ApplicationNo\": \"{{applicationNo}}\",\n    \"EffectiveDate\": \"{{effectiveDate}}\",\n    \"ExpiryDate\": \"{{expiry1y}}\",\n    \"UserName\": \"maker01\",\n    \"ApplyDate\": \"{{applyDate}}\",\n    \"BranchCode\": \"001\",\n    \"DiscountAmount\": 0,\n    \"StaffId\": \"76\",\n    \"PolicyCustomerList\": [\n        {\n            \"CIFNumber\": \"45678\",\n            \"CustomerType\": \"1\"\n        }\n    ],\n    \"PolicyLobList\": [\n        {\n            \"PolicyRiskList\": [\n                {\n                    \"Gender\": \"1\",\n                    \"IdNo\": \"123456789\",\n                    \"IdType\": \"1\",\n                    \"Salutation\": \"1\",\n                    \"InsuredName\": \"Mohamed\",\n                    \"DateOfBirth\": \"1988-10-01\",\n                    \"ResidentStatus\": \"1\",\n                    \"Email\": \"Mohamed@gmail.com\",\n                    \"MaritalStatus\": \"1\",\n                    \"PostCode\": \"100345\",\n                    \"Mobile\": \"9989374444\",\n                    \"Address\": \"Oman\",\n                    \"MonthSalaryIncome\": \"10000\",\n                    \"PlanList\": [\n                        {\n                            \"PolicyCoverageList\": [\n                                {\n                                    \"ProductElementCode\": \"DTH\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"PTD\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"PPD\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"TRV\",\n                                    \"SumInsured\": 0\n                                },\n                                {\n                                    \"ProductElementCode\": \"REX\",\n                                    \"SumInsured\": 1000\n                                }\n                            ],\n                            \"PlanId\": \"1\"\n                        }\n                    ],\n                    \"BeneficiaryList\": [\n                        {\n                            \"BeneficaryName\": \"Sayyed\",\n                            \"RelationshipCode\": \"1\",\n                            \"Share\": \"100\",\n                            \"BeneficarySequence\": \"1\"\n                        }\n                    ],\n                    \"ProductElementCode\": \"R00001\"\n                }\n            ],\n            \"ProductCode\": \"TL001\"\n        }\n    ],\n    \"PolicyPaymentInfoList\": [\n        {\n            \"LGCode\": \"23\",\n            \"LCCode\": 45,\n            \"IsInstallment\": \"N\",\n            \"DebitAccountNo\": \"896236508\",\n            \"DebitRefNo\": \"wer455\",\n            \"TransactionDate\": \"{{applyDate}}\"\n        }\n    ],\n    \"PolicyType\": \"1\",\n    \"ProductCode\": \"TL001\",\n    \"PremiumModeCode\": \"2\",\n    \"ProductSubcode\": \"1\",\n    \"ChannelCode\": \"SOHAR\",\n    \"PlanId\": \"1\",\n    \"PolicyTerm\": \"1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Same proposal', function () { pm.expect(pm.response.json().ProposalNo).to.eql(pm.collectionVariables.get('proposalNo')); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "5. Load Proposal",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/load-policy?proposalNo={{proposalNo}}&ChannelCode=SOHAR",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "load-policy"
+              ],
+              "query": [
+                {
+                  "key": "proposalNo",
+                  "value": "{{proposalNo}}"
+                },
+                {
+                  "key": "ChannelCode",
+                  "value": "SOHAR"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "6. Issue Policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/issue",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "issue"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ProposalNo\": \"{{proposalNo}}\",\n    \"ProductCode\": \"TL001\",\n    \"ChannelCode\": \"SOHAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "var j = pm.response.json();",
+                  "pm.test('PolicyNo returned', function () { pm.expect(j.PolicyNo).to.be.a('string').and.not.empty; });",
+                  "pm.collectionVariables.set('policyNo', j.PolicyNo);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "7. Load Policy",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/load-policy?policyNo={{policyNo}}&ChannelCode=SOHAR",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "load-policy"
+              ],
+              "query": [
+                {
+                  "key": "policyNo",
+                  "value": "{{policyNo}}"
+                },
+                {
+                  "key": "ChannelCode",
+                  "value": "SOHAR"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "8. Create Proposal (to be rejected)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/proposal",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "proposal"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ApplicationNo\": \"{{applicationNo}}R\",\n    \"EffectiveDate\": \"{{effectiveDate}}\",\n    \"ExpiryDate\": \"{{expiry1y}}\",\n    \"UserName\": \"maker01\",\n    \"ApplyDate\": \"{{applyDate}}\",\n    \"BranchCode\": \"001\",\n    \"DiscountAmount\": 0,\n    \"StaffId\": \"76\",\n    \"PolicyCustomerList\": [\n        {\n            \"CIFNumber\": \"45678\",\n            \"CustomerType\": \"1\"\n        }\n    ],\n    \"PolicyLobList\": [\n        {\n            \"PolicyRiskList\": [\n                {\n                    \"Gender\": \"1\",\n                    \"IdNo\": \"123456789\",\n                    \"IdType\": \"1\",\n                    \"Salutation\": \"1\",\n                    \"InsuredName\": \"Mohamed\",\n                    \"DateOfBirth\": \"1988-10-01\",\n                    \"ResidentStatus\": \"1\",\n                    \"Email\": \"Mohamed@gmail.com\",\n                    \"MaritalStatus\": \"1\",\n                    \"PostCode\": \"100345\",\n                    \"Mobile\": \"9989374444\",\n                    \"Address\": \"Oman\",\n                    \"MonthSalaryIncome\": \"10000\",\n                    \"PlanList\": [\n                        {\n                            \"PolicyCoverageList\": [\n                                {\n                                    \"ProductElementCode\": \"DTH\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"PTD\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"PPD\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"TRV\",\n                                    \"SumInsured\": 0\n                                },\n                                {\n                                    \"ProductElementCode\": \"REX\",\n                                    \"SumInsured\": 1000\n                                }\n                            ],\n                            \"PlanId\": \"1\"\n                        }\n                    ],\n                    \"BeneficiaryList\": [\n                        {\n                            \"BeneficaryName\": \"Sayyed\",\n                            \"RelationshipCode\": \"1\",\n                            \"Share\": \"100\",\n                            \"BeneficarySequence\": \"1\"\n                        }\n                    ],\n                    \"ProductElementCode\": \"R00001\"\n                }\n            ],\n            \"ProductCode\": \"TL001\"\n        }\n    ],\n    \"PolicyPaymentInfoList\": [\n        {\n            \"LGCode\": \"23\",\n            \"LCCode\": 45,\n            \"IsInstallment\": \"N\",\n            \"DebitAccountNo\": \"896236508\",\n            \"DebitRefNo\": \"wer455\",\n            \"TransactionDate\": \"{{applyDate}}\"\n        }\n    ],\n    \"PolicyType\": \"1\",\n    \"ProductCode\": \"TL001\",\n    \"PremiumModeCode\": \"2\",\n    \"ProductSubcode\": \"1\",\n    \"ChannelCode\": \"SOHAR\",\n    \"PlanId\": \"1\",\n    \"PolicyTerm\": \"1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.collectionVariables.set('rejectProposalNo', pm.response.json().ProposalNo);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "9. Reject Proposal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/proposal-reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "proposal-reject"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ProposalNo\": \"{{rejectProposalNo}}\",\n    \"ProposalRejectDesc\": \"checker rejected\",\n    \"ProductCode\": \"TL001\",\n    \"ChannelCode\": \"SOHAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10. Application Form PDF",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/doc_generation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "doc_generation"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"DocType\": \"Application\",\n    \"ProposalNo\": \"{{proposalNo}}\",\n    \"ProductSubcode\": \"1\",\n    \"ChannelCode\": \"SOHAR\",\n    \"ProductCode\": \"TL001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Is PDF', function () { pm.expect(pm.response.headers.get('Content-Type')).to.include('pdf'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11. Policy Certificate PDF",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/doc_generation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "doc_generation"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"DocType\": \"Policy\",\n    \"PolicyNo\": \"{{policyNo}}\",\n    \"ProductSubcode\": \"1\",\n    \"ChannelCode\": \"SOHAR\",\n    \"ProductCode\": \"TL001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Is PDF', function () { pm.expect(pm.response.headers.get('Content-Type')).to.include('pdf'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "12. Policy Feed File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/generate-feedfile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "generate-feedfile"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"Conditions\": {\n        \"ProductCode\": \"TL001\"\n    },\n    \"FromRangeConditions\": {\n        \"EffectiveDate\": \"{{monthStart}}T00:00:00\"\n    },\n    \"ToRangeConditions\": {\n        \"EffectiveDate\": \"{{monthEnd}}T23:59:59\"\n    },\n    \"Module\": \"Policy\",\n    \"PageNo\": 1,\n    \"PageSize\": 10,\n    \"SearchType\": \"Policy\",\n    \"SortField\": \"index_time\",\n    \"SortType\": \"desc\",\n    \"ChannelCode\": \"SOHAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "13. Cancel Check (raise cancellation)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cancel-check",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cancel-check"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"PolicyNo\": \"{{policyNo}}\",\n    \"CancellationDate\": \"{{cancelDate}}\",\n    \"CancelReason\": \"Customer request\",\n    \"ChannelCode\": \"SOHAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.collectionVariables.set('requestNo', pm.response.json().RequestNo);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "14. Cancel Approve (APPROVE)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cancel-approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cancel-approve"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"PolicyNo\": \"{{policyNo}}\",\n    \"RequestNo\": \"{{requestNo}}\",\n    \"Decision\": \"APPROVE\",\n    \"ChannelCode\": \"SOHAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "function pad(n){return (n<10?'0':'')+n;}",
+          "function ymd(d){return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)+'-'+pad(d.getUTCDate());}",
+          "var now=new Date(), eff=new Date(now.getTime()+86400000), exp=new Date(eff.getTime()); exp.setUTCFullYear(exp.getUTCFullYear()+1); exp.setUTCDate(exp.getUTCDate()-1);",
+          "var cv=pm.collectionVariables;",
+          "cv.set('applyDate',ymd(now)); cv.set('effectiveDate',ymd(eff)); cv.set('expiry1y',ymd(exp)+'T23:59:59'); cv.set('cancelDate',ymd(new Date(eff.getTime()+30*86400000)));",
+          "cv.set('monthStart',now.getUTCFullYear()+'-'+pad(now.getUTCMonth()+1)+'-01'); cv.set('monthEnd',ymd(new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth()+1,0))));",
+          "var ts=parseInt(cv.get('appNoTs')||'0',10); if(!cv.get('applicationNo')||now.getTime()-ts>30*60*1000){cv.set('applicationNo','TL'+now.getTime());cv.set('appNoTs',String(now.getTime()));}",
+          "// the access token lasts about 2 hours: fetch a new one when it is missing or older than 100 minutes",
+          "var tokAt=parseInt(cv.get('tokenAt')||'0',10);",
+          "if(pm.info.requestName.indexOf('Get Token')<0 && pm.variables.get('username') && (!cv.get('token') || now.getTime()-tokAt>100*60*1000)){",
+          "  pm.sendRequest({url: pm.variables.get('casUrl')+'/cas/ebao/v2/json/tickets', method:'POST', header:{'Content-Type':'application/json','x-mo-user-source-id':'platform','x-mo-tenant-id':'uponlyuat'}, body:{mode:'raw', raw: JSON.stringify({username: pm.variables.get('username'), password: pm.variables.get('password')})}}, function(err,res){",
+          "    if(err){console.warn('token fetch failed: '+err);return;} cv.set('token', res.json().access_token); cv.set('tokenAt', String(Date.now()));});",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://uponlyuat-sandbox-in.insuremo.com/api/uponlyuat/api-orchestration/v1/flow"
+    },
+    {
+      "key": "casUrl",
+      "value": "https://uponlyuat-sandbox-in.insuremo.com"
+    },
+    {
+      "key": "username",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "tokenAt",
+      "value": ""
+    },
+    {
+      "key": "proposalNo",
+      "value": ""
+    },
+    {
+      "key": "rejectProposalNo",
+      "value": ""
+    },
+    {
+      "key": "policyNo",
+      "value": ""
+    },
+    {
+      "key": "requestNo",
+      "value": ""
+    },
+    {
+      "key": "applicationNo",
+      "value": ""
+    },
+    {
+      "key": "appNoTs",
+      "value": ""
+    },
+    {
+      "key": "applyDate",
+      "value": ""
+    },
+    {
+      "key": "effectiveDate",
+      "value": ""
+    },
+    {
+      "key": "expiry1y",
+      "value": ""
+    },
+    {
+      "key": "cancelDate",
+      "value": ""
+    },
+    {
+      "key": "monthStart",
+      "value": ""
+    },
+    {
+      "key": "monthEnd",
+      "value": ""
+    }
+  ]
+}
