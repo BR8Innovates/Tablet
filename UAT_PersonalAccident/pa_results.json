@@ -1,0 +1,542 @@
+[
+ {
+  "id": "PA-PLAN-01",
+  "module": "Get Plans",
+  "title": "Get Plans (With TTD) returns Plans 1-5",
+  "priority": "High",
+  "expected": "5 plans",
+  "status": "PASS",
+  "actual": "plans ['1', '2', '3', '4', '5']"
+ },
+ {
+  "id": "PA-PLAN-02",
+  "module": "Get Plans",
+  "title": "Get Plans (Without TTD) returns Plans 1-5",
+  "priority": "High",
+  "expected": "5 plans",
+  "status": "PASS",
+  "actual": "plans ['1', '2', '3', '4', '5']"
+ },
+ {
+  "id": "PA-PLAN-11",
+  "module": "Get Plans",
+  "title": "Covers & sums insured – With TTD Plan 1 per spec",
+  "priority": "High",
+  "expected": "per spec 'Coverages and Sum Assured'",
+  "status": "PASS",
+  "actual": "{'PPD': 12000, 'REX': 1500, 'ACD': 12000, 'PTD': 12000, 'TTD': 3000, 'HCB': 20}"
+ },
+ {
+  "id": "PA-PLAN-12",
+  "module": "Get Plans",
+  "title": "Covers & sums insured – With TTD Plan 2 per spec",
+  "priority": "High",
+  "expected": "per spec 'Coverages and Sum Assured'",
+  "status": "PASS",
+  "actual": "{'TTD': 3000, 'HCB': 20, 'PTD': 22000, 'REX': 1500, 'PPD': 22000, 'ACD': 22000}"
+ },
+ {
+  "id": "PA-PLAN-13",
+  "module": "Get Plans",
+  "title": "Covers & sums insured – With TTD Plan 3 per spec",
+  "priority": "High",
+  "expected": "per spec 'Coverages and Sum Assured'",
+  "status": "PASS",
+  "actual": "{'ACD': 32000, 'PPD': 32000, 'HCB': 20, 'TTD': 3000, 'PTD': 32000, 'REX': 1500}"
+ },
+ {
+  "id": "PA-PLAN-14",
+  "module": "Get Plans",
+  "title": "Covers & sums insured – With TTD Plan 4 per spec",
+  "priority": "High",
+  "expected": "per spec 'Coverages and Sum Assured'",
+  "status": "PASS",
+  "actual": "{'TTD': 3000, 'PTD': 42000, 'REX': 1500, 'PPD': 42000, 'HCB': 20, 'ACD': 42000}"
+ },
+ {
+  "id": "PA-PLAN-15",
+  "module": "Get Plans",
+  "title": "Covers & sums insured – With TTD Plan 5 per spec",
+  "priority": "High",
+  "expected": "per spec 'Coverages and Sum Assured'",
+  "status": "PASS",
+  "actual": "{'HCB': 20, 'ACD': 52000, 'PPD': 52000, 'REX': 1500, 'TTD': 3000, 'PTD': 52000}"
+ },
+ {
+  "id": "PA-PLAN-21",
+  "module": "Get Plans",
+  "title": "Covers & sums insured – Without TTD Plan 1 per spec",
+  "priority": "High",
+  "expected": "per spec 'Coverages and Sum Assured'",
+  "status": "PASS",
+  "actual": "{'PPD': 10000, 'ACD': 10000, 'HCB': 20, 'REX': 1500, 'PTD': 10000}"
+ },
+ {
+  "id": "PA-PLAN-22",
+  "module": "Get Plans",
+  "title": "Covers & sums insured – Without TTD Plan 2 per spec",
+  "priority": "High",
+  "expected": "per spec 'Coverages and Sum Assured'",
+  "status": "PASS",
+  "actual": "{'PTD': 20000, 'REX': 1500, 'PPD': 20000, 'ACD': 20000, 'HCB': 20}"
+ },
+ {
+  "id": "PA-PLAN-23",
+  "module": "Get Plans",
+  "title": "Covers & sums insured – Without TTD Plan 3 per spec",
+  "priority": "High",
+  "expected": "per spec 'Coverages and Sum Assured'",
+  "status": "PASS",
+  "actual": "{'REX': 1500, 'PTD': 30000, 'HCB': 20, 'ACD': 30000, 'PPD': 30000}"
+ },
+ {
+  "id": "PA-PLAN-24",
+  "module": "Get Plans",
+  "title": "Covers & sums insured – Without TTD Plan 4 per spec",
+  "priority": "High",
+  "expected": "per spec 'Coverages and Sum Assured'",
+  "status": "PASS",
+  "actual": "{'PPD': 40000, 'REX': 1500, 'ACD': 40000, 'HCB': 20, 'PTD': 40000}"
+ },
+ {
+  "id": "PA-PLAN-25",
+  "module": "Get Plans",
+  "title": "Covers & sums insured – Without TTD Plan 5 per spec",
+  "priority": "High",
+  "expected": "per spec 'Coverages and Sum Assured'",
+  "status": "PASS",
+  "actual": "{'HCB': 20, 'PPD': 50000, 'REX': 1500, 'PTD': 50000, 'ACD': 50000}"
+ },
+ {
+  "id": "PA-PREM-90",
+  "module": "Premium & Covers",
+  "title": "Total Sum Insured equals the selected plan's benefits (single plan in PlanList)",
+  "priority": "High",
+  "expected": "With TTD Plan 1 = 40,520",
+  "status": "FAIL",
+  "actual": "All 20 proposals: SumInsured is 2× the plan (With TTD Plan 1: 81,040 vs 40,520; Without TTD Plan 1: 63,040 vs 31,520); PlanList has 2 entries, the 2nd without PlanId/PlanName. Same defect as Term Life DEF-01."
+ },
+ {
+  "id": "PA-PREM-A11",
+  "module": "Premium & Covers",
+  "title": "Annual – With TTD Plan 1: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 68 commission 44.1",
+  "status": "PASS",
+  "actual": "PPA0010000000290 prem=68 comm=44.1 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-A12",
+  "module": "Premium & Covers",
+  "title": "Annual – With TTD Plan 2: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 96 commission 63.7",
+  "status": "PASS",
+  "actual": "PPA0010000000291 prem=96 comm=63.7 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-A13",
+  "module": "Premium & Covers",
+  "title": "Annual – With TTD Plan 3: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 124 commission 83.3",
+  "status": "PASS",
+  "actual": "PPA0010000000292 prem=124 comm=83.3 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-A14",
+  "module": "Premium & Covers",
+  "title": "Annual – With TTD Plan 4: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 152 commission 102.9",
+  "status": "PASS",
+  "actual": "PPA0010000000293 prem=152 comm=102.9 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-A15",
+  "module": "Premium & Covers",
+  "title": "Annual – With TTD Plan 5: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 180 commission 122.5",
+  "status": "PASS",
+  "actual": "PPA0010000000294 prem=180 comm=122.5 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-A21",
+  "module": "Premium & Covers",
+  "title": "Annual – Without TTD Plan 1: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 55 commission 35",
+  "status": "PASS",
+  "actual": "PPA0010000000295 prem=55 comm=35 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-A22",
+  "module": "Premium & Covers",
+  "title": "Annual – Without TTD Plan 2: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 81 commission 53.2",
+  "status": "PASS",
+  "actual": "PPA0010000000296 prem=81 comm=53.2 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-A23",
+  "module": "Premium & Covers",
+  "title": "Annual – Without TTD Plan 3: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 109 commission 72.8",
+  "status": "PASS",
+  "actual": "PPA0010000000297 prem=109 comm=72.8 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-A24",
+  "module": "Premium & Covers",
+  "title": "Annual – Without TTD Plan 4: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 137 commission 92.4",
+  "status": "PASS",
+  "actual": "PPA0010000000298 prem=137 comm=92.4 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-A25",
+  "module": "Premium & Covers",
+  "title": "Annual – Without TTD Plan 5: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 165 commission 112",
+  "status": "PASS",
+  "actual": "PPA0010000000299 prem=165 comm=112 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-S11",
+  "module": "Premium & Covers",
+  "title": "Single – With TTD Plan 1: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 68 commission 44.1",
+  "status": "PASS",
+  "actual": "PPA0010000000300 prem=68 comm=44.1 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-S12",
+  "module": "Premium & Covers",
+  "title": "Single – With TTD Plan 2: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 96 commission 63.7",
+  "status": "PASS",
+  "actual": "PPA0010000000301 prem=96 comm=63.7 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-S13",
+  "module": "Premium & Covers",
+  "title": "Single – With TTD Plan 3: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 124 commission 83.3",
+  "status": "PASS",
+  "actual": "PPA0010000000302 prem=124 comm=83.3 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-S14",
+  "module": "Premium & Covers",
+  "title": "Single – With TTD Plan 4: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 152 commission 102.9",
+  "status": "PASS",
+  "actual": "PPA0010000000303 prem=152 comm=102.9 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-S15",
+  "module": "Premium & Covers",
+  "title": "Single – With TTD Plan 5: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 180 commission 122.5",
+  "status": "PASS",
+  "actual": "PPA0010000000304 prem=180 comm=122.5 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-S21",
+  "module": "Premium & Covers",
+  "title": "Single – Without TTD Plan 1: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 55 commission 35",
+  "status": "PASS",
+  "actual": "PPA0010000000305 prem=55 comm=35 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-S22",
+  "module": "Premium & Covers",
+  "title": "Single – Without TTD Plan 2: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 81 commission 53.2",
+  "status": "PASS",
+  "actual": "PPA0010000000306 prem=81 comm=53.2 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-S23",
+  "module": "Premium & Covers",
+  "title": "Single – Without TTD Plan 3: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 109 commission 72.8",
+  "status": "PASS",
+  "actual": "PPA0010000000307 prem=109 comm=72.8 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-S24",
+  "module": "Premium & Covers",
+  "title": "Single – Without TTD Plan 4: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 137 commission 92.4",
+  "status": "PASS",
+  "actual": "PPA0010000000308 prem=137 comm=92.4 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-PREM-S25",
+  "module": "Premium & Covers",
+  "title": "Single – Without TTD Plan 5: premium, commission, covers",
+  "priority": "Critical",
+  "expected": "premium 165 commission 112",
+  "status": "PASS",
+  "actual": "PPA0010000000309 prem=165 comm=112 | premium, commission and all covers match spec (total SumInsured doubled – see PA-PREM-90)"
+ },
+ {
+  "id": "PA-LC-01",
+  "module": "Lifecycle",
+  "title": "Update proposal: plan change re-prices (68→124) and updates covers",
+  "priority": "Critical",
+  "expected": "premium 124, ACD 32000",
+  "status": "PASS",
+  "actual": "Plan 1→3: premium 124, ACD 32000"
+ },
+ {
+  "id": "PA-LC-02",
+  "module": "Lifecycle",
+  "title": "Update proposal: switch With→Without TTD removes TTD cover",
+  "priority": "High",
+  "expected": "premium 81, no TTD",
+  "status": "PASS",
+  "actual": "With→Without TTD, Single, term 3: premium 81; covers {'ACD': 20000, 'PTD': 20000, 'PPD': 20000, 'HCB': 20, 'REX': 1500}"
+ },
+ {
+  "id": "PA-LC-03",
+  "module": "Lifecycle",
+  "title": "Load proposal returns latest saved data",
+  "priority": "High",
+  "expected": "premium 81",
+  "status": "PASS",
+  "actual": "load → PPA0010000000312 prem 81"
+ },
+ {
+  "id": "PA-LC-04",
+  "module": "Lifecycle",
+  "title": "Issue policy (POPA001########, Effective)",
+  "priority": "Critical",
+  "expected": "PolicyStatus 2",
+  "status": "PASS",
+  "actual": "POPA00100000141 ProposalStatus 3 PolicyStatus 2"
+ },
+ {
+  "id": "PA-LC-05",
+  "module": "Lifecycle",
+  "title": "Load policy by PolicyNo",
+  "priority": "High",
+  "expected": "same data",
+  "status": "PASS",
+  "actual": "POPA00100000141 prem 81"
+ },
+ {
+  "id": "PA-LC-06",
+  "module": "Lifecycle",
+  "title": "Proposal reject sets status Rejected (4)",
+  "priority": "Critical",
+  "expected": "status 4",
+  "status": "PASS",
+  "actual": "reject 200 {'message': 'checker rejected', 'status': 'SUCCESS'}; status after 4"
+ },
+ {
+  "id": "PA-LC-07",
+  "module": "Lifecycle",
+  "title": "Re-issue of issued proposal",
+  "priority": "Medium",
+  "expected": "no duplicate policy",
+  "status": "OBSERVATION",
+  "actual": "Re-issue of issued proposal → HTTP 500 : java.lang.RuntimeException: Error occured while calling iHub integration service at url https://uponlyuat-sandbox-in.insuremo.com/api/uponlyuat/api-orchestration/v1/flow/issue-policy, StatusError : "
+ },
+ {
+  "id": "PA-DOC-01",
+  "module": "Documents",
+  "title": "Application form (With TTD, Plan 3): sum insured against each benefit",
+  "priority": "Critical",
+  "expected": "Death 32000, PTD 32000, PPD 32000, TTD 3000 (50/week), HCB 20, REX 1500",
+  "status": "FAIL",
+  "actual": "With-TTD Plan 3 application form prints cover amounts against the wrong benefits: Death due to an accident = 20 (spec 32000), PPD = 3000 (spec 32000), TTD = 32000 (spec 3000), Hospital Cash = 32000 (spec 20). Only PTD 32000 and Repatriation 1500 are right. Evidence: application PDF page 1."
+ },
+ {
+  "id": "PA-DOC-02",
+  "module": "Documents",
+  "title": "Certificate (With TTD, Plan 3): sum insured against each benefit",
+  "priority": "Critical",
+  "expected": "Death 32000, PTD 32000, PPD 32000, TTD 3000, HCB 20, REX 1500",
+  "status": "FAIL",
+  "actual": "With-TTD Plan 3 certificate shows the same wrong mapping: Death 20, PTD 32000, PPD 3000, TTD 32000, Hospital Cash 32000, REX 1500. Re-test with 4 different cover orders in the request gave 4 different (all wrong) layouts – mapping is by position, not by cover code."
+ },
+ {
+  "id": "PA-DOC-03",
+  "module": "Documents",
+  "title": "Certificate/application (Without TTD, Plan 2): benefit rows & amounts",
+  "priority": "High",
+  "expected": "Death 20000, PTD 20000, PPD 20000, HCB 20, REX 1500 and no TTD row",
+  "status": "FAIL",
+  "actual": "Without-TTD Plan 2 certificate: prints a 'TTD due to an accident' row (20000) and 'Hospital Cash' row (20000) – neither is a Without-TTD benefit with that amount; Death = 20, PPD blank. Application form (Without TTD): Death 20, PTD 20000, PPD blank, no Hospital Cash row."
+ },
+ {
+  "id": "PA-DOC-04",
+  "module": "Documents",
+  "title": "Application form (Without TTD): all five benefits listed with amounts",
+  "priority": "High",
+  "expected": "no TTD",
+  "status": "FAIL",
+  "actual": "Application form (Without TTD) omits the Hospital Cash Benefit row and leaves PPD blank (see PA-DOC-03)."
+ },
+ {
+  "id": "PA-DOC-05",
+  "module": "Documents",
+  "title": "Application form cancellation clause prints 80%",
+  "priority": "High",
+  "expected": "80%",
+  "status": "FAIL",
+  "actual": "PA application form also prints '8096 of the unearned Premium'"
+ },
+ {
+  "id": "PA-DOC-06",
+  "module": "Documents",
+  "title": "Premium wording for Single premium policies",
+  "priority": "Medium",
+  "expected": "'Single Premium' / one-time amount",
+  "status": "FAIL",
+  "actual": "Single-premium policy (Plan 2 Without TTD, 4 yrs): application form text says 'pay the Annual Premium … 81 Yearly'; certificate shows 'OMR 81 Yearly' beside 'Payment Frequency: Single Premium'."
+ },
+ {
+  "id": "PA-DOC-07",
+  "module": "Documents",
+  "title": "Certificate 'Period of Cover' English and Arabic agree",
+  "priority": "Medium",
+  "expected": "same number of years",
+  "status": "FAIL",
+  "actual": "English '1 Year(s)' / '4 Year(s)' but Arabic line shows '5 سنوات' in both certificates (looks hard-coded)."
+ },
+ {
+  "id": "PA-DOC-08",
+  "module": "Documents",
+  "title": "Application form layout artefacts",
+  "priority": "Low",
+  "expected": "clean form",
+  "status": "FAIL",
+  "actual": "Stray text 'ssss' printed before 'Premium (OMR)'; footer 'Page 1 of' clipped; 'Application No' prints the ProposalNo (PPA…), not the entered ApplicationNo."
+ },
+ {
+  "id": "PA-FEED-01",
+  "module": "Feed File",
+  "title": "Feed generated for PA001",
+  "priority": "High",
+  "expected": "rows",
+  "status": "PASS",
+  "actual": "30 columns, 3 rows"
+ },
+ {
+  "id": "PA-FEED-02",
+  "module": "Feed File",
+  "title": "Product Name correct for PA",
+  "priority": "High",
+  "expected": "Personal Accident with/without TTD",
+  "status": "PASS",
+  "actual": "Product names ['Personal Accident with TTD', 'Personal Accident without TTD']"
+ },
+ {
+  "id": "PA-FEED-03",
+  "module": "Feed File",
+  "title": "Feed row values (premium, frequency, term, product) per policy",
+  "priority": "High",
+  "expected": "match",
+  "status": "PASS",
+  "actual": "premium/frequency/term/product OK for both"
+ },
+ {
+  "id": "PA-FEED-04",
+  "module": "Feed File",
+  "title": "Cancelled Date blank for Effective policies",
+  "priority": "High",
+  "expected": "blank",
+  "status": "FAIL",
+  "actual": "3/3 Effective policies carry a Cancelled Date"
+ },
+ {
+  "id": "PA-FEED-05",
+  "module": "Feed File",
+  "title": "Feed has Branch Code, LCCode, LGCode",
+  "priority": "Low",
+  "expected": "present",
+  "status": "PASS",
+  "actual": "Feed has Branch Code, LC Code and LG Code (30 columns). Unlike the Term Life feed, nothing is missing."
+ },
+ {
+  "id": "PA-CAN-01",
+  "module": "Cancellation",
+  "title": "Cancel-check for PA001",
+  "priority": "Medium",
+  "expected": "Per business",
+  "status": "OBSERVATION",
+  "actual": "cancel-check → HTTP 400 'Cancellation through this API is not enabled for product PA001'. PA cancellation (free-look, pro-rata, approve) could not be tested; confirm whether PA cancellation is in scope/enabled."
+ },
+ {
+  "id": "PA-COL-01",
+  "module": "Collection check",
+  "title": "Proposal request without ChannelCode (as in collection) works",
+  "priority": "Medium",
+  "expected": "200",
+  "status": "PASS",
+  "actual": "PPA0010000000310 prem 68"
+ },
+ {
+  "id": "PA-COL-02",
+  "module": "Collection check",
+  "title": "Sample 'Proposal API' body (sub 2 + TTD cover) executes",
+  "priority": "Medium",
+  "expected": "200",
+  "status": "OBSERVATION",
+  "actual": "Collection 'Proposal API' as-is (ProductSubcode 2 = Without TTD but TTD cover sent): HTTP 500 : java.lang.RuntimeException: Error occured while calling iHub integration service at url https://uponlyuat-sandbox-in.insuremo.com/api/uponlyuat/api-orchestration/v1/flow/create-update-quote, StatusE – the sample is for Without TTD but still sends a TTD cover; remove TTD from the body."
+ },
+ {
+  "id": "PA-COL-03",
+  "module": "Collection check",
+  "title": "Without-TTD proposal with correct cover list works",
+  "priority": "Medium",
+  "expected": "200",
+  "status": "PASS",
+  "actual": "Without TTD with correct 5 covers → PPA0010000000311"
+ },
+ {
+  "id": "PA-COL-04",
+  "module": "Collection check",
+  "title": "'doc_generation PDF' sample body (no ProductCode) runs",
+  "priority": "Medium",
+  "expected": "PDF",
+  "status": "OBSERVATION",
+  "actual": "Collection sample 'doc_generation PDF' (no ProductCode/ChannelCode) → {\"validateResult\":{\"brokerName\":\"UPONLY\",\"errors\":[{\"code\":\"\",\"message\":\"ProductCode is missing in request. Expected 'PA001' or 'TL001'\"}],\"functionName\":\"loadP"
+ },
+ {
+  "id": "PA-COL-05",
+  "module": "Collection check",
+  "title": "'doc_generation PDF Copy' → application_doc_generation endpoint",
+  "priority": "Low",
+  "expected": "PDF",
+  "status": "PASS",
+  "actual": "HTTP 200, PDF (legacy endpoint)"
+ },
+ {
+  "id": "PA-COL-06",
+  "module": "Collection check",
+  "title": "print/template (foundation gateway)",
+  "priority": "Low",
+  "expected": "PDF",
+  "status": "OBSERVATION",
+  "actual": "print/template (foundation gateway, separate host/token) with our UAT token → HTTP 403 {\"env\":\"aws_in_insuremo_uat\",\"trace\":\"83dbb42996c94caf13f1429c92347425\",\"env_name\":\"aws_in_insuremo_uat\",\"trace_id\":\"83d"
+ }
+]
