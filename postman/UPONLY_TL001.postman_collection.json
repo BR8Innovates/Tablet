@@ -1,0 +1,516 @@
+{
+  "info": {
+    "name": "UPONLY TL001",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Term Life (TL001). Select the MC or UAT environment, fill username/password, run Token first. Secrets are not stored in this file."
+  },
+  "item": [
+    {
+      "name": "Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-user-source-id",
+            "value": "platform"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{casUrl}}/cas/ebao/v2/json/tickets"
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set(\"token\", pm.response.json().access_token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Data Table API",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"DataTableName\": \"Relationship\",\n    //\"Id\": \"2\",\n    \"ChannelCode\": \"{{channelCode}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/list-master-table"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "1. Get Plan API (up/get-plans)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"ApplicationNo\": \"123\",\n    \"EffectiveDate\": \"2026-03-12\",\n    \"ExpiryDate\": \"2027-03-11T23:59:59\",\n    \"UserName\": \"Salman\",\n    \"ApplyDate\": \"2026-03-12\",\n    \"BranchCode\": \"001\",\n    \"DiscountAmount\": 10,\n    \"StaffId\": \"76\",\n    \"PolicyCustomerList\": [\n        {\n            \"CIFNumber\": \"45678\",\n            \"CustomerType\": \"1\"\n        }\n    ],\n    \"PolicyLobList\": [\n        {\n            \"PolicyRiskList\": [\n                {\n                    \"Gender\": \"1\",\n                    \"IdNo\": \"123456789\",\n                    \"IdType\": \"1\",\n                    \"Salutation\": \"1\",\n                    \"InsuredName\": \"Mohamed\",\n                    \"DateOfBirth\": \"1988-10-01\",\n                    \"ResidentStatus\": \"1\",\n                    \"Email\": \"Mohamed@gmail.com\",\n                    \"MaritalStatus\": \"1\",\n                    \"PostCode\": \"100345\",\n                    \"Mobile\": \"9989374444\",\n                    \"Address\": \"Oman\",\n                    \"MonthSalaryIncome\": \"10000\",\n                    \"ProductElementCode\": \"R00001\"\n                }\n            ],\n            \"ProductCode\": \"TL001\"\n        }\n    ],\n    \"ProductCode\": \"TL001\",\n    \"ProductSubcode\": \"1\",\n    \"PremiumModeCode\": 2,\n    \"ChannelCode\": \"{{channelCode}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/up/get-plans"
+        },
+        "description": "Plan list with DuePremium and Commission per plan, same shape as PA001. Premium depends on ProductSubcode (1 or 2). Legacy {{baseUrl}}/get-plans returns no plan premium for TL001."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Create Proposal API",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"ApplicationNo\": \"123\",\n    \"EffectiveDate\": \"2026-03-12\",\n    \"ExpiryDate\": \"2027-03-11T23:59:59\",\n    \"UserName\": \"Salman\",\n    \"ApplyDate\": \"2026-03-12\",\n    \"BranchCode\": \"001\",\n    \"DiscountAmount\": 10,\n    \"StaffId\": \"76\",\n    \"PolicyCustomerList\": [\n        {\n            \"CIFNumber\": \"45678\",\n            \"CustomerType\": \"1\"\n        }\n    ],\n    \"PolicyLobList\": [\n        {\n            \"PolicyRiskList\": [\n                {\n                    \"Gender\": \"1\",\n                    \"IdNo\": \"123456789\",\n                    \"IdType\": \"1\",\n                    \"Salutation\": \"1\",\n                    \"InsuredName\": \"Mohamed\",\n                    \"DateOfBirth\": \"1988-10-01\",\n                    \"ResidentStatus\": \"1\",\n                    \"Email\": \"Mohamed@gmail.com\",\n                    \"MaritalStatus\": \"1\",\n                    \"PostCode\": \"100345\",\n                    \"Mobile\": \"9989374444\",\n                    \"Address\": \"Oman\",\n                    \"MonthSalaryIncome\": \"10000\",\n                    \"PlanList\": [\n                        {\n                            \"PolicyCoverageList\": [\n                                {\n                                    \"ProductElementCode\": \"DTH\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"PTD\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"PPD\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"TRV\",\n                                    \"SumInsured\": 0\n                                },\n                                {\n                                    \"ProductElementCode\": \"REX\",\n                                    \"SumInsured\": 1000\n                                }\n                            ],\n                            \"PlanId\": 1\n                        }\n                    ],\n                    \"BeneficiaryList\": [\n                        {\n                            \"BeneficaryName\": \"Sayyed\",\n                            \"RelationshipCode\": \"1\",\n                            \"Share\": \"100\",\n                            \"BeneficarySequence\": \"1\"\n                        }\n                    ],\n                    \"ProductElementCode\": \"R00001\"\n                }\n            ],\n            \"ProductCode\": \"TL001\",\n            \"DuePremium\": 216\n        }\n    ],\n    \"PolicyPaymentInfoList\": [\n        {\n            \"LGCode\": \"23\",\n            \"LCCode\": 45,\n            \"IsInstallment\": \"N\",\n            \"DebitAccountNo\": \"896236508\",\n            \"DebitRefNo\": \"wer455\",\n            \"TransactionDate\": \"2026-02-17\"\n        }\n    ],\n    \"PolicyType\": \"1\",\n    \"ProductCode\": \"TL001\",\n    \"PremiumModeCode\": 2,\n    \"ProductSubcode\": 1,\n    \"ChannelCode\": \"{{channelCode}}\",\n    \"PlanId\": 1,\n    \"PolicyTerm\": 1,\n    \"DuePremium\": 153\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/proposal"
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set(\"proposalNo\", pm.response.json().ProposalNo);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Update Proposal API",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"ProposalNo\": \"{{proposalNo}}\",\n    \"ApplicationNo\": \"123\",\n    \"EffectiveDate\": \"2026-03-12\",\n    \"ExpiryDate\": \"2027-03-11T23:59:59\",\n    \"UserName\": \"Salman\",\n    \"ApplyDate\": \"2026-03-12\",\n    \"BranchCode\": \"001\",\n    \"DiscountAmount\": 10,\n    \"StaffId\": \"76\",\n    \"PolicyCustomerList\": [\n        {\n            \"CIFNumber\": \"45678\",\n            \"CustomerType\": \"1\"\n        }\n    ],\n    \"PolicyLobList\": [\n        {\n            \"PolicyRiskList\": [\n                {\n                    \"Gender\": \"1\",\n                    \"IdNo\": \"123456789\",\n                    \"IdType\": \"1\",\n                    \"Salutation\": \"1\",\n                    \"InsuredName\": \"Mohamed\",\n                    \"DateOfBirth\": \"1988-10-01\",\n                    \"ResidentStatus\": \"1\",\n                    \"Email\": \"Mohamed@gmail.com\",\n                    \"MaritalStatus\": \"1\",\n                    \"PostCode\": \"100345\",\n                    \"Mobile\": \"9989374444\",\n                    \"Address\": \"Oman\",\n                    \"MonthSalaryIncome\": \"10000\",\n                    \"PlanList\": [\n                        {\n                            \"PolicyCoverageList\": [\n                                {\n                                    \"ProductElementCode\": \"DTH\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"PTD\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"PPD\",\n                                    \"SumInsured\": 10000\n                                },\n                                {\n                                    \"ProductElementCode\": \"TRV\",\n                                    \"SumInsured\": 0\n                                },\n                                {\n                                    \"ProductElementCode\": \"REX\",\n                                    \"SumInsured\": 1000\n                                }\n                            ],\n                            \"PlanId\": 1\n                        }\n                    ],\n                    \"BeneficiaryList\": [\n                        {\n                            \"BeneficaryName\": \"Sayyed\",\n                            \"RelationshipCode\": \"1\",\n                            \"Share\": \"100\",\n                            \"BeneficarySequence\": \"1\"\n                        }\n                    ],\n                    \"ProductElementCode\": \"R00001\"\n                }\n            ],\n            \"ProductCode\": \"TL001\",\n            \"DuePremium\": 216\n        }\n    ],\n    \"PolicyPaymentInfoList\": [\n        {\n            \"LGCode\": \"23\",\n            \"LCCode\": 45,\n            \"IsInstallment\": \"N\",\n            \"DebitAccountNo\": \"896236508\",\n            \"DebitRefNo\": \"wer455\",\n            \"TransactionDate\": \"2026-02-17\"\n        }\n    ],\n    \"PolicyType\": \"1\",\n    \"ProductCode\": \"TL001\",\n    \"PremiumModeCode\": 2,\n    \"ProductSubcode\": 1,\n    \"ChannelCode\": \"{{channelCode}}\",\n    \"PlanId\": 1,\n    \"PolicyTerm\": 1,\n    \"DuePremium\": 153\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/update-proposal"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. Load Proposal API",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/load-policy?proposalNo={{proposalNo}}&ChannelCode=SOHAR"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. issuePolicy API",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"ProposalNo\": \"{{proposalNo}}\",\n    \"ProductCode\": \"TL001\",\n    \"ChannelCode\": \"{{channelCode}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/issue"
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set(\"policyNo\", pm.response.json().PolicyNo);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Load Policy API",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/load-policy?policyNo={{policyNo}}&ChannelCode=SOHAR"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "7. Proposal Reject",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"ProposalNo\": \"{{proposalNo}}\",\n    \"ProposalRejectDesc\": \"checker rejected\",\n    \"ProductCode\": \"TL001\",\n    \"ChannelCode\": \"{{channelCode}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/proposal-reject"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "8. Application Generation PDF",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"DocType\": \"Application\",\n    \"ProposalNo\": \"{{proposalNo}}\",\n    \"ProductSubcode\": \"1\",\n    \"ChannelCode\": \"{{channelCode}}\",\n    \"ProductCode\": \"TL001\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/doc_generation"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "9. Policy Generate PDF",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"PolicyNo\": \"{{policyNo}}\",\n    \"DocType\": \"Policy\",\n    \"ProductSubcode\": \"1\",\n    \"ChannelCode\": \"{{channelCode}}\",\n    \"ProductCode\": \"TL001\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/doc_generation"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "10. generate-feedfile",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"Conditions\": {\n        \"ProductCode\": \"TL001\"\n    },\n    \"FromRangeConditions\": {\n        \"EffectiveDate\": \"2026-03-11T00:00:00\"\n    },\n    \"ToRangeConditions\": {\n        \"EffectiveDate\": \"2026-03-13T23:59:59\"\n    },\n    \"Module\": \"Policy\",\n    \"PageNo\": 1,\n    \"PageSize\": 10,\n    \"SearchType\": \"Policy\",\n    \"SortField\": \"index_time\",\n    \"SortType\": \"desc\"\n    //\"Debug\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/generate-feedfile"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "11. cancel-check",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"PolicyNo\": \"{{policyNo}}\",\n    \"CancellationDate\": \"2026-10-08\",\n    \"CancelReason\": \"Customer request\",\n    \"ChannelCode\": \"{{channelCode}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/cancel-check"
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set(\"requestNo\", pm.response.json().RequestNo);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12. cancel-approve",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-mo-tenant-id",
+            "value": "{{tenant}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"PolicyNo\": \"{{policyNo}}\",\n    \"RequestNo\": \"{{requestNo}}\",\n    \"Decision\": \"APPROVE\",\n    \"ChannelCode\": \"{{channelCode}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/cancel-approve"
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "proposalNo",
+      "value": ""
+    },
+    {
+      "key": "policyNo",
+      "value": ""
+    },
+    {
+      "key": "requestNo",
+      "value": ""
+    }
+  ]
+}
