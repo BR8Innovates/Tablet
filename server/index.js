@@ -85,6 +85,9 @@ function seed(stationId) {
   for (const n of ["UPI", "Card", "Bank Transfer", "Fleet Card"]) put("sources", { name: n });
 }
 
+// Behind a hosting proxy (Render, Fly, Railway…) set TRUST_PROXY=1 so rate limits use the real client address.
+const TRUST_PROXY = process.env.TRUST_PROXY === "1";
+const clientIp = (req) => (TRUST_PROXY && String(req.headers["x-forwarded-for"] || "").split(",")[0].trim()) || req.socket.remoteAddress;
 const attempts = new Map();
 function throttle(key) {
   const now = Date.now(), list = (attempts.get(key) || []).filter((t) => now - t < 15 * 60e3);
@@ -96,6 +99,33 @@ const str = (v, max, label) => {
   return v.trim();
 };
 const checkPassword = (pw) => { if (typeof pw !== "string" || pw.length < 6 || pw.length > 200) throw new HttpError(400, "Password must be at least 6 characters."); };
+
+// ---------- realtime (Server-Sent Events) ----------
+// Every change is pushed to the other devices signed in to the same station. In-memory, so run a single instance.
+const hubs = new Map();                       // stationId -> Set<{ res, client }>
+const tickets = new Map();                    // one-time stream tickets (so the session token never sits in a URL)
+function broadcast(stationId, event, fromClient) {
+  const line = `data: ${JSON.stringify(event)}\n\n`;
+  for (const c of hubs.get(stationId) || []) if (c.client !== fromClient) c.res.write(line);
+}
+setInterval(() => {
+  const now = Date.now();
+  for (const [t, v] of tickets) if (v.exp < now) tickets.delete(t);
+  for (const set of hubs.values()) for (const c of set) c.res.write(": ping\n\n");
+}, 25000).unref();
+
+function openStream(req, res, url) {
+  const t = tickets.get(url.searchParams.get("ticket"));
+  tickets.delete(url.searchParams.get("ticket"));
+  const u = t && t.exp > Date.now() && q.userById.get(t.uid);
+  if (!u || !u.active) { res.writeHead(401); return res.end(); }
+  res.writeHead(200, { "Content-Type": "text/event-stream", "Cache-Control": "no-cache, no-transform", Connection: "keep-alive", "X-Accel-Buffering": "no" });
+  res.write("retry: 3000\n\n");
+  const conn = { res, client: url.searchParams.get("client") || "" };
+  if (!hubs.has(u.station_id)) hubs.set(u.station_id, new Set());
+  hubs.get(u.station_id).add(conn);
+  req.on("close", () => hubs.get(u.station_id)?.delete(conn));
+}
 
 // ---------- routes ----------
 const routes = [];
@@ -133,7 +163,13 @@ route("POST", "/api/login", ({ body, ip }) => {
 
 route("GET", "/api/me", ({ user }) => snapshot(user));
 
-route("PUT", "/api/c/:col/:id", ({ user, params, body }) => {
+route("POST", "/api/stream-ticket", ({ user }) => {
+  const ticket = crypto.randomBytes(18).toString("base64url");
+  tickets.set(ticket, { uid: user.id, exp: Date.now() + 60000 });
+  return { ticket };
+});
+
+route("PUT", "/api/c/:col/:id", ({ user, params, body, client }) => {
   if (!COLLECTIONS.includes(params.col)) throw new HttpError(404, "Unknown collection.");
   if (!ID_RE.test(params.id)) throw new HttpError(400, "Bad id.");
   if (!canWrite(user.role, params.col, "put")) throw new HttpError(403, "Your role can't change this.");
@@ -141,24 +177,28 @@ route("PUT", "/api/c/:col/:id", ({ user, params, body }) => {
   const json = JSON.stringify({ ...body, id: params.id });
   if (json.length > 20000) throw new HttpError(413, "Record too large.");
   q.put.run(user.station_id, params.col, params.id, json);
+  broadcast(user.station_id, { t: "put", col: params.col, rec: JSON.parse(json) }, client);
   return { ok: true };
 });
 
-route("DELETE", "/api/c/:col/:id", ({ user, params }) => {
+route("DELETE", "/api/c/:col/:id", ({ user, params, client }) => {
   if (!COLLECTIONS.includes(params.col)) throw new HttpError(404, "Unknown collection.");
   if (!canWrite(user.role, params.col, "delete")) throw new HttpError(403, "Your role can't change this.");
   q.del.run(user.station_id, params.col, params.id);
+  broadcast(user.station_id, { t: "del", col: params.col, id: params.id }, client);
   return { ok: true };
 });
 
-route("PATCH", "/api/station", ({ user, body }) => {
+route("PATCH", "/api/station", ({ user, body, client }) => {
   if (user.role === "attendant") throw new HttpError(403, "Your role can't change this.");
   db.prepare("UPDATE stations SET name = ?, currency = ? WHERE id = ?").run(str(body.name, 120, "Station name"), str(body.currency, 8, "Currency"), user.station_id);
-  return { station: publicStation(q.station.get(user.station_id)) };
+  const station = publicStation(q.station.get(user.station_id));
+  broadcast(user.station_id, { t: "station", station }, client);
+  return { station };
 });
 
 const ownerOnly = (user) => { if (user.role !== "owner") throw new HttpError(403, "Only the owner can manage the team."); };
-route("POST", "/api/users", ({ user, body }) => {
+route("POST", "/api/users", ({ user, body, client }) => {
   ownerOnly(user);
   const username = str(body.username, 60, "Username").toLowerCase();
   checkPassword(body.password);
@@ -166,10 +206,11 @@ route("POST", "/api/users", ({ user, body }) => {
   if (q.userByName.get(username)) throw new HttpError(409, "That username is already taken.");
   const salt = crypto.randomBytes(16).toString("base64");
   db.prepare("INSERT INTO users VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?)").run(crypto.randomUUID(), user.station_id, username, str(body.name, 120, "Name"), body.role, salt, hashPw(body.password, salt), Date.now());
+  broadcast(user.station_id, { t: "users" }, client);
   return { users: q.stationUsers.all(user.station_id).map(publicUser) };
 });
 
-route("PATCH", "/api/users/:id", ({ user, params, body }) => {
+route("PATCH", "/api/users/:id", ({ user, params, body, client }) => {
   ownerOnly(user);
   const t = q.userById.get(params.id);
   if (!t || t.station_id !== user.station_id) throw new HttpError(404, "No such user.");
@@ -182,6 +223,7 @@ route("PATCH", "/api/users/:id", ({ user, params, body }) => {
     const salt = crypto.randomBytes(16).toString("base64");
     db.prepare("UPDATE users SET salt = ?, hash = ? WHERE id = ?").run(salt, hashPw(body.password, salt), t.id);
   }
+  broadcast(user.station_id, { t: "users" }, client);
   return { users: q.stationUsers.all(user.station_id).map(publicUser) };
 });
 
@@ -209,12 +251,16 @@ function readBody(req) {
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "same-origin");
+  if (TRUST_PROXY) res.setHeader("Strict-Transport-Security", "max-age=15552000");
+  if (url.pathname === "/api/stream") return openStream(req, res, url);
   if (!url.pathname.startsWith("/api/")) return serveStatic(req, res);
   const send = (status, obj) => { res.writeHead(status, { "Content-Type": "application/json", "Cache-Control": "no-store" }); res.end(JSON.stringify(obj)); };
   try {
     const hit = routes.map((r) => ({ r, m: r.method === req.method && url.pathname.match(r.re) })).find((x) => x.m);
     if (!hit) throw new HttpError(404, "Not found.");
-    const ctx = { params: hit.m.groups || {}, ip: req.socket.remoteAddress, body: req.method === "GET" || req.method === "DELETE" ? {} : await readBody(req) };
+    const ctx = { params: hit.m.groups || {}, ip: clientIp(req), client: String(req.headers["x-client-id"] || ""), body: req.method === "GET" || req.method === "DELETE" ? {} : await readBody(req) };
     if (!["/api/health", "/api/register", "/api/login"].includes(url.pathname)) {
       const p = verify((req.headers.authorization || "").replace(/^Bearer /, ""));
       const u = p && q.userById.get(p.uid);
@@ -243,4 +289,4 @@ backup();
 setInterval(backup, 6 * 3600e3).unref();
 
 const PORT = Number(process.env.PORT || 3000);
-server.listen(PORT, () => console.log(`Fuel Station Manager on http://localhost:${PORT}`));
+server.listen(PORT, process.env.HOST || "0.0.0.0", () => console.log(`Fuel Station Manager on http://localhost:${PORT}`));

@@ -81,19 +81,25 @@ function watchSync() {
     const el = $("#sync");
     if (!el) return;
     if (s.signedOut) { store.endSession(); location.reload(); return; }
-    el.hidden = !(s.offline || s.pending || s.error);
-    el.textContent = s.offline ? `Offline · ${s.pending} waiting` : s.error ? "Some changes were not allowed" : `Saving ${s.pending}…`;
+    el.hidden = !(s.offline || s.pending || s.error || s.live);
+    el.textContent = s.offline ? `Offline · ${s.pending} waiting` : s.error ? "Some changes were not allowed" : s.pending ? `Saving ${s.pending}…` : "● Live";
     el.classList.toggle("bad", !!s.error || s.offline);
   });
   const pull = async () => {
     if (document.hidden || $(".overlay") || /^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement?.tagName)) return;
-    if (await store.refresh()) route();
+    if (await store.refresh()) route(true);
   };
+  // Another device changed something: redraw once the user is not in the middle of typing.
+  let dirty = false;
+  const busy = () => $(".overlay") || /^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement?.tagName);
+  const redraw = () => { if (!dirty) return; if (busy()) { setTimeout(redraw, 1200); return; } dirty = false; route(true); };
+  store.onRemoteChange(() => { dirty = true; redraw(); });
   document.addEventListener("visibilitychange", pull);
   setInterval(pull, 30000);
 }
 
-function route() {
+function route(keepScroll = false) {
+  const y = window.scrollY;
   const user = store.currentUser();
   if (!user) return boot();
   const [name, param] = location.hash.replace(/^#\/?/, "").split("/");
@@ -105,7 +111,7 @@ function route() {
   view.className = "view v-" + key;
   view.onclick = view.onchange = view.oninput = null;
   VIEWS[key].mount(view, param);
-  window.scrollTo(0, 0);
+  window.scrollTo(0, keepScroll ? y : 0);
 }
 
 boot();

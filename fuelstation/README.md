@@ -21,7 +21,8 @@ npm start            # Node >= 22.5, no dependencies → http://localhost:3000
 - Each station is a separate tenant; passwords are scrypt-hashed; sessions are signed tokens (30 days).
 - Roles are enforced **on the server**: attendants can only write daily entries (readings, credit, payments, expenses, closing) and customers; only the owner manages the team.
 - The app keeps a copy of your station's data on the device, so screens are instant and entries made offline are queued and sent when the connection returns (top bar shows "Offline · n waiting"). It refreshes from the server when you return to the app.
-- Conflicts are last-write-wins per record.
+- **Live sync:** changes appear on every signed-in device within moments (Server-Sent Events); the top bar shows "● Live". Conflicts are last-write-wins per record.
+- To host it online, see `DEPLOY.md` in the project root.
 
 **Without a backend** (e.g. GitHub Pages): the app detects there is no server and runs in local mode — data and logins stay in this browser only.
 

@@ -1,0 +1,18 @@
+# One-click host on Render: New → Blueprint → pick this repo. (A persistent disk needs a paid instance type.)
+services:
+  - type: web
+    name: fuel-station-manager
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - key: TRUST_PROXY
+        value: "1"
+      - key: DATA_DIR
+        value: /data
+      - key: SESSION_SECRET
+        generateValue: true
+    disk:
+      name: fuel-data
+      mountPath: /data
+      sizeGB: 1

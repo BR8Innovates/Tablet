@@ -46,6 +46,7 @@ export function startSession(user) {
 export function endSession() {
   session = null; localStorage.removeItem(SESSION_KEY);
   token = null; rem = { user: null, station: null, data: null, users: [] };
+  closeStream();
   for (const k of [TOKEN_KEY, CACHE_KEY]) localStorage.removeItem(k);
 }
 
@@ -134,6 +135,7 @@ export function upsert(col, match, obj) {
 }
 
 // ---------- remote mode: requests, offline queue, sync ----------
+const clientId = uid();          // lets the server skip echoing our own changes back to us
 const api = (path) => new URL("api/" + path, document.baseURI).href;
 const saveCache = () => { try { localStorage.setItem(CACHE_KEY, JSON.stringify(rem)); } catch { /* quota */ } };
 const saveQueue = () => localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
@@ -143,7 +145,7 @@ async function request(method, path, body, authed = true) {
   try {
     res = await fetch(api(path), {
       method, cache: "no-store",
-      headers: { ...(body !== undefined ? { "Content-Type": "application/json" } : {}), ...(authed && token ? { Authorization: "Bearer " + token } : {}) },
+      headers: { "X-Client-Id": clientId, ...(body !== undefined ? { "Content-Type": "application/json" } : {}), ...(authed && token ? { Authorization: "Bearer " + token } : {}) },
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
   } catch { const e = new Error("You're offline."); e.network = true; throw e; }
@@ -153,7 +155,7 @@ async function request(method, path, body, authed = true) {
 }
 
 const listeners = new Set();
-let syncState = { offline: false, signedOut: false, flushing: false, error: "" };
+let syncState = { offline: false, signedOut: false, flushing: false, error: "", live: false };
 export const onSync = (fn) => { listeners.add(fn); return () => listeners.delete(fn); };
 export const syncStatus = () => ({ ...syncState, pending: queue.length });
 const notify = () => listeners.forEach((fn) => fn(syncStatus()));
@@ -183,6 +185,47 @@ export async function flush() {
 }
 if (typeof window !== "undefined") window.addEventListener("online", () => flush());
 
+// ---------- live updates from other devices ----------
+let stream = null, streamRetry = null;
+const changeListeners = new Set();
+export const onRemoteChange = (fn) => { changeListeners.add(fn); return () => changeListeners.delete(fn); };
+const changed = () => changeListeners.forEach((fn) => fn());
+
+function applyRemote(ev) {
+  if (!rem.data) return;
+  if (ev.t === "put" || ev.t === "del") {
+    const id = ev.t === "put" ? ev.rec.id : ev.id;
+    if (queue.some((op) => op.path === `c/${ev.col}/${id}`)) return;   // our own unsent edit wins until it is sent
+    const arr = (rem.data[ev.col] ||= []);
+    const i = arr.findIndex((r) => r.id === id);
+    if (ev.t === "del") { if (i >= 0) arr.splice(i, 1); }
+    else if (i >= 0) arr[i] = ev.rec; else arr.push(ev.rec);
+  } else if (ev.t === "station") rem.station = ev.station;
+  else if (ev.t === "users") { if (rem.user?.role === "owner") request("GET", "me").then((snap) => { rem.users = snap.users || []; saveCache(); changed(); }).catch(() => {}); return; }
+  saveCache();
+  changed();
+}
+
+export async function connectStream() {
+  if (!isRemote() || !token || stream) return;
+  clearTimeout(streamRetry);
+  const retry = (ms) => { streamRetry = setTimeout(connectStream, ms); };
+  try {
+    const { ticket } = await request("POST", "stream-ticket", {});
+    const es = new EventSource(api(`stream?ticket=${encodeURIComponent(ticket)}&client=${clientId}`));
+    stream = es;
+    es.onopen = () => { syncState.live = true; notify(); };
+    es.onmessage = (e) => { try { applyRemote(JSON.parse(e.data)); } catch { /* ignore bad frame */ } };
+    es.onerror = async () => {
+      es.close(); if (stream === es) stream = null;
+      syncState.live = false; notify();
+      retry(3000);                                   // tickets are single-use, so reconnect with a new one…
+      setTimeout(async () => { if (await refresh()) changed(); }, 3500);   // …and catch up on anything missed
+    };
+  } catch (e) { if (e.status !== 401) retry(5000); }
+}
+const closeStream = () => { clearTimeout(streamRetry); stream?.close(); stream = null; syncState.live = false; };
+
 function adopt(snap) {
   rem = { user: snap.user, station: snap.station, data: snap.data, users: snap.users || [] };
   saveCache();
@@ -200,8 +243,8 @@ export async function remoteSignIn(kind, body) {
   token = snap.token; localStorage.setItem(TOKEN_KEY, token);
   if (rem.user && rem.user.id !== snap.user.id) { queue = []; saveQueue(); }
   adopt(snap);
-  syncState = { offline: false, signedOut: false, flushing: false, error: "" };
-  flush(); notify();
+  syncState = { offline: false, signedOut: false, flushing: false, error: "", live: false };
+  closeStream(); flush(); connectStream(); notify();
 }
 
 export async function remoteUsers(method, path, body) {
@@ -233,6 +276,7 @@ export async function init() {
     catch (e) { if (e.status === 401) { token = null; localStorage.removeItem(TOKEN_KEY); rem = { user: null, station: null, data: null, users: [] }; } else syncState.offline = true; }
   }
   if (!rem.user) token = null;
+  else connectStream();
 }
 
 // ---------- backup ----------
