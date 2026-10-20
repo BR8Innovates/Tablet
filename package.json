@@ -1,0 +1,7 @@
+{
+  "name": "fuel-station-manager",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.5" },
+  "scripts": { "start": "node --no-warnings server/index.js" }
+}

@@ -1,4 +1,4 @@
-const CACHE = "fsm-cache-v2";
+const CACHE = "fsm-cache-v3";
 const SHELL = ["./", "./index.html", "./styles.css", "./manifest.webmanifest",
   "./js/app.js", "./js/store.js", "./js/auth.js", "./js/ui.js", "./js/calc.js", "./js/forms.js",
   "./js/views/home.js", "./js/views/daily.js", "./js/views/customers.js", "./js/views/payments.js", "./js/views/setup.js", "./js/views/dashboard.js",
@@ -10,7 +10,7 @@ self.addEventListener("activate", (e) => e.waitUntil(
 
 // Network first so updates show up immediately; fall back to cache when offline.
 self.addEventListener("fetch", (e) => {
-  if (e.request.method !== "GET") return;
+  if (e.request.method !== "GET" || new URL(e.request.url).pathname.includes("/api/")) return;
   e.respondWith(fetch(e.request).then((res) => {
     if (res.ok && res.type === "basic") { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy)); }
     return res;

@@ -12,7 +12,8 @@ const VIEWS = { home, dashboard, daily, customers, payments, setup };
 const NAV = [["home", "Home", "🏠"], ["dashboard", "Insights", "📊"], ["daily", "Daily", "📝"], ["customers", "Customers", "👥"], ["payments", "Payments", "💳"], ["setup", "Setup", "⚙️"]];
 const app = $("#app");
 
-function boot() {
+async function boot() {
+  await store.init();
   if (store.currentUser()) shell(); else authScreen("login");
 }
 
@@ -61,12 +62,34 @@ function shell() {
   const allowed = NAV.filter(([k]) => auth.canOpen(user.role, k));
   render(app, html`
     <header class="topbar"><div class="brand">⛽ <span>${station.name}</span></div>
-      <button class="user-pill" id="userBtn" aria-label="Account">${user.name.slice(0, 1).toUpperCase()}</button></header>
+      <span class="sync" id="sync" hidden></span><button class="user-pill" id="userBtn" aria-label="Account">${user.name.slice(0, 1).toUpperCase()}</button></header>
     <nav class="nav" id="nav">${allowed.map(([k, label, icon]) => html`<a href="#/${k}" data-route="${k}"><i>${icon}</i><span>${label}</span></a>`)}</nav>
     <main class="main"><div id="view"></div></main>`);
   $("#userBtn").onclick = () => { location.hash = auth.canOpen(user.role, "setup") ? "#/setup/station" : "#/daily"; };
   window.onhashchange = route;
   route();
+  watchSync();
+}
+
+// Shows "Offline · n waiting" in the top bar and refreshes from the server when the app regains focus.
+let syncBound = false;
+function watchSync() {
+  if (!store.isRemote() || syncBound) return;
+  syncBound = true;
+  store.onSync((s) => {
+    const el = $("#sync");
+    if (!el) return;
+    if (s.signedOut) { store.endSession(); location.reload(); return; }
+    el.hidden = !(s.offline || s.pending || s.error);
+    el.textContent = s.offline ? `Offline · ${s.pending} waiting` : s.error ? "Some changes were not allowed" : `Saving ${s.pending}…`;
+    el.classList.toggle("bad", !!s.error || s.offline);
+  });
+  const pull = async () => {
+    if (document.hidden || $(".overlay") || /^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement?.tagName)) return;
+    if (await store.refresh()) route();
+  };
+  document.addEventListener("visibilitychange", pull);
+  setInterval(pull, 30000);
 }
 
 function route() {

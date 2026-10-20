@@ -162,3 +162,7 @@ small, .muted { color: var(--muted); }
 .age-cell.a1 { background: var(--warn-bg); } .age-cell.a2 { background: var(--warn-bg); color: var(--neg); }
 .age-cell.a3 { background: var(--neg); color: #fff; } .age-cell.a3 small { color: inherit; opacity: .9; }
 @media (min-width: 900px) { .ageing { grid-template-columns: repeat(4, 1fr); } }
+
+.sync { margin-left: auto; margin-right: 10px; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: rgba(255,255,255,.2); }
+.sync.bad { background: #fde68a; color: #7c2d12; }
+.topbar { gap: 4px; }

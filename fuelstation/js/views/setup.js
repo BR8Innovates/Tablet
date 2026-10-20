@@ -200,7 +200,6 @@ const handlers = {
     },
     edit(id, redraw) {
       const u = store.stationUsers().find((x) => x.id === id);
-      const me = store.currentUser();
       openForm({
         title: u.name, fields: [
           { name: "name", label: "Name", value: u.name, required: true },
@@ -209,10 +208,8 @@ const handlers = {
           { name: "active", label: "Account", type: "select", value: u.active === false ? "no" : "yes", options: [{ value: "yes", label: "Active" }, { value: "no", label: "Disabled" }] },
         ],
         async onSubmit(v) {
-          if (u.id === me.id && (v.role !== "owner" || v.active === "no")) throw new Error("You can't remove your own owner access.");
-          const patch = { name: v.name, role: v.role, active: v.active === "yes" };
-          if (v.password) { if (v.password.length < 6) throw new Error("Password must be at least 6 characters."); const c = await auth.credentials(u.username, v.password); patch.salt = c.salt; patch.hash = c.hash; }
-          store.updateUser(id, patch); redraw();
+          await auth.updateTeamMember(id, { name: v.name, role: v.role, active: v.active === "yes", password: v.password });
+          redraw();
         },
       });
     },

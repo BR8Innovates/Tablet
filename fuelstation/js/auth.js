@@ -18,6 +18,7 @@ export async function credentials(username, password) {
 }
 
 export async function register({ stationName, currency, name, username, password }) {
+  if (store.isRemote()) return store.remoteSignIn("register", { stationName, currency, name, username, password });
   if (password.length < 6) throw new Error("Password must be at least 6 characters.");
   if (store.findUserByName(username)) throw new Error("That username is already taken.");
   const owner = store.createStation({ stationName, currency }, { name, ...(await credentials(username, password)) });
@@ -25,6 +26,7 @@ export async function register({ stationName, currency, name, username, password
 }
 
 export async function login(username, password) {
+  if (store.isRemote()) return store.remoteSignIn("login", { username, password });
   const user = store.findUserByName(username);
   if (!user || user.active === false || (await hash(password, user.salt)) !== user.hash) {
     throw new Error("Wrong username or password.");
@@ -35,6 +37,7 @@ export async function login(username, password) {
 export const logout = () => store.endSession();
 
 export async function addTeamMember({ name, username, password, role }) {
+  if (store.isRemote()) return store.remoteUsers("POST", "users", { name, username, password, role });
   if (password.length < 6) throw new Error("Password must be at least 6 characters.");
   if (store.findUserByName(username)) throw new Error("That username is already taken.");
   store.addUser({ name, role, ...(await credentials(username, password)) });
@@ -47,3 +50,17 @@ export const ACCESS = {
   attendant: ["daily", "customers"],
 };
 export const canOpen = (role, route) => (ACCESS[role] || []).includes(route);
+
+export async function updateTeamMember(id, { name, role, active, password }) {
+  if (store.isRemote()) return store.remoteUsers("PATCH", "users/" + id, { name, role, active, ...(password ? { password } : {}) });
+  const u = store.stationUsers().find((x) => x.id === id);
+  const me = store.currentUser();
+  if (u.id === me.id && (role !== "owner" || !active)) throw new Error("You can't remove your own owner access.");
+  const patch = { name, role, active };
+  if (password) {
+    if (password.length < 6) throw new Error("Password must be at least 6 characters.");
+    const c = await credentials(u.username, password);
+    patch.salt = c.salt; patch.hash = c.hash;
+  }
+  store.updateUser(id, patch);
+}
