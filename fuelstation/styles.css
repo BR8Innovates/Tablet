@@ -147,3 +147,18 @@ small, .muted { color: var(--muted); }
 .auth-card form { display: flex; flex-direction: column; gap: 12px; text-align: left; margin-top: 6px; }
 .auth-card .logo { font-size: 2.6rem; }
 .auth-card h1 { font-size: 1.4rem; }
+
+/* dashboard */
+.hbars > * + * { margin-top: 12px; }
+.hbar-top { display: flex; justify-content: space-between; gap: 8px; font-size: .92rem; margin-bottom: 4px; }
+.hbar-top small { font-weight: 500; }
+.hbar-track { height: 10px; border-radius: 99px; background: var(--border); overflow: hidden; }
+.hbar-track i { display: block; height: 100%; border-radius: 99px; background: var(--accent); }
+.hbar-track i.alt { background: #2563eb; } .hbar-track i.warnbar { background: var(--neg); }
+.axis { display: flex; justify-content: space-between; margin-top: 8px; font-size: .75rem; color: var(--muted); }
+.ageing { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.age-cell { padding: 10px; border-radius: 10px; background: var(--accent-soft); display: flex; flex-direction: column; }
+.age-cell b { font-size: 1.1rem; }
+.age-cell.a1 { background: var(--warn-bg); } .age-cell.a2 { background: var(--warn-bg); color: var(--neg); }
+.age-cell.a3 { background: var(--neg); color: #fff; } .age-cell.a3 small { color: inherit; opacity: .9; }
+@media (min-width: 900px) { .ageing { grid-template-columns: repeat(4, 1fr); } }

@@ -90,3 +90,85 @@ export function customerBalance(customerId) {
 }
 
 export const outstandingTotal = () => round2(list("customers").reduce((t, c) => t + Math.max(0, customerBalance(c.id)), 0));
+
+// ---------- range analytics (dashboards) ----------
+import { shiftDate, parseKey } from "./ui.js";
+
+export function daysBetween(from, to) {
+  const out = [];
+  for (let d = from; d <= to; d = shiftDate(d, 1)) out.push(d);
+  return out;
+}
+
+// Litres and sales amount per product over [from, to].
+export function productMix(from, to) {
+  const out = {};
+  for (const r of list("readings")) {
+    if (r.date < from || r.date > to) continue;
+    const pid = get("pumps", r.pumpId)?.productId;
+    if (!pid) continue;
+    const o = (out[pid] ||= { litres: 0, amount: 0 });
+    o.litres = round2(o.litres + readingLitres(r));
+    o.amount = round2(o.amount + readingAmount(r));
+  }
+  return out;
+}
+
+// Received money split by Cash / each online source / credit given.
+export function paymentMix(from, to) {
+  const out = {};
+  const bump = (k, v) => { out[k] = round2((out[k] || 0) + v); };
+  const inR = (r) => r.date >= from && r.date <= to;
+  for (const p of list("payments").filter(inR)) bump(p.method === "cash" ? "Cash" : nameOf("sources", p.sourceId), p.amount);
+  for (const d of daysBetween(from, to)) {
+    const t = totals(d);
+    bump("Cash", t.cashFromSales);
+    bump("On credit", t.creditGiven);
+  }
+  // Online fuel collections were already counted as payments above.
+  return out;
+}
+
+export function expenseMix(from, to) {
+  const out = {};
+  for (const e of list("expenses")) {
+    if (e.date < from || e.date > to) continue;
+    const k = nameOf("expenseTypes", e.typeId);
+    out[k] = round2((out[k] || 0) + e.amount);
+  }
+  return out;
+}
+
+export function salesByShift(from, to) {
+  const out = {};
+  for (const r of list("readings")) {
+    if (r.date < from || r.date > to) continue;
+    out[r.shiftId] = round2((out[r.shiftId] || 0) + readingAmount(r));
+  }
+  return out;
+}
+
+// Outstanding credit by age. Each customer's payments are applied to their oldest credits first.
+export const AGE_BUCKETS = [["0–30 days", 30], ["31–60 days", 60], ["61–90 days", 90], ["90+ days", Infinity]];
+export function ageing(today) {
+  const buckets = AGE_BUCKETS.map(([label]) => ({ label, amount: 0 }));
+  const byCustomer = [];
+  for (const c of list("customers")) {
+    let paid = list("payments").filter((p) => p.kind === "customer" && p.customerId === c.id).reduce((t, p) => t + p.amount, 0);
+    const credits = list("credits").filter((x) => x.customerId === c.id).sort((a, b) => a.date.localeCompare(b.date));
+    let oldest = null, owed = 0;
+    for (const cr of credits) {
+      const applied = Math.min(paid, cr.amount);
+      paid -= applied;
+      const left = round2(cr.amount - applied);
+      if (left <= 0) continue;
+      const age = Math.round((parseKey(today) - parseKey(cr.date)) / 86400000);
+      buckets[AGE_BUCKETS.findIndex(([, max]) => age <= max)].amount += left;
+      owed += left;
+      oldest ??= age;
+    }
+    if (owed > 0) byCustomer.push({ customer: c, owed: round2(owed), oldest });
+  }
+  buckets.forEach((b) => { b.amount = round2(b.amount); });
+  return { buckets, byCustomer: byCustomer.sort((a, b) => b.oldest - a.oldest || b.owed - a.owed) };
+}

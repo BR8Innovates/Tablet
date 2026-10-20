@@ -6,9 +6,10 @@ import * as daily from "./views/daily.js";
 import * as customers from "./views/customers.js";
 import * as payments from "./views/payments.js";
 import * as setup from "./views/setup.js";
+import * as dashboard from "./views/dashboard.js";
 
-const VIEWS = { home, daily, customers, payments, setup };
-const NAV = [["home", "Home", "🏠"], ["daily", "Daily", "📝"], ["customers", "Customers", "👥"], ["payments", "Payments", "💳"], ["setup", "Setup", "⚙️"]];
+const VIEWS = { home, dashboard, daily, customers, payments, setup };
+const NAV = [["home", "Home", "🏠"], ["dashboard", "Insights", "📊"], ["daily", "Daily", "📝"], ["customers", "Customers", "👥"], ["payments", "Payments", "💳"], ["setup", "Setup", "⚙️"]];
 const app = $("#app");
 
 function boot() {

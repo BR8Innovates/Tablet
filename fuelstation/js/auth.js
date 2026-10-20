@@ -42,8 +42,8 @@ export async function addTeamMember({ name, username, password, role }) {
 
 // What each role may open. Enforced in the UI today; mirror these on the server later.
 export const ACCESS = {
-  owner: ["home", "daily", "customers", "payments", "setup"],
-  manager: ["home", "daily", "customers", "payments", "setup"],
+  owner: ["home", "dashboard", "daily", "customers", "payments", "setup"],
+  manager: ["home", "dashboard", "daily", "customers", "payments", "setup"],
   attendant: ["daily", "customers"],
 };
 export const canOpen = (role, route) => (ACCESS[role] || []).includes(route);
