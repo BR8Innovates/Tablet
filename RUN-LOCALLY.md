@@ -10,3 +10,11 @@ Your accounts and data are saved in the `data` folder next to this file. **Back 
 (Installing to the home screen needs HTTPS, so on a phone use it as a normal browser tab.)
 
 No Node? start.bat / start.sh fall back to Python in "simple mode": the app works, but data stays in that one browser.
+
+## Backups
+A copy of your data is saved automatically every day in `data/backups` (the last 14 are kept). To restore, stop the app and copy a backup over `data/fuelstation.db`. Keep another copy on a USB drive or cloud folder too.
+
+## Forgot a password?
+Staff passwords can be reset by the owner (Setup → Team). If the owner forgets theirs, run in this folder:
+
+    npm run reset-password -- <username> <new-password>

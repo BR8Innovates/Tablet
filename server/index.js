@@ -228,5 +228,19 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
+// ---------- automatic backups ----------
+// A consistent copy of the database at start-up and then daily, keeping the newest 14 in data/backups.
+function backup() {
+  try {
+    const dir = path.join(DATA_DIR, "backups");
+    fs.mkdirSync(dir, { recursive: true });
+    const file = path.join(dir, `fuelstation-${new Date().toISOString().slice(0, 10)}.db`);
+    if (!fs.existsSync(file)) db.exec(`VACUUM INTO '${file.replace(/'/g, "''")}'`);
+    fs.readdirSync(dir).filter((f) => /^fuelstation-.*\.db$/.test(f)).sort().slice(0, -14).forEach((f) => fs.unlinkSync(path.join(dir, f)));
+  } catch (e) { console.error("Backup failed:", e.message); }
+}
+backup();
+setInterval(backup, 6 * 3600e3).unref();
+
 const PORT = Number(process.env.PORT || 3000);
 server.listen(PORT, () => console.log(`Fuel Station Manager on http://localhost:${PORT}`));
