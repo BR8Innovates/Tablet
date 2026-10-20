@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - claude/health-activity-tracker-app-vntdza
+      - claude/trusting-ptolemy-3je4h5
   workflow_dispatch:
 
 permissions:
