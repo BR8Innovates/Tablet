@@ -9,7 +9,7 @@ const KEY = "fsm:v1";
 const SESSION_KEY = "fsm:session";
 
 const COLLECTIONS = [
-  "products", "pumps", "prices", "shifts", "readings", "customers",
+  "products", "pumps", "nozzles", "prices", "shifts", "readings", "customers",
   "credits", "payments", "expenses", "expenseTypes", "sources", "closings",
 ];
 
@@ -96,7 +96,11 @@ export function updateStation(patch) {
 }
 
 // ---------- collections (scoped to current station) ----------
-const bucket = () => isRemote() ? rem.data : db.data[session.stationId];
+const bucket = () => {
+  const d = isRemote() ? rem.data : db.data[session.stationId];
+  for (const c of COLLECTIONS) d[c] ||= [];     // collections added after a station was created
+  return d;
+};
 // Local mode writes the whole db; remote mode caches the snapshot and queues the change for the server.
 function saved(col, id, rec) {
   if (!isRemote()) return persist();
@@ -234,4 +238,15 @@ export async function init() {
 // ---------- backup ----------
 export function exportStation() {
   return JSON.stringify({ station: currentStation(), data: bucket(), exportedAt: new Date().toISOString() }, null, 2);
+}
+
+// One-time upgrade: pumps used to carry a product and own the meter reading. Now a pump has nozzles,
+// each with its own product and reading. Turn every old pump into a pump with one nozzle.
+export function migrate() {
+  for (const pump of list("pumps")) {
+    if (!pump.productId) continue;
+    const nozzle = add("nozzles", { pumpId: pump.id, name: "Nozzle 1", productId: pump.productId, archived: !!pump.archived });
+    update("pumps", pump.id, { productId: null });
+    for (const r of list("readings")) if (r.pumpId === pump.id && !r.nozzleId) update("readings", r.id, { nozzleId: nozzle.id });
+  }
 }

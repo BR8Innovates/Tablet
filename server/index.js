@@ -43,7 +43,7 @@ const q = {
 };
 
 // ---------- rules (the source of truth for roles) ----------
-const COLLECTIONS = ["products", "pumps", "prices", "shifts", "readings", "customers", "credits", "payments", "expenses", "expenseTypes", "sources", "closings"];
+const COLLECTIONS = ["products", "pumps", "nozzles", "prices", "shifts", "readings", "customers", "credits", "payments", "expenses", "expenseTypes", "sources", "closings"];
 const ATTENDANT_WRITE = new Set(["readings", "credits", "payments", "expenses", "closings", "customers"]);
 const ROLES = ["owner", "manager", "attendant"];
 const canWrite = (role, col, op) => role !== "attendant" || (ATTENDANT_WRITE.has(col) && !(op === "delete" && col === "customers"));

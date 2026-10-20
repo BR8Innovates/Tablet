@@ -1,6 +1,6 @@
-const CACHE = "fsm-cache-v3";
+const CACHE = "fsm-cache-v4";
 const SHELL = ["./", "./index.html", "./styles.css", "./manifest.webmanifest",
-  "./js/app.js", "./js/store.js", "./js/auth.js", "./js/ui.js", "./js/calc.js", "./js/forms.js",
+  "./js/app.js", "./js/store.js", "./js/auth.js", "./js/ui.js", "./js/calc.js", "./js/forms.js", "./js/catalogue.js",
   "./js/views/home.js", "./js/views/daily.js", "./js/views/customers.js", "./js/views/payments.js", "./js/views/setup.js", "./js/views/dashboard.js",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png"];
 

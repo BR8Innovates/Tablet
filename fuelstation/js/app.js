@@ -66,6 +66,7 @@ function shell() {
     <nav class="nav" id="nav">${allowed.map(([k, label, icon]) => html`<a href="#/${k}" data-route="${k}"><i>${icon}</i><span>${label}</span></a>`)}</nav>
     <main class="main"><div id="view"></div></main>`);
   $("#userBtn").onclick = () => { location.hash = auth.canOpen(user.role, "setup") ? "#/setup/station" : "#/daily"; };
+  store.migrate();
   window.onhashchange = route;
   route();
   watchSync();

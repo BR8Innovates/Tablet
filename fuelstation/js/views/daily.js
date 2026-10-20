@@ -1,6 +1,6 @@
 import * as store from "../store.js";
 import { html, render, $, $$, money, qty, num, round2, todayKey, shiftDate, fmtDate } from "../ui.js";
-import { active, nameOf, priceOn, previousClosing, readingLitres, totals } from "../calc.js";
+import { active, nameOf, priceOn, previousClosing, readingLitres, totals, liveNozzles, nozzleLabel } from "../calc.js";
 import { creditForm, customerPaymentForm, saleOnlineForm, expenseForm, settleExpenseForm } from "../forms.js";
 
 // Screen state survives re-renders (and navigating away and back within the session).
@@ -39,11 +39,11 @@ export function mount(root) {
   };
   root.onchange = (e) => {
     if (e.target.id === "datePick" && e.target.value) { state.date = e.target.value; redraw(); }
-    else if (e.target.matches("[data-meter]")) saveReading(e.target.closest("[data-pump]"));
+    else if (e.target.matches("[data-meter]")) saveReading(e.target.closest("[data-nozzle]"));
     else if (e.target.id === "cashCounted") saveClosing(e.target.value);
   };
   root.oninput = (e) => {
-    if (e.target.matches("[data-meter]")) liveReading(e.target.closest("[data-pump]"));
+    if (e.target.matches("[data-meter]")) liveReading(e.target.closest("[data-nozzle]"));
   };
   draw(root);
 }
@@ -82,12 +82,12 @@ const inShift = (r) => r.date === state.date && r.shiftId === state.shiftId;
 
 // ---------- sales (meter readings + online collections) ----------
 function salesTab() {
-  const pumps = active("pumps");
+  const nozzles = liveNozzles();
   const online = store.list("payments").filter((p) => p.kind === "sale" && inShift(p));
-  if (!pumps.length) return html`<div class="empty">No pumps yet. <a href="#/setup">Add pumps in Setup</a> to start recording meter readings.</div>`;
+  if (!nozzles.length) return html`<div class="empty">No nozzles yet. <a href="#/setup/pumps">Add a pump and its nozzles in Setup</a> to start recording meter readings.</div>`;
   return html`
     <h3 class="section">Meter readings</h3>
-    <div class="stack">${pumps.map(pumpCard)}</div>
+    <div class="stack">${nozzles.map(nozzleCard)}</div>
     <div class="section-row"><h3 class="section">Online collections</h3><button class="btn small" data-act="add-online">+ Add</button></div>
     <div class="list">${online.length ? online.map((p) => html`
       <button class="row" data-act="edit-online" data-id="${p.id}">
@@ -96,14 +96,14 @@ function salesTab() {
     <div id="shiftSummary">${shiftSummary()}</div>`;
 }
 
-function pumpCard(pump) {
-  const rec = store.list("readings").find((r) => r.pumpId === pump.id && inShift(r));
+function nozzleCard(pump) {
+  const rec = store.list("readings").find((r) => r.nozzleId === pump.id && inShift(r));
   const prev = previousClosing(pump.id, state.date, state.shiftId);
   const opening = rec ? rec.opening : prev ?? "";
   const price = priceOn(pump.productId, state.date);
   return html`
-    <div class="card pump" data-pump="${pump.id}" data-price="${price ?? ""}">
-      <div class="pump-head"><b>${pump.name}</b><span class="badge">${nameOf("products", pump.productId)}</span>
+    <div class="card pump" data-nozzle="${pump.id}" data-price="${price ?? ""}">
+      <div class="pump-head"><b>${nozzleLabel(pump)}</b><span class="badge">${nameOf("products", pump.productId)}</span>
         <span class="muted">${price == null ? html`<a href="#/setup/prices">Set today's price</a>` : money(price) + "/" + (store.get("products", pump.productId)?.unit || "L")}</span></div>
       <div class="meters">
         <label class="field"><span>Opening</span><input data-meter name="opening" type="number" inputmode="decimal" step="any" min="0" value="${opening}"></label>
@@ -124,11 +124,11 @@ function liveReading(card) {
 }
 
 function saveReading(card) {
-  const pumpId = card.dataset.pump;
+  const nozzleId = card.dataset.nozzle;
   const o = $("[name=opening]", card).value, c = $("[name=closing]", card).value;
-  const match = (r) => r.pumpId === pumpId && inShift(r);
+  const match = (r) => r.nozzleId === nozzleId && inShift(r);
   // Nothing to keep until a closing meter is entered.
-  store.upsert("readings", match, c === "" ? null : { date: state.date, shiftId: state.shiftId, pumpId, opening: num(o), closing: num(c) });
+  store.upsert("readings", match, c === "" ? null : { date: state.date, shiftId: state.shiftId, nozzleId, opening: num(o), closing: num(c) });
   liveReading(card);
   const s = $("#shiftSummary");
   if (s) render(s, shiftSummary());

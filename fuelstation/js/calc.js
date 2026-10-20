@@ -3,6 +3,9 @@ import { list, get } from "./store.js";
 import { num, round2 } from "./ui.js";
 
 export const active = (col) => list(col).filter((r) => !r.archived);
+// Nozzles that can take a reading: the nozzle and its pump are both in service.
+export const liveNozzles = () => active("nozzles").filter((n) => get("pumps", n.pumpId) && !get("pumps", n.pumpId).archived);
+export const nozzleLabel = (n) => `${nameOf("pumps", n.pumpId, "Pump")} · ${n.name}`;
 export const nameOf = (col, id, fallback = "—") => get(col, id)?.name || fallback;
 
 const shiftIndex = (shiftId) => list("shifts").findIndex((s) => s.id === shiftId);
@@ -17,12 +20,12 @@ export function priceOn(productId, date) {
   return best ? best.price : null;
 }
 
-// Closing meter of the reading that immediately precedes (date, shift) for a pump.
-export function previousClosing(pumpId, date, shiftId) {
+// Closing meter of the reading that immediately precedes (date, shift) for a nozzle.
+export function previousClosing(nozzleId, date, shiftId) {
   const cur = shiftIndex(shiftId);
   let best = null, bestKey = "";
   for (const r of list("readings")) {
-    if (r.pumpId !== pumpId) continue;
+    if (r.nozzleId !== nozzleId) continue;
     const idx = shiftIndex(r.shiftId);
     if (r.date > date || (r.date === date && idx >= cur)) continue;
     const key = r.date + String(idx).padStart(3, "0");
@@ -34,8 +37,8 @@ export function previousClosing(pumpId, date, shiftId) {
 export function readingLitres(r) { return Math.max(0, num(r.closing) - num(r.opening)); }
 
 export function readingAmount(r) {
-  const pump = get("pumps", r.pumpId);
-  const price = pump ? priceOn(pump.productId, r.date) : null;
+  const nozzle = get("nozzles", r.nozzleId);
+  const price = nozzle ? priceOn(nozzle.productId, r.date) : null;
   return round2(readingLitres(r) * (price || 0));
 }
 
@@ -77,7 +80,7 @@ export function totals(date, shiftId = null) {
 export function litresByProduct(date) {
   const out = {};
   for (const r of list("readings").filter((x) => x.date === date)) {
-    const pid = get("pumps", r.pumpId)?.productId;
+    const pid = get("nozzles", r.nozzleId)?.productId;
     if (pid) out[pid] = round2((out[pid] || 0) + readingLitres(r));
   }
   return out;
@@ -105,7 +108,7 @@ export function productMix(from, to) {
   const out = {};
   for (const r of list("readings")) {
     if (r.date < from || r.date > to) continue;
-    const pid = get("pumps", r.pumpId)?.productId;
+    const pid = get("nozzles", r.nozzleId)?.productId;
     if (!pid) continue;
     const o = (out[pid] ||= { litres: 0, amount: 0 });
     o.litres = round2(o.litres + readingLitres(r));

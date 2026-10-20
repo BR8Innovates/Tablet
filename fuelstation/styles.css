@@ -166,3 +166,13 @@ small, .muted { color: var(--muted); }
 .sync { margin-left: auto; margin-right: 10px; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: rgba(255,255,255,.2); }
 .sync.bad { background: #fde68a; color: #7c2d12; }
 .topbar { gap: 4px; }
+
+/* setup: pumps, prices, catalogue */
+.pump-setup, .price-card { display: flex; flex-direction: column; gap: 10px; }
+.pump-setup.off { opacity: .6; }
+.pump-setup .section-row, .price-card .section-row { margin-top: 0 !important; }
+.cat-group + .cat-group { margin-top: 12px; }
+.cat-group h3 { margin: 4px 0; color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+.check { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 4px 2px; }
+.check input { width: 22px; height: 22px; accent-color: var(--accent); flex: none; }
+.check span { display: flex; flex-direction: column; font-weight: 600; } .check small { font-weight: 400; }

@@ -6,7 +6,7 @@ export function mount(root) {
   const today = todayKey();
   const t = totals(today);
   const litres = litresByProduct(today);
-  const fuels = active("products").filter((p) => p.category === "Fuel" || litres[p.id]);
+  const fuels = active("products").filter((p) => p.category === "Fuel" || p.category === "Gas" || litres[p.id]);
   const missing = fuels.filter((p) => priceOn(p.id, today) == null);
   const debtors = active("customers").map((c) => ({ c, bal: customerBalance(c.id) }))
     .filter((x) => x.bal > 0).sort((a, b) => b.bal - a.bal).slice(0, 5);
