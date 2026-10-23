@@ -19,9 +19,13 @@ for d in ['raw_2026-07','raw_2026-08','raw_2026-09','raw_2026-10']:
             rows.append([e['ClientRequestTime'][:10],e['ClientRequestTime'],e['TransactionType'],cp,e['TraceId'],e['ClientRequestId'],lg['SyncUrl'],lg['SyncStatus'],
                          clean(e['TransRequest']),clean(lg['SyncRequest']),clean(lg['SyncResponse']),clean(e.get('TransResponse') or lg['TransResponse'])])
 rows.sort(key=lambda r:r[1])
+raw_n=len(rows); g={}
+for r in rows: g.setdefault(r[3],[]).append(r)
+rows=[v[0]+[len(v),v[-1][1]] for v in g.values()]
+print('raw',raw_n,'unique CarrierPolicyNo',len(rows))
 wb=Workbook(); ws=wb.active; ws.title='Tata CarrierPolicyNo Cases'
-hdrrow(ws,1,['Date','Call time','Txn type','CarrierPolicyNo','TraceId','ClientRequestId','Carrier endpoint','Sync status','Fibe → InsureMO request','InsureMO → Insurer request','Insurer response','InsureMO response'])
+hdrrow(ws,1,['Date','Call time','Txn type','CarrierPolicyNo','TraceId','ClientRequestId','Carrier endpoint','Sync status','Fibe → InsureMO request','InsureMO → Insurer request','Insurer response','InsureMO response','Calls with this CarrierPolicyNo','Last call'])
 for i,r in enumerate(rows,2): put(ws,i,r)
-for j,w in enumerate([11,20,8,16,34,38,32,9,60,60,60,60],1): ws.column_dimensions[chr(64+j)].width=w
+for j,w in enumerate([11,20,8,16,34,38,32,9,60,60,60,60,12,20],1): ws.column_dimensions[chr(64+j)].width=w
 ws.freeze_panes='E2'
 wb.save('out10/Tata_CarrierPolicyNo_Cases_with_Logs_Jul-Oct2026.xlsx'); print(len(rows))

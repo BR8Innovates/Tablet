@@ -21,17 +21,26 @@ for d in ['raw_2026-07','raw_2026-08','raw_2026-09','raw_2026-10']:
             rows.append([e['ClientRequestTime'][:10],e['ClientRequestTime'],msg(lg.get('SyncResponse')),e['TraceId'],e['ClientRequestId'],lg['SyncUrl'],lg['SyncStatus'],
                          clean(e['TransRequest']),clean(lg['SyncRequest']),clean(lg['SyncResponse']),clean(lg['TransResponse'])])
 rows.sort(key=lambda r:r[1])
+def pk(r):
+    try: return json.loads(r[7]).get('CarrierProposalNo') or r[4]
+    except Exception: return r[4]
+raw_n=len(rows); grp={}
+for r in rows: grp.setdefault(pk(r),[]).append(r)
+okprop=set()
+rows=[g[-1]+[len(g),g[0][1]] for g in grp.values()]
+rows.sort(key=lambda r:r[1])
+print('raw failed calls',raw_n,'-> unique proposals',len(rows))
 print('success',ok,'fail',len(rows))
 sm=collections.Counter((r[0][:7],r[2]) for r in rows)
 from openpyxl import Workbook
 wb=Workbook(); s=wb.active; s.title='Summary'
-hdrrow(s,1,['Month','Insurer error','Failed calls'])
+hdrrow(s,1,['Month','Insurer error','Unique failed proposals (duplicates removed)'])
 for i,((m,er),n) in enumerate(sorted(sm.items()),2): put(s,i,[m,er,n])
 for k,w in zip('ABC',[10,80,12]): s.column_dimensions[k].width=w
 ws=wb.create_sheet('Failed Issue Policy Cases')
-hdrrow(ws,1,['Date','Call time','Insurer error','TraceId','ClientRequestId','Carrier endpoint','Sync status','Fibe → InsureMO request','InsureMO → Insurer request','Insurer response','InsureMO response'])
+hdrrow(ws,1,['Date','Call time','Insurer error','TraceId','ClientRequestId','Carrier endpoint','Sync status','Fibe → InsureMO request','InsureMO → Insurer request','Insurer response','InsureMO response','Attempts for this proposal','First attempt'])
 for i,r in enumerate(rows,2): put(ws,i,r)
-for j,w in enumerate([11,20,50,34,38,30,9,60,60,60,60],1): ws.column_dimensions[chr(64+j)].width=w
+for j,w in enumerate([11,20,50,34,38,30,9,60,60,60,60,12,20],1): ws.column_dimensions[chr(64+j)].width=w
 ws.freeze_panes='D2'
 wb.save('out10/Tata_IssuePolicy_Failures_Jul-Oct2026.xlsx')
 for k,v in sorted(sm.items()): print(k,v)
