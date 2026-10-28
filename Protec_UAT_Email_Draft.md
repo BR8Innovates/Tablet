@@ -12,12 +12,16 @@ Result: 83 use cases covered - 76 success, 4 partial, 1 failure, 4 not tested (g
 
 Test data created: agent PTY00000000000003 (agreement, 10% commission on PCAR/P2W/PCV/GCV, float of Rs 1,00,00,000 across collections 532527 and 532533), customer CUS26000022 (active, KYC verified), and issued policies for PCAR, P2W, PCV and GCV, plus claims on each.
 
-Bugs raised
-- UAT-BUG-01 (High): policies with UW referral (AutoUwResultCode 2) are issued with no float debit.
-- UAT-BUG-02 (High): proposalValidate/bind return HTTP 500 for registered vehicles (MH12AB1234, KA01AB1234).
-- UAT-BUG-03 (Medium): claim document types not configured; claim document upload returns HTTP 500.
-- UAT-BUG-04 (Low): unhandled exceptions return a generic E9998 message.
-- Observations: searchSCList returns 0 with the ScStatus filter; FNOL gives a misleading "policy does not exist" message for a loss date before policy start.
+Bugs raised (API wise)
+- A07 GetVehicleData - UAT-BUG-05 (Medium): intermittent Vahan "wallet balance is low".
+- A08 searchSCList - UAT-OBS-06 (Info): returns 0 when the ScStatus [1] filter is sent.
+- A27 proposalValidate - UAT-BUG-02 (High): HTTP 500 for registered vehicles (MH12AB1234, KA01AB1234).
+- A29 proposalBind - UAT-BUG-02 (High): HTTP 500 for registered vehicles; PCAR gives 422 instead.
+- A31 proposalSendPrepayment - UAT-BUG-01 (High): UW-referral policies are issued with no float debit.
+- A36.2 uploadMulti (claim) - UAT-BUG-03 (Medium): HTTP 500.
+- A39.2 getTreeData (claim) - UAT-BUG-03 (Medium): claim document types not configured.
+- A42 ECS_business_fnol - UAT-OBS-07 (Low): misleading "policy does not exist" for a loss date before policy start.
+- General - UAT-BUG-04 (Low): generic E9998 error message with no cause.
 
 Leftovers in UAT: about 25 unissued draft quotes/proposals and a sample PDF on PP-1005-26-00000052-00.
 
