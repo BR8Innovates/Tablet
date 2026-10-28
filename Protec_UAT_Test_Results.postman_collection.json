@@ -30,7 +30,7 @@
  ],
  "item": [
   {
-   "name": "1 Success (70)",
+   "name": "1 Success (83)",
    "description": "APIs that worked as expected.",
    "item": [
     {
@@ -416,6 +416,76 @@
      ]
     },
     {
+     "name": "A04.1 Customer master load (existing id)",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/api/platform/custv2/core/customer/indi/byCustomerId?customerId=10000000051102",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "platform",
+        "custv2",
+        "core",
+        "customer",
+        "indi",
+        "byCustomerId"
+       ],
+       "query": [
+        {
+         "key": "customerId",
+         "value": "10000000051102"
+        }
+       ]
+      },
+      "description": "A04.1 | Result: SUCCESS | HTTP 200\nExpected response received."
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "GET",
+        "header": [],
+        "url": {
+         "raw": "{{baseUrl}}/api/platform/custv2/core/customer/indi/byCustomerId?customerId=10000000051102",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "platform",
+          "custv2",
+          "core",
+          "customer",
+          "indi",
+          "byCustomerId"
+         ],
+         "query": [
+          {
+           "key": "customerId",
+           "value": "10000000051102"
+          }
+         ]
+        },
+        "description": "A04.1 | Result: SUCCESS | HTTP 200\nExpected response received."
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"@pk\": 10000000051102, \"@type\": \"IndiCustomer-IndiCustomer\", \"BusinessObjectId\": 373904577, \"ContactInfoList\": [{\"@pk\": 10000000051104, \"@type\": \"ContactInfo-ContactInfo\", \"AddressLine1\": \"\", \"BusinessObjectId\": 373921322, \"City\": \"\", \"ContactId\": 10000000051104, \"CustomerId\": 10000000051102, \"Default\": true, \"Email\": \"\", \"Mobile\": \"\", \"PostalCode\": \"642113\", \"StateOrProvince\": \"\", \"AddressComplement\": \"\"}], \"CustomerId\": 10000000051102, \"CustomerNumber\": \"CI00000007\", \"CustomerType\": \"IndiCustomer\", \"DateOfBirth\": \"1989-01-02\", \"FullName\": \"Rajasekar Jayaprakash\", \"Gender\": \"M\", \"IdNumber\": \"C4578864\", \"IdType\": \"5\", \"InsertBy\": 10000000049136, \"InsertTime\": \"2026-10-17T09:52:43\", \"UpdateBy\": 10000000049136, \"UpdateTime\": \"2026-10-17T14:01:34\", \"VersionSeq\": 2, \"ConsentData\": \"\", \"ConsentEmail\": \"\", \"IsPep\": \"\"}"
+      }
+     ]
+    },
+    {
      "name": "A05.1 KYC Initiate PTY/E",
      "request": {
       "method": "POST",
@@ -495,7 +565,7 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"requestId\": \"1793170152957-91ddc7c0-2d58-4e72-931e-51a1637fea9e\", \"result\": {\"startKycUrl\": \"https://link-kyc.idv.hyperverge.co/?identifier=d4abe794-6f38-41c4-a78f-f5c17a6cb1d4_UAT-EPTY_CUS26000022_20261028\"}, \"status\": \"success\", \"statusCode\": 200, \"transactionId\": \"UAT-EPTY_CUS26000022_20261028\"}"
+       "body": "{\"requestId\": \"1793171785593-bf3e6ffa-0e47-47e1-b4c7-15b2a7be795e\", \"result\": {\"startKycUrl\": \"https://link-kyc.idv.hyperverge.co/?identifier=398733d0-47e1-4d88-9b05-7e12790334d3_UAT-EPTY_CUS26000022_20261028\"}, \"status\": \"success\", \"statusCode\": 200, \"transactionId\": \"UAT-EPTY_CUS26000022_20261028\"}"
       }
      ]
     },
@@ -579,7 +649,7 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"requestId\": \"1793170153798-e008ff21-80bf-42cb-a917-0613b95f073b\", \"result\": {\"startKycUrl\": \"https://link-kyc.idv.hyperverge.co/?identifier=da97da6a-5b1b-4cb8-8d9e-6cf14eaf4792_UAT-EPA_CUS26000022_20261028\"}, \"status\": \"success\", \"statusCode\": 200, \"transactionId\": \"UAT-EPA_CUS26000022_20261028\"}"
+       "body": "{\"requestId\": \"1793171786486-d7a792a9-a05d-4f45-8822-7e1e4cf76e58\", \"result\": {\"startKycUrl\": \"https://link-kyc.idv.hyperverge.co/?identifier=02bcb29b-7f1a-4002-b587-e64e9e83bee2_UAT-EPA_CUS26000022_20261028\"}, \"status\": \"success\", \"statusCode\": 200, \"transactionId\": \"UAT-EPA_CUS26000022_20261028\"}"
       }
      ]
     },
@@ -663,7 +733,7 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"requestId\": \"1793170154651-5588a028-c357-4079-beff-848c7da84bc5\", \"result\": {\"startKycUrl\": \"https://link-kyc.idv.hyperverge.co/?identifier=29d859f0-c901-48ae-83cf-35f84779915f_UAT-EPTY_PTY10000000051081_20261028\"}, \"status\": \"success\", \"statusCode\": 200, \"transactionId\": \"UAT-EPTY_PTY10000000051081_20261028\"}"
+       "body": "{\"requestId\": \"1793171787327-7348e014-089a-4124-8389-078d01203213\", \"result\": {\"startKycUrl\": \"https://link-kyc.idv.hyperverge.co/?identifier=b61c8eda-bb95-45a2-a5e5-dbd589f55262_UAT-EPTY_PTY10000000051081_20261028\"}, \"status\": \"success\", \"statusCode\": 200, \"transactionId\": \"UAT-EPTY_PTY10000000051081_20261028\"}"
       }
      ]
     },
@@ -831,7 +901,7 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"chassis_no\": \"\", \"data_source\": \"ZOOP\", \"engine_no\": \"\", \"record_date\": \"2026-10-28T09:49:16\", \"registration_no\": \"\", \"request_id\": \"bdf2f2f0-b68a-4cc3-8f30-7f9c7a71b2cf\", \"response_message\": \"Invalid ID Number or Combination of Inputs\", \"success\": false, \"vahan_ref_no\": \"ZOOP_XX00XX000020261028094916000\", \"vehicle_class\": \"\", \"vehicle_class_status\": \"NOT_FOUND\", \"vehicle_make\": \"\", \"vehicle_model\": \"\"}"
+       "body": "{\"chassis_no\": \"\", \"data_source\": \"ZOOP\", \"engine_no\": \"\", \"record_date\": \"2026-10-28T10:16:29\", \"registration_no\": \"\", \"request_id\": \"8d59130c-8e96-496a-b0b2-0365d1cf68f5\", \"response_message\": \"Invalid ID Number or Combination of Inputs\", \"success\": false, \"vahan_ref_no\": \"ZOOP_XX00XX000020261028101629000\", \"vehicle_class\": \"\", \"vehicle_class_status\": \"NOT_FOUND\", \"vehicle_make\": \"\", \"vehicle_model\": \"\"}"
       }
      ]
     },
@@ -1083,7 +1153,89 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"path\": \"/v1/flow/GetVehicleData\", \"response_message\": \"registration_no is mandatory\", \"success\": false, \"timestamp\": \"2026-10-28T09:49:19\", \"timestampServer\": \"2026-10-28T09:49:19\", \"traceId\": \"56b5727fbdf68dc786c5ec79e7186484\"}"
+       "body": "{\"path\": \"/v1/flow/GetVehicleData\", \"response_message\": \"registration_no is mandatory\", \"success\": false, \"timestamp\": \"2026-10-28T10:16:31\", \"timestampServer\": \"2026-10-28T10:16:31\", \"traceId\": \"f8431c8926cf83055a0658ff67cad487\"}"
+      }
+     ]
+    },
+    {
+     "name": "A08.1 Search producers (PCAR)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/platform/saleschannel/channel/searchSCList",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "platform",
+        "saleschannel",
+        "channel",
+        "searchSCList"
+       ]
+      },
+      "description": "A08.1 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"relatedConditionMap\": {\n    \"productCode\": \"PCAR\",\n    \"effectiveDate\": \"2026-10-28T10:00:00\",\n    \"productLineCode\": \"31\"\n  },\n  \"searchCondition\": {\n    \"Module\": \"SalesChannel\"\n  },\n  \"pageNo\": 1,\n  \"pageSize\": 50\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      }
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{baseUrl}}/api/platform/saleschannel/channel/searchSCList",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "platform",
+          "saleschannel",
+          "channel",
+          "searchSCList"
+         ]
+        },
+        "description": "A08.1 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"relatedConditionMap\": {\n    \"productCode\": \"PCAR\",\n    \"effectiveDate\": \"2026-10-28T10:00:00\",\n    \"productLineCode\": \"31\"\n  },\n  \"searchCondition\": {\n    \"Module\": \"SalesChannel\"\n  },\n  \"pageNo\": 1,\n  \"pageSize\": 50\n}",
+         "options": {
+          "raw": {
+           "language": "json"
+          }
+         }
+        }
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Results\": [{\"FullParentCode\": \"\", \"Gender\": \"F\", \"IdNumber\": \"20181101\", \"IdType\": \"5\", \"PartyCode\": \"PTY00000000000001\", \"PartyName\": \"SHELLY YANG\", \"PartyType\": \"13\", \"ScStatus\": 0, \"ScType\": \"1\", \"commissionList\": [{\"@pk\": 10000000051004, \"@type\": \"SalesCommissionRate-SalesCommissionRate\", \"BusinessObjectId\": 333094, \"CommissionRateId\": 10000000051004, \"DeviationFromStandardNB\": 0, \"DeviationFromStandardRN\": 0, \"ExtraFixedAmountNB\": 0, \"ExtraFixedAmountRN\": 0, \"ProductName\": \"PCAR\", \"StandardCommissionRateNB\": 10, \"StandardCommissionRateRN\": 5}], \"entity_id\": 10000000051000, \"entity_type\": \"SalesChannel\", \"id\": \"SalesChannel_10000000051000\", \"index_time\": \"2026-10-13T05:40:30\", \"index_timestamp\": 1791870030025, \"tenant_code\": \"protecuat\"}, {\"BranchInfo\": \"90000\", \"Gender\": \"M\", \"IdNumber\": \"UATFA1001Z\", \"PartyCode\": \"PTY00000000000003\", \"PartyName\": \"UatFloat AgentOne\", \"PartyType\": \"1\", \"ScType\": \"INDIVIDUAL_AGENT\", \"commissionList\": [{\"@pk\": 10000000067248, \"@type\": \"SalesCommissionRate-SalesCommissionRate\", \"BusinessObjectId\": 333094, \"CommissionRateId\": 10000000067248, \"DeviationFromStandardNB\": 0, \"DeviationFromStandardRN\": 0, \"ExtraFixedAmountNB\": 0, \"ExtraFixedAmountRN\": 0, \"ProductName\": \"PCAR\", \"StandardCommissionRateNB\": 10, \"StandardCommissionRateRN\": 5}], \"entity_id\": 10000000067243, \"entity_type\": \"SalesChannel\", \"id\": \"SalesChannel_10000000067243\", \"index_time\": \"2026-10-28T08:45:07\", \"index_timestamp\": 1793177107345, \"tenant_code\": \"protecuat\"}], \"Total\": 2}"
       }
      ]
     },
@@ -1389,7 +1541,7 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"GroupField\": \"entity_type\", \"PageNo\": 1, \"PageSize\": 10, \"Results\": [{\"EsDocs\": [{\"Amount\": 5000000, \"Balance\": 5000000, \"BankCode\": \"\", \"BranchCode\": \"90000\", \"CollectionId\": 532533, \"CollectionStatus\": \"1\", \"CollectionType\": \"4\", \"CurrencyCode\": \"INR\", \"FullOrgCode\": \"90000\", \"HasNote\": \"N\", \"PayerPayeeCate\": \"13\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"100\", \"ReceiptNo\": \"PR2600000114\", \"ReceiveBy\": 10000000027000, \"ReceiveTime\": \"2026-10-28T05:30:00\", \"UpdateTime\": \"2026-10-28T08:53:32.235\", \"entity_id\": 532533, \"entity_type\": \"Collection\", \"id\": \"Collection_532533\", \"index_time\": \"2026-10-28T08:53:32\", \"index_timestamp\": 1793177612314, \"tenant_code\": \"protecuat\"}, {\"Amount\": 5000000, \"Balance\": 4981690.02, \"BankCode\": \"\", \"BranchCode\": \"90000\", \"CollectionId\": 532527, \"CollectionStatus\": \"1\", \"CollectionType\": \"4\", \"CurrencyCode\": \"INR\", \"FullEndoNo\": \"\", \"FullOrgCode\": \"90000\", \"FullPolicyNo\": \"PP-1204-26-00000025-00\\nPP-1106-26-00000030-00\", \"FullProposalNo\": \"PQ-1204-26-00002491\\nPQ-1106-26-00002219\", \"HasNote\": \"N\", \"PayerPayeeCate\": \"13\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"100\", \"PolicyNo\": \"PP-1106-26-00000030-00\", \"QuotationNo\": \"PQ-1106-26-00002219\", \"ReceiptNo\": \"PR2600000113\", \"ReceiveBy\": 10000000027000, \"ReceiveTime\": \"2026-10-28T09:00:00\", \"UpdateTime\": \"2026-10-28T09:05:00.306\", \"entity_id\": 532527, \"entity_type\": \"Collection\", \"id\": \"Collection_532527\", \"index_time\": \"2026-10-28T09:05:00\", \"index_timestamp\": 1793178300463, \"tenant_code\": \"protecuat\"}], \"GroupTotalNum\": 2, \"GroupValue\": \"Collection\"}], \"Total\": 2}"
+       "body": "{\"GroupField\": \"entity_type\", \"PageNo\": 1, \"PageSize\": 10, \"Results\": [{\"EsDocs\": [{\"Amount\": 5000000, \"Balance\": 5000000, \"BankCode\": \"\", \"BranchCode\": \"90000\", \"CollectionId\": 532533, \"CollectionStatus\": \"1\", \"CollectionType\": \"4\", \"CurrencyCode\": \"INR\", \"FullOrgCode\": \"90000\", \"HasNote\": \"N\", \"PayerPayeeCate\": \"13\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"100\", \"ReceiptNo\": \"PR2600000114\", \"ReceiveBy\": 10000000027000, \"ReceiveTime\": \"2026-10-28T05:30:00\", \"UpdateTime\": \"2026-10-28T08:53:32.235\", \"entity_id\": 532533, \"entity_type\": \"Collection\", \"id\": \"Collection_532533\", \"index_time\": \"2026-10-28T08:53:32\", \"index_timestamp\": 1793177612314, \"tenant_code\": \"protecuat\"}, {\"Amount\": 5000000, \"Balance\": 4977216.64, \"BankCode\": \"\", \"BranchCode\": \"90000\", \"CollectionId\": 532527, \"CollectionStatus\": \"1\", \"CollectionType\": \"4\", \"CurrencyCode\": \"INR\", \"FullEndoNo\": \"\", \"FullOrgCode\": \"90000\", \"FullPolicyNo\": \"PP-1005-26-00000053-00\\nPP-1204-26-00000025-00\\nPP-1106-26-00000030-00\", \"FullProposalNo\": \"PQ-1204-26-00002491\\nPQ-1005-26-00002876\\nPQ-1106-26-00002219\", \"HasNote\": \"N\", \"PayerPayeeCate\": \"13\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"100\", \"PolicyNo\": \"PP-1106-26-00000030-00\", \"QuotationNo\": \"PQ-1106-26-00002219\", \"ReceiptNo\": \"PR2600000113\", \"ReceiveBy\": 10000000027000, \"ReceiveTime\": \"2026-10-28T09:00:00\", \"UpdateTime\": \"2026-10-28T10:15:40.184\", \"entity_id\": 532527, \"entity_type\": \"Collection\", \"id\": \"Collection_532527\", \"index_time\": \"2026-10-28T10:15:40\", \"index_timestamp\": 1793182540361, \"tenant_code\": \"protecuat\"}], \"GroupTotalNum\": 2, \"GroupValue\": \"Collection\"}], \"Total\": 2}"
       }
      ]
     },
@@ -1593,7 +1745,7 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"@pk\": 532527, \"@type\": \"BcpCollection-Collection\", \"AccountDigit\": \"\", \"AccountType\": \"\", \"AgencyDigit\": \"\", \"Amount\": 5000000, \"ArapIds\": [532589, 532558], \"BankAccountNo\": \"\", \"BankAgency\": \"\", \"BankCode\": \"\", \"BookingCurrencyCode\": \"INR\", \"BranchCode\": \"90000\", \"BusinessObjectId\": 1100002651715, \"ChequeNo\": \"\", \"CollectionId\": 532527, \"CollectionStatus\": \"1\", \"CollectionType\": \"4\", \"CreditCardNo\": \"\", \"CreditCardType\": \"\", \"CurrencyCode\": \"INR\", \"DetailList\": [{\"@pk\": 532528, \"@type\": \"BcpCollectionDetail-CollectionDetail\", \"Amount\": 5000000, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651850, \"CollectionDetailId\": 532528, \"CurrencyCode\": \"INR\", \"DirectBookingEr\": 1, \"DirectEr\": 1, \"IsExpense\": \"N\", \"LocalCurrencyCode\": \"INR\", \"RefId\": 532529, \"RefType\": \"2\"}], \"DirectBookingEr\": 1, \"DirectBusiEr\": 1, \"DirectEr\": 1, \"HasMandate\": \"N\", \"HasNote\": \"N\", \"HolderCategory\": \"\", \"HolderIdNo\": \"\", \"HolderIdType\": \"\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T08:45:45\", \"InsurerAccountCode\": \"10001\", \"IsManualReceipt\": \"1\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T08:45:45\", \"LocalCurrencyCode\": \"INR\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"100\", \"ReceiptNo\": \"PR2600000113\", \"ReceiveBy\": 10000000027000, \"ReceiveTime\": \"2026-10-28T09:00:00\", \"ReferenceInfo\": \"UAT float top-up\", \"Suspense\": {\"@pk\": 532529, \"@type\": \"BcpSuspense-Suspense\", \"Balance\": 4981690.02, \"BranchCode\": \"90000\", \"BusinessObjectId\": 1100002652959, \"CurrencyCode\": \"INR\", \"DetailList\": [{\"@pk\": 532530, \"@type\": \"BcpSuspenseDetail-SuspenseDetail\", \"Amount\": 5000000, \"BalanceAfter\": 5000000, \"BalanceBefore\": 0, \"BusinessObjectId\": 1100002653006, \"CurrencyCode\": \"INR\", \"RefDetailId\": 532528, \"RefId\": 532527, \"RefType\": \"3\", \"SuspenseDetailId\": 532530, \"TransTime\": \"2026-10-28T08:45:45\"}, {\"@pk\": 532560, \"@type\": \"BcpSuspenseDetail-SuspenseDetail\", \"Amount\": 1226.02, \"BalanceAfter\": 4998773.98, \"BalanceBefore\": 5000000, \"BusinessObjectId\": 1100002653006, \"CurrencyCode\": \"INR\", \"RefId\": 532559, \"RefType\": \"4\", \"SuspenseDetailId\": 532560, \"TransTime\": \"2026-10-28T09:04:30\"}, {\"@pk\": 532591, \"@type\": \"BcpSuspenseDetail-SuspenseDetail\", \"Amount\": 17083.96, \"BalanceAfter\": 4981690.02, \"BalanceBefore\": 4998773.98, \"BusinessObjectId\": 1100002653006, \"CurrencyCode\": \"INR\", \"RefId\": 532590, \"RefType\": \"4\", \"SuspenseDetailId\": 532591, \"TransTime\": \"2026-10-28T09:05:00\"}], \"FrozenBalance\": 31831.68, \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T08:45:45\", \"ReferenceNo\": \"PR2600000113\", \"SuspenseId\": 532529, \"SuspenseNo\": \"SUSP20261000000098\", \"SuspenseStatus\": \"1\", \"SuspenseType\": \"2\", \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T09:05:00\", \"VersionSeq\": 7}, \"SystemReceiveBy\": 10000000027000, \"SystemReceiveTime\": \"2026-10-28T08:45:45\", \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T09:05:00\", \"VersionSeq\": 3, \"InsurerBankAccountNo\": \"10001\", \"ParentBranchCode\": \"90000\", \"PayerPayeeCate\": \"13\"}"
+       "body": "{\"@pk\": 532527, \"@type\": \"BcpCollection-Collection\", \"AccountDigit\": \"\", \"AccountType\": \"\", \"AgencyDigit\": \"\", \"Amount\": 5000000, \"ArapIds\": [532620, 532589, 532558], \"BankAccountNo\": \"\", \"BankAgency\": \"\", \"BankCode\": \"\", \"BookingCurrencyCode\": \"INR\", \"BranchCode\": \"90000\", \"BusinessObjectId\": 1100002651715, \"ChequeNo\": \"\", \"CollectionId\": 532527, \"CollectionStatus\": \"1\", \"CollectionType\": \"4\", \"CreditCardNo\": \"\", \"CreditCardType\": \"\", \"CurrencyCode\": \"INR\", \"DetailList\": [{\"@pk\": 532528, \"@type\": \"BcpCollectionDetail-CollectionDetail\", \"Amount\": 5000000, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651850, \"CollectionDetailId\": 532528, \"CurrencyCode\": \"INR\", \"DirectBookingEr\": 1, \"DirectEr\": 1, \"IsExpense\": \"N\", \"LocalCurrencyCode\": \"INR\", \"RefId\": 532529, \"RefType\": \"2\"}], \"DirectBookingEr\": 1, \"DirectBusiEr\": 1, \"DirectEr\": 1, \"HasMandate\": \"N\", \"HasNote\": \"N\", \"HolderCategory\": \"\", \"HolderIdNo\": \"\", \"HolderIdType\": \"\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T08:45:45\", \"InsurerAccountCode\": \"10001\", \"IsManualReceipt\": \"1\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T08:45:45\", \"LocalCurrencyCode\": \"INR\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"100\", \"ReceiptNo\": \"PR2600000113\", \"ReceiveBy\": 10000000027000, \"ReceiveTime\": \"2026-10-28T09:00:00\", \"ReferenceInfo\": \"UAT float top-up\", \"Suspense\": {\"@pk\": 532529, \"@type\": \"BcpSuspense-Suspense\", \"Balance\": 4977216.64, \"BranchCode\": \"90000\", \"BusinessObjectId\": 1100002652959, \"CurrencyCode\": \"INR\", \"DetailList\": [{\"@pk\": 532530, \"@type\": \"BcpSuspenseDetail-SuspenseDetail\", \"Amount\": 5000000, \"BalanceAfter\": 5000000, \"BalanceBefore\": 0, \"BusinessObjectId\": 1100002653006, \"CurrencyCode\": \"INR\", \"RefDetailId\": 532528, \"RefId\": 532527, \"RefType\": \"3\", \"SuspenseDetailId\": 532530, \"TransTime\": \"2026-10-28T08:45:45\"}, {\"@pk\": 532560, \"@type\": \"BcpSuspenseDetail-SuspenseDetail\", \"Amount\": 1226.02, \"BalanceAfter\": 4998773.98, \"BalanceBefore\": 5000000, \"BusinessObjectId\": 1100002653006, \"CurrencyCode\": \"INR\", \"RefId\": 532559, \"RefType\": \"4\", \"SuspenseDetailId\": 532560, \"TransTime\": \"2026-10-28T09:04:30\"}, {\"@pk\": 532591, \"@type\": \"BcpSuspenseDetail-SuspenseDetail\", \"Amount\": 17083.96, \"BalanceAfter\": 4981690.02, \"BalanceBefore\": 4998773.98, \"BusinessObjectId\": 1100002653006, \"CurrencyCode\": \"INR\", \"RefId\": 532590, \"RefType\": \"4\", \"SuspenseDetailId\": 532591, \"TransTime\": \"2026-10-28T09:05:00\"}, {\"@pk\": 532622, \"@type\": \"BcpSuspenseDetail-SuspenseDetail\", \"Amount\": 4473.38, \"BalanceAfter\": 4977216.64, \"BalanceBefore\": 4981690.02, \"BusinessObjectId\": 1100002653006, \"CurrencyCode\": \"INR\", \"RefId\": 532621, \"RefType\": \"4\", \"SuspenseDetailId\": 532622, \"TransTime\": \"2026-10-28T10:15:40\"}], \"FrozenBalance\": 31831.68, \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T08:45:45\", \"ReferenceNo\": \"PR2600000113\", \"SuspenseId\": 532529, \"SuspenseNo\": \"SUSP20261000000098\", \"SuspenseStatus\": \"1\", \"SuspenseType\": \"2\", \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T10:15:40\", \"VersionSeq\": 9}, \"SystemReceiveBy\": 10000000027000, \"SystemReceiveTime\": \"2026-10-28T08:45:45\", \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T10:15:40\", \"VersionSeq\": 4, \"InsurerBankAccountNo\": \"10001\", \"ParentBranchCode\": \"90000\", \"PayerPayeeCate\": \"13\"}"
       }
      ]
     },
@@ -1661,7 +1813,7 @@
          "value": "application/json"
         }
        ],
-       "body": "[{\"Amount\": 1226.02, \"ApplicationDate\": \"2026-10-28T09:04:30\", \"Arap\": {\"@pk\": 532558, \"@type\": \"BcpArap-Arap\", \"Amount\": 1226.02, \"ArapCate\": \"1\", \"ArapId\": 532558, \"ArapNo\": \"DR20261000000230\", \"ArapStatus\": \"2\", \"ArapType\": \"-1001\", \"Balance\": 0, \"BizTransId\": 532551, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651088, \"Commission\": -103.9, \"CurrencyCode\": \"INR\", \"CurrentPeriod\": 1, \"DirectBookingEr\": 1, \"DirectEr\": 1, \"DueDate\": \"2026-10-28\", \"GenerateDate\": \"2026-10-28T09:04:30\", \"HasMandate\": \"N\", \"HasNote\": \"N\", \"IsApproved\": \"N\", \"IsOffsetByCommission\": \"N\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T09:04:31\", \"LocalCurrencyCode\": \"INR\", \"NeedStatement\": \"N\", \"OffsetAmount\": 0, \"OffsetByCommissionAmount\": 0, \"OperateTime\": \"2026-10-28T09:04:31\", \"PayerPayeeCate\": \"1\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"120\", \"PeriodEndDate\": \"2026-10-28\", \"PeriodStartDate\": \"2026-10-28T09:04:20\", \"Premium\": 1226.02, \"RefFeeId\": 532556, \"TotalPeriods\": 1, \"Transaction\": {\"@pk\": 532551, \"@type\": \"BcpBizTransaction-BizTransaction\", \"BizModule\": \"10\", \"BizSource\": \"1\", \"BizTransId\": 532551, \"BizTransTime\": \"2026-10-28T09:04:30\", \"BizTransType\": \"NEWBIZ\", \"BizUniqueId\": \"FEE1120101_OWN\", \"BookingCurrencyCode\": \"INR\", \"BranchCode\": \"90000\", \"BranchName\": \"Mumbai\", \"BusinessObjectId\": 1100002651370, \"ChannelCode\": \"PTY00000000000003\", \"CurrencyCode\": \"INR\", \"DirectBookingEr\": 1, \"DirectEr\": 1, \"HasMandate\": \"N\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T09:04:30\", \"LocalCurrencyCode\": \"INR\", \"PaymentMethod\": \"120\", \"PaymentType\": \"1\", \"PolicyEffDate\": \"2026-10-28\", \"PolicyEffectiveDateTime\": \"2026-10-28\", \"PolicyExpDate\": \"2027-10-27\", \"PolicyHolderCode\": \"CUS26000022\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyHolderTypeCode\": \"IndiCustomer\", \"PolicyHolderTypeName\": \"IndiCustomer\", \"PolicyId\": 1120101, \"PolicyNo\": \"PP-1106-26-00000030-00\", \"ProductCode\": \"P2W\", \"ProductLineCode\": \"Motor\", \"ProductLineName\": \"Motor\", \"ProductName\": \"Motor Two Wheeler\", \"QuotationNo\": \"PQ-1106-26-00002219\", \"RefTransId\": 1120101, \"RefTransNo\": \"PQ-1106-26-00002219\", \"TotalPeriods\": 1, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T09:04:30\"}, \"VersionSeq\": 2, \"StampDutyAccountNo\": \"ACCOUNT20261000000002\"}, \"ArapId\": 532558, \"ArapNo\": \"DR20261000000230\", \"ArapType\": \"-1001\", \"BranchCode\": \"90000\", \"CurrencyCode\": \"INR\", \"HasNote\": \"N\", \"Operator\": 10000000027000, \"TransactionNo\": \"OFS20261000000095\", \"TransactionStatus\": \"1\"}, {\"Amount\": 17083.96, \"ApplicationDate\": \"2026-10-28T09:05:00\", \"Arap\": {\"@pk\": 532589, \"@type\": \"BcpArap-Arap\", \"Amount\": 17083.96, \"ArapCate\": \"1\", \"ArapId\": 532589, \"ArapNo\": \"DR20261000000232\", \"ArapStatus\": \"2\", \"ArapType\": \"-1001\", \"Balance\": 0, \"BizTransId\": 532582, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651088, \"Commission\": -1622.4, \"CurrencyCode\": \"INR\", \"CurrentPeriod\": 1, \"DirectBookingEr\": 1, \"DirectEr\": 1, \"DueDate\": \"2026-10-28\", \"GenerateDate\": \"2026-10-28T09:05:00\", \"HasMandate\": \"N\", \"HasNote\": \"N\", \"IsApproved\": \"N\", \"IsOffsetByCommission\": \"N\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T09:05:01\", \"LocalCurrencyCode\": \"INR\", \"NeedStatement\": \"N\", \"OffsetAmount\": 0, \"OffsetByCommissionAmount\": 0, \"OperateTime\": \"2026-10-28T09:05:01\", \"PayerPayeeCate\": \"1\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"120\", \"PeriodEndDate\": \"2026-10-28\", \"PeriodStartDate\": \"2026-10-28T09:04:50\", \"Premium\": 17083.96, \"RefFeeId\": 532587, \"TotalPeriods\": 1, \"Transaction\": {\"@pk\": 532582, \"@type\": \"BcpBizTransaction-BizTransaction\", \"BizModule\": \"10\", \"BizSource\": \"1\", \"BizTransId\": 532582, \"BizTransTime\": \"2026-10-28T09:05:00\", \"BizTransType\": \"NEWBIZ\", \"BizUniqueId\": \"FEE1120107_OWN\", \"BookingCurrencyCode\": \"INR\", \"BranchCode\": \"90000\", \"BranchName\": \"Mumbai\", \"BusinessObjectId\": 1100002651370, \"ChannelCode\": \"PTY00000000000003\", \"CurrencyCode\": \"INR\", \"DirectBookingEr\": 1, \"DirectEr\": 1, \"HasMandate\": \"N\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T09:05:00\", \"LocalCurrencyCode\": \"INR\", \"PaymentMethod\": \"120\", \"PaymentType\": \"1\", \"PolicyEffDate\": \"2026-10-28\", \"PolicyEffectiveDateTime\": \"2026-10-28\", \"PolicyExpDate\": \"2027-10-27\", \"PolicyHolderCode\": \"CUS26000022\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyHolderTypeCode\": \"IndiCustomer\", \"PolicyHolderTypeName\": \"IndiCustomer\", \"PolicyId\": 1120107, \"PolicyNo\": \"PP-1204-26-00000025-00\", \"ProductCode\": \"GCV\", \"ProductLineCode\": \"Motor\", \"ProductLineName\": \"Motor\", \"ProductName\": \"Goods Carrying Vehicle\", \"QuotationNo\": \"PQ-1204-26-00002491\", \"RefTransId\": 1120107, \"RefTransNo\": \"PQ-1204-26-00002491\", \"TotalPeriods\": 1, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T09:05:00\"}, \"VersionSeq\": 2, \"StampDutyAccountNo\": \"ACCOUNT20261000000002\"}, \"ArapId\": 532589, \"ArapNo\": \"DR20261000000232\", \"ArapType\": \"-1001\", \"BranchCode\": \"90000\", \"CurrencyCode\": \"INR\", \"HasNote\": \"N\", \"Operator\": 10000000027000, \"TransactionNo\": \"OFS20261000000096\", \"TransactionStatus\": \"1\"}]"
+       "body": "[{\"Amount\": 1226.02, \"ApplicationDate\": \"2026-10-28T09:04:30\", \"Arap\": {\"@pk\": 532558, \"@type\": \"BcpArap-Arap\", \"Amount\": 1226.02, \"ArapCate\": \"1\", \"ArapId\": 532558, \"ArapNo\": \"DR20261000000230\", \"ArapStatus\": \"2\", \"ArapType\": \"-1001\", \"Balance\": 0, \"BizTransId\": 532551, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651088, \"Commission\": -103.9, \"CurrencyCode\": \"INR\", \"CurrentPeriod\": 1, \"DirectBookingEr\": 1, \"DirectEr\": 1, \"DueDate\": \"2026-10-28\", \"GenerateDate\": \"2026-10-28T09:04:30\", \"HasMandate\": \"N\", \"HasNote\": \"N\", \"IsApproved\": \"N\", \"IsOffsetByCommission\": \"N\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T09:04:31\", \"LocalCurrencyCode\": \"INR\", \"NeedStatement\": \"N\", \"OffsetAmount\": 0, \"OffsetByCommissionAmount\": 0, \"OperateTime\": \"2026-10-28T09:04:31\", \"PayerPayeeCate\": \"1\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"120\", \"PeriodEndDate\": \"2026-10-28\", \"PeriodStartDate\": \"2026-10-28T09:04:20\", \"Premium\": 1226.02, \"RefFeeId\": 532556, \"TotalPeriods\": 1, \"Transaction\": {\"@pk\": 532551, \"@type\": \"BcpBizTransaction-BizTransaction\", \"BizModule\": \"10\", \"BizSource\": \"1\", \"BizTransId\": 532551, \"BizTransTime\": \"2026-10-28T09:04:30\", \"BizTransType\": \"NEWBIZ\", \"BizUniqueId\": \"FEE1120101_OWN\", \"BookingCurrencyCode\": \"INR\", \"BranchCode\": \"90000\", \"BranchName\": \"Mumbai\", \"BusinessObjectId\": 1100002651370, \"ChannelCode\": \"PTY00000000000003\", \"CurrencyCode\": \"INR\", \"DirectBookingEr\": 1, \"DirectEr\": 1, \"HasMandate\": \"N\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T09:04:30\", \"LocalCurrencyCode\": \"INR\", \"PaymentMethod\": \"120\", \"PaymentType\": \"1\", \"PolicyEffDate\": \"2026-10-28\", \"PolicyEffectiveDateTime\": \"2026-10-28\", \"PolicyExpDate\": \"2027-10-27\", \"PolicyHolderCode\": \"CUS26000022\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyHolderTypeCode\": \"IndiCustomer\", \"PolicyHolderTypeName\": \"IndiCustomer\", \"PolicyId\": 1120101, \"PolicyNo\": \"PP-1106-26-00000030-00\", \"ProductCode\": \"P2W\", \"ProductLineCode\": \"Motor\", \"ProductLineName\": \"Motor\", \"ProductName\": \"Motor Two Wheeler\", \"QuotationNo\": \"PQ-1106-26-00002219\", \"RefTransId\": 1120101, \"RefTransNo\": \"PQ-1106-26-00002219\", \"TotalPeriods\": 1, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T09:04:30\"}, \"VersionSeq\": 2, \"StampDutyAccountNo\": \"ACCOUNT20261000000002\"}, \"ArapId\": 532558, \"ArapNo\": \"DR20261000000230\", \"ArapType\": \"-1001\", \"BranchCode\": \"90000\", \"CurrencyCode\": \"INR\", \"HasNote\": \"N\", \"Operator\": 10000000027000, \"TransactionNo\": \"OFS20261000000095\", \"TransactionStatus\": \"1\"}, {\"Amount\": 17083.96, \"ApplicationDate\": \"2026-10-28T09:05:00\", \"Arap\": {\"@pk\": 532589, \"@type\": \"BcpArap-Arap\", \"Amount\": 17083.96, \"ArapCate\": \"1\", \"ArapId\": 532589, \"ArapNo\": \"DR20261000000232\", \"ArapStatus\": \"2\", \"ArapType\": \"-1001\", \"Balance\": 0, \"BizTransId\": 532582, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651088, \"Commission\": -1622.4, \"CurrencyCode\": \"INR\", \"CurrentPeriod\": 1, \"DirectBookingEr\": 1, \"DirectEr\": 1, \"DueDate\": \"2026-10-28\", \"GenerateDate\": \"2026-10-28T09:05:00\", \"HasMandate\": \"N\", \"HasNote\": \"N\", \"IsApproved\": \"N\", \"IsOffsetByCommission\": \"N\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T09:05:01\", \"LocalCurrencyCode\": \"INR\", \"NeedStatement\": \"N\", \"OffsetAmount\": 0, \"OffsetByCommissionAmount\": 0, \"OperateTime\": \"2026-10-28T09:05:01\", \"PayerPayeeCate\": \"1\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"120\", \"PeriodEndDate\": \"2026-10-28\", \"PeriodStartDate\": \"2026-10-28T09:04:50\", \"Premium\": 17083.96, \"RefFeeId\": 532587, \"TotalPeriods\": 1, \"Transaction\": {\"@pk\": 532582, \"@type\": \"BcpBizTransaction-BizTransaction\", \"BizModule\": \"10\", \"BizSource\": \"1\", \"BizTransId\": 532582, \"BizTransTime\": \"2026-10-28T09:05:00\", \"BizTransType\": \"NEWBIZ\", \"BizUniqueId\": \"FEE1120107_OWN\", \"BookingCurrencyCode\": \"INR\", \"BranchCode\": \"90000\", \"BranchName\": \"Mumbai\", \"BusinessObjectId\": 1100002651370, \"ChannelCode\": \"PTY00000000000003\", \"CurrencyCode\": \"INR\", \"DirectBookingEr\": 1, \"DirectEr\": 1, \"HasMandate\": \"N\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T09:05:00\", \"LocalCurrencyCode\": \"INR\", \"PaymentMethod\": \"120\", \"PaymentType\": \"1\", \"PolicyEffDate\": \"2026-10-28\", \"PolicyEffectiveDateTime\": \"2026-10-28\", \"PolicyExpDate\": \"2027-10-27\", \"PolicyHolderCode\": \"CUS26000022\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyHolderTypeCode\": \"IndiCustomer\", \"PolicyHolderTypeName\": \"IndiCustomer\", \"PolicyId\": 1120107, \"PolicyNo\": \"PP-1204-26-00000025-00\", \"ProductCode\": \"GCV\", \"ProductLineCode\": \"Motor\", \"ProductLineName\": \"Motor\", \"ProductName\": \"Goods Carrying Vehicle\", \"QuotationNo\": \"PQ-1204-26-00002491\", \"RefTransId\": 1120107, \"RefTransNo\": \"PQ-1204-26-00002491\", \"TotalPeriods\": 1, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T09:05:00\"}, \"VersionSeq\": 2, \"StampDutyAccountNo\": \"ACCOUNT20261000000002\"}, \"ArapId\": 532589, \"ArapNo\": \"DR20261000000232\", \"ArapType\": \"-1001\", \"BranchCode\": \"90000\", \"CurrencyCode\": \"INR\", \"HasNote\": \"N\", \"Operator\": 10000000027000, \"TransactionNo\": \"OFS20261000000096\", \"TransactionStatus\": \"1\"}, {\"Amount\": 4473.38, \"ApplicationDate\": \"2026-10-28T10:15:40\", \"Arap\": {\"@pk\": 532620, \"@type\": \"BcpArap-Arap\", \"Amount\": 4473.38, \"ArapCate\": \"1\", \"ArapId\": 532620, \"ArapNo\": \"DR20261000000234\", \"ArapStatus\": \"2\", \"ArapType\": \"-1001\", \"Balance\": 0, \"BizTransId\": 532613, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651088, \"Commission\": -379.1, \"CurrencyCode\": \"INR\", \"CurrentPeriod\": 1, \"DirectBookingEr\": 1, \"DirectEr\": 1, \"DueDate\": \"2026-10-28\", \"GenerateDate\": \"2026-10-28T10:15:40\", \"HasMandate\": \"N\", \"HasNote\": \"N\", \"IsApproved\": \"N\", \"IsOffsetByCommission\": \"N\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T10:15:41\", \"LocalCurrencyCode\": \"INR\", \"NeedStatement\": \"N\", \"OffsetAmount\": 0, \"OffsetByCommissionAmount\": 0, \"OperateTime\": \"2026-10-28T10:15:41\", \"PayerPayeeCate\": \"1\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"U"
       }
      ]
     },
@@ -3185,7 +3337,7 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"InspectionNumber\": \"INS-202610-000004\", \"NumberingType\": \"InspectionNumber\"}"
+       "body": "{\"InspectionNumber\": \"INS-202610-000005\", \"NumberingType\": \"InspectionNumber\"}"
       }
      ]
     },
@@ -3665,7 +3817,7 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"GroupField\": \"entity_type\", \"PageNo\": 1, \"PageSize\": 5, \"Results\": [{\"EsDocs\": [{\"AgentCode\": \"PTY00000000000003\", \"BusinessCateCode\": \"1\", \"CustomerName\": \"UatCust Verified\", \"CustomerNo\": \"CUS26000022\", \"DuePremium\": 4473.38, \"EffectiveDate\": \"2026-10-28\", \"ExpiryDate\": \"2027-10-27T23:59:59\", \"FirstDataEntryDate\": \"2026-10-28T08:52:51\", \"FullOrgCode\": \"90000\", \"IdNo\": \"UATCU2002K\", \"InsuredCustomerNo\": \"\", \"InsuredIdNo\": \"\", \"InsuredIdType\": \"\", \"InsuredName\": \"\", \"InsurerProductCode\": \"1005\", \"IsRenewable\": \"Y\", \"IssueDate\": \"2026-10-28T08:53:50\", \"MaxUwLevelCode\": \"1\", \"OrgCode\": \"90000\", \"PolicyHolder\": \"UatCust Verified\", \"PolicyHolderCustomerNo\": \"CUS26000022\", \"PolicyHolderIDNo\": \"UATCU2002K\", \"PolicyId\": 1120053, \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyStatus\": 2, \"PolicyStatusForDisplay\": 2, \"PolicyType\": \"1\", \"ProductCode\": \"PCAR\", \"ProductId\": 1184370116, \"ProductName\": \"Motor Private Car\", \"ProposalDate\": \"2026-10-28\", \"ProposalNo\": \"PQ-1005-26-00002875\", \"ProposalStatus\": 3, \"QuotationNo\": \"QPCAR000000000012\", \"RiskName\": \"Insured Vehicle\", \"SumInsured\": 9999999999, \"VersionSeq\": 20, \"entity_id\": 1120053, \"entity_type\": \"Policy\", \"id\": \"Policy_1120053\", \"index_time\": \"2026-10-28T09:01:26\", \"index_timestamp\": 1793178086292, \"owned_agent_code\": \"PTY00000000000003\", \"owned_customer_code\": \"CUS26000022\", \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}], \"GroupTotalNum\": 1, \"GroupValue\": \"Policy\"}], \"Total\": 1}"
+       "body": "{\"GroupField\": \"entity_type\", \"PageNo\": 1, \"PageSize\": 5, \"Results\": [{\"EsDocs\": [{\"AgentCode\": \"PTY00000000000003\", \"BusinessCateCode\": \"1\", \"CustomerName\": \"UatCust Verified\", \"CustomerNo\": \"CUS26000022\", \"DuePremium\": 4473.38, \"EffectiveDate\": \"2026-10-28\", \"ExpiryDate\": \"2027-10-27T23:59:59\", \"FirstDataEntryDate\": \"2026-10-28T08:52:51\", \"FullOrgCode\": \"90000\", \"IdNo\": \"UATCU2002K\", \"InsuredCustomerNo\": \"\", \"InsuredIdNo\": \"\", \"InsuredIdType\": \"\", \"InsuredName\": \"\", \"InsurerProductCode\": \"1005\", \"IsRenewable\": \"Y\", \"IssueDate\": \"2026-10-28T08:53:50\", \"MaxUwLevelCode\": \"1\", \"OrgCode\": \"90000\", \"PolicyHolder\": \"UatCust Verified\", \"PolicyHolderCustomerNo\": \"CUS26000022\", \"PolicyHolderIDNo\": \"UATCU2002K\", \"PolicyId\": 1120053, \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyStatus\": 2, \"PolicyStatusForDisplay\": 2, \"PolicyType\": \"1\", \"ProductCode\": \"PCAR\", \"ProductId\": 1184370116, \"ProductName\": \"Motor Private Car\", \"ProposalDate\": \"2026-10-28\", \"ProposalNo\": \"PQ-1005-26-00002875\", \"ProposalStatus\": 3, \"QuotationNo\": \"QPCAR000000000012\", \"RiskName\": \"Insured Vehicle\", \"SumInsured\": 9999999999, \"VersionSeq\": 20, \"entity_id\": 1120053, \"entity_type\": \"Policy\", \"id\": \"Policy_1120053\", \"index_time\": \"2026-10-28T09:01:26\", \"index_timestamp\": 1793178086292, \"owned_agent_code\": \"PTY00000000000003\", \"owned_customer_code\": \"CUS26000022\", \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AgentCode\": \"PTY00000000000003\", \"BusinessCateCode\": \"1\", \"CustomerName\": \"UatCust Verified\", \"CustomerNo\": \"CUS26000022\", \"DuePremium\": 4473.38, \"EffectiveDate\": \"2026-10-28\", \"ExpiryDate\": \"2027-10-27T23:59:59\", \"FirstDataEntryDate\": \"2026-10-28T10:15:15\", \"FullOrgCode\": \"90000\", \"IdNo\": \"UATCU2002K\", \"InsuredCustomerNo\": \"\", \"InsuredIdNo\": \"\", \"InsuredIdType\": \"\", \"InsuredName\": \"\", \"InsurerProductCode\": \"1005\", \"IsRenewable\": \"Y\", \"IssueDate\": \"2026-10-28T10:15:30\", \"MaxUwLevelCode\": \"1\", \"OrgCode\": \"90000\", \"PolicyHolder\": \"UatCust Verified\", \"PolicyHolderCustomerNo\": \"CUS26000022\", \"PolicyHolderIDNo\": \"UATCU2002K\", \"PolicyId\": 1120113, \"PolicyNo\": \"PP-1005-26-00000053-00\", \"PolicyStatus\": 2, \"PolicyStatusForDisplay\": 2, \"PolicyType\": \"1\", \"ProductCode\": \"PCAR\", \"ProductId\": 1184370116, \"ProductName\": \"Motor Private Car\", \"ProposalDate\": \"2026-10-28\", \"ProposalNo\": \"PQ-1005-26-00002876\", \"ProposalStatus\": 3, \"QuotationNo\": \"QPCAR000000000013\", \"RiskName\": \"Insured Vehicle\", \"SumInsured\": 9999999999, \"VersionSeq\": 14, \"entity_id\": 1120113, \"entity_type\": \"Policy\", \"id\": \"Policy_1120113\", \"index_time\": \"2026-10-28T10:15:30\", \"index_timestamp\": 1793182530440, \"owned_agent_code\": \"PTY00000000000003\", \"owned_customer_code\": \"CUS26000022\", \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}], \"GroupTotalNum\": 2, \"GroupValue\": \"Policy\"}], \"Total\": 2}"
       }
      ]
     },
@@ -3914,6 +4066,898 @@
      ]
     },
     {
+     "name": "A42.1 FNOL minimal",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_business_fnol"
+       ]
+      },
+      "description": "A42.1 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-28T09:30:00\",\n    \"NoticeTime\": \"2026-10-28T10:30:00\"\n  }\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      }
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_business_fnol"
+         ]
+        },
+        "description": "A42.1 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-28T09:30:00\",\n    \"NoticeTime\": \"2026-10-28T10:30:00\"\n  }\n}",
+         "options": {
+          "raw": {
+           "language": "json"
+          }
+         }
+        }
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"@type\": \"ClaimResponseForm-ClaimResponseForm\", \"ClaimCase\": {\"@pk\": 440316, \"@type\": \"ClaimCase-ClaimCase\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"BusinessObjectId\": 371651130, \"CaseId\": 440316, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000007\", \"ClmPolicyId\": 440319, \"EcsIsFromApp\": \"N\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000007\", \"FnolNumber\": \"PC-FNOL-1005-2026-10-00000007\", \"FnolStatus\": \"01\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T10:17:01\", \"NoticeTime\": \"2026-10-28T10:30:00\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"ProcessDefId\": 1072659462, \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"SettlementTimes\": 0, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T10:17:01.607\", \"VersionSeq\": 2, \"WithPolicy\": \"1\"}, \"ProductName\": \"Pvt car liability(TP) only policy - multi year variation (0 + 1, 0+3)\", \"TaskId\": \"1110695\"}, \"Status\": \"OK\"}"
+      }
+     ]
+    },
+    {
+     "name": "A42.2 FNOL with loss details",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_business_fnol"
+       ]
+      },
+      "description": "A42.2 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-28T09:30:00\",\n    \"NoticeTime\": \"2026-10-28T10:31:00\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Rear-end collision at traffic light\",\n    \"AccidentAddress\": \"MG Road, Pune\",\n    \"ContactName\": \"UatCust Verified\",\n    \"ContactPhone\": \"9000000202\"\n  }\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      }
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_business_fnol"
+         ]
+        },
+        "description": "A42.2 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-28T09:30:00\",\n    \"NoticeTime\": \"2026-10-28T10:31:00\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Rear-end collision at traffic light\",\n    \"AccidentAddress\": \"MG Road, Pune\",\n    \"ContactName\": \"UatCust Verified\",\n    \"ContactPhone\": \"9000000202\"\n  }\n}",
+         "options": {
+          "raw": {
+           "language": "json"
+          }
+         }
+        }
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"@type\": \"ClaimResponseForm-ClaimResponseForm\", \"ClaimCase\": {\"@pk\": 440339, \"@type\": \"ClaimCase-ClaimCase\", \"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Rear-end collision at traffic light\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"BusinessObjectId\": 371651130, \"CaseId\": 440339, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000008\", \"ClmPolicyId\": 440342, \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsIsFromApp\": \"N\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000008\", \"FnolNumber\": \"PC-FNOL-1005-2026-10-00000008\", \"FnolStatus\": \"01\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T10:17:03\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:31:00\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"ProcessDefId\": 1072659462, \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"SettlementTimes\": 0, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T10:17:03.247\", \"VersionSeq\": 2, \"WithPolicy\": \"1\"}, \"ProductName\": \"Pvt car liability(TP) only policy - multi year variation (0 + 1, 0+3)\", \"TaskId\": \"1110701\"}, \"Status\": \"OK\"}"
+      }
+     ]
+    },
+    {
+     "name": "A42.3 FNOL with AgentCode",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_business_fnol"
+       ]
+      },
+      "description": "A42.3 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-28T09:30:00\",\n    \"NoticeTime\": \"2026-10-28T10:32:00\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Side swipe\",\n    \"AccidentAddress\": \"FC Road, Pune\",\n    \"ContactName\": \"UatCust Verified\",\n    \"ContactPhone\": \"9000000202\",\n    \"AgentCode\": \"PTY00000000000003\"\n  }\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      }
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_business_fnol"
+         ]
+        },
+        "description": "A42.3 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-28T09:30:00\",\n    \"NoticeTime\": \"2026-10-28T10:32:00\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Side swipe\",\n    \"AccidentAddress\": \"FC Road, Pune\",\n    \"ContactName\": \"UatCust Verified\",\n    \"ContactPhone\": \"9000000202\",\n    \"AgentCode\": \"PTY00000000000003\"\n  }\n}",
+         "options": {
+          "raw": {
+           "language": "json"
+          }
+         }
+        }
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"@type\": \"ClaimResponseForm-ClaimResponseForm\", \"ClaimCase\": {\"@pk\": 440362, \"@type\": \"ClaimCase-ClaimCase\", \"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"BusinessObjectId\": 371651130, \"CaseId\": 440362, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000009\", \"ClmPolicyId\": 440365, \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsIsFromApp\": \"N\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000009\", \"FnolNumber\": \"PC-FNOL-1005-2026-10-00000009\", \"FnolStatus\": \"01\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T10:17:05\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:32:00\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"ProcessDefId\": 1072659462, \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"SettlementTimes\": 0, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T10:17:05.108\", \"VersionSeq\": 2, \"WithPolicy\": \"1\"}, \"ProductName\": \"Pvt car liability(TP) only policy - multi year variation (0 + 1, 0+3)\", \"TaskId\": \"1110707\"}, \"Status\": \"OK\"}"
+      }
+     ]
+    },
+    {
+     "name": "A43.1 Claims of policy",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_claim_queryClaimByCondition"
+       ]
+      },
+      "description": "A43.1 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"PolicyNo\": \"PP-1005-26-00000052-00\"\n    }\n  }\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      }
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_claim_queryClaimByCondition"
+         ]
+        },
+        "description": "A43.1 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"PolicyNo\": \"PP-1005-26-00000052-00\"\n    }\n  }\n}",
+         "options": {
+          "raw": {
+           "language": "json"
+          }
+         }
+        }
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{\"EsDocs\": [{\"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440362, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000009\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440365, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000009\", \"InsertTime\": \"2026-10-28T10:17:05\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:32:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440362, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440362\", \"index_time\": \"2026-10-28T10:17:05\", \"index_timestamp\": 1793182625122, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Rear-end collision at traffic light\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"CaseId\": 440339, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000008\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440342, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000008\", \"InsertTime\": \"2026-10-28T10:17:03\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:31:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440339, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440339\", \"index_time\": \"2026-10-28T10:17:03\", \"index_timestamp\": 1793182623261, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentTime\": \"2026-10-28T09:30:00\", \"CaseId\": 440316, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000007\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440319, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000007\", \"InsertTime\": \"2026-10-28T10:17:01\", \"InsuredName\": \"\", \"NoticeTime\": \"2026-10-28T10:30:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440316, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440316\", \"index_time\": \"2026-10-28T10:17:02\", \"index_timestamp\": 1793182621619, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440228, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000006\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440231, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000006\", \"InsertTime\": \"2026-10-28T10:13:44\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:12:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440228, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440228\", \"index_time\": \"2026-10-28T10:13:45\", \"index_timestamp\": 1793182424764, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Rear-end collision\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"CaseId\": 440205, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000005\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440208, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000005\", \"InsertTime\": \"2026-10-28T10:13:43\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:11:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440205, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440205\", \"index_time\": \"2026-10-28T10:13:43\", \"index_timestamp\": 1793182423129, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentTime\": \"2026-10-28T09:30:00\", \"CaseId\": 440182, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000004\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440185, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"Ecs"
+      }
+     ]
+    },
+    {
+     "name": "A43.2 Claim by number",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_claim_queryClaimByCondition"
+       ]
+      },
+      "description": "A43.2 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"ClaimNo\": \"PC-1005-26-00000009\"\n    }\n  }\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      }
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_claim_queryClaimByCondition"
+         ]
+        },
+        "description": "A43.2 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"ClaimNo\": \"PC-1005-26-00000009\"\n    }\n  }\n}",
+         "options": {
+          "raw": {
+           "language": "json"
+          }
+         }
+        }
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{\"EsDocs\": [{\"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440362, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000009\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440365, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000009\", \"InsertTime\": \"2026-10-28T10:17:05\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:32:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440362, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440362\", \"index_time\": \"2026-10-28T10:17:05\", \"index_timestamp\": 1793182625122, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}]}], \"Total\": 1}, \"Status\": \"OK\"}"
+      }
+     ]
+    },
+    {
+     "name": "A43.3 Claims of agent",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_claim_queryClaimByCondition"
+       ]
+      },
+      "description": "A43.3 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"AgentCode\": \"PTY00000000000003\"\n    }\n  }\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      }
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_claim_queryClaimByCondition"
+         ]
+        },
+        "description": "A43.3 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"AgentCode\": \"PTY00000000000003\"\n    }\n  }\n}",
+         "options": {
+          "raw": {
+           "language": "json"
+          }
+         }
+        }
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{\"EsDocs\": [{\"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440362, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000009\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440365, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000009\", \"InsertTime\": \"2026-10-28T10:17:05\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:32:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440362, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440362\", \"index_time\": \"2026-10-28T10:17:05\", \"index_timestamp\": 1793182625122, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Collision\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440295, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1202-26-00000001\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440298, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1202-26-00000001\", \"InsertTime\": \"2026-10-28T10:14:25\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:20:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1202-26-00000027-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1202\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1109376\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440295, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440295\", \"index_time\": \"2026-10-28T10:14:26\", \"index_timestamp\": 1793182465519, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Collision\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440272, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1106-26-00000001\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440275, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1106-26-00000001\", \"InsertTime\": \"2026-10-28T10:14:23\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:20:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1106-26-00000030-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1106\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1109289\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440272, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440272\", \"index_time\": \"2026-10-28T10:14:24\", \"index_timestamp\": 1793182463693, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Collision\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440251, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1204-26-00000001\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440254, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1204-26-00000001\", \"InsertTime\": \"2026-10-28T10:14:22\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:20:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1204-26-00000025-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1204\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1109419\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440251, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440251\", \"index_time\": \"2026-10-28T10:14:22\", \"index_timestamp\": 1793182462029, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440228, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000006\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440231, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000006\", \"InsertTime\": \"2026-10-28T10:13:44\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:12:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440228, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440228\", \"index_time\": \"2026-10-28T10:13:45\", \"index_timestamp\": 1793182424764, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecu"
+      }
+     ]
+    },
+    {
+     "name": "A43.4 Claims of customer (holder PAN)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_claim_queryClaimByCondition"
+       ]
+      },
+      "description": "A43.4 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"EcsPolicyHolderIdNo\": \"UATCU2002K\"\n    }\n  }\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      }
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_claim_queryClaimByCondition"
+         ]
+        },
+        "description": "A43.4 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"EcsPolicyHolderIdNo\": \"UATCU2002K\"\n    }\n  }\n}",
+         "options": {
+          "raw": {
+           "language": "json"
+          }
+         }
+        }
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{\"EsDocs\": [{\"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440362, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000009\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440365, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000009\", \"InsertTime\": \"2026-10-28T10:17:05\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:32:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440362, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440362\", \"index_time\": \"2026-10-28T10:17:05\", \"index_timestamp\": 1793182625122, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Rear-end collision at traffic light\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"CaseId\": 440339, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000008\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440342, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000008\", \"InsertTime\": \"2026-10-28T10:17:03\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:31:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440339, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440339\", \"index_time\": \"2026-10-28T10:17:03\", \"index_timestamp\": 1793182623261, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentTime\": \"2026-10-28T09:30:00\", \"CaseId\": 440316, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000007\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440319, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000007\", \"InsertTime\": \"2026-10-28T10:17:01\", \"InsuredName\": \"\", \"NoticeTime\": \"2026-10-28T10:30:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440316, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440316\", \"index_time\": \"2026-10-28T10:17:02\", \"index_timestamp\": 1793182621619, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Collision\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440295, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1202-26-00000001\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440298, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1202-26-00000001\", \"InsertTime\": \"2026-10-28T10:14:25\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:20:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1202-26-00000027-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1202\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1109376\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440295, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440295\", \"index_time\": \"2026-10-28T10:14:26\", \"index_timestamp\": 1793182465519, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Collision\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440272, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1106-26-00000001\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440275, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1106-26-00000001\", \"InsertTime\": \"2026-10-28T10:14:23\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:20:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1106-26-00000030-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1106\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1109289\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440272, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440272\", \"index_time\": \"2026-10-28T10:14:24\", \"index_timestamp\": 1793182463693, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Collision\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440251, \"CaseStatus\": \"01\", \"ClaimNo\""
+      }
+     ]
+    },
+    {
+     "name": "A43.5 Claims by product+status",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_claim_queryClaimByCondition"
+       ]
+      },
+      "description": "A43.5 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"ProductCode\": \"1005\",\n      \"CaseStatus\": \"01\",\n      \"AgentCode\": \"PTY00000000000003\"\n    }\n  }\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      }
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_claim_queryClaimByCondition"
+         ]
+        },
+        "description": "A43.5 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"ProductCode\": \"1005\",\n      \"CaseStatus\": \"01\",\n      \"AgentCode\": \"PTY00000000000003\"\n    }\n  }\n}",
+         "options": {
+          "raw": {
+           "language": "json"
+          }
+         }
+        }
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{\"EsDocs\": [{\"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440362, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000009\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440365, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000009\", \"InsertTime\": \"2026-10-28T10:17:05\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:32:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440362, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440362\", \"index_time\": \"2026-10-28T10:17:05\", \"index_timestamp\": 1793182625122, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440228, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000006\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440231, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000006\", \"InsertTime\": \"2026-10-28T10:13:44\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:12:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440228, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440228\", \"index_time\": \"2026-10-28T10:13:45\", \"index_timestamp\": 1793182424764, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440159, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000003\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440162, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000003\", \"InsertTime\": \"2026-10-28T10:13:19\", \"InsuredName\": \"\", \"NoticeTime\": \"2026-10-28T10:05:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440159, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440159\", \"index_time\": \"2026-10-28T10:13:20\", \"index_timestamp\": 1793182399762, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}]}], \"Total\": 3}, \"Status\": \"OK\"}"
+      }
+     ]
+    },
+    {
+     "name": "A43.6 Agent claims last 2 months (NoticeTime range)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_claim_queryClaimByCondition"
+       ]
+      },
+      "description": "A43.6 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"AgentCode\": \"PTY00000000000003\"\n    },\n    \"GteRangeConditions\": {\n      \"NoticeTime\": \"2026-08-28T00:00:00\"\n    },\n    \"LteRangeConditions\": {\n      \"NoticeTime\": \"2026-10-28T23:59:59\"\n    }\n  }\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      }
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_claim_queryClaimByCondition"
+         ]
+        },
+        "description": "A43.6 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"AgentCode\": \"PTY00000000000003\"\n    },\n    \"GteRangeConditions\": {\n      \"NoticeTime\": \"2026-08-28T00:00:00\"\n    },\n    \"LteRangeConditions\": {\n      \"NoticeTime\": \"2026-10-28T23:59:59\"\n    }\n  }\n}",
+         "options": {
+          "raw": {
+           "language": "json"
+          }
+         }
+        }
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{\"EsDocs\": [{\"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440362, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000009\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440365, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000009\", \"InsertTime\": \"2026-10-28T10:17:05\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:32:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440362, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440362\", \"index_time\": \"2026-10-28T10:17:05\", \"index_timestamp\": 1793182625122, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Collision\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440295, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1202-26-00000001\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440298, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1202-26-00000001\", \"InsertTime\": \"2026-10-28T10:14:25\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:20:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1202-26-00000027-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1202\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1109376\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440295, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440295\", \"index_time\": \"2026-10-28T10:14:26\", \"index_timestamp\": 1793182465519, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Collision\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440272, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1106-26-00000001\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440275, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1106-26-00000001\", \"InsertTime\": \"2026-10-28T10:14:23\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:20:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1106-26-00000030-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1106\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1109289\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440272, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440272\", \"index_time\": \"2026-10-28T10:14:24\", \"index_timestamp\": 1793182463693, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"MG Road, Pune\", \"AccidentDesc\": \"Collision\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440251, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1204-26-00000001\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440254, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1204-26-00000001\", \"InsertTime\": \"2026-10-28T10:14:22\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:20:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1204-26-00000025-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1204\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1109419\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440251, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440251\", \"index_time\": \"2026-10-28T10:14:22\", \"index_timestamp\": 1793182462029, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"CaseId\": 440228, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000006\", \"ClaimantName\": \"\", \"ClmPolicyId\": 440231, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsPolicyHolderIdNo\": \"UATCU2002K\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000006\", \"InsertTime\": \"2026-10-28T10:13:44\", \"InsuredName\": \"\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:12:00\", \"PolicyEndDate\": \"2027-10-27T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-28\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RequestAmount\": 0, \"RiskId\": \"1108559\", \"SettlementAmount\": 0, \"TotalIncurred\": 0, \"VersionSeq\": 2, \"entity_id\": 440228, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_440228\", \"index_time\": \"2026-10-28T10:13:45\", \"index_timestamp\": 1793182424764, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecu"
+      }
+     ]
+    },
+    {
+     "name": "A44.1 Load claim case detail",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claimquery_loadCaseDetail?claimNo=PC-1005-26-00000009",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_claimquery_loadCaseDetail"
+       ],
+       "query": [
+        {
+         "key": "claimNo",
+         "value": "PC-1005-26-00000009"
+        }
+       ]
+      },
+      "description": "A44.1 | Result: SUCCESS | HTTP 200\nExpected response received."
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "GET",
+        "header": [],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claimquery_loadCaseDetail?claimNo=PC-1005-26-00000009",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_claimquery_loadCaseDetail"
+         ],
+         "query": [
+          {
+           "key": "claimNo",
+           "value": "PC-1005-26-00000009"
+          }
+         ]
+        },
+        "description": "A44.1 | Result: SUCCESS | HTTP 200\nExpected response received."
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"@type\": \"ClaimResponseForm-ClaimResponseForm\", \"CaseId\": 440362, \"CaseStatus\": \"01\", \"ClaimCase\": {\"@pk\": 440362, \"@type\": \"ClaimCase-ClaimCase\", \"AccidentAddress\": \"FC Road, Pune\", \"AccidentDesc\": \"Side swipe\", \"AccidentTime\": \"2026-10-28T09:30:00\", \"AgentCode\": \"PTY00000000000003\", \"BusinessObjectId\": 371651130, \"CaseId\": 440362, \"CaseStatus\": \"01\", \"ClaimNo\": \"PC-1005-26-00000009\", \"ClmPolicyId\": 440365, \"ContactName\": \"UatCust Verified\", \"ContactPhone\": \"9000000202\", \"EcsInsertTime\": \"2026-10-28T10:17:05\", \"EcsIsFromApp\": \"N\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"EcsUpdateTime\": \"2026-10-28T10:17:05\", \"FnolNo\": \"PC-1005-26-00000009\", \"FnolNumber\": \"PC-FNOL-1005-2026-10-00000009\", \"FnolStatus\": \"01\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T10:17:05\", \"LossCause\": \"09\", \"NoticeTime\": \"2026-10-28T10:32:00\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyOrgCode\": \"90000\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"SettlementTimes\": 0, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T10:17:05\", \"VersionSeq\": 2, \"WithPolicy\": \"1\"}, \"ClaimNo\": \"PC-1005-26-00000009\", \"ClaimTaskHistoryList\": [{\"@pk\": 440379, \"@type\": \"EClaimTaskInfo-EClaimTaskInfo\", \"AcceptDate\": \"2026-10-28T10:17:05\", \"BusinessId\": 440362, \"BusinessObjectId\": 1100003136465, \"CaseId\": 440362, \"ClaimTaskId\": \"1110707\", \"CreateDate\": \"2026-10-28T10:17:05\", \"CurOperationName\": \"protecuat.admin\", \"InfoId\": 440379, \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T10:17:05\", \"OpenType\": \"00\", \"OperatorId\": 10000000027000, \"OperatorName\": \"protecuat.admin\", \"TaskCode\": \"FNOL\", \"TaskStatus\": \"02\", \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T10:17:05\", \"VersionSeq\": 1}], \"PolicyNo\": \"PP-1005-26-00000052-00\", \"ProductName\": \"Pvt car liability(TP) only policy - multi year variation (0 + 1, 0+3)\"}, \"Status\": \"OK\"}"
+      }
+     ]
+    },
+    {
+     "name": "A45.1 Load claim policy",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_common_loadClaimPolicy?clmPolicyId=440365",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "api",
+        "{{tenantCode}}",
+        "api-orchestration",
+        "v1",
+        "flow",
+        "ECS_common_loadClaimPolicy"
+       ],
+       "query": [
+        {
+         "key": "clmPolicyId",
+         "value": "440365"
+        }
+       ]
+      },
+      "description": "A45.1 | Result: SUCCESS | HTTP 200\nExpected response received."
+     },
+     "response": [
+      {
+       "name": "Saved result - SUCCESS (HTTP 200)",
+       "originalRequest": {
+        "method": "GET",
+        "header": [],
+        "url": {
+         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_common_loadClaimPolicy?clmPolicyId=440365",
+         "host": [
+          "{{baseUrl}}"
+         ],
+         "path": [
+          "api",
+          "{{tenantCode}}",
+          "api-orchestration",
+          "v1",
+          "flow",
+          "ECS_common_loadClaimPolicy"
+         ],
+         "query": [
+          {
+           "key": "clmPolicyId",
+           "value": "440365"
+          }
+         ]
+        },
+        "description": "A45.1 | Result: SUCCESS | HTTP 200\nExpected response received."
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "body": "{\"Model\": {\"@pk\": 440365, \"@type\": \"ClaimPolicy-ClaimPolicy\", \"BusinessCateCode\": \"1\", \"BusinessObjectId\": 371651418, \"CaseId\": 440362, \"ClaimPolicyInsuredList\": [{\"@pk\": 440366, \"@type\": \"ClaimPolicyInsured-ClaimPolicyInsured\", \"BusinessObjectId\": 371651774, \"CPAEndDate\": \"2027-10-27T23:59:59\", \"CPAOwnerDriverCover\": \"Y\", \"CPAStartDate\": \"2026-10-28\", \"CPATerm\": 1, \"ChassisVinNo\": \"CHSPCAR435740\", \"ClaimPolicyCoverageList\": [{\"@pk\": 440367, \"@type\": \"ClaimPolicyCoverage-ClaimPolicyCoverage\", \"BusinessObjectId\": 371651903, \"ClmPolicyCoverageId\": 440367, \"CoverageCode\": \"BASICTP\", \"CoverageName\": \"Third Party Bodily Injury\", \"DeductibleAmount\": 10, \"DeductibleRate\": 0, \"OrgPolicyCoverageId\": 1184370179, \"ParentClmPolicyCoverageId\": 3, \"ParentCoverageCode\": \"MOTORTP\", \"ParentCoverageName\": \"Liability to Third Parties\", \"PolicySysCode\": \"BASICTP\", \"ProductCode\": \"1005\", \"SumInsured\": 9999999999}, {\"@pk\": 440368, \"@type\": \"ClaimPolicyCoverage-ClaimPolicyCoverage\", \"BusinessObjectId\": 371651903, \"ClmPolicyCoverageId\": 440368, \"CoverageCode\": \"IMT20\", \"CoverageName\": \"Third Party Property Damage\", \"DeductibleAmount\": 10, \"DeductibleRate\": 0, \"OrgPolicyCoverageId\": 1184370177, \"ParentClmPolicyCoverageId\": 3, \"ParentCoverageCode\": \"MOTORTP\", \"ParentCoverageName\": \"Liability to Third Parties\", \"PolicySysCode\": \"IMT20\", \"ProductCode\": \"1005\", \"SumInsured\": 750000}, {\"@pk\": 440369, \"@type\": \"ClaimPolicyCoverage-ClaimPolicyCoverage\", \"BusinessObjectId\": 371651903, \"ClmPolicyCoverageId\": 440369, \"CoverageCode\": \"MOTORTP\", \"CoverageName\": \"Liability to Third Parties\", \"DeductibleAmount\": 10, \"DeductibleRate\": 0, \"OrgPolicyCoverageId\": 1184370159, \"ParentClmPolicyCoverageId\": 3, \"PolicySysCode\": \"MOTORTP\", \"ProductCode\": \"1005\", \"SumInsured\": 10000749999}, {\"@pk\": 440370, \"@type\": \"ClaimPolicyCoverage-ClaimPolicyCoverage\", \"BusinessObjectId\": 371651903, \"ClmPolicyCoverageId\": 440370, \"CoverageCode\": \"PACOD\", \"CoverageName\": \"Personal Accident Cover for Owner Driver\", \"DeductibleAmount\": 10, \"DeductibleRate\": 0, \"EffectiveDate\": \"2026-10-28\", \"ExpiryDate\": \"2027-10-27T23:59:59\", \"OrgPolicyCoverageId\": 1184370223, \"ParentClmPolicyCoverageId\": 3, \"PolicySysCode\": \"PACOD\", \"ProductCode\": \"1005\", \"SumInsured\": 0}, {\"@pk\": 440371, \"@type\": \"ClaimPolicyCoverage-ClaimPolicyCoverage\", \"BusinessObjectId\": 371651903, \"ClmPolicyCoverageId\": 440371, \"CoverageCode\": \"ADPACOD\", \"CoverageName\": \"Additional PA cover for Owner-Driver\", \"DeductibleAmount\": 10, \"DeductibleRate\": 0, \"EffectiveDate\": \"2026-10-28\", \"ExpiryDate\": \"2027-10-27T23:59:59\", \"OrgPolicyCoverageId\": 1184370243, \"ParentClmPolicyCoverageId\": 3, \"PolicySysCode\": \"ADPACOD\", \"ProductCode\": \"1005\", \"SumInsured\": 0}, {\"@pk\": 440372, \"@type\": \"ClaimPolicyCoverage-ClaimPolicyCoverage\", \"BusinessObjectId\": 371651903, \"ClmPolicyCoverageId\": 440372, \"CoverageCode\": \"NPPA\", \"CoverageName\": \"Named Passenger\", \"DeductibleAmount\": 10, \"DeductibleRate\": 0, \"OrgPolicyCoverageId\": 1186716701, \"ParentClmPolicyCoverageId\": 3, \"ParentCoverageCode\": \"ADPAPAS\", \"ParentCoverageName\": \"Additional PA cover for Named Passengers\", \"PolicySysCode\": \"NPPA\", \"ProductCode\": \"1005\", \"SumInsured\": 0}, {\"@pk\": 440373, \"@type\": \"ClaimPolicyCoverage-ClaimPolicyCoverage\", \"BusinessObjectId\": 371651903, \"ClmPolicyCoverageId\": 440373, \"CoverageCode\": \"ADPAPAS\", \"CoverageName\": \"Additional PA cover for Named Passengers\", \"DeductibleAmount\": 10, \"DeductibleRate\": 0, \"OrgPolicyCoverageId\": 1184370237, \"ParentClmPolicyCoverageId\": 3, \"PolicySysCode\": \"ADPAPAS\", \"ProductCode\": \"1005\", \"SumInsured\": 0}], \"ClmInsuredId\": 440366, \"EngineNo\": \"ENGPCAR435740\", \"FuelType\": \"P\", \"InsuredName\": \"CHSPCAR435740\", \"InsuredNo\": \"CHSPCAR435740\", \"IsExternalCNGLPGKitFitted\": \"N\", \"IsFinancedVehicle\": \"N\", \"IsNewVehicle\": \"N\", \"IsPUCCertificateValid\": \"Y\", \"Make\": \"1001\", \"ManufactureYear\": \"2024\", \"Model\": \"10010001\", \"OrgInsuredId\": 1108559, \"PlateNumber\": \"MH12XX0008\", \"RTOCode\": \"MH12\", \"RTOZone\": \"ZoneA\", \"RegistrationDate\": \"2024-06-20\", \"SeatingCapacity\": 5, \"SumInsured\": 9999999999, \"TPEndDate\": \"2027-10-27T23:59:59\", \"TPStartDate\": \"2026-10-28\", \"Variant\": \"100100010001\", \"VehicleAgeInteger\": 2, \"VehicleCategory\": \"11\", \"VehiclePurchaseDate\": \"2024-06-15\"}], \"ClaimPolicyPartyList\": [{\"@pk\": 440374, \"@type\": \"ClaimPolicyParty-ClaimPolicyParty\", \"BirthDate\": \"1988-03-12\", \"BusinessObjectId\": 371652051, \"ClmPolicyPartyId\": 440374, \"ContactAddress\": \"\", \"ContactEmail\": \"\", \"ContactFax\": \"\", \"ContactPersonName\": \"\", \"ContactPersonTel\": \"\", \"CustomerType\": \"IndiCustomer\", \"EcsState\": \"26\", \"Email\": \"\", \"GenderCode\": \"\", \"IdNo\": \"UATCU2002K\", \"IdType\": \"\", \"Mobile\": \"\", \"PartyName\": \"UatCust Verified\", \"PostCode\": \"\", \"PtyPartyCode\": \"\", \"PtyPartyId\": 0, \"RoleType\": \"02\"}], \"ClmPolicyId\": 440365, \"CurrencyCode\": \"INR\", \"EcsBookCurrencyCode\": \"INR\", \"EcsPaPolicyId\": 1120053, \"EcsProductVersion\": \"1.0\", \"EcsSiCurrencyCode\": \"INR\", \"EffDate\": \"2026-10-28\", \"ExpDate\": \"2027-10-27T23:59:59\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T10:17:05\", \"InsurerProductCode\": \"1005\", \"IsCoInsurance\": \"N\", \"IsDeleted\": \"N\", \"OrgCode\": \"90000\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyNo\": \"PP-1005-26-00000052-00\", \"PolicyStatus\": 2, \"PolicyType\": \"1\", \"Premium\": 4473.38, \"ProductCode\": \"1005\", \"SumInsured\": 9999999999, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T10:17:05\"}, \"Status\": \"OK\"}"
+      }
+     ]
+    },
+    {
      "name": "A39.2 Claim doc tree",
      "request": {
       "method": "POST",
@@ -3937,10 +4981,10 @@
         "getTreeData"
        ]
       },
-      "description": "A39.2 | Result: SUCCESS | HTTP 200\nExpected response received.",
+      "description": "A39.2 | Result: PARTIAL | HTTP 200\nHTTP 200 but the tree has only BUSINESS_NO_ID and RECYCLE_ID nodes; no claim document types (Motor_TP_xx) configured in UAT for 1005/1106/1202/1204.",
       "body": {
        "mode": "raw",
-       "raw": "{\n  \"BusinessType\": \"001\",\n  \"BusinessId\": \"\",\n  \"BusinessNo\": null,\n  \"ProductLine\": \"01\",\n  \"ProductCode\": \"1005\",\n  \"CategoryList\": [],\n  \"UseAuthority\": \"false\",\n  \"NeedRootNode\": \"true\",\n  \"PageReadOnly\": \"false\",\n  \"NeedRecycle\": \"true\"\n}",
+       "raw": "{\n  \"BusinessType\": \"001\",\n  \"BusinessId\": \"\",\n  \"BusinessNo\": \"PC-1005-26-00000009\",\n  \"ProductLine\": \"01\",\n  \"ProductCode\": \"1005\",\n  \"CategoryList\": [],\n  \"UseAuthority\": \"false\",\n  \"NeedRootNode\": \"true\",\n  \"PageReadOnly\": \"false\",\n  \"NeedRecycle\": \"true\"\n}",
        "options": {
         "raw": {
          "language": "json"
@@ -3950,7 +4994,7 @@
      },
      "response": [
       {
-       "name": "Saved result - SUCCESS (HTTP 200)",
+       "name": "Saved result - PARTIAL (HTTP 200)",
        "originalRequest": {
         "method": "POST",
         "header": [
@@ -3973,10 +5017,10 @@
           "getTreeData"
          ]
         },
-        "description": "A39.2 | Result: SUCCESS | HTTP 200\nExpected response received.",
+        "description": "A39.2 | Result: PARTIAL | HTTP 200\nHTTP 200 but the tree has only BUSINESS_NO_ID and RECYCLE_ID nodes; no claim document types (Motor_TP_xx) configured in UAT for 1005/1106/1202/1204.",
         "body": {
          "mode": "raw",
-         "raw": "{\n  \"BusinessType\": \"001\",\n  \"BusinessId\": \"\",\n  \"BusinessNo\": null,\n  \"ProductLine\": \"01\",\n  \"ProductCode\": \"1005\",\n  \"CategoryList\": [],\n  \"UseAuthority\": \"false\",\n  \"NeedRootNode\": \"true\",\n  \"PageReadOnly\": \"false\",\n  \"NeedRecycle\": \"true\"\n}",
+         "raw": "{\n  \"BusinessType\": \"001\",\n  \"BusinessId\": \"\",\n  \"BusinessNo\": \"PC-1005-26-00000009\",\n  \"ProductLine\": \"01\",\n  \"ProductCode\": \"1005\",\n  \"CategoryList\": [],\n  \"UseAuthority\": \"false\",\n  \"NeedRootNode\": \"true\",\n  \"PageReadOnly\": \"false\",\n  \"NeedRecycle\": \"true\"\n}",
          "options": {
           "raw": {
            "language": "json"
@@ -3993,7 +5037,7 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"Messages\": [{\"Code\": \"MO-Attach-Validation-E0008\", \"Message\": \"BusinessNo is required\", \"Type\": \"block\"}], \"Status\": \"BLOCK\"}"
+       "body": "{\"Model\": [{\"canAddAdditional\": false, \"code\": \"BUSINESS_NO_ID\", \"count\": 0, \"hasChecklistAuthority\": false, \"id\": \"BUSINESS_NO_ID\", \"isAdditional\": false, \"isChecked\": false, \"isDynamic\": false, \"isLastLevel\": false, \"isReadOnly\": false, \"isRecycle\": false, \"isRelatedBusinessNo\": false, \"isUnCategorize\": false, \"name\": \"Claim_PC-1005-26-00000009\", \"open\": true, \"pId\": \"BUSINESS_NO_ID\", \"path\": \"BUSINESS_NO_ID\", \"sort\": 1}, {\"canAddAdditional\": false, \"code\": \"RECYCLE_ID\", \"count\": 0, \"hasChecklistAuthority\": false, \"i18nCode\": \"RecycleBin\", \"id\": \"RECYCLE_ID\", \"isAdditional\": false, \"isChecked\": false, \"isDynamic\": false, \"isLastLevel\": false, \"isReadOnly\": false, \"isRecycle\": true, \"isRelatedBusinessNo\": false, \"isUnCategorize\": false, \"name\": \"RecycleBin\", \"open\": true, \"path\": \"RECYCLE_ID\", \"sort\": 2}], \"Status\": \"OK\"}"
       }
      ]
     },
@@ -4024,7 +5068,7 @@
       "description": "A37.2 | Result: SUCCESS | HTTP 200\nExpected response received.",
       "body": {
        "mode": "raw",
-       "raw": "{\n  \"BusinessType\": \"001\",\n  \"BusinessNo\": null\n}",
+       "raw": "{\n  \"BusinessType\": \"001\",\n  \"BusinessNo\": \"PC-1005-26-00000009\"\n}",
        "options": {
         "raw": {
          "language": "json"
@@ -4060,7 +5104,7 @@
         "description": "A37.2 | Result: SUCCESS | HTTP 200\nExpected response received.",
         "body": {
          "mode": "raw",
-         "raw": "{\n  \"BusinessType\": \"001\",\n  \"BusinessNo\": null\n}",
+         "raw": "{\n  \"BusinessType\": \"001\",\n  \"BusinessNo\": \"PC-1005-26-00000009\"\n}",
          "options": {
           "raw": {
            "language": "json"
@@ -4077,7 +5121,7 @@
          "value": "application/json"
         }
        ],
-       "body": "{\"Messages\": [{\"Code\": \"MO-Attach-Validation-E0008\", \"Message\": \"BusinessNo is required\", \"Type\": \"block\"}], \"Status\": \"BLOCK\"}"
+       "body": "{\"Status\": \"OK\"}"
       }
      ]
     },
@@ -5816,88 +6860,6 @@
    "description": "APIs that returned an error or wrong result.",
    "item": [
     {
-     "name": "A08.1 Search producers (PCAR)",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/platform/saleschannel/channel/searchSCList",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "platform",
-        "saleschannel",
-        "channel",
-        "searchSCList"
-       ]
-      },
-      "description": "A08.1 | Result: FAILURE | HTTP 200\nsearchSCList returns Total 0 for PCAR even for new agent PTY00000000000003 (active, PCAR agreement). Correct request body not identified.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"relatedConditionMap\": {\n    \"productCode\": \"PCAR\",\n    \"effectiveDate\": \"2026-10-28T00:00:00\",\n    \"productLineCode\": \"31\"\n  },\n  \"searchCondition\": {\n    \"Module\": \"SalesChannel\",\n    \"orInConditions\": {\n      \"ScStatus\": [\n        1\n      ]\n    }\n  },\n  \"pageNo\": 1,\n  \"pageSize\": 20\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - FAILURE (HTTP 200)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/platform/saleschannel/channel/searchSCList",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "platform",
-          "saleschannel",
-          "channel",
-          "searchSCList"
-         ]
-        },
-        "description": "A08.1 | Result: FAILURE | HTTP 200\nsearchSCList returns Total 0 for PCAR even for new agent PTY00000000000003 (active, PCAR agreement). Correct request body not identified.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"relatedConditionMap\": {\n    \"productCode\": \"PCAR\",\n    \"effectiveDate\": \"2026-10-28T00:00:00\",\n    \"productLineCode\": \"31\"\n  },\n  \"searchCondition\": {\n    \"Module\": \"SalesChannel\",\n    \"orInConditions\": {\n      \"ScStatus\": [\n        1\n      ]\n    }\n  },\n  \"pageNo\": 1,\n  \"pageSize\": 20\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Total\": 0}"
-      }
-     ]
-    },
-    {
      "name": "A27.1 Proposal validate - registered vehicle MH12AB1234 (P2W) -> HTTP 500",
      "request": {
       "method": "POST",
@@ -6066,7 +7028,7 @@
      ]
     },
     {
-     "name": "A14.1 Float transaction history - debit missing for PCAR/PCV policies",
+     "name": "A31.1 Float debit missing for UW-referred policies (PCAR PP-1005-26-00000052-00, PCV PP-1202-26-00000027-00)",
      "request": {
       "method": "GET",
       "header": [],
@@ -6090,7 +7052,7 @@
         }
        ]
       },
-      "description": "FAILURE (data)\nOnly 2 debits (1226.02 P2W, 17083.96 GCV). Expected also 4473.38 (PCAR PP-1005-26-00000052-00) and 27358.30 (PCV PP-1202-26-00000027-00). Balance 4,981,690.02 instead of 4,977,858.34 (second collection 532533 untouched)."
+      "description": "FAILURE (data)\nPolicies with AutoUwResultCode 2 (UW referral) are issued with no float debit: PP-1005-26-00000052-00 (4473.38) and PP-1202-26-00000027-00 (27358.30). Non-referral policies debit correctly (P2W 1226.02, GCV 17083.96, PCAR PP-1005-26-00000053-00 4473.38). Response below was captured before the 3rd debit."
      },
      "response": [
       {
@@ -6118,7 +7080,7 @@
           }
          ]
         },
-        "description": "FAILURE (data)\nOnly 2 debits (1226.02 P2W, 17083.96 GCV). Expected also 4473.38 (PCAR PP-1005-26-00000052-00) and 27358.30 (PCV PP-1202-26-00000027-00). Balance 4,981,690.02 instead of 4,977,858.34 (second collection 532533 untouched)."
+        "description": "FAILURE (data)\nPolicies with AutoUwResultCode 2 (UW referral) are issued with no float debit: PP-1005-26-00000052-00 (4473.38) and PP-1202-26-00000027-00 (27358.30). Non-referral policies debit correctly (P2W 1226.02, GCV 17083.96, PCAR PP-1005-26-00000053-00 4473.38). Response below was captured before the 3rd debit."
        },
        "status": "OK",
        "code": 200,
@@ -6129,980 +7091,12 @@
          "value": "application/json"
         }
        ],
-       "body": "[{\"Amount\": 1226.02, \"ApplicationDate\": \"2026-10-28T09:04:30\", \"Arap\": {\"@pk\": 532558, \"@type\": \"BcpArap-Arap\", \"Amount\": 1226.02, \"ArapCate\": \"1\", \"ArapId\": 532558, \"ArapNo\": \"DR20261000000230\", \"ArapStatus\": \"2\", \"ArapType\": \"-1001\", \"Balance\": 0, \"BizTransId\": 532551, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651088, \"Commission\": -103.9, \"CurrencyCode\": \"INR\", \"CurrentPeriod\": 1, \"DirectBookingEr\": 1, \"DirectEr\": 1, \"DueDate\": \"2026-10-28\", \"GenerateDate\": \"2026-10-28T09:04:30\", \"HasMandate\": \"N\", \"HasNote\": \"N\", \"IsApproved\": \"N\", \"IsOffsetByCommission\": \"N\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T09:04:31\", \"LocalCurrencyCode\": \"INR\", \"NeedStatement\": \"N\", \"OffsetAmount\": 0, \"OffsetByCommissionAmount\": 0, \"OperateTime\": \"2026-10-28T09:04:31\", \"PayerPayeeCate\": \"1\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"120\", \"PeriodEndDate\": \"2026-10-28\", \"PeriodStartDate\": \"2026-10-28T09:04:20\", \"Premium\": 1226.02, \"RefFeeId\": 532556, \"TotalPeriods\": 1, \"Transaction\": {\"@pk\": 532551, \"@type\": \"BcpBizTransaction-BizTransaction\", \"BizModule\": \"10\", \"BizSource\": \"1\", \"BizTransId\": 532551, \"BizTransTime\": \"2026-10-28T09:04:30\", \"BizTransType\": \"NEWBIZ\", \"BizUniqueId\": \"FEE1120101_OWN\", \"BookingCurrencyCode\": \"INR\", \"BranchCode\": \"90000\", \"BranchName\": \"Mumbai\", \"BusinessObjectId\": 1100002651370, \"ChannelCode\": \"PTY00000000000003\", \"CurrencyCode\": \"INR\", \"DirectBookingEr\": 1, \"DirectEr\": 1, \"HasMandate\": \"N\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T09:04:30\", \"LocalCurrencyCode\": \"INR\", \"PaymentMethod\": \"120\", \"PaymentType\": \"1\", \"PolicyEffDate\": \"2026-10-28\", \"PolicyEffectiveDateTime\": \"2026-10-28\", \"PolicyExpDate\": \"2027-10-27\", \"PolicyHolderCode\": \"CUS26000022\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyHolderTypeCode\": \"IndiCustomer\", \"PolicyHolderTypeName\": \"IndiCustomer\", \"PolicyId\": 1120101, \"PolicyNo\": \"PP-1106-26-00000030-00\", \"ProductCode\": \"P2W\", \"ProductLineCode\": \"Motor\", \"ProductLineName\": \"Motor\", \"ProductName\": \"Motor Two Wheeler\", \"QuotationNo\": \"PQ-1106-26-00002219\", \"RefTransId\": 1120101, \"RefTransNo\": \"PQ-1106-26-00002219\", \"TotalPeriods\": 1, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T09:04:30\"}, \"VersionSeq\": 2, \"StampDutyAccountNo\": \"ACCOUNT20261000000002\"}, \"ArapId\": 532558, \"ArapNo\": \"DR20261000000230\", \"ArapType\": \"-1001\", \"BranchCode\": \"90000\", \"CurrencyCode\": \"INR\", \"HasNote\": \"N\", \"Operator\": 10000000027000, \"TransactionNo\": \"OFS20261000000095\", \"TransactionStatus\": \"1\"}, {\"Amount\": 17083.96, \"ApplicationDate\": \"2026-10-28T09:05:00\", \"Arap\": {\"@pk\": 532589, \"@type\": \"BcpArap-Arap\", \"Amount\": 17083.96, \"ArapCate\": \"1\", \"ArapId\": 532589, \"ArapNo\": \"DR20261000000232\", \"ArapStatus\": \"2\", \"ArapType\": \"-1001\", \"Balance\": 0, \"BizTransId\": 532582, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651088, \"Commission\": -1622.4, \"CurrencyCode\": \"INR\", \"CurrentPeriod\": 1, \"DirectBookingEr\": 1, \"DirectEr\": 1, \"DueDate\": \"2026-10-28\", \"GenerateDate\": \"2026-10-28T09:05:00\", \"HasMandate\": \"N\", \"HasNote\": \"N\", \"IsApproved\": \"N\", \"IsOffsetByCommission\": \"N\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T09:05:01\", \"LocalCurrencyCode\": \"INR\", \"NeedStatement\": \"N\", \"OffsetAmount\": 0, \"OffsetByCommissionAmount\": 0, \"OperateTime\": \"2026-10-28T09:05:01\", \"PayerPayeeCate\": \"1\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"120\", \"PeriodEndDate\": \"2026-10-28\", \"PeriodStartDate\": \"2026-10-28T09:04:50\", \"Premium\": 17083.96, \"RefFeeId\": 532587, \"TotalPeriods\": 1, \"Transaction\": {\"@pk\": 532582, \"@type\": \"BcpBizTransaction-BizTransaction\", \"BizModule\": \"10\", \"BizSource\": \"1\", \"BizTransId\": 532582, \"BizTransTime\": \"2026-10-28T09:05:00\", \"BizTransType\": \"NEWBIZ\", \"BizUniqueId\": \"FEE1120107_OWN\", \"BookingCurrencyCode\": \"INR\", \"BranchCode\": \"90000\", \"BranchName\": \"Mumbai\", \"BusinessObjectId\": 1100002651370, \"ChannelCode\": \"PTY00000000000003\", \"CurrencyCode\": \"INR\", \"DirectBookingEr\": 1, \"DirectEr\": 1, \"HasMandate\": \"N\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T09:05:00\", \"LocalCurrencyCode\": \"INR\", \"PaymentMethod\": \"120\", \"PaymentType\": \"1\", \"PolicyEffDate\": \"2026-10-28\", \"PolicyEffectiveDateTime\": \"2026-10-28\", \"PolicyExpDate\": \"2027-10-27\", \"PolicyHolderCode\": \"CUS26000022\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyHolderTypeCode\": \"IndiCustomer\", \"PolicyHolderTypeName\": \"IndiCustomer\", \"PolicyId\": 1120107, \"PolicyNo\": \"PP-1204-26-00000025-00\", \"ProductCode\": \"GCV\", \"ProductLineCode\": \"Motor\", \"ProductLineName\": \"Motor\", \"ProductName\": \"Goods Carrying Vehicle\", \"QuotationNo\": \"PQ-1204-26-00002491\", \"RefTransId\": 1120107, \"RefTransNo\": \"PQ-1204-26-00002491\", \"TotalPeriods\": 1, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T09:05:00\"}, \"VersionSeq\": 2, \"StampDutyAccountNo\": \"ACCOUNT20261000000002\"}, \"ArapId\": 532589, \"ArapNo\": \"DR20261000000232\", \"ArapType\": \"-1001\", \"BranchCode\": \"90000\", \"CurrencyCode\": \"INR\", \"HasNote\": \"N\", \"Operator\": 10000000027000, \"TransactionNo\": \"OFS20261000000096\", \"TransactionStatus\": \"1\"}]"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "3 Blocked (14)",
-   "description": "APIs that could not be exercised because of a dependency or environment problem.",
-   "item": [
-    {
-     "name": "A04.1 Customer master load (existing id)",
-     "request": {
-      "method": "GET",
-      "header": [],
-      "url": {
-       "raw": "{{baseUrl}}/api/platform/custv2/core/customer/indi/byCustomerId?customerId=10000051463545",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "platform",
-        "custv2",
-        "core",
-        "customer",
-        "indi",
-        "byCustomerId"
-       ],
-       "query": [
-        {
-         "key": "customerId",
-         "value": "10000051463545"
-        }
-       ]
-      },
-      "description": "A04.1 | Result: BLOCKED | HTTP 204\nHTTP 204: the customer-master id taken from the Postman files does not exist in UAT; no valid test record."
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 204)",
-       "originalRequest": {
-        "method": "GET",
-        "header": [],
-        "url": {
-         "raw": "{{baseUrl}}/api/platform/custv2/core/customer/indi/byCustomerId?customerId=10000051463545",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "platform",
-          "custv2",
-          "core",
-          "customer",
-          "indi",
-          "byCustomerId"
-         ],
-         "query": [
-          {
-           "key": "customerId",
-           "value": "10000051463545"
-          }
-         ]
-        },
-        "description": "A04.1 | Result: BLOCKED | HTTP 204\nHTTP 204: the customer-master id taken from the Postman files does not exist in UAT; no valid test record."
-       },
-       "status": "204",
-       "code": 204,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "\"\""
+       "body": "[{\"Amount\": 1226.02, \"ApplicationDate\": \"2026-10-28T09:04:30\", \"Arap\": {\"@pk\": 532558, \"@type\": \"BcpArap-Arap\", \"Amount\": 1226.02, \"ArapCate\": \"1\", \"ArapId\": 532558, \"ArapNo\": \"DR20261000000230\", \"ArapStatus\": \"2\", \"ArapType\": \"-1001\", \"Balance\": 0, \"BizTransId\": 532551, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651088, \"Commission\": -103.9, \"CurrencyCode\": \"INR\", \"CurrentPeriod\": 1, \"DirectBookingEr\": 1, \"DirectEr\": 1, \"DueDate\": \"2026-10-28\", \"GenerateDate\": \"2026-10-28T09:04:30\", \"HasMandate\": \"N\", \"HasNote\": \"N\", \"IsApproved\": \"N\", \"IsOffsetByCommission\": \"N\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T09:04:31\", \"LocalCurrencyCode\": \"INR\", \"NeedStatement\": \"N\", \"OffsetAmount\": 0, \"OffsetByCommissionAmount\": 0, \"OperateTime\": \"2026-10-28T09:04:31\", \"PayerPayeeCate\": \"1\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"120\", \"PeriodEndDate\": \"2026-10-28\", \"PeriodStartDate\": \"2026-10-28T09:04:20\", \"Premium\": 1226.02, \"RefFeeId\": 532556, \"TotalPeriods\": 1, \"Transaction\": {\"@pk\": 532551, \"@type\": \"BcpBizTransaction-BizTransaction\", \"BizModule\": \"10\", \"BizSource\": \"1\", \"BizTransId\": 532551, \"BizTransTime\": \"2026-10-28T09:04:30\", \"BizTransType\": \"NEWBIZ\", \"BizUniqueId\": \"FEE1120101_OWN\", \"BookingCurrencyCode\": \"INR\", \"BranchCode\": \"90000\", \"BranchName\": \"Mumbai\", \"BusinessObjectId\": 1100002651370, \"ChannelCode\": \"PTY00000000000003\", \"CurrencyCode\": \"INR\", \"DirectBookingEr\": 1, \"DirectEr\": 1, \"HasMandate\": \"N\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T09:04:30\", \"LocalCurrencyCode\": \"INR\", \"PaymentMethod\": \"120\", \"PaymentType\": \"1\", \"PolicyEffDate\": \"2026-10-28\", \"PolicyEffectiveDateTime\": \"2026-10-28\", \"PolicyExpDate\": \"2027-10-27\", \"PolicyHolderCode\": \"CUS26000022\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyHolderTypeCode\": \"IndiCustomer\", \"PolicyHolderTypeName\": \"IndiCustomer\", \"PolicyId\": 1120101, \"PolicyNo\": \"PP-1106-26-00000030-00\", \"ProductCode\": \"P2W\", \"ProductLineCode\": \"Motor\", \"ProductLineName\": \"Motor\", \"ProductName\": \"Motor Two Wheeler\", \"QuotationNo\": \"PQ-1106-26-00002219\", \"RefTransId\": 1120101, \"RefTransNo\": \"PQ-1106-26-00002219\", \"TotalPeriods\": 1, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T09:04:30\"}, \"VersionSeq\": 2, \"StampDutyAccountNo\": \"ACCOUNT20261000000002\"}, \"ArapId\": 532558, \"ArapNo\": \"DR20261000000230\", \"ArapType\": \"-1001\", \"BranchCode\": \"90000\", \"CurrencyCode\": \"INR\", \"HasNote\": \"N\", \"Operator\": 10000000027000, \"TransactionNo\": \"OFS20261000000095\", \"TransactionStatus\": \"1\"}, {\"Amount\": 17083.96, \"ApplicationDate\": \"2026-10-28T09:05:00\", \"Arap\": {\"@pk\": 532589, \"@type\": \"BcpArap-Arap\", \"Amount\": 17083.96, \"ArapCate\": \"1\", \"ArapId\": 532589, \"ArapNo\": \"DR20261000000232\", \"ArapStatus\": \"2\", \"ArapType\": \"-1001\", \"Balance\": 0, \"BizTransId\": 532582, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651088, \"Commission\": -1622.4, \"CurrencyCode\": \"INR\", \"CurrentPeriod\": 1, \"DirectBookingEr\": 1, \"DirectEr\": 1, \"DueDate\": \"2026-10-28\", \"GenerateDate\": \"2026-10-28T09:05:00\", \"HasMandate\": \"N\", \"HasNote\": \"N\", \"IsApproved\": \"N\", \"IsOffsetByCommission\": \"N\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T09:05:01\", \"LocalCurrencyCode\": \"INR\", \"NeedStatement\": \"N\", \"OffsetAmount\": 0, \"OffsetByCommissionAmount\": 0, \"OperateTime\": \"2026-10-28T09:05:01\", \"PayerPayeeCate\": \"1\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"UatFloat AgentOne\", \"PaymentMethod\": \"120\", \"PeriodEndDate\": \"2026-10-28\", \"PeriodStartDate\": \"2026-10-28T09:04:50\", \"Premium\": 17083.96, \"RefFeeId\": 532587, \"TotalPeriods\": 1, \"Transaction\": {\"@pk\": 532582, \"@type\": \"BcpBizTransaction-BizTransaction\", \"BizModule\": \"10\", \"BizSource\": \"1\", \"BizTransId\": 532582, \"BizTransTime\": \"2026-10-28T09:05:00\", \"BizTransType\": \"NEWBIZ\", \"BizUniqueId\": \"FEE1120107_OWN\", \"BookingCurrencyCode\": \"INR\", \"BranchCode\": \"90000\", \"BranchName\": \"Mumbai\", \"BusinessObjectId\": 1100002651370, \"ChannelCode\": \"PTY00000000000003\", \"CurrencyCode\": \"INR\", \"DirectBookingEr\": 1, \"DirectEr\": 1, \"HasMandate\": \"N\", \"InsertBy\": 10000000027000, \"InsertTime\": \"2026-10-28T09:05:00\", \"LocalCurrencyCode\": \"INR\", \"PaymentMethod\": \"120\", \"PaymentType\": \"1\", \"PolicyEffDate\": \"2026-10-28\", \"PolicyEffectiveDateTime\": \"2026-10-28\", \"PolicyExpDate\": \"2027-10-27\", \"PolicyHolderCode\": \"CUS26000022\", \"PolicyHolderName\": \"UatCust Verified\", \"PolicyHolderTypeCode\": \"IndiCustomer\", \"PolicyHolderTypeName\": \"IndiCustomer\", \"PolicyId\": 1120107, \"PolicyNo\": \"PP-1204-26-00000025-00\", \"ProductCode\": \"GCV\", \"ProductLineCode\": \"Motor\", \"ProductLineName\": \"Motor\", \"ProductName\": \"Goods Carrying Vehicle\", \"QuotationNo\": \"PQ-1204-26-00002491\", \"RefTransId\": 1120107, \"RefTransNo\": \"PQ-1204-26-00002491\", \"TotalPeriods\": 1, \"UpdateBy\": 10000000027000, \"UpdateTime\": \"2026-10-28T09:05:00\"}, \"VersionSeq\": 2, \"StampDutyAccountNo\": \"ACCOUNT20261000000002\"}, \"ArapId\": 532589, \"ArapNo\": \"DR20261000000232\", \"ArapType\": \"-1001\", \"BranchCode\": \"90000\", \"CurrencyCode\": \"INR\", \"HasNote\": \"N\", \"Operator\": 10000000027000, \"TransactionNo\": \"OFS20261000000096\", \"TransactionStatus\": \"1\"}, {\"Amount\": 4473.38, \"ApplicationDate\": \"2026-10-28T10:15:40\", \"Arap\": {\"@pk\": 532620, \"@type\": \"BcpArap-Arap\", \"Amount\": 4473.38, \"ArapCate\": \"1\", \"ArapId\": 532620, \"ArapNo\": \"DR20261000000234\", \"ArapStatus\": \"2\", \"ArapType\": \"-1001\", \"Balance\": 0, \"BizTransId\": 532613, \"BookingCurrencyCode\": \"INR\", \"BusinessObjectId\": 1100002651088, \"Commission\": -379.1, \"CurrencyCode\": \"INR\", \"CurrentPeriod\": 1, \"DirectBookingEr\": 1, \"DirectEr\": 1, \"DueDate\": \"2026-10-28\", \"GenerateDate\": \"2026-10-28T10:15:40\", \"HasMandate\": \"N\", \"HasNote\": \"N\", \"IsApproved\": \"N\", \"IsOffsetByCommission\": \"N\", \"LastOperateBy\": 10000000027000, \"LastOperateTime\": \"2026-10-28T10:15:41\", \"LocalCurrencyCode\": \"INR\", \"NeedStatement\": \"N\", \"OffsetAmount\": 0, \"OffsetByCommissionAmount\": 0, \"OperateTime\": \"2026-10-28T10:15:41\", \"PayerPayeeCate\": \"1\", \"PayerPayeeCode\": \"PTY00000000000003\", \"PayerPayeeName\": \"U"
       }
      ]
     },
     {
-     "name": "A42.1 FNOL minimal",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_business_fnol"
-       ]
-      },
-      "description": "A42.1 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-27T10:00:00\",\n    \"NoticeTime\": \"2026-10-28T09:00:00\"\n  }\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 200)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_business_fnol"
-         ]
-        },
-        "description": "A42.1 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-27T10:00:00\",\n    \"NoticeTime\": \"2026-10-28T09:00:00\"\n  }\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Messages\": [{\"Code\": \"MO-Claim-Info-E0002\", \"Message\": \"The policy does not exist!\", \"Type\": \"block\"}], \"Status\": \"BLOCK\"}"
-      }
-     ]
-    },
-    {
-     "name": "A42.2 FNOL with loss details",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_business_fnol"
-       ]
-      },
-      "description": "A42.2 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-27T10:00:00\",\n    \"NoticeTime\": \"2026-10-28T09:01:00\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Rear-end collision at traffic light\",\n    \"AccidentAddress\": \"MG Road, Pune\",\n    \"ContactName\": \"UatCust Verified\",\n    \"ContactPhone\": \"9000000202\"\n  }\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 200)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_business_fnol"
-         ]
-        },
-        "description": "A42.2 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-27T10:00:00\",\n    \"NoticeTime\": \"2026-10-28T09:01:00\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Rear-end collision at traffic light\",\n    \"AccidentAddress\": \"MG Road, Pune\",\n    \"ContactName\": \"UatCust Verified\",\n    \"ContactPhone\": \"9000000202\"\n  }\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Messages\": [{\"Code\": \"MO-Claim-Info-E0002\", \"Message\": \"The policy does not exist!\", \"Type\": \"block\"}], \"Status\": \"BLOCK\"}"
-      }
-     ]
-    },
-    {
-     "name": "A42.3 FNOL with AgentCode",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_business_fnol"
-       ]
-      },
-      "description": "A42.3 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-27T10:00:00\",\n    \"NoticeTime\": \"2026-10-28T09:02:00\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Side swipe\",\n    \"AccidentAddress\": \"FC Road, Pune\",\n    \"ContactName\": \"UatCust Verified\",\n    \"ContactPhone\": \"9000000202\",\n    \"AgentCode\": \"PTY00000000000003\"\n  }\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 200)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_business_fnol"
-         ]
-        },
-        "description": "A42.3 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"PP-1005-26-00000052-00\",\n    \"AccidentTime\": \"2026-10-27T10:00:00\",\n    \"NoticeTime\": \"2026-10-28T09:02:00\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Side swipe\",\n    \"AccidentAddress\": \"FC Road, Pune\",\n    \"ContactName\": \"UatCust Verified\",\n    \"ContactPhone\": \"9000000202\",\n    \"AgentCode\": \"PTY00000000000003\"\n  }\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Messages\": [{\"Code\": \"MO-Claim-Info-E0002\", \"Message\": \"The policy does not exist!\", \"Type\": \"block\"}], \"Status\": \"BLOCK\"}"
-      }
-     ]
-    },
-    {
-     "name": "A43.1 Claims of policy",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_claim_queryClaimByCondition"
-       ]
-      },
-      "description": "A43.1 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"PolicyNo\": \"PP-1005-26-00000052-00\"\n    }\n  }\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 200)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_claim_queryClaimByCondition"
-         ]
-        },
-        "description": "A43.1 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"PolicyNo\": \"PP-1005-26-00000052-00\"\n    }\n  }\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{}], \"Total\": 0}, \"Status\": \"OK\"}"
-      }
-     ]
-    },
-    {
-     "name": "A43.2 Claim by number",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_claim_queryClaimByCondition"
-       ]
-      },
-      "description": "A43.2 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"ClaimNo\": null\n    }\n  }\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 200)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_claim_queryClaimByCondition"
-         ]
-        },
-        "description": "A43.2 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"ClaimNo\": null\n    }\n  }\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{\"EsDocs\": [{\"AccidentTime\": \"2026-10-20T17:29:52\", \"CaseId\": 407091, \"CaseMode\": \"02\", \"CaseStatus\": \"11\", \"ClaimNo\": \"PC-1005-26-00000002\", \"ClaimantIdNo\": \"1222\", \"ClaimantName\": \"test name\", \"ClmPolicyId\": 407094, \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"DiagnosisCode\": \"Y83\", \"EcsFnolRemark\": \"\", \"EcsPolicyHolderIdNo\": \"1222\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000002\", \"InsertTime\": \"2026-10-20T17:30:01\", \"InsuredName\": \"\", \"LossCause\": \"01\", \"NoticeTime\": \"2026-10-20T17:30:00\", \"PolicyEndDate\": \"2029-10-14T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"test name\", \"PolicyNo\": \"PP-1005-26-00000005-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-15\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RegisterTime\": \"2026-10-21T12:27:11\", \"RequestAmount\": 0, \"RiskId\": \"242044\", \"RiskName\": \"67898765432345687\", \"SettlementAmount\": 0, \"TotalIncurred\": 5000, \"TotalOutstandingAmount\": 5000, \"TotalSettledAmount\": 0, \"VersionSeq\": 13, \"entity_id\": 407091, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_407091\", \"index_time\": \"2026-10-21T12:32:48\", \"index_timestamp\": 1792585968008, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}, {\"AccidentTime\": \"2026-10-20T17:27:09\", \"CaseId\": 407044, \"CaseMode\": \"02\", \"CaseStatus\": \"05\", \"ClaimNo\": \"PC-1005-26-00000001\", \"ClaimantIdNo\": \"1222\", \"ClaimantName\": \"test name\", \"ClmPolicyId\": 407047, \"CloseDate\": \"2026-10-20T17:39:19\", \"ClosedType\": \"02\", \"CoInsuranceOrgCode\": \"\", \"CoRelatedPolicyNo\": \"\", \"EcsFnolRemark\": \"\", \"EcsPolicyHolderIdNo\": \"1222\", \"EcsPolicyInsuredInfo\": \"\", \"EcsProductLineCode\": \"01\", \"EcsProductVersion\": \"1.0\", \"FnolNo\": \"PC-1005-26-00000001\", \"InsertTime\": \"2026-10-20T17:27:27\", \"InsuredName\": \"\", \"LossCause\": \"01\", \"NoticeTime\": \"2026-10-20T17:27:26\", \"PolicyEndDate\": \"2029-10-14T23:59:59\", \"PolicyFullOrgCode\": \"90000\", \"PolicyHolderName\": \"test name\", \"PolicyNo\": \"PP-1005-26-00000005-00\", \"PolicyOrgCode\": \"90000\", \"PolicyStartDate\": \"2026-10-15\", \"ProductCode\": \"1005\", \"RecordType\": \"1\", \"RegisterTime\": \"2026-10-20T17:30:12\", \"RequestAmount\": 0, \"RiskId\": \"242044\", \"RiskName\": \"67898765432345687\", \"SettlementAmount\": 10, \"TotalIncurred\": 10, \"TotalOutstandingAmount\": 0, \"TotalSettledAmount\": 10, \"VersionSeq\": 17, \"entity_id\": 407044, \"entity_type\": \"ClaimCase\", \"id\": \"ClaimCase_407044\", \"index_time\": \"2026-10-20T17:39:21\", \"index_timestamp\": 1792517961166, \"owned_org_code\": \"90000\", \"tenant_code\": \"protecuat\"}]}], \"Total\": 2}, \"Status\": \"OK\"}"
-      }
-     ]
-    },
-    {
-     "name": "A43.3 Claims of agent",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_claim_queryClaimByCondition"
-       ]
-      },
-      "description": "A43.3 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"AgentCode\": \"PTY00000000000003\"\n    }\n  }\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 200)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_claim_queryClaimByCondition"
-         ]
-        },
-        "description": "A43.3 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"AgentCode\": \"PTY00000000000003\"\n    }\n  }\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{}], \"Total\": 0}, \"Status\": \"OK\"}"
-      }
-     ]
-    },
-    {
-     "name": "A43.4 Claims of customer (holder PAN)",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_claim_queryClaimByCondition"
-       ]
-      },
-      "description": "A43.4 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"EcsPolicyHolderIdNo\": \"UATCU2002K\"\n    }\n  }\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 200)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_claim_queryClaimByCondition"
-         ]
-        },
-        "description": "A43.4 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"EcsPolicyHolderIdNo\": \"UATCU2002K\"\n    }\n  }\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{}], \"Total\": 0}, \"Status\": \"OK\"}"
-      }
-     ]
-    },
-    {
-     "name": "A43.5 Claims by product+status",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_claim_queryClaimByCondition"
-       ]
-      },
-      "description": "A43.5 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"ProductCode\": \"1005\",\n      \"CaseStatus\": \"01\",\n      \"AgentCode\": \"PTY00000000000003\"\n    }\n  }\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 200)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_claim_queryClaimByCondition"
-         ]
-        },
-        "description": "A43.5 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"ProductCode\": \"1005\",\n      \"CaseStatus\": \"01\",\n      \"AgentCode\": \"PTY00000000000003\"\n    }\n  }\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{}], \"Total\": 0}, \"Status\": \"OK\"}"
-      }
-     ]
-    },
-    {
-     "name": "A43.6 Agent claims last 2 months (NoticeTime range)",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_claim_queryClaimByCondition"
-       ]
-      },
-      "description": "A43.6 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"AgentCode\": \"PTY00000000000003\"\n    },\n    \"GteRangeConditions\": {\n      \"NoticeTime\": \"2026-08-28T00:00:00\"\n    },\n    \"LteRangeConditions\": {\n      \"NoticeTime\": \"2026-10-28T23:59:59\"\n    }\n  }\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 200)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_claim_queryClaimByCondition"
-         ]
-        },
-        "description": "A43.6 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"AgentCode\": \"PTY00000000000003\"\n    },\n    \"GteRangeConditions\": {\n      \"NoticeTime\": \"2026-08-28T00:00:00\"\n    },\n    \"LteRangeConditions\": {\n      \"NoticeTime\": \"2026-10-28T23:59:59\"\n    }\n  }\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Model\": {\"PageNo\": 1, \"PageSize\": 10, \"Results\": [{}], \"Total\": 0}, \"Status\": \"OK\"}"
-      }
-     ]
-    },
-    {
-     "name": "A44.1 Load claim case detail",
-     "request": {
-      "method": "GET",
-      "header": [],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claimquery_loadCaseDetail?claimNo=None",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_claimquery_loadCaseDetail"
-       ],
-       "query": [
-        {
-         "key": "claimNo",
-         "value": "None"
-        }
-       ]
-      },
-      "description": "A44.1 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load."
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 200)",
-       "originalRequest": {
-        "method": "GET",
-        "header": [],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claimquery_loadCaseDetail?claimNo=None",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_claimquery_loadCaseDetail"
-         ],
-         "query": [
-          {
-           "key": "claimNo",
-           "value": "None"
-          }
-         ]
-        },
-        "description": "A44.1 | Result: BLOCKED | HTTP 200\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load."
-       },
-       "status": "OK",
-       "code": 200,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"Status\": \"OK\"}"
-      }
-     ]
-    },
-    {
-     "name": "A45.1 Load claim policy",
-     "request": {
-      "method": "GET",
-      "header": [],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_common_loadClaimPolicy?clmPolicyId=None",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_common_loadClaimPolicy"
-       ],
-       "query": [
-        {
-         "key": "clmPolicyId",
-         "value": "None"
-        }
-       ]
-      },
-      "description": "A45.1 | Result: BLOCKED | HTTP 500\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load."
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP 500)",
-       "originalRequest": {
-        "method": "GET",
-        "header": [],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_common_loadClaimPolicy?clmPolicyId=None",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_common_loadClaimPolicy"
-         ],
-         "query": [
-          {
-           "key": "clmPolicyId",
-           "value": "None"
-          }
-         ]
-        },
-        "description": "A45.1 | Result: BLOCKED | HTTP 500\nClaim system does not hold the issued policies: FNOL returns MO-Claim-Info-E0002 'The policy does not exist!' so no ClaimNo/ClmPolicyId exists to search or load."
-       },
-       "status": "500",
-       "code": 500,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": "{\"timestamp\": \"2026-10-28T09:50:04\", \"timestampServer\": \"2026-10-28T06:50:04\", \"traceId\": \"bc24c54fd90d46a05d284fd22bbfc80b\", \"env\": \"aws_in_protec_sandbox\", \"tenant\": \"protecuat\", \"code\": \"MO-PLATFORM-COMMON-E9998\", \"message\": \"Exception has been thrown, check it in logging system with trace id: bc24c54fd90d46a05d284fd22bbfc80b.\"}"
-      }
-     ]
-    },
-    {
-     "name": "A36.2 Upload claim document",
+     "name": "A36.2 Upload claim document -> HTTP 500",
      "request": {
       "method": "POST",
       "header": [],
@@ -7120,7 +7114,7 @@
         "uploadMulti"
        ]
       },
-      "description": "BLOCKED\nNo claim exists (FNOL blocked), so there is no ClaimNo.",
+      "description": "FAILURE | HTTP 500\nClaim document types are not configured in UAT (A39.2 tree shows no Motor_TP_xx). Claim PC-1204-26-00000001.",
       "body": {
        "mode": "formdata",
        "formdata": [
@@ -7131,7 +7125,7 @@
         },
         {
          "key": "BusinessNo",
-         "value": "{{ClaimNo}}",
+         "value": "PC-1204-26-00000001",
          "type": "text"
         },
         {
@@ -7149,7 +7143,7 @@
      },
      "response": [
       {
-       "name": "Saved result - BLOCKED (HTTP -)",
+       "name": "Saved result - FAILURE (HTTP 500)",
        "originalRequest": {
         "method": "POST",
         "header": [],
@@ -7167,7 +7161,7 @@
           "uploadMulti"
          ]
         },
-        "description": "BLOCKED\nNo claim exists (FNOL blocked), so there is no ClaimNo.",
+        "description": "FAILURE | HTTP 500\nClaim document types are not configured in UAT (A39.2 tree shows no Motor_TP_xx). Claim PC-1204-26-00000001.",
         "body": {
          "mode": "formdata",
          "formdata": [
@@ -7178,7 +7172,7 @@
           },
           {
            "key": "BusinessNo",
-           "value": "{{ClaimNo}}",
+           "value": "PC-1204-26-00000001",
            "type": "text"
           },
           {
@@ -7194,8 +7188,8 @@
          ]
         }
        },
-       "status": "-",
-       "code": 0,
+       "status": "500",
+       "code": 500,
        "_postman_previewlanguage": "json",
        "header": [
         {
@@ -7203,95 +7197,16 @@
          "value": "application/json"
         }
        ],
-       "body": ""
-      }
-     ]
-    },
-    {
-     "name": "A46.1 Claim + policy context for survey",
-     "request": {
-      "method": "POST",
-      "header": [
-       {
-        "key": "Content-Type",
-        "value": "application/json"
-       }
-      ],
-      "url": {
-       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-       "host": [
-        "{{baseUrl}}"
-       ],
-       "path": [
-        "api",
-        "{{tenantCode}}",
-        "api-orchestration",
-        "v1",
-        "flow",
-        "ECS_claim_queryClaimByCondition"
-       ]
-      },
-      "description": "BLOCKED\nDepends on A43/A45; no claim exists.",
-      "body": {
-       "mode": "raw",
-       "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"PolicyNo\": \"PP-1005-26-00000052-00\"\n    }\n  }\n}",
-       "options": {
-        "raw": {
-         "language": "json"
-        }
-       }
-      }
-     },
-     "response": [
-      {
-       "name": "Saved result - BLOCKED (HTTP -)",
-       "originalRequest": {
-        "method": "POST",
-        "header": [
-         {
-          "key": "Content-Type",
-          "value": "application/json"
-         }
-        ],
-        "url": {
-         "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_claim_queryClaimByCondition",
-         "host": [
-          "{{baseUrl}}"
-         ],
-         "path": [
-          "api",
-          "{{tenantCode}}",
-          "api-orchestration",
-          "v1",
-          "flow",
-          "ECS_claim_queryClaimByCondition"
-         ]
-        },
-        "description": "BLOCKED\nDepends on A43/A45; no claim exists.",
-        "body": {
-         "mode": "raw",
-         "raw": "{\n  \"Module\": \"ClaimCase\",\n  \"PageNo\": 1,\n  \"PageSize\": 10,\n  \"QueryCondition\": {\n    \"Conditions\": {\n      \"PolicyNo\": \"PP-1005-26-00000052-00\"\n    }\n  }\n}",
-         "options": {
-          "raw": {
-           "language": "json"
-          }
-         }
-        }
-       },
-       "status": "-",
-       "code": 0,
-       "_postman_previewlanguage": "json",
-       "header": [
-        {
-         "key": "Content-Type",
-         "value": "application/json"
-        }
-       ],
-       "body": ""
+       "body": "{\"tenant\": \"protecuat\", \"code\": \"MO-PLATFORM-COMMON-E9998\", \"message\": \"Exception has been thrown, check it in logging system with trace id: 0888b514a045b9cd704595b730e2f0fa.\"}"
       }
      ]
     }
    ]
+  },
+  {
+   "name": "3 Blocked (0)",
+   "description": "APIs that could not be exercised because of a dependency or environment problem.",
+   "item": []
   }
  ]
 }
