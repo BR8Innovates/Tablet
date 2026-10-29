@@ -1,34 +1,36 @@
 **To:** Go Digit; ICICI Lombard; Tata AIG – Motor issuance / integration support
 **Cc:** InsureMO Support; Fibe team
-**Subject:** Repeated payment submissions on failed policy issuance (same payment, multiple days) – refund process and controls
+**Subject:** Payment details submitted multiple times across multiple days on failed issuance – reason and refund process
 
 Hi team,
 
-In the InsureMO integration logs for Fibe motor policies we see the same payment transaction submitted to the insurer repeatedly after issuance has failed, in several cases across multiple days. We want to understand why the insurer platform accepts this and what the refund process is when the payment is taken but no policy is issued.
+In the InsureMO integration logs for Fibe motor policies, we see the same payment details submitted to the insurer multiple times after issuance has returned an error, in several cases across multiple days.
 
-**Data reviewed:** last 90 days (31 Jul – 29 Oct 2026), issuance/payment calls (ICICI: proposal call carrying the payment transaction id; Digit and Tata: issue-policy call).
+Could you please explain:
+1. **Why is a payment submission allowed multiple times, across multiple days, for the same payment/transaction when issuance has failed with an error?**
+2. **What is the refund process** when the payment is received but the policy is not issued (timelines, and the information you need from us)?
 
-| Insurer | Calls | Unique payment txns | Never issued | Txns retried (>1 attempt) | Txns on >1 day | Multi-day and never issued | Most attempts on one txn |
-|---|---|---|---|---|---|---|---|
-| ICICI Lombard | 156 | 51 | 17 | 43 | 8 | 1 | 13 (5 days) |
-| Go Digit | 159 | 60 | 6 | 48 | 2 | 1 | 22 (5 days) |
-| Tata AIG | 128 | 28 | 7 | 22 | 6 | 3 | 36 (7 days) |
+**Data – last 90 days (31 Jul – 29 Oct 2026)**
 
-**Cases that need attention (paid, no policy, retried across days):**
-- **Go Digit** – `FIB_pay_TqDRsBy73eocFy`, INR 10,530: 22 attempts, 20 Oct 21:13 → 27 Oct 10:06 (5 days). 21 × "As per current status of Quote, issuance is not allowed", 1 × "Too Many Requests". First TraceId `67f1f9c651c7a4419f88f52c93b78b26`.
-- **ICICI Lombard** – `pay_TsAGZVlGVYSXCO`, INR 6,082: 9 attempts, 25 → 27 Oct, no CarrierPolicyNo. Across the window ICICI also shows many attempts ending in "KYC PENDING" and "This Transaction is already in process. Please retry after some time".
-- **Tata AIG** – `TkaX6vgQx4ofxv`, INR 4,473: 36 attempts, 6 → 18 Oct (7 days); `TkU44gMPZdKhsQ`, INR 1,612: 9 attempts, 6 → 12 Oct; `TlgSOgjoqiI0YK`, INR 1,374: 7 attempts, 9 → 19 Oct. All "Product Name is Invalid, Please verify it once again." (HTTP 400) since 6 Oct. Issuance started succeeding again from 25 Oct, so please confirm what changed and whether these three pending payments can now be issued.
+| Insurer | Issuance calls with payment | Unique payment transactions | Never issued | Resubmitted (>1 attempt) | Resubmitted on more than 1 day | Multi-day and never issued |
+|---|---|---|---|---|---|---|
+| ICICI Lombard | 156 | 51 | 17 | 43 | 8 | 1 |
+| Go Digit | 159 | 60 | 6 | 48 | 2 | 1 |
+| Tata AIG | 128 | 28 | 7 | 22 | 6 | 3 |
 
-Also observed: repeat submissions of a payment that had already produced a policy (e.g. Tata `TpEnyJe3LxuQ1g`, six successful calls on 25 Oct; ICICI "Policy already issued.").
+**Examples – payment received, retried across days, no policy issued**
 
-**Questions (for each insurer):**
-1. Why is the same payment/transaction id accepted for submission repeatedly, including across multiple days, when issuance has already failed or the quote is not in an issuable state? Is there a validation or idempotency control on the transaction id that should reject it up front?
-2. What does each error mean for these cases ("issuance is not allowed" – Digit; "KYC PENDING" and "already in process" – ICICI; "Product Name is Invalid" – Tata) and what is needed to move the case to an issuable state?
-3. What is the refund process when premium is collected but no policy is issued? Please share timelines and the data you need from us (payment transaction no., application/proposal no., amount, dates).
-4. For the cases above, is the payment held or received on your side, and can it be refunded or the policy issued? Is any amount being retained or double-counted when the same payment is submitted several times?
-5. Are there retry limits or throttling we should follow (Digit returned "Too Many Requests")? Please advise the recommended retry behaviour for failed issuance.
+| Insurer | Payment transaction no. | Amount (INR) | Attempts | Dates | Error returned |
+|---|---|---|---|---|---|
+| Go Digit | FIB_pay_TqDRsBy73eocFy | 10,530 | 22 | 20 Oct 21:13 → 27 Oct 10:06 (5 days) | As per current status of Quote, issuance is not allowed |
+| ICICI Lombard | pay_TsAGZVlGVYSXCO | 6,082 | 9 | 25 → 27 Oct (3 days) | No policy number returned |
+| Tata AIG | TkaX6vgQx4ofxv | 4,473 | 36 | 6 → 18 Oct (7 days) | Product Name is Invalid, Please verify it once again. |
+| Tata AIG | TkU44gMPZdKhsQ | 1,612 | 9 | 6 → 12 Oct (4 days) | Product Name is Invalid, Please verify it once again. |
+| Tata AIG | TlgSOgjoqiI0YK | 1,374 | 7 | 9 → 19 Oct (4 days) | Product Name is Invalid, Please verify it once again. |
 
-Please reply with the plan and an expected resolution date. Customer details can be shared over a secure channel.
+The complete list of payments submitted on more than one day, with every call (date and time, TraceId, ClientRequestId, result), is in the attached Excel. For Go Digit, the full request/response logs for the first example are also attached.
+
+Please share your response and the refund timeline for the pending payments above.
 
 Regards,
 [Name]
