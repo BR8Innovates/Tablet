@@ -21,6 +21,8 @@ Bugs raised (API wise)
 - A36.2 uploadMulti (claim) - UAT-BUG-03 (Medium): HTTP 500.
 - A39.2 getTreeData (claim) - UAT-BUG-03 (Medium): claim document types not configured.
 - A42 ECS_business_fnol - UAT-OBS-07 (Low): misleading "policy does not exist" for a loss date before policy start.
+- A27/A29 (all products) - UAT-BUG-06 (High): since 28 Oct validation requires nominee details for individual policyholders and the PersonRelation code table is empty, so quote-to-issue is blocked.
+- A48 endorsements (all products) - UAT-BUG-07 (High): regression, every endorsement returns HTTP 422 MO-PLATFORM-RATING-B1102 (BIE_Benefit_Delta).
 - General - UAT-BUG-04 (Low): generic E9998 error message with no cause.
 
 Leftovers in UAT: about 25 unissued draft quotes/proposals and a sample PDF on PP-1005-26-00000052-00.

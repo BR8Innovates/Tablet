@@ -86,6 +86,10 @@
    "value": "532527"
   },
   {
+   "key": "endoHistoryPolicyId",
+   "value": "1120053"
+  },
+  {
    "key": "policyNo_PCAR",
    "value": "PP-1005-26-00000053-00"
   },
@@ -4401,7 +4405,7 @@
   },
   {
    "name": "6 Endorsements (direct issue)",
-   "description": "Each endorsement loads the latest policy version, mutates one field and issues it. Uses the policies issued in folder 3.",
+   "description": "Each endorsement loads the latest policy version, mutates one field and issues it. BUG-07: since 28 Oct every endorsement returns HTTP 422 MO-PLATFORM-RATING-B1102 (rating formula BIE_Benefit_Delta, IN_MOTOR_ENDO_CUSTOMIZATION: begin 0, end 10, length 4). These tests fail until that is fixed; they passed 19/19 + 7/7 on 28 Oct.",
    "item": [
     {
      "name": "6.1 Endorsements - PCAR",
@@ -6794,7 +6798,7 @@
      ]
     },
     {
-     "name": "A49.1 Endorsement history (PCAR)",
+     "name": "A49.1 Endorsement history (PP-1005-26-00000052-00, 7 endorsements issued on 28 Oct)",
      "event": [
       {
        "listen": "test",
@@ -6812,7 +6816,7 @@
       "method": "GET",
       "header": [],
       "url": {
-       "raw": "{{baseUrl}}/api/platform/endo/core/endo/v1/queryEndorsementHistory?policyId={{policyId_PCAR}}",
+       "raw": "{{baseUrl}}/api/platform/endo/core/endo/v1/queryEndorsementHistory?policyId={{endoHistoryPolicyId}}",
        "host": [
         "{{baseUrl}}"
        ],
@@ -6828,7 +6832,7 @@
        "query": [
         {
          "key": "policyId",
-         "value": "{{policyId_PCAR}}"
+         "value": "{{endoHistoryPolicyId}}"
         }
        ]
       },

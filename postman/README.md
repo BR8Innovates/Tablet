@@ -43,3 +43,6 @@ Known behaviour worth knowing
 - Vehicle make/fuel/model must exist in the PCAR_TECH_* code tables (fuel `PETROL`, make 107 / 201 / 401 / 501 per product).
 - New vehicles (`RegistrationNo` NEW, `IsNewVehicle` Y) avoid the Vahan lookup, which fails for registered vehicles (BUG-02).
 - Since 28 Oct 2026 validation also requires nominee details for individual policyholders (BUG-06, folder 3 fails until the `PersonRelation` code table / nominee payload is resolved).
+- BUG-07: since 28 Oct 2026 every endorsement (folder 6) returns HTTP 422 `MO-PLATFORM-RATING-B1102` - rating step `BIE_Benefit_Delta` (`IN_MOTOR_ENDO_CUSTOMIZATION`) fails with `begin 0, end 10, length 4`. Traces 551360498a1827eeb405d2d955731dd1, 23fe11479125e0b00e8c2a63fb8a9917. All seven endorsement types passed on every product on 28 Oct.
+
+Last full Newman run (6 Nov 2026, preset token): folders 0, 1, 4, 5, 7 pass completely; folder 3 (issuance) fails on BUG-06; folder 6 (endorsements) fails on BUG-07; folder 99 fails by design.
