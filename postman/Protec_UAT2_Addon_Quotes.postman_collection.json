@@ -59,7 +59,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -105,7 +105,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -151,7 +151,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -197,7 +197,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -243,7 +243,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -289,7 +289,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -335,7 +335,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -381,7 +381,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -427,7 +427,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -473,7 +473,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -519,7 +519,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -565,7 +565,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -611,7 +611,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -657,7 +657,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -703,7 +703,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -749,7 +749,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -795,7 +795,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -841,7 +841,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -887,7 +887,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -933,7 +933,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -979,7 +979,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1025,7 +1025,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1071,7 +1071,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1117,7 +1117,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1163,7 +1163,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1209,7 +1209,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1255,7 +1255,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1301,7 +1301,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1347,7 +1347,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1393,7 +1393,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1439,7 +1439,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1485,7 +1485,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1531,7 +1531,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1577,7 +1577,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1623,7 +1623,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1669,7 +1669,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1715,7 +1715,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1767,7 +1767,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1813,7 +1813,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1859,7 +1859,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1905,7 +1905,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1951,7 +1951,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -1997,7 +1997,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2043,7 +2043,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2089,7 +2089,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2135,7 +2135,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2181,7 +2181,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2227,7 +2227,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2273,7 +2273,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2319,7 +2319,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2365,7 +2365,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2411,7 +2411,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2463,7 +2463,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2509,7 +2509,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2555,7 +2555,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2601,7 +2601,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2647,7 +2647,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2693,7 +2693,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2739,7 +2739,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2785,7 +2785,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2831,7 +2831,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2877,7 +2877,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2923,7 +2923,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -2969,7 +2969,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3015,7 +3015,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3061,7 +3061,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3107,7 +3107,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3153,7 +3153,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3199,7 +3199,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3245,7 +3245,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3291,7 +3291,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3337,7 +3337,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3383,7 +3383,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3429,7 +3429,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3475,7 +3475,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3521,7 +3521,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3567,7 +3567,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3613,7 +3613,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3659,7 +3659,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3705,7 +3705,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3751,7 +3751,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3797,7 +3797,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3843,7 +3843,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3889,7 +3889,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3935,7 +3935,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -3981,7 +3981,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4027,7 +4027,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4073,7 +4073,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4119,7 +4119,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4165,7 +4165,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4211,7 +4211,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4257,7 +4257,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4309,7 +4309,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4355,7 +4355,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4401,7 +4401,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4447,7 +4447,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4493,7 +4493,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4539,7 +4539,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4585,7 +4585,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4631,7 +4631,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4677,7 +4677,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4723,7 +4723,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4769,7 +4769,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4815,7 +4815,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4861,7 +4861,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4907,7 +4907,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4953,7 +4953,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -4999,7 +4999,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
@@ -5045,7 +5045,7 @@
        }
       ],
       "url": {
-       "raw": "{{baseUrl}}/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
+       "raw": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/agentPortal_quotationCalculate",
        "host": [
         "{{baseUrl}}"
        ],
