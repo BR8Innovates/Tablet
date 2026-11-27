@@ -8380,7 +8380,7 @@
             "method": "POST",
             "header": [],
             "url": "{{baseUrl}}/api/platform/attachment-core/attachment/v1/uploadMulti",
-            "description": "Uploads sample_upload.pdf to a claim. Required form fields: BusinessType 001, BusinessNo (claimNo), Directory (e.g. Motor_TP_01), BusinessId (claim CaseId), ProductCode, ProductLine 01, AttachType 01. Without BusinessId/ProductCode/ProductLine/AttachType the call returns HTTP 500 (BUG-03). Run Newman with --working-dir postman.",
+            "description": "Uploads sample_upload.pdf to a claim. Required form fields: BusinessType 001, BusinessNo (claimNo), Directory (e.g. Motor_TP_01), BusinessId (claim CaseId), ProductCode, ProductLine 01, AttachType 01. Without BusinessId/ProductCode/ProductLine/AttachType the call returns HTTP 500 (BUG-03). Run Newman with --working-dir postman. With a portal user token (ProtecPortalUser, user_source_id platform) the minimal form (BusinessType, BusinessNo, Directory, Files) also returns HTTP 200; the 500 occurs with the admin PAT token unless the extra fields are sent.",
             "body": {
               "mode": "formdata",
               "formdata": [
