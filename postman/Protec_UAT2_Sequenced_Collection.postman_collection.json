@@ -7876,7 +7876,7 @@
           ]
         },
         {
-          "name": "6.7 Submit FNOL (register claim) (WRITE, not executed)",
+          "name": "6.7 Submit FNOL (register claim on an issued policy)",
           "request": {
             "method": "POST",
             "header": [
@@ -7886,17 +7886,66 @@
               }
             ],
             "url": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
-            "description": "WRITE: registers a new claim. Not executed in the examples run because it creates a claim. Run only with an intended claim and a valid AccidentTime inside cover.",
+            "description": "Registers a claim on an issued policy (claimPolicyNo). Accident time must fall inside cover. A new open claim blocks endorsements on that policy. P2W (1106) returns MO-CLM-Validation-E0101: product missing from the claim matrix.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"{{policyNo}}\",\n    \"AccidentTime\": \"{{accidentTime}}\",\n    \"NoticeTime\": \"{{noticeTime}}\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Rear-end collision at traffic light\",\n    \"AccidentAddress\": \"MG Road, Pune\",\n    \"ContactName\": \"{{customerName}}\",\n    \"ContactPhone\": \"{{businessTel}}\",\n    \"ContactEmail\": \"{{email}}\",\n    \"AgentCode\": \"{{agentCode}}\"\n  }\n}",
+              "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"{{claimPolicyNo}}\",\n    \"AccidentTime\": \"2026-11-27T09:30:00\",\n    \"NoticeTime\": \"2026-11-27T15:40:00\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Rear-end collision at traffic light\",\n    \"AccidentAddress\": \"MG Road, Pune\",\n    \"ContactName\": \"Ravi Teja Bhogavalli\",\n    \"ContactPhone\": \"9876543210\",\n    \"ContactEmail\": \"ravi.teja@insuremo.com\",\n    \"AgentCode\": \"IA000001\"\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "const m=(pm.response.json().Model||{}).ClaimCase;",
+                  "pm.test('ClaimNo returned',()=>pm.expect(m&&m.ClaimNo).to.exist);",
+                  "if(m){pm.collectionVariables.set('claimNo',m.ClaimNo);pm.collectionVariables.set('claimCaseId',String(m.CaseId));}"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Example - 200 (PCAR claim PC-1005-26-00000006)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/ECS_business_fnol",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"@type\": \"ClaimRequestForm-ClaimRequestForm\",\n  \"OperationType\": \"1\",\n  \"ReportChannel\": \"2\",\n  \"IsManualPolicy\": false,\n  \"InsuredId\": null,\n  \"ClaimCase\": {\n    \"@type\": \"ClaimCase-ClaimCase\",\n    \"PolicyNo\": \"{{claimPolicyNo}}\",\n    \"AccidentTime\": \"2026-11-27T09:30:00\",\n    \"NoticeTime\": \"2026-11-27T15:40:00\",\n    \"LossCause\": \"09\",\n    \"AccidentDesc\": \"Rear-end collision at traffic light\",\n    \"AccidentAddress\": \"MG Road, Pune\",\n    \"ContactName\": \"Ravi Teja Bhogavalli\",\n    \"ContactPhone\": \"9876543210\",\n    \"ContactEmail\": \"ravi.teja@insuremo.com\",\n    \"AgentCode\": \"IA000001\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\"Model\":{\"@type\":\"ClaimResponseForm-ClaimResponseForm\",\"ClaimCase\":{\"@pk\":6017864,\"@type\":\"ClaimCase-ClaimCase\",\"AccidentAddress\":\"MG Road, Pune\",\"AccidentDesc\":\"Rear-end collision at traffic light\",\"AccidentTime\":\"2026-11-27T09:30:00\",\"AgentCode\":\"IA000001\",\"BusinessObjectId\":371651130,\"CaseId\":6017864,\"CaseStatus\":\"01\",\"ClaimNo\":\"PC-1005-26-00000006\",\"ClmPolicyId\":6017867,\"ContactEmail\":\"ravi.teja@insuremo.com\",\"ContactName\":\"Ravi Teja Bhogavalli\",\"ContactPhone\":\"9876543210\",\"EcsIsFromApp\":\"N\",\"EcsProductLineCode\":\"01\",\"EcsProductVersion\":\"1.0\",\"FnolNo\":\"PC-1005-26-00000006\",\"FnolNumber\":\"PC-FNOL-1005-2026-11-00000006\",\"FnolStatus\":\"01\",\"InsertBy\":10000000970439,\"InsertTime\":\"2026-11-27T15:53:56\",\"LossCause\":\"09\",\"NoticeTime\":\"2026-11-27T15:40:00\",\"PolicyHolderName\":\"Ravi Teja Bhogavalli\",\"PolicyNo\":\"PP-1005-26-00000059-00\",\"PolicyOrgCode\":\"90000\",\"ProcessDefId\":1072659462,\"ProductCode\":\"1005\",\"RecordType\":\"1\",\"SettlementTimes\":0,\"UpdateBy\":10000000970439,\"UpdateTime\":\"2026-11-27T15:53:56.703\",\"VersionSeq\":2,\"WithPolicy\":\"1\"},\"ProductName\":\"Pvt car liability(TP) only policy - multi year variation (0 + 1, 0+3)\",\"TaskId\":\"6464895\"},\"Status\":\"OK\"}"
+            }
+          ]
         },
         {
           "name": "6.8 Load claim case detail",
@@ -8326,13 +8375,136 @@
           ]
         },
         {
-          "name": "6.10 Upload document (WRITE, not executed)",
+          "name": "6.10 Upload claim document",
           "request": {
             "method": "POST",
             "header": [],
             "url": "{{baseUrl}}/api/platform/attachment-core/attachment/v1/uploadMulti",
-            "description": "WRITE: multipart upload of a document. Form fields follow the attachment spec; not executed here. Attach a file to the 'file' field and set BusinessType/BusinessNo before running."
-          }
+            "description": "Uploads sample_upload.pdf to a claim. Required form fields: BusinessType 001, BusinessNo (claimNo), Directory (e.g. Motor_TP_01), BusinessId (claim CaseId), ProductCode, ProductLine 01, AttachType 01. Without BusinessId/ProductCode/ProductLine/AttachType the call returns HTTP 500 (BUG-03). Run Newman with --working-dir postman.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "BusinessType",
+                  "value": "001",
+                  "type": "text"
+                },
+                {
+                  "key": "BusinessNo",
+                  "value": "{{claimNo}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Directory",
+                  "value": "Motor_TP_01",
+                  "type": "text"
+                },
+                {
+                  "key": "BusinessId",
+                  "value": "{{claimCaseId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "ProductCode",
+                  "value": "{{claimProductCode}}",
+                  "type": "text"
+                },
+                {
+                  "key": "ProductLine",
+                  "value": "01",
+                  "type": "text"
+                },
+                {
+                  "key": "AttachType",
+                  "value": "01",
+                  "type": "text"
+                },
+                {
+                  "key": "Files",
+                  "type": "file",
+                  "src": "sample_upload.pdf"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "const r=pm.response.json();pm.test('AttachFileId returned',()=>pm.expect(r.Model[0].AttachFileId).to.exist);pm.collectionVariables.set('attachFileId',String(r.Model[0].AttachFileId));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Example - 200 (claim PC-1005-26-00000006)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": "{{baseUrl}}/api/platform/attachment-core/attachment/v1/uploadMulti",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "BusinessType",
+                      "value": "001",
+                      "type": "text"
+                    },
+                    {
+                      "key": "BusinessNo",
+                      "value": "{{claimNo}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "Directory",
+                      "value": "Motor_TP_01",
+                      "type": "text"
+                    },
+                    {
+                      "key": "BusinessId",
+                      "value": "{{claimCaseId}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "ProductCode",
+                      "value": "{{claimProductCode}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "ProductLine",
+                      "value": "01",
+                      "type": "text"
+                    },
+                    {
+                      "key": "AttachType",
+                      "value": "01",
+                      "type": "text"
+                    },
+                    {
+                      "key": "Files",
+                      "type": "file",
+                      "src": "sample_upload.pdf"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\"Model\":[{\"@pk\":6402840,\"@type\":\"AttachFile-AttachFile\",\"AttachFileId\":6402840,\"AttachType\":\"01\",\"BusinessObjectId\":514268920,\"DisplayName\":\"sample_upload\",\"DmsDocId\":10000001827342,\"FileExt\":\".pdf\",\"FileSize\":193,\"GroupList\":[\"AT004\",\"AT003\",\"AT001\",\"AT008\",\"BcpDocWrite\",\"AT011\",\"AT002\",\"AT009\",\"AT005\",\"AT007\",\"AT006\",\"PADocWrite\",\"BcpDocView\",\"AT010\"],\"IsDeleted\":\"N\",\"IsImage\":\"0\",\"LatestUploadDate\":\"2026-11-27T15:55:14\",\"LatestUploadUserId\":10000000970439,\"OldFileData\":{},\"OrgFileName\":\"sample_upload.pdf\",\"Path\":\"Motor_TP_01\",\"Sort\":2,\"UploadDate\":\"2026-11-27T15:55:14\",\"UploadUserId\":10000000970439}],\"Status\":\"OK\"}\n"
+            }
+          ]
         }
       ]
     },
@@ -9178,7 +9350,7 @@
     },
     {
       "key": "attachFileId",
-      "value": "5788484"
+      "value": "6402826"
     },
     {
       "key": "clmPolicyId",
@@ -9186,7 +9358,7 @@
     },
     {
       "key": "claimNo",
-      "value": "PC-1204-26-00000002"
+      "value": "PC-1005-26-00000006"
     },
     {
       "key": "proposalNo",
@@ -9223,6 +9395,18 @@
     {
       "key": "issueViaApi",
       "value": "false"
+    },
+    {
+      "key": "claimPolicyNo",
+      "value": "PP-1005-26-00000059-00"
+    },
+    {
+      "key": "claimCaseId",
+      "value": "6017864"
+    },
+    {
+      "key": "claimProductCode",
+      "value": "1005"
     }
   ],
   "auth": {
