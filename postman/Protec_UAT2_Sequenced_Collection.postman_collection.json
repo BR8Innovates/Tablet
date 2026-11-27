@@ -1937,41 +1937,6 @@
                 ]
               }
             }
-          ],
-          "response": [
-            {
-              "name": "Example - 500 (run 2026-11-27)",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/IIBReferenceRetrieve",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"registration_no\": \"MH31EU6131\",\n  \"source\": \"Core\",\n  \"stage\": \"Quote\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Internal Server Error",
-              "code": 500,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\"timestamp\":\"2026-11-27T11:10:47\",\"timestampServer\":\"2026-11-27T05:40:47\",\"traceId\":\"1e6de6361453bff088696018c2a1980a\",\"env\":\"aws_in_protec_sandbox\",\"tenant\":\"protecuat2\",\"code\":\"MO-PLATFORM-COMMON-E9998\",\"message\":\"Exception has been thrown, check it in logging system with trace id: 1e6de6361453bff088696018c2a1980a.\"}"
-            }
           ]
         },
         {
