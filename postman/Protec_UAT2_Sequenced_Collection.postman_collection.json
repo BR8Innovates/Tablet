@@ -1916,7 +1916,7 @@
               }
             ],
             "url": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/IIBReferenceRetrieve",
-            "description": "Read. Returned HTTP 500 (MO-PLATFORM-COMMON-E9998) on UAT2 at the time of the run; see the example.",
+            "description": "Read. Returned HTTP 500 on UAT2 in earlier runs (MO-PLATFORM-COMMON-E9998) and 200 later; intermittent.",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"registration_no\": \"MH31EU6131\",\n  \"source\": \"Core\",\n  \"stage\": \"Quote\"\n}",
@@ -1933,9 +1933,44 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('HTTP 500',()=>pm.response.to.have.status(500));"
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));"
                 ]
               }
+            }
+          ],
+          "response": [
+            {
+              "name": "Example - 200",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/api/{{tenantCode}}/api-orchestration/v1/flow/IIBReferenceRetrieve",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registration_no\": \"MH31EU6131\",\n  \"source\": \"Core\",\n  \"stage\": \"Quote\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\"data_source\":\"REPOSITORY\",\"iib_ref_no\":\"6510001\",\"iib_response\":{\"ClaimDetails\":[{\"ACCIDENT_LOSS_DATE\":\"2016-12-22\",\"BOO_OD_TOTAL_LOSS\":\"0 \",\"BOO_THEFT\":\"0\",\"CHASSIS_NUMBER\":\"MA3EWB22SGD165278\",\"CLAIM_INTIMATION_DATE\":\"2016-12-24\",\"CLAIM_NUMBER\":\"MOT06201064\",\"CLAIM_STATUS\":\"FULLY SETTLED\",\"CLAIM_TYPE\":\"OD\",\"CLASS_CODE\":\"PRIVATE CAR\",\"ENGINE_NUMBER\":\"4150894\",\"INSURER_NAME\":\"ICICI Lombard General Insurance Co. Ltd. \",\"OD_CLAIMS_PAID\":6442,\"REGISTRATION_NUMBER\":\"MH31EU6131\",\"TOTAL_TP_CLAIMS_PAID_AMOUNT\":0,\"TP_CLOSE_PROVISION\":0,\"TP_OPEN_PROVISION\":0},{\"ACCIDENT_LOSS_DATE\":\"2017-04-18\",\"BOO_OD_TOTAL_LOSS\":\"0 \",\"BOO_THEFT\":\"0\",\"CHASSIS_NUMBER\":\"MA3EWB22SGD165278\",\"CLAIM_INTIMATION_DATE\":\"2017-04-22\",\"CLAIM_NUMBER\":\"MOT06537993\",\"CLAIM_STATUS\":\"FULLY SETTLED\",\"CLAIM_TYPE\":\"OD\",\"CLASS_CODE\":\"PRIVATE CAR\",\"ENGINE_NUMBER\":\"4150894\",\"INSURER_NAME\":\"ICICI Lombard General Insurance Co. Ltd. \",\"OD_CLAIMS_PAID\":15307,\"REGISTRATION_NUMBER\":\"MH31EU6131\",\"TOTAL_TP_CLAIMS_PAID_AMOUNT\":0,\"TP_CLOSE_PROVISION\":0,\"TP_OPEN_PROVISION\":0},{\"ACCIDENT_LOSS_DATE\":\"2017-11-06\",\"BOO_OD_TOTAL_LOSS\":\"0 \",\"BOO_THEFT\":\"0\",\"CHASSIS_NUMBER\":\"165278\",\"CLAIM_INTIMATION_DATE\":\"2017-11-10\",\"CLAIM_NUMBER\":\"MOT07073397\",\"CLAIM_STATUS\":\"FULLY SETTLED\",\"CLAIM_TYPE\":\"OD\",\"CLASS_CODE\":\"PRIVATE CAR\",\"ENGINE_NUMBER\":\"4150894\",\"INSURER_NAME\":\"ICICI Lombard General Insurance Co. Ltd. \",\"OD_CLAIMS_PAID\":3847,\"REGISTRATION_NUMBER\":\"MH31EU6131\",\"TOTAL_TP_CLAIMS_PAID_AMOUNT\":0,\"TP_CLOSE_PROVISION\":0,\"TP_OPEN_PROVISION\":0},{\"ACCIDENT_LOSS_DATE\":\"2018-01-20\",\"BOO_OD_TOTAL_LOSS\":\"0 \",\"BOO_THEFT\":\"0\",\"CHASSIS_NUMBER\":\"165278\",\"CLAIM_INTIMATION_DATE\":\"2018-01-23\",\"CLAIM_NUMBER\":\"MOT07283663\",\"CLAIM_STATUS\":\"FULLY SETTLED\",\"CLAIM_TYPE\":\"OD\",\"CLASS_CODE\":\"PRIVATE CAR\",\"ENGINE_NUMBER\":\"4150894\",\"INSURER_NAME\":\"ICICI Lombard General Insurance Co. Ltd. \",\"OD_CLAIMS_PAID\":6870,\"REGISTRATION_NUMBER\":\"MH31EU6131\",\"TOTAL_TP_CLAIMS_PAID_AMOUNT\":0,\"TP_CLOSE_PROVISION\":0,\"TP_OPEN_PROVISION\":0},{\"ACCIDENT_LOSS_DATE\":\"2019-01-25\",\"BOO_OD_TOTAL_LOSS\":\"0 \",\"BOO_THEFT\":\"0\",\"CHASSIS_NUMBER\":\"165278\",\"CLAIM_INTIMATION_DATE\":\"2019-01-28\",\"CLAIM_NUMBER\":\"MOT08376380\",\"CLAIM_STATUS\":\"FULLY SETTLED\",\"CLAIM_TYPE\":\"OD\",\"CLASS_CODE\":\"PRIVATE CAR\",\"ENGINE_NUMBER\":\"4150894\",\"INSURER_NAME\":\"ICICI Lombard General Insurance Co. Ltd. \",\"OD_CLAIMS_PAID\":23994,\"REGISTRATION_NUMBER\":\"MH31EU6131\",\"TOTAL_TP_CLAIMS_PAID_AMOUNT\":0,\"TP_CLOSE_PROVISION\":0,\"TP_OPEN_PROVISION\":0}],\"PolicyDetails\":[{\"CLASS_OF_VEHICLE\":\"PRIVATE CAR\",\"FINANACIAL_YEAR\":\"FY2324\",\"OD_POLICY_END_DATE\":\"2024-07-23 00:00:00.0\",\"OD_POLICY_START_DATE\":\"2023-07-24 00:00:00.0\",\"POLICY_NUMBER\":\"3001/253153715/01/000\",\"TP_POLICY_END_DATE\":\"2024-07-23 00:00:00.0\",\"TP_POLICY_START_DATE\":\"2023-07-24 00:00:00.0\",\"TXT_INSURER\":\"ICICI Lombard General Insurance Co. Ltd. \",\"TYPE_OF_POLICY\":\"ANNUAL PACKAGE POLICY\",\"TYPE_OF_TRANSACTION\":\"Expired\"}],\"RiskScoreDetails\":\"This Vehicle may not be a private car or no risk score generated for this vehicle\",\"SEARCH_BASED_ON\":\"Registration Number\"},\"record_date\":\"2026-11-27T12:52:32\",\"response_status\":\"DATA_RETURNED\"}"
             }
           ]
         },
