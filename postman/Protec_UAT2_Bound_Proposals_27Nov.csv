@@ -1,0 +1,29 @@
+Product,ProposalNo,PolicyId,Source,Created by,Agent,Payment mode,Premium,Effective date,Policyholder email
+PCAR,PQ-1005-26-00000074,5947215,Core portal,admin (protecuat2.admin),BV0000020002,Other (108),9832,2026-11-26,katalon1_UIAuto@ebaotech.com
+PCAR,PQ-1005-26-00000088,6000508,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,4473,2026-11-27,test9876543210@gmail.com
+PCAR,PQ-1005-26-00000091,6000526,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,4473,2026-11-27,test9876543210@gmail.com
+PCAR,PQ-1005-26-00000092,6000538,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,4473,2026-11-27,test9876543210@gmail.com
+PCAR,PQ-1005-26-00000093,6493378,Core portal,admin (protecuat2.admin),IA000001,Other (108),4475,2026-11-27,ravi.teja@insuremo.com
+PCAR,PQ-1005-26-00000095,6000553,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,4473,2026-11-27,ravi.teja@insuremo.com
+PCAR,PQ-1005-26-00000096,6000565,Agent Portal,admin (protecuat2.admin),IA000001,Cash,4473,2026-11-27,ravi.teja@insuremo.com
+PCAR,PQ-1005-26-00000097,6495713,Core portal,admin (protecuat2.admin),IA000001,Agent float,2913,2026-11-27,ravi.teja@insuremo.com
+PCAR,PQ-1005-26-00000099,6000580,Agent Portal,portal user (ProtecPortalUser),IA000001,Agent float,4473,2026-11-27,ravi.teja@insuremo.com
+PCAR,PQ-1005-26-00000101,6000704,Agent Portal,portal user (ProtecPortalUser),IA000001,Cash,4473,2026-11-27,ravi.teja@insuremo.com
+PCAR,PQ-1005-26-00000102,6000707,Agent Portal,portal user (ProtecPortalUser),IA000001,Cash,4473,2026-11-27,ravi.teja@insuremo.com
+PCAR,PQ-1005-26-00000103,6000712,Agent Portal,portal user (ProtecPortalUser),IA000001,Cash,4473,2026-11-27,ravi.teja@insuremo.com
+PCAR,PQ-1005-26-00000104,6000715,Agent Portal,portal user (ProtecPortalUser),IA000001,Cash,4473,2026-11-27,ravi.teja@insuremo.com
+PCAR,PQ-1005-26-00000105,6000718,Agent Portal,portal user (ProtecPortalUser),IA000001,Cash,4473,2026-11-27,ravi.teja@insuremo.com
+PCAR,PQ-1005-26-00000106,6000721,Agent Portal,portal user (ProtecPortalUser),IA000001,Cash,4473,2026-11-27,ravi.teja@insuremo.com
+P2W,PQ-1106-26-00000001,5300028,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,1226,2026-11-25,test9876543210@gmail.com
+P2W,PQ-1106-26-00000021,6000529,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,1226,2026-11-27,test9876543210@gmail.com
+P2W,PQ-1106-26-00000023,6000556,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,1226,2026-11-27,ravi.teja@insuremo.com
+P2W,PQ-1106-26-00000024,6000568,Agent Portal,admin (protecuat2.admin),IA000001,Cash,1226,2026-11-27,ravi.teja@insuremo.com
+PCV,PQ-1202-26-00000001,5300031,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,27358,2026-11-25,test9876543210@gmail.com
+PCV,PQ-1202-26-00000019,6000532,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,31312,2026-11-27,test9876543210@gmail.com
+PCV,PQ-1202-26-00000021,6000559,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,31312,2026-11-27,ravi.teja@insuremo.com
+PCV,PQ-1202-26-00000022,6000571,Agent Portal,admin (protecuat2.admin),IA000001,Cash,31312,2026-11-27,ravi.teja@insuremo.com
+GCV,PQ-1204-26-00000001,5300034,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,17084,2026-11-25,test9876543210@gmail.com
+GCV,PQ-1204-26-00000019,6000535,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,17084,2026-11-27,test9876543210@gmail.com
+GCV,PQ-1204-26-00000022,6000562,Agent Portal,admin (protecuat2.admin),IA000001,Agent float,17084,2026-11-27,ravi.teja@insuremo.com
+GCV,PQ-1204-26-00000023,6000574,Agent Portal,admin (protecuat2.admin),IA000001,Cash,17084,2026-11-27,ravi.teja@insuremo.com
+GCV,PQ-1204-26-00000025,6495631,Agent Portal,admin (protecuat2.admin),IA000001,Other (108),38315,2026-11-26,test9876543210@gmail.com
